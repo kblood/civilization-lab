@@ -2,7 +2,10 @@
 
 Status: **design specification, nothing implemented yet.** Written 2026-10-04 by
 Opus 5.5 (judge and synthesiser) from four competing designs and the merged
-research in [research-2026-10-04.md](research-2026-10-04.md). References of the
+research in [research-2026-10-04.md](research-2026-10-04.md). Revised the same
+day after one read-only critique pass by Astra; corrections are marked
+"Astra must-fix N" or "Astra should-fix N", and Astra's remaining objections are
+in [spec-critique.md](spec-critique.md). References of the
 form "research T3.9" mean *Topic 3, merged finding 9* of that synthesis;
 "trap 12" and "OQ 5" mean its Traps and Open questions lists. This document adds
 no new web research. Anything marked **[scenario]** is an authored, uncalibrated
@@ -103,7 +106,10 @@ Three rules hold the levels together:
    *refinement contract* down (D4): exact integer budgets plus dated mandatory
    events. A child may only allocate those budgets and add events that are
    *budget-neutral and below the salience cap*. Capacities are summed upward
-   from the same fixed sample grid, so every allocation is feasible.
+   from the same fixed sample grid. These capacities are allocation
+   *weights*, not hard occupancy bounds: P may exceed K (overshoot), so the
+   upward sum does not by itself prove that every child stays under its
+   capacity (Astra must-fix 13).
 3. **Coupling only through dated messages.** Two P entities never read each
    other. A body learns about others only through D messages dated at least one
    tick after the pre-state that caused them (D2's contact-horizon rule made
@@ -157,8 +163,13 @@ Each fact has exactly one owning level (research implication 2).
   research T1.13). Settlement sites lie on cells.
 - **Adds.** Per-cell population, settlement founding and abandonment, the
   anchor cell of each P event touching the region, and C-only events (RAID,
-  TOWN_FOUNDED, LOCAL_FLOOD) that are budget-neutral.
+  TOWN_FOUNDED, LOCAL_FLOOD) that have no stock effects.
 - **Never** reads sibling regions or changes a P quantity.
+- **Honest label** (Astra objection, accepted): in v1, C is a *spatial
+  allocation view* of P. Cell populations follow the region total through a
+  fixed weighted split, so C adds placement and settlement labels, not an
+  independent local history. Persistent local dynamics need their own
+  contract later.
 
 ### 2.4 H: households and persons (deferred past M3)
 
@@ -213,8 +224,12 @@ the domain ledger share boundaries:
 | millennium | 1,000 | environment epoch: Atlas inputs are sampled here and held constant |
 | chapter | 6,400 (640 ticks) | checkpoint and Merkle-chunk boundary |
 
-Nesting is exact. A chapter is not a decimal multiple of a century, so
-summaries must never assume a chapter holds whole millennia.
+Years, decades and centuries nest exactly into chapters (a chapter is 64
+centuries). Millennium epochs do **not** nest into chapters: 6,400 is not a
+multiple of 1,000, so epochs overlap chapter boundaries. Tests check only the
+divisibility-valid edges (year→decade→century→chapter, decade→millennium) and
+interval intersections, never a universal adjacent-level nesting rule.
+(Corrected after Astra's critique, should-fix 1.)
 
 ### 3.3 One clock (decision)
 
@@ -234,10 +249,23 @@ later optimisation (section 12). Reasons:
 
 - Hazard events get an exact year inside the tick in closed form (section
   4.4). Threshold events are dated at the tick's start year, because they are
-  detected on the pre-state.
-- Every event's *effects* are committed to P state at the tick's end
-  boundary. The annual refinement places each effect at its `dateYear`. The two
-  agree at every boundary by construction.
+  detected on the pre-state. Derived events (section 5.3, phase 5) take the
+  latest `dateYear` of the effects that caused them.
+- **One chronology for stocks (v1 decision, corrected after Astra must-fix 1).**
+  Every event's *stock effects* are committed to P state at the tick's **end
+  boundary**, after the natural update. The annual refinement shows stock
+  effects at that boundary too (a staircase at the tick end), **not** at
+  `dateYear`. `dateYear` is the date the event happened for ordering,
+  chronicle, causes and placement; it is not the year a stock jumps.
+  Applying effects at `dateYear` while the natural update is applied over the
+  whole tick is inconsistent: with `P_start = 100`, a natural delta of +100 and
+  a 50 % loss early in the tick, P ends at 100 while the annual path ends at
+  150, and recording the resolved loss instead lets a total loss drive the path
+  negative.
+- Astra's preferred alternative, a P-owned chronological **yearly flow
+  ledger** that resolves stock availability year by year inside the tick, is
+  deferred (section 12) because it multiplies the population update cost by
+  ten. It is the upgrade path if M3 timelines need in-tick stock jumps.
 - Each event stores `dateYear` and a `precision` tag in {decade, year}. A
   child level may only refine below its parent's precision.
 
@@ -264,6 +292,10 @@ later optimisation (section 12). Reasons:
   tags `S` (UTF-8 string), `I` (integer as canonical decimal: no leading zeros
   and no `+`; `-0` is rejected) and `B` (raw bytes). This makes `("a","bc")` and
   `("ab","c")` impossible to alias (trap 3).
+- Strings must be well-formed Unicode (`String.prototype.isWellFormed()`);
+  a lone surrogate is rejected, because UTF-8 encoding would map distinct
+  malformed strings to the same replacement bytes. Integers must be safe
+  integers or BigInt. (Astra should-fix 2.)
 - The field order is fixed:
   `("civ-rng-1", worldSeed, manifestDigest, level, entityId, purpose,
   episodeOrBucket, ordinal, attempt)`.
@@ -292,9 +324,9 @@ later optimisation (section 12). Reasons:
 | Sampler | Definition |
 |---|---|
 | `u53` | `draw >> 11`; a uniform 53-bit integer |
-| `below(n)` | rejection: `limit = 2^64 - (2^64 mod n)`. Attempt `a` uses key field `attempt = a`. The first draw below `limit` returns `draw mod n`. After 128 attempts the sampler throws `RNG_EXHAUSTED`, which is deterministic. Unbiased. |
+| `below(n)` | domain `1 <= n <= 2^64` (BigInt), anything else throws. Rejection: `limit = 2^64 - (2^64 mod n)`. Attempt `a` uses key field `attempt = a`. The first draw below `limit` returns `draw mod n`. After 128 attempts the sampler throws `RNG_EXHAUSTED`, which is deterministic. Unbiased. |
 | `chance(ppm)` | `below(1_000_000) < ppm` |
-| `expQ32` | `E = -ln(U)` with `U = (u53 + 0.5) / 2^53`. Computed with a port of Atlas `det-math.ts` `logPos`, which uses only `+ - * /`, a fixed iteration count, and range reduction by binary scaling. It is then **quantised at once** to Q32 BigInt: `E_q32 = floor(E * 2^32)`. |
+| `expQ32` | `E = -ln(U)` with `U = (u52 + 0.5) / 2^52`, where `u52 = draw >> 12`. `u52 + 0.5` needs at most 53 significant bits, so it is exact and `U` is strictly inside (0, 1). (The earlier `(u53 + 0.5) / 2^53` rounds to `U = 1` at `u53 = 2^53 - 1`; Astra must-fix 2.) `ln` is a port of Atlas `det-math.ts` `logPos`, which uses only `+ - * /`, a fixed iteration count, and range reduction by binary scaling. It is then **quantised at once** to Q32 BigInt and kept strictly positive: `E_q32 = max(1n, floor(E * 2^32))`. Endpoint vectors (`u52 = 0` and `u52 = 2^52 - 1`) are pinned as well as the accuracy. |
 | `weightedPick` | cumulative integer weights in sorted ID order, then `below(total)` |
 | `sortedUniformYears(count, from, until)` | `count` draws of `below(until-from)`, sorted ascending, with ties broken by draw index. Used to place a known count of events. |
 
@@ -304,25 +336,46 @@ determinism lint is extended to enforce this (D1 risk; trap 8).
 
 ### 4.4 Hazards (D2's design, research T4.11)
 
-- **Threshold.** One `E_q32` is drawn per `(owner, kind, episode)` with purpose
+- **Hazard identity** (Astra must-fix 4). Each ledger entry has a structured
+  `hazardId = (ownerId, kind, domain?, targetTier?, edgeId?)`, encoded as a
+  key tuple. DISCOVERY is per `(region, domain, targetTier)` and DIFFUSION per
+  `(edge, domain)`, so two discoveries in one region never share a threshold or
+  a ledger slot. The ledger is checkpointed as a sorted array keyed by
+  `hazardId`.
+- **Threshold.** One `E_q32` is drawn per `(hazardId, episode)` with purpose
   `haz.<kind>`. The key contains the episode index, **never** a time bucket, so
   the threshold is the same however time is subdivided.
 - **Rate.** `h_q32` is the hazard per tick, computed from the **pre-state
   only**, as a sorted sum of integer *terms*. Terms are kept for causal
-  attribution (section 5.6). The hazard is constant inside a tick.
-- **Firing.** If `H_before + h >= E`, the event fires. The year offset inside
-  the tick needs no draw:
-  `yearOffset = ceilDiv(10 * (E - H_before), h) - 1`. Because
-  `E > H_before`, `yearOffset` is in `[0, 9]`.
-- **Further firings in the same tick.** After a firing the episode index
-  increments and a new threshold `E'` is drawn. The overshoot carries over:
-  `H_new = H_before + h - E`. The next firing in the same tick is dated with
-  the cumulative threshold sum. There is a cap of 4 firings per
-  `(owner, kind, tick)`; past the cap the fourth event records `saturated:
-  true` and the remaining hazard of that tick is discarded.
+  attribution (section 5.6). The hazard is constant inside a tick. If
+  `h = 0`, nothing accumulates and nothing fires.
+- **Firing and further firings in the same tick** (Astra must-fix 3). Let
+  `H_start` be the hazard already accumulated in the current episode and
+  `E_cur` its threshold, with `0 <= H_start < E_cur`. Then:
+  ```
+  distance = E_cur - H_start            // hazard still needed, measured from tick start
+  fired = 0
+  while distance <= h and fired < 4:
+      yearOffset = ceilDiv(10 * distance, h) - 1      // in [0, 9]
+      emit(yearOffset, evidence = { H_start, distance, h, episode })
+      fired += 1; episode += 1; E_cur = expQ32(hazardId, episode)
+      distance += E_cur
+  if fired == 4 and distance <= h:  mark the 4th event saturated: true;
+                                    H_end = 0 (the rest of this tick's hazard is discarded)
+  else:                             H_end = E_cur - (distance - h)   // 0 <= H_end < E_cur
+  ```
+  For one firing this reduces to `yearOffset = ceilDiv(10 * (E - H_start), h) - 1`.
+  The evidence invariant is `0 < distance <= h` for every emitted event (it
+  replaces the older `Hbefore < E <= Hbefore + h`, which is false for a second
+  firing). The cap belongs to the canonical decade; a subdivided reference
+  calculation in tests must apply the same cap per decade, not per substep.
+- **Eligibility.** While a hazard is ineligible, accumulation **pauses** and
+  the episode and `H` are kept. When its owner ends, the ledger entry is
+  closed. A firing whose intent is later pre-empted in phase 4 still
+  **consumes** its threshold (the episode advances) and is logged as
+  `pre-empted`.
 - **Owners** are stable IDs: a region ID, a polity ID, an ordered polity pair
-  `"A>B"` for directed kinds such as WAR, or the arc ID. When an owner ends,
-  its hazard ledger is closed.
+  `"A>B"` for directed kinds such as WAR, an edge ID, or the arc ID.
 - **Competing causes** are independent ledgers. Same-year firings are ordered
   by the event order key (section 5.2).
 
@@ -334,8 +387,16 @@ determinism lint is extended to enforce this (D1 risk; trap 8).
 - `mulDiv(a, b, c)` is BigInt floor division; `ceilDiv` is explicit. Every
   rounding direction is specified at its call site: floor for allocations,
   ceil for travel times and resource needs (D4).
-- **Losses are fractions of the stock present when applied**, so a negative
-  stock is impossible and no clipping can manufacture a collapse (trap 14).
+- **Every debit is resolved against the source stock remaining when it is
+  applied** (Astra must-fix 6). Losses and transfers (migration, conquest of
+  people, launches) are applied in order-key order, and each one's amount is
+  computed from what is *left* in the source at its turn: a fraction
+  `floorDiv(remaining * permille, 1000)`, or for a capacity-limited debit such
+  as a launch `min(capacity, remaining - reserve)`. Two migrations of 80 % from
+  one region of 100 people therefore move 80 and then 16, never 160. The
+  accepted amount is recorded **once** in the transfer and used at both ends.
+  A negative stock is impossible and no clipping can manufacture a collapse
+  (trap 14).
 - Environmental inputs are quantised at the adapter boundary **before** any
   decision. `NaN` and infinity are rejected there.
 
@@ -364,8 +425,9 @@ determinism lint is extended to enforce this (D1 risk; trap 8).
 
 ```
 CivEvent {
-  id:        "<ownerId>|<kind>|<tick>|<ordinal>"   // ordinal = rank among the same
-                                                   // (owner, kind, tick) by order key
+  id:        "<ownerId>|<kind>|<tick>|<intentKey>" // intentKey is immutable and known
+                                                   // before sorting (section 5.2)
+  ordinal                                          // dense presentation rank only; not in the id
   kind, kindRank                                   // from the versioned catalogue
   level:     "D" | "P" | "C"
   ownerId                                          // exactly one owner
@@ -375,7 +437,8 @@ CivEvent {
   precision: "decade" | "year"
   phase:     0..5
   trigger:   { mode: "exogenous"|"threshold"|"hazard"|"chain"|"scheduled",
-               episode?, E_q32?, Hbefore_q32?, h_q32?, crossed?: { var, value, threshold },
+               hazardId?, episode?, H_start_q32?, distance_q32?, h_q32?,
+               crossed?: { var, value, threshold },
                saturated? }
   causes:    [{ eventId, edge: "TRIGGERED"|"RAISED_HAZARD"|"ENABLED"|"CHAIN"|"EXOGENOUS",
                 weightPermille }]                  // sorted
@@ -395,8 +458,23 @@ at application.
 
 ### 5.2 Total order
 
-`orderKey = (dateYear, phase, ownerId, kindRank, ordinal)`, compared
-lexicographically with code-unit strings. Events in one tick all read the same
+`orderKey = (dateYear, phase, ownerId, kindRank, intentKey)`, compared
+lexicographically with code-unit strings (Astra must-fix 5: the earlier key
+contained `ordinal`, which was itself defined by the order key).
+
+`intentKey` is assigned when the intent is created, from its source:
+
+- a hazard firing: `"h:" + encode(hazardId) + ":" + episode`;
+- a chain step: `"c:" + chainId + ":" + step`;
+- a scheduled or inbound message: `"m:" + messageId`;
+- a threshold or derived event: `"t:" + encode(subjectId)` (at most one per
+  subject, kind and tick, enforced by the latch in section 5.3).
+
+`ordinal` is then the dense rank among events with the same
+`(ownerId, kind, tick)` after sorting. Magnitude and outcome draws are keyed on
+the event `id`, so they never depend on insertion order. When reciprocal wars
+`A>B` and `B>A` merge, the surviving intent is the one whose `ownerId` is
+smaller; the other is logged as `pre-empted` with a ref to the survivor. Events in one tick all read the same
 frozen pre-state (DEVS confluent rule, research T3.12–13). Effects commit in
 order-key order.
 
@@ -404,12 +482,12 @@ order-key order.
 
 | Phase | Name | What happens |
 |---|---|---|
-| 0 | Exogenous | Environment-epoch changes (CLIMATE_SHIFT, STELLAR_DOOM) and inbound D messages dated in this tick (arrivals, signals, shared-catastrophe consequences). |
-| 1 | Threshold | Deterministic crossings on the pre-state: FAMINE, TECH_LOSS, ENERGY_TRANSITION, HEGEMONY, RECOVERY, EXTINCTION, COLONY_LOST, CLIMATE_CATASTROPHE. No draws, except magnitude draws keyed on the event ID. |
+| 0 | Exogenous | Environment-epoch changes (CLIMATE_SHIFT, STELLAR_DOOM) and inbound D messages delivered at this tick (arrivals, signals, shared-catastrophe consequences, PERILS_EXIT/PERILS_REENTER). Phase-0 effects are applied to the boundary state **before** the pre-state is frozen, so phases 1–4 see them. |
+| 1 | Threshold | Deterministic crossings on the pre-state: FAMINE, TECH_LOSS, HEGEMONY, RECOVERY, EXTINCTION, COLONY_LOST, CLIMATE_CATASTROPHE. Each threshold kind has a stored **latch** per subject and fires only on a false→true crossing (at most once per subject, kind and tick). No draws, except magnitude draws keyed on the event ID. |
 | 2 | Hazard | For each eligible `(owner, kind)` in sorted order: accumulate, fire, date (section 4.4). |
 | 3 | Chain | Advance active chains whose next step falls in this tick. A chain whose participant no longer exists is INVALIDATED with a recorded reason (the Worlds/Zematus stale-event check, research T1.15). |
 | 4 | Resolve | Competing intents on one target resolve by order key. A mutual war (A>B and B>A) merges into one war owned by `min(id)`. A losing intent is logged as `pre-empted`. |
-| 5 | Commit | (a) Natural update from the pre-state (section 6.2). (b) Event effects in order-key order. (c) Derived fields: tiers, stage, polity sums. (d) The tick ledger is emitted. |
+| 5 | Commit | (a) Natural update from the pre-state (section 6.2). (b) Event effects in order-key order, each debit resolved against the remaining source stock (section 4.5). (c) Derived fields: tiers, era, polity sums. (d) **Derived events** from an explicit before/after comparison of the committed state: ENERGY_TRANSITION when a region's era differs from its pre-state era, dated at the latest `dateYear` of the effects that changed it, with ENABLED/TRIGGERED causes to them (Astra must-fix 10). (e) The tick ledger is emitted. |
 
 **Tick ledger** (D3's best idea). Each tick emits
 `{ arcId, tick, startState digest, naturalDelta[region], eventIds, endState }`.
@@ -439,9 +517,12 @@ the next tick or later.
 
 ### 5.6 Causal DAG (model attribution, labelled as such)
 
-- Each P state variable keeps a **provenance slot**: the top 3 events by
-  integer contribution to its deviation from the no-event path, decayed by
-  half each tick.
+- Each P state variable keeps a **provenance slot**: the top 3 events by a
+  defined heuristic **score**, not a counterfactual (Astra should-fix 4). An
+  event's score on a variable is the absolute value of the integer delta it
+  committed to that variable. Every tick each score decays as
+  `floorDiv(score, 2)`, and scores of 0 drop out. The slot keeps the top 3 by
+  `(score descending, eventId ascending)`.
 - Edge rules:
   - a hazard event gets RAISED_HAZARD edges to the provenance of every term
     supplying at least 25% of `h`;
@@ -468,11 +549,11 @@ implemented **and reachable by a forced fixture**.
 | 4 | FAMINE | P | threshold | pop > K x (1 + overshoot) or a K shock | deaths (`scale`); raises migration pressure | M2 |
 | 5 | PLAGUE | P | hazard, chain | density x connectivity x (1 − immunity memory) | deaths; resets immunity; lowers elite share | M2 |
 | 6 | CLIMATE_SHIFT | P | exogenous | environment-epoch change in the stub or Atlas sample | K changes | M2 |
-| 7 | NATURAL_CATASTROPHE | P | hazard | impact or supervolcano rate, **capped by the Snyder-Beattie bound** (below about 1/14,000 per year as a *bound*, research T4.13) | deaths, infrastructure loss, K shock for N ticks | M2 |
-| 8 | DISCOVERY | P | hazard per (region, domain) | Kremer `a · N_eff` with prerequisites and resource gates (research T5.1, T2.11) | domain tier +1 | M2 |
-| 9 | DIFFUSION | P | hazard per contact edge and domain | tier gap x contact strength | the neighbour gains +1 | M2 |
+| 7 | NATURAL_CATASTROPHE | P | hazard | impact or supervolcano frequency [scenario]; **not** capped by Snyder-Beattie. Its *conditional extinction severity* is a separate outcome draw, and only the resulting rate of natural **extinction** is held below the Snyder-Beattie bound (below about 1/14,000 per year, a bound on natural extinction, research T4.13; Astra must-fix 15) | deaths, infrastructure loss, K shock for N ticks; rarely extinction | M2 |
+| 8 | DISCOVERY | P | hazard per (region, domain, targetTier) | Kremer `a · N_eff` only, with prerequisites and resource gates (research T5.1, T2.11). At most one accepted per (region, domain, tick); `targetTier` is always the current tier + 1 | domain tier +1 | M2 |
+| 9 | DIFFUSION | P | hazard per (contact edge, domain) | tier gap x contact strength. This is the **only** transmission mechanism, so transmission is never double-counted (Astra should-fix 5) | the neighbour gains +1, subject to the same one-per-(region, domain, tick) rule | M2 |
 | 10 | TECH_LOSS | P | threshold | Henrich: `N_eff < N*(domain, tier) x learningBias` for 2 ticks (research T5.2–3, contested) | domain tier −1 | M2 |
-| 11 | ENERGY_TRANSITION | P | threshold | a region's era tier changes (section 7) | era label; enables hazard sets | M2 |
+| 11 | ENERGY_TRANSITION | P | derived (phase 5d) | a region's committed era differs from its pre-state era (section 7) | era label; enables hazard sets | M2 |
 | 12 | POLITY_FOUNDING | P | hazard | an unowned region at Subsistence ≥ 2 and density ≥ threshold | creates a polity | M2 |
 | 13 | WAR | P | hazard per ordered adjacent polity pair, chain | power ratio x stress x (1 − war-weariness) | chain; deaths each campaign tick | M2 |
 | 14 | CONQUEST | P | chain outcome | `p_win = max(0, (Pa − Pd)/(Pa + Pd))` with power decaying over distance (research T2.7) | region ownership transfer | M2 |
@@ -482,16 +563,16 @@ implemented **and reachable by a forced fixture**.
 | 18 | SCHISM | P | hazard | cultural distance inside a polity | new culture ID; raises war hazard between the parts | M2 |
 | 19 | COLLAPSE | P | hazard | stress x complexity overhead (swappable strategy; SDT is contested, trap 21) | `scale` population, infrastructure and maintained tiers down by 1–2; polities fragment; recovery targets recorded | M2 |
 | 20 | RECOVERY | P | threshold | population ≥ ½ and infrastructure ≥ ¾ of the pre-collapse values (D3) | clears the collapsed flag | M2 |
-| 21 | NUCLEAR_WAR | P | hazard | needs Energy ≥ 4 and ≥ 2 armed polities; war intensity x prior | population and infrastructure crash; nuclear-winter K shock that can trigger FAMINE | M2 |
+| 21 | NUCLEAR_WAR | P | hazard | needs ≥ 2 *armed* polities (a polity is armed when any of its regions has Energy ≥ 4 and Materials ≥ 4) and an active WAR chain between armed polities; war intensity x prior | population and infrastructure crash; nuclear-winter K shock that can trigger FAMINE | M2 |
 | 22 | ENGINEERED_PANDEMIC | P | hazard | Medicine ≥ 4 and Information ≥ 4; prior | deaths; outcome draw | M2 |
 | 23 | RUNAWAY_TECH | P | hazard | Information ≥ 5; prior | outcome draw: collapse, existential cap or extinction | M2 |
 | 24 | CLIMATE_CATASTROPHE | P | threshold | accumulated anthropogenic forcing stock from fossil energy | K down for many ticks | M2 |
 | 25 | SPACEFLIGHT | P | threshold | Transport ≥ 5 | enables launches | M2 |
 | 26 | LAUNCH | P | hazard per launch window | `min(floor(I/C_I), floor(F/C_F), berths)` capacity (research T4.14); destination chosen by `weightedPick` over reachable bodies | `transfer` people to `transit:<voyageId>` | M2 |
 | 27 | VOYAGE_LOST | D | hazard per voyage | tier-dependent transit risk | passengers die | M2 |
-| 28 | COLONY_FOUNDED | D | scheduled at `launchYear + travelYears` | destination is habitable or habitat-buildable at arrival | creates a colony arc with founders and a tech **cap** | M2 |
-| 29 | COLONY_LOST | P | threshold | colony population below the minimum viable size | arc terminal | M2 |
-| 30 | EXTINCTION | P | threshold | arc population = 0 | arc terminal | M2 |
+| 28 | COLONY_FOUNDED | D | scheduled at the delivery tick (section 8.4) | destination is habitable or habitat-buildable at arrival, and not occupied by another lineage | creates a colony arc with founders and **inherited starting tiers** | M2 |
+| 29 | COLONY_LOST | P | threshold (latched) | colony population below the minimum viable size | the arc enters `nonviable`: it is **not** terminal and its people stay alive. A `nonviable` arc gets an extra per-tick mortality fraction [scenario] until it recovers above the minimum (latch resets) or its population reaches 0 (EXTINCTION). (Astra must-fix 12) | M2 |
+| 30 | EXTINCTION | P | threshold | arc population = 0 | arc terminal; absorbing **per arc**. Recolonising the body later creates a new arc episode | M2 |
 | 31 | LINEAGE_EXTINCTION | D | threshold | every arc of the lineage is extinct and no voyage is in transit | lineage outcome | M2 |
 | 32 | STELLAR_DOOM | P | exogenous | the star's giant phase or engulfment year | at Energy ≥ 5, an evacuation hazard (LAUNCH); otherwise extinction | M3 |
 | 33 | SIGNAL_ARRIVAL | D | scheduled | emissions start at Information ≥ 3 (radio); light travel time in whole years | inbound message | M3 |
@@ -501,8 +582,14 @@ This makes 31 kinds in M2 (the requirement is at least 20) and 34 in v1.
 Interstellar war, trade, golden ages and religion-as-polity are deferred. D4
 warns that a "golden age" must have defined effects or it is only flavour.
 
-**C-only kinds** (M3, refinement level, budget-neutral): RAID, TOWN_FOUNDED,
-TOWN_ABANDONED, LOCAL_FLOOD, LOCAL_SUCCESSION.
+**C-only kinds** (M3, refinement level): RAID, TOWN_FOUNDED, TOWN_ABANDONED,
+LOCAL_FLOOD, LOCAL_SUCCESSION. In v1 they are **annotations without stock
+effects** (Astra must-fix 14): they never move people between cells, so they
+cannot drive a cell negative or be erased by the next boundary allocation.
+TOWN_FOUNDED and TOWN_ABANDONED are *derived* from the canonical boundary
+allocations (section 9.3): a settlement exists at a site while its cell's
+boundary population is at or above a threshold [scenario], with the stable ID
+`(siteId, foundingTick)`.
 
 ---
 
@@ -549,13 +636,39 @@ TOWN_ABANDONED, LOCAL_FLOOD, LOCAL_SUCCESSION.
     at run time.
   - It stays between P and K: no overshoot and no negative population. When
     K drops below P, the population declines toward K.
+  - **Zero cases** are handled before any division (Astra must-fix 13):
+    `P = 0` gives `P' = 0`; `K = 0` with `P > 0` gives `P' = 0`, recorded as a
+    natural decline of `-P` (environmental mortality; migration and launches
+    in the same tick have already been resolved against the remaining stock).
 - **Infrastructure:** `I' = I * keep‰ / 1000 + build`, with `keep‰` a
   precomputed integer from `e^{−10/τ}` and τ = 14 years (World3,
   research T2.12).
 - **Forcing:** a sum of fossil-energy use with a precomputed decay.
 - **Immunity:** ticks since the last plague, capped.
 
-### 6.3 Missing is not empty
+### 6.3 Transition table (a gate before M2 implementation)
+
+Astra's must-fix 9 is right: the prose above does not define every input an
+implementer needs. Examples are fuel stock and its debit, launch berths and
+costs, infrastructure construction, stress evolution, polity power, cultural
+distance, damage duration, the prerequisite table, prior sampling and colony
+starting tiers. Two implementations could follow this spec and still produce
+different histories.
+
+Before M2 code is written, the runner commits `docs/transition-table-v1.md`.
+For **every** state field and catalogue kind it defines:
+
+- unit, range and initial value;
+- the update equation and its rounding direction;
+- the eligibility predicate and the hazard terms;
+- every field it **reads** and every field it writes;
+- its conflict policy.
+
+`catalogue.test.mjs` then rejects any kind that reads or writes a field not
+declared in that table. M2 implementation does not start until Opus has
+reviewed the table and Astra has had a read-only pass over it.
+
+### 6.4 Missing is not empty
 
 Every query result carries a status (D1, D4, trap 26):
 
@@ -598,10 +711,11 @@ authored abstractions [scenario], not universal stages.
 
 Rules:
 
-- **Discovery** is a hazard per (region, domain, next tier). It has two terms:
-  - a Kremer term, `a_d · N_eff`, where `N_eff` is the region's population
-    plus contact-weighted neighbour populations;
-  - a diffusion term along contact edges.
+- **Discovery** is a hazard per (region, domain, next tier) with one Kremer
+  term, `a_d · N_eff`, where `N_eff` is the region's population plus
+  contact-weighted neighbour populations. Spread of an existing tier is
+  modelled only by DIFFUSION along contact edges, so transmission is never
+  counted twice. At most one tier is gained per (region, domain, tick).
 - **Prerequisites** are a small table of minimum tiers in other domains. They
   are gated by the region's **resource vector**. A missing resource is a
   recorded **ceiling** fact, never a silent stall.
@@ -611,10 +725,11 @@ Rules:
 - **Loss.** TECH_LOSS uses Henrich's threshold `N*(domain, tier)`, scaled by a
   `learningBias` knob drawn from a wide prior, because the evidence is
   contested (research T5.3). A COLLAPSE lowers maintained tiers directly.
-- **Colonies** inherit a tech **cap** from the launch record, at most the
-  source's tiers, and must maintain it at their founder population. Colony
-  regression therefore emerges from the Henrich rule rather than being
-  scripted.
+- **Colonies** inherit **starting tiers** from the launch record, at most the
+  source's tiers. This is starting knowledge, not a permanent ceiling: a colony
+  can later innovate past it (Astra should-fix 5). It must maintain those
+  tiers at its founder population, so colony regression emerges from the
+  Henrich rule rather than being scripted.
 - Planet "frontier era" is the maximum over regions, and planet "mean era" is
   the population-weighted mean. Both are views.
 
@@ -639,19 +754,26 @@ Rules:
   at E3.
 - Their rates come from wide seeded log-uniform priors per lineage. Ord's
   per-century figures (research T4.12) appear only as **labelled reference
-  points** for those priors, converted with `h = −ln(1 − p100)/100` offline
-  into precomputed Q32 per-tick constants. They are existential-risk numbers,
+  points** for those priors. `−ln(1 − p100)/100` is an **annual** hazard; the
+  per-decade tick hazard is `h_tick = −ln(1 − p100)/10` (Astra must-fix 15).
+  It is converted offline into precomputed Q32 per-tick constants. They are existential-risk numbers,
   not extinction numbers (trap 22).
 - Each firing of NUCLEAR_WAR, ENGINEERED_PANDEMIC or RUNAWAY_TECH draws an
   **outcome class** (purpose `out.<kind>`):
   - `collapse`: regress 1–3 tiers, then RECOVERY is possible;
   - `existential-cap`: a permanent ceiling on given domains;
   - `extinction`: the arc population becomes 0.
-- **Natural hazards** are bounded by Snyder-Beattie (below about 1/14,000 per
-  year), as a cap and never as a rate.
-- **Leaving perils.** `perils` becomes `exited` when the lineage has ≥ 3
-  self-sustaining arcs on different bodies, or reaches Organisation 5
-  [scenario].
+- **Natural extinction** is bounded by Snyder-Beattie (below about 1/14,000
+  per year), as a cap on the rate of natural *extinction* outcomes and never as
+  a rate. It does not cap the frequency of survivable catastrophes.
+- **Leaving perils** is decided by D, not by an arc, because an arc may not
+  read other arcs (Astra must-fix 8). After each tick barrier D evaluates a
+  self-sufficiency predicate for each lineage: ≥ 3 self-sustaining arcs on
+  different bodies, or any arc at Organisation 5 [scenario]. On a change D
+  sends a dated `PERILS_EXIT` message to every arc of the lineage; when the
+  predicate fails again (colonies lost) it sends `PERILS_REENTER`. P changes
+  `perils` only when the message is delivered (phase 0). The state is
+  therefore reversible.
 - **Shared risk.** A perils event can be lineage-wide only through a declared
   scenario parameter `sharedRiskPpm`. One draw by the owner decides it. If it
   is shared, D delivers the consequence to every arc of the lineage as one
@@ -680,9 +802,26 @@ EXTINCT_SELF, EXTINCT_NATURAL, EXTINCT_STELLAR or NO_LINEAGE.
     stub graph; the Atlas catalogue graph comes later (D4).
 - **Launch** (P-owned emigration) creates a voyage. The voyage keeps its own
   record, and it **survives the destruction of its source** (D3, D4).
-- **Arrival** (D, scheduled):
+- **Physical arrival versus causal delivery** (Astra must-fix 7). The
+  physical arrival year is `arrivalYear = launchYear + travelYears`. D only
+  learns of a launch after the source's tick is committed, so the voyage is
+  **delivered** at
+  `deliveryTick = max(floorDiv(arrivalYear, 10), floorDiv(launchYear, 10) + 1)`,
+  at that tick's start boundary. Until delivery the passengers stay in the
+  `transit:<voyageId>` account, which VOYAGE_LOST hazards continue to act on.
+  The arrival event records both years.
+- **No partial ticks.** A colony arc founded by a delivery starts at the
+  delivery tick's start boundary. Its first pre-state is frozen after the
+  phase-0 delivery, so it cannot grow or suffer hazards before it exists.
+- **Delivery** (D, scheduled):
   - if the destination has no arc, COLONY_FOUNDED creates one;
-  - otherwise the arrivals are delivered as an inbound `transfer`;
+  - if it has an arc of the **same** lineage, the passengers are delivered as
+    an inbound `transfer`;
+  - if it has a live arc of **another** lineage, the voyage is turned away and
+    its passengers are recorded as lost, with reason
+    `occupied-by-other-lineage`. Mixed-lineage bodies are **prohibited in v1**
+    (Astra must-fix 11). Shared bodies would need a body solver owning several
+    lineage cohorts and shared capacity, which is deferred;
   - if the destination cannot host them, they are recorded as lost.
 - **Landis disposition** (research T4.3). Each colony arc draws once whether
   it is a coloniser (`colonizerPpm`, from the prior). This gives clusters and
@@ -705,7 +844,12 @@ EXTINCT_SELF, EXTINCT_NATURAL, EXTINCT_STELLAR or NO_LINEAGE.
      consequences and schedules them for `t + 1` or later.
 - **Contact horizon** (D2's best idea, as a *property*). An arc's history
   before its first inbound message is byte-identical to the same arc computed
-  in isolation. M2 tests this property.
+  in isolation. M2 tests this property **under one immutable manifest**: the
+  isolated run suppresses the execution of the other lineages with a test-only
+  execution flag and does not edit the manifest or input bundle, because that
+  would change `manifestDigest` in every RNG key. The comparison uses a
+  **prefix digest** over all complete ticks before the first delivery, not
+  chapter digests, since contact can fall mid-chapter (Astra should-fix 3).
 - Using it as a laziness shortcut, together with the conservative lower bound
   on the earliest inbound date, is deferred (section 12). D2 notes that its
   Chandy-Misra-Bryant attribution is from memory, unverified.
@@ -741,17 +885,31 @@ A parent tick ledger defines, for each child unit:
 - The rule is applied to the *after* and *before* totals of each ledger phase:
   `deltaLeaf = split(after) − split(before)`. A global decrease therefore never
   produces a spurious local increase.
+- **Zero weights** (Astra must-fix 13): if `WL + WR = 0` for a node, every
+  leaf below it is given weight 1 for that split. Weights must be nonnegative
+  integers.
+- **Canonical boundary allocation** (Astra must-fix 14). Each tick boundary
+  year `Y` has exactly one cell allocation, computed with the weights of the
+  environment epoch that **contains `Y`**. The tick ending at `Y` and the tick
+  starting at `Y` both use it. When an epoch changes the weights, the
+  redistribution shows up inside the last tick of the old epoch, and the
+  phase-0 CLIMATE_SHIFT of the new epoch is its anchor.
 - Randomness is used only for **placement**: settlement sites, the anchor cell
   of each P event, and the dates of C-only events. These draws are keyed on
   `(eventId, "anchor")` or on `(regionId, tick, "ref.cell.site", ordinal)`.
 
 ### 9.4 Annual path inside a tick (D3)
 
-- `P(y) = P_start + floorDiv((y − tickStart) * naturalDelta, 10)`, plus each
-  event's effect applied at its `dateYear`. At year 10 the path equals the
-  ledger's `endState` exactly.
-- Tiers, ownership and stage are a staircase that changes at event dates.
-- This is a declared approximation, not a hidden annual simulation.
+- For `j = 0..9`, `P(tickStart + j) = P_start + floorDiv(j * naturalDelta, 10)`.
+  At the end boundary (`j = 10`) the natural delta and every event's resolved
+  integer effect are applied, so the path equals the ledger's `endState`
+  exactly (section 3.4). Every in-tick value lies between `P_start` and
+  `P_start + naturalDelta`, both nonnegative, so the path is never negative.
+- Cells use the same bridge between their two canonical boundary allocations.
+- Tiers, ownership and stage are a staircase that changes at the end boundary.
+  Events keep their `dateYear` as labels on the timeline.
+- This is a declared approximation, not a hidden annual simulation. The
+  chronological yearly flow ledger is the deferred upgrade (section 12).
 
 ### 9.5 Tolerances
 
@@ -764,10 +922,10 @@ A parent tick ledger defines, for each child unit:
 | Every P event touching a region has exactly one C anchor at the same `dateYear` | EXACT | 0 |
 | Polity membership, tiers, era, outcome flags | EXACT | 0 |
 | Century summary `min`/`max` vs a fold over ticks | EXACT | 0 |
-| Annual population path vs the unrounded linear path, before event jumps | BOUNDED | < 1 person |
+| Annual population path vs the unrounded linear path inside a tick | BOUNDED | < 1 person |
+| Annual and cell populations | EXACT | ≥ 0 at every year (nonnegativity, not just endpoint equality) |
 | Displayed mean energy per person vs the exact rational mean | BOUNDED | < 1 kcal per day |
-| Net effect of C-only events on any P total | EXACT | 0 |
-| Magnitude of C-only events | BOUNDED | < 1% of the region's population at the tick start (salience cap; D1's closure rule) |
+| Stock effect of C-only events on any cell or P total | EXACT | 0 (v1 C-only events are annotations) |
 | Settlement-size distribution, names, minor-cause shares | DISTRIBUTIONAL | checked across seeds, never per seed |
 
 If a refinement violates the contract, the result is a deterministic
@@ -800,6 +958,12 @@ If a refinement violates the contract, the result is a deterministic
      record** of what was realised is kept apart and never hashed into the
      result.
   3. `narrativeDigest`: N output only.
+- **Merkle construction** (Astra should-fix 2), pinned with test vectors:
+  `leaf = SHA256(0x00 || canonicalBytes)`,
+  `node = SHA256(0x01 || left || right)`. An odd node at the end of a level is
+  promoted unchanged to the next level. The empty tree is
+  `SHA256(0x02 || "civ-empty")`. Leaves are ordered by their sorted key
+  (arc ID, then chapter index).
 - **Manifest** `civ-manifest-1` has these fields:
   - `modelVersion`, `rngVersion: "civ-rng-1"`, `samplerVersion`,
     `arithmeticVersion`, `catalogueVersion`, `partitionVersion`;
@@ -874,11 +1038,16 @@ D4 inspected Atlas HEAD `d4032798`.
 ### 11.3 Version enforcement
 
 - The adapter **compares** the pinned Atlas versions and refuses a mismatch.
-  Atlas writes most `WorldVersions` keys without reading them, and
-  `biosphereStateAt` discards the versions passed to it (D2, D4).
+  Atlas writes most `WorldVersions` keys without reading them (D2, from the
+  Atlas contract doc), and `biosphereStateAt` discards the versions passed to
+  it (verified by Opus: `world-surface.ts` line 324, `void versions;`).
 - Known discrepancies are recorded, not silently reconciled. One example:
-  `surface-climate` derives gravity from mass and radius, while `placeAt` uses
-  `planetGeophysics`.
+  `surface-climate.ts` derives gravity as `G*massKg/radiusM^2` from the
+  catalogue body (verified by Opus, line 121–123), while `placeAt` reads a
+  `geo` record from the dated geophysics path (D4's report; Opus saw `dated.geo`
+  in `place-query.ts` but did not trace which gravity it uses).
+- `placeAt(ctx, direction, level = 'S4', options)` exists in
+  `place-query.ts` with that signature (verified by Opus, line 197).
 
 ### 11.4 Outputs to Atlas (later)
 
@@ -926,6 +1095,13 @@ only `baseline` today, so branches wait for Atlas branch support.
   Only add them with a test proving identical events to stepping.
 - Contact-horizon *laziness* (computing an arc alone up to a proven lower
   bound). v1 tests only the property.
+- A chronological yearly flow ledger inside P, so stock effects land at
+  their `dateYear` (Astra's preferred fix for must-fix 1). v1 commits stock
+  effects at the tick end.
+- Mixed-lineage bodies (several lineages sharing one body's capacity and
+  territory). v1 turns such voyages away.
+- Persistent local (C-level) dynamics with their own contract; v1's C is an
+  allocation view.
 - Late-time analytic regimes and renewal blocks beyond the horizon (D1, D4).
 - Interstellar war, trade economy, faster-than-light travel, intergalactic
   expansion.
@@ -946,7 +1122,7 @@ only `baseline` today, so branches wait for Atlas branch support.
 | D2: a 65,536-entry integer ln table | A ported `logPos` (exact IEEE `+ - * /`) is smaller and already used in Atlas. | Quantise to fixed point at once; banned transcendentals. |
 | D3: fresh per-decade Bernoulli opportunities | The result depends on the step size, and it costs a draw per decade per opportunity. | The fixed-clock argument; forced fixtures that make every event type reachable. |
 | D3: SHA-256 for every draw | Slow, and not available synchronously in browsers. | SHA-256 kept for digests. |
-| D3: two planets, 20,000 years, one fixed route | Cannot show stone age to space age. | One causal solver; the tick ledger as the refinement spec; the monotone binary split; min and max in summaries; `outside-model-range`; the Beverton–Holt formula; recovery thresholds; voyages that survive source collapse; plausibility bands framed as scenario variety, not truth. |
+| D3: two planets, 20,000 years, one fixed route | Too narrow for the owner's goal (many planets, spreading, stone age onward). Astra disputes that it could not *demonstrate the mechanism* under authored rates; see `spec-critique.md`. | One causal solver; the tick ledger as the refinement spec; the monotone binary split; min and max in summaries; `outside-model-range`; the Beverton–Holt formula; recovery thresholds; voyages that survive source collapse; plausibility bands framed as scenario variety, not truth. |
 | D4: seven spatial levels down to streets, and one-year causal coupling | Too large for a lab; streets need Atlas integration. | Refinement contracts; the Availability tri-state; fixture/live adapter parity; overlay write-back with acyclic feedback; the layer-off rule; bounded domains with `partial-galaxy` labels; three digests; version enforcement; the "do not infer X from Y" list; the game-facing API shape. |
 | D4: reusing Atlas FNV/PCG streams | Couples civilisation history to Atlas RNG refactors. | FNV-1a constants reused only to hash civ's own encoded keys. |
 
@@ -985,12 +1161,12 @@ General rules:
 
 | Test file | Acceptance |
 |---|---|
-| `rng.test.mjs` | `mix64` and counter vectors match the committed, independently generated vectors; `("a","bc") != ("ab","c")`; `draw(k, 1000)` computed directly equals the value after computing draws 0–999 first; `below(1)` and `below(2^32)` behave correctly; a forced-rejection fixture accepts on attempt 1; 128 rejections throw `RNG_EXHAUSTED`; an unregistered purpose throws. |
+| `rng.test.mjs` | `mix64` and counter vectors match the committed, independently generated vectors; `("a","bc") != ("ab","c")`; a lone-surrogate string is rejected; `draw(k, 1000)` computed directly equals the value after computing draws 0–999 first; `below(1)` and `below(2^32)` behave correctly, and `below(0)` and `below(2^64 + 1)` throw; a forced-rejection fixture accepts on attempt 1; 128 rejections throw `RNG_EXHAUSTED`; an unregistered purpose throws; `expQ32` at `u52 = 0` and `u52 = 2^52 − 1` matches pinned vectors and is ≥ 1. |
 | `fixed.test.mjs` | `logPos` matches `Math.log` within 1 Q32 ulp over a fixed grid (Math.log only in the test); `floorDiv(-1, 10) = -1` for BigInt and Number; `mulDiv` rounding directions. |
-| `time.test.mjs` | Negative offsets; nesting `b(k+1) = floorDiv(b(k), w)` near 2^53; half-open membership; `YEAR_NS` equals Atlas's value (constant copied, not imported); beyond `CIV_MAX_YEAR` gives `outside-model-range`. |
-| `hazard.test.mjs` | For a constant hazard (h a multiple of 10 in Q32), the closed-form crossing year equals a 1-year-step reference; `yearOffset` is in [0, 9]; overshoot carries over; the 4-firing cap sets `saturated`; two causes give an order-key tie-break. |
-| `events.test.mjs` | Shuffled insertion sorts identically; ordinals are dense per (owner, kind, tick); invalid records are rejected. |
-| `digest.test.mjs` | Reordered object keys give the same digest; changed effects change it; the materialisation record does not change the result digest; BigInt and decimal canonical form. |
+| `time.test.mjs` | Negative offsets; nesting on the divisibility-valid edges only (year→decade→century→chapter, decade→millennium) near 2^53; millennium/chapter intersections; half-open membership; `YEAR_NS` equals Atlas's value (constant copied, not imported); beyond `CIV_MAX_YEAR` gives `outside-model-range`. |
+| `hazard.test.mjs` | For a constant hazard (h a multiple of 10 in Q32), the closed-form crossing years, including second and third firings in one tick, equal a 1-year-step reference with the same per-decade cap; `yearOffset` is in [0, 9]; every emitted event has `0 < distance <= h`; `H_end` is in `[0, E_cur)`; `h = 0` never fires; the 4-firing cap sets `saturated` and zeroes `H_end`; ineligibility pauses without losing `H`; distinct `hazardId`s (same owner and kind, different domain) get distinct thresholds; two causes give an order-key tie-break. |
+| `events.test.mjs` | Shuffled insertion sorts identically and yields identical IDs and ordinals; two same-year firings with the same owner and kind are ordered by `intentKey`; ordinals are dense per (owner, kind, tick); invalid records are rejected. |
+| `digest.test.mjs` | Reordered object keys give the same digest; changed effects change it; the materialisation record does not change the result digest; BigInt and decimal canonical form; pinned Merkle vectors for 0, 1, 2 and 3 leaves (empty tree, odd-leaf promotion, domain separation). |
 | `determinism.test.mjs` | The toy solver gives the same digest twice and in a child process; different seeds differ; the toy golden root digest for seed `civ-toy-1` is pinned. |
 | `query-order.test.mjs` | Toy chapters realised forward, in reverse via checkpoints, shuffled, and with a cold cache all give identical roots. **Negative control:** a variant using one shared sequential stream fails. |
 | `projection-toy.test.mjs` | `aggregate(refine(ledger)) === ledger` for every tick of a 1,000-year toy run. **Negative control:** a refine that writes back fails. |
@@ -1000,6 +1176,17 @@ General rules:
 golden digest.
 
 ### M2: civilisation model
+
+**Order of work** (partly accepting Astra's objection that 31 kinds before
+stock chronology is the wrong dependency order):
+
+- **M2.0** `docs/transition-table-v1.md` committed and reviewed (section 6.3).
+- **M2a** a small complete model: the P solver with stock chronology, debit
+  resolution, transfers and checkpoints, and 15 kinds (SAPIENCE,
+  MIGRATION, AGRICULTURE, FAMINE, PLAGUE, DISCOVERY, DIFFUSION, TECH_LOSS,
+  ENERGY_TRANSITION, POLITY_FOUNDING, WAR, CONQUEST, COLLAPSE, RECOVERY,
+  EXTINCTION). All M2 tests that apply must pass on M2a first.
+- **M2b** the remaining kinds, the domain ledger and expansion, up to 31.
 
 **Modules:**
 
@@ -1017,16 +1204,16 @@ golden digest.
 
 | Test file | Acceptance |
 |---|---|
-| `catalogue.test.mjs` | ≥ 20 kinds (31 targeted); unique `kindRank`; every kind's effects only use declared fields. |
+| `catalogue.test.mjs` | ≥ 20 kinds (31 targeted); unique `kindRank`; every kind **reads and writes** only fields declared in the transition table. |
 | `fixtures-reach.test.mjs` | A **forced fixture** per kind (a stub plus a seed or parameter override) shows every M2 kind fires at least once, so rare branches are not left to ensemble chance (D3). |
-| `dynamics.test.mjs` | Beverton–Holt stays between P and K; no stock is ever negative; losses are proportional; infrastructure decays; tiers stay inside the era bands; a missing resource gives a recorded ceiling. |
-| `conservation.test.mjs` | Every tick: Σ transfers balance; arc + transit totals are conserved across launch and arrival; a voyage arrives after its source goes extinct. |
+| `dynamics.test.mjs` | Beverton–Holt stays between P and K; `P = 0` and `K = 0` cases follow section 6.2 without division by zero; no stock is ever negative; losses are proportional to the remaining stock; infrastructure decays; at most one tier gained per (region, domain, tick); ENERGY_TRANSITION fires exactly when the committed era differs from the pre-state era; a missing resource gives a recorded ceiling. |
+| `conservation.test.mjs` | Every tick: Σ transfers balance; two 80 % migrations from one region of 100 move 80 then 16 (no overdraw); arc + transit totals are conserved across launch and delivery; a voyage is delivered after its source goes extinct. |
 | `polities.test.mjs` | Every region has at most one owner; merges and splits conserve regions; retired polity IDs never come back. |
-| `causal-dag.test.mjs` | The graph is acyclic; every cause has an earlier order key; hazard events satisfy `Hbefore < E <= Hbefore + h`. |
+| `causal-dag.test.mjs` | The graph is acyclic; every cause has an earlier order key; every hazard event's evidence satisfies `0 < distance <= h`; provenance ties break by event ID. |
 | `domain-order.test.mjs` | Permuting the arc step order in a tick gives an identical domain root. Querying the colony first, the homeworld first, or a cold cache gives identical roots. |
-| `contact-horizon.test.mjs` | An arc's chapter digests before its first inbound message are identical with and without the other lineages present. |
-| `expansion.test.mjs` | Known arrival chain on a 5-node graph; a disconnected node is never reached; equal-time arrivals are resolved by ID; a lost voyage records deaths; a colony inherits a capped tech level. |
-| `outcomes.test.mjs` | Collapse is not extinction; an existential cap blocks the given domains; LINEAGE_EXTINCTION fires only when no arc and no voyage remains. |
+| `contact-horizon.test.mjs` | Under one immutable manifest, an arc's prefix digest over all complete ticks before its first delivery is identical with the other lineages executing and with them suppressed by the test-only flag. |
+| `expansion.test.mjs` | Known arrival chain on a 5-node graph; a disconnected node is never reached; equal-time arrivals are resolved by ID; a launch in year 2 with 1-year travel is delivered at the next tick boundary, not year 3; a lost voyage records deaths; a voyage to a body held by another lineage is turned away; a colony starts with inherited tiers and can innovate past them. |
+| `outcomes.test.mjs` | Collapse is not extinction; recovery after regression is reachable; an existential cap blocks the given domains; a `nonviable` colony keeps its living people until recovery or extinction; PERILS_EXIT is delivered by message and PERILS_REENTER follows the loss of colonies; LINEAGE_EXTINCTION fires only when no arc and no voyage remains. |
 | `perf-budget.test.mjs` | One seed for 20,000 years on the temperate stub finishes within the file's 2 s cap. The CLI separately reports the measured time for 400 kyr, against a 10 s target. |
 
 **M2 done when** all pass, and the CLI runs one seed from SAPIENCE to a
@@ -1067,12 +1254,15 @@ terminal state or the horizon, printing:
 
 | Test file | Acceptance |
 |---|---|
-| `projection-cell.test.mjs` | Every §9.5 EXACT row holds for every tick of 4 scenarios × 1,000 years; C-only events have zero net effect and stay below the 1% cap. **Negative control:** a refine with an independent per-cell growth roll fails. |
-| `projection-year.test.mjs` | Annual paths reproduce every ledger boundary; the BOUNDED tolerance is < 1 person. |
+| `projection-cell.test.mjs` | Every §9.5 EXACT row holds for every tick of 4 scenarios × 1,000 years, starting from fixtures already in an active regime; C-only events have no stock effect; a zero-weight subtree and an epoch-boundary reweighting are covered. **Negative control:** a refine with an independent per-cell growth roll fails. |
+| `projection-year.test.mjs` | Annual paths reproduce every ledger boundary; every annual and cell value is ≥ 0; the BOUNDED tolerance is < 1 person. |
 | `level-independence.test.mjs` | The P and D digests are unchanged after realising no cells, some cells or all cells, and after running narrative and views, in any order. |
 | `views.test.mjs` | Century `min`/`max` equal a fold over ticks; a forced collapse-and-recovery inside one century is visible in `min`. |
 | `narrative-isolation.test.mjs` | No import path from `narrative.mjs` into the solver modules; the narrative digest changes when a name grammar changes, while the result digest does not. |
-| `plausibility-0N.test.mjs` | Shards of 16 seeds each, N = 64 seeds over all scenarios, each shard < 2 s with short horizons. Invariants on every seed: populations ≥ 0; energy and tiers in range; extinction is absorbing; transit accounting balances. |
+| `plausibility-0N.test.mjs` | Shards of 16 seeds each, N = 64 seeds over all scenarios, each shard < 2 s. Seeds start from bounded fixtures already in known regimes (post-sapience, agrarian, industrial), so short horizons cannot pass vacuously on pre-sapience states. Each shard **asserts nonzero exposure** to the mechanisms it checks (at least one hazard firing, one transfer, one polity change). Invariants on every seed: populations ≥ 0; energy and tiers in range; extinction absorbing per arc; transit accounting balances. |
+| `front-speed.test.mjs` | Controlled oracle fixture, separate from the heterogeneous 12-system stub: a uniform line or lattice of systems with equal spacing `d`, ship speed `v_p` and launch period `T_p`, colonies that always launch, and no losses. Travel time `ceil(d / v_p)` and
+`T_p` are multiples of the 10-year tick, so delivery at tick boundaries
+(section 8.4) introduces no extra lag. The measured front speed equals `d / (ceil(d / v_p) + T_p)` in integer years exactly, which is the integer-year form of `v_f = d / (d/v_p + T_p)` (research T4.1). |
 | `signatures.test.mjs` | Statistical signatures, not truth: the cold-archipelago regions lag the temperate stub in median time to E2 (Kremer signature); a forced population cut causes TECH_LOSS (Henrich signature). |
 | `report.test.mjs` | The report and SVG are byte-identical across two runs; the SVG is well-formed XML with no `NaN`; all events in the SVG exist in the log. |
 
