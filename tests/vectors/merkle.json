@@ -1,0 +1,42 @@
+{
+  "generatedBy": "tools/vectors/gen-vectors.py (runner, hashlib)",
+  "leafInputsUtf8": [],
+  "cases": [
+    {
+      "leavesUtf8": [],
+      "root": "84e4d3b5c66a4bde29fc14e9bdeee3ccc6207149b6ddafb079152dc03bcb179a"
+    },
+    {
+      "leavesUtf8": [
+        "a"
+      ],
+      "root": "022a6979e6dab7aa5ae4c3e5e45f7e977112a7e63593820dbec1ec738a24f93c"
+    },
+    {
+      "leavesUtf8": [
+        "a",
+        "b"
+      ],
+      "root": "b137985ff484fb600db93107c77b0365c80d78f5b429ded0fd97361d077999eb"
+    },
+    {
+      "leavesUtf8": [
+        "a",
+        "b",
+        "c"
+      ],
+      "root": "36642e73c2540ab121e3a6bf9545b0a24982cd830eb13d3cd19de3ce6c021ec1"
+    },
+    {
+      "leavesUtf8": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "root": "fe14a5426fbd70c0fa73f52342afed0da0bd23c4838662ccf6b88a3070ead97b"
+    }
+  ],
+  "leafHashA": "022a6979e6dab7aa5ae4c3e5e45f7e977112a7e63593820dbec1ec738a24f93c"
+}
