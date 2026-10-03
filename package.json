@@ -1,0 +1,16 @@
+{
+  "name": "civilization-lab",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Theoretical lab for deterministic, multi-level civilisation histories (stone age to interplanetary futures or extinction), destined for Universe Atlas.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.mjs\"",
+    "scenario": "node src/cli.mjs",
+    "digest": "node src/cli.mjs --digest"
+  }
+}

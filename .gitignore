@@ -1,0 +1,8 @@
+node_modules/
+out/
+tmp/
+*.log
+.DS_Store
+Thumbs.db
+# disposable agent prompt/answer scratch
+.agent-scratch/
