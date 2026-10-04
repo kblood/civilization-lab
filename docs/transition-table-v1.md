@@ -975,7 +975,7 @@ only to the owner region. Its pre-state multi-region polity may split once,
 using the existing territory locks and flat IDs. Other regions retain their
 stocks and tiers even if their political owner splits. Params splitCount
 records accepted splits. One accepted COLLAPSE per region per tick; subsequent
-firings are pre-empted target-conflict. No repeat exposure while recovery remains active or region.recoveries>=4 (M4a).
+firings are pre-empted target-conflict. No repeat exposure while recovery remains active (M4c: learning reduces but never closes exposure).
 RECOVERY still restores demographic/infrastructure viability, not lost tiers;
 rediscovery and diffusion restore knowledge. Losses never impose a permanent cap.
 
@@ -2808,7 +2808,7 @@ each outgoing route. Optional route.lightYears is an integer; the default is
 ceil(distanceMicroLy/1000000), including zero in-system. The existing ceil-based
 delivery rule applies, never earlier than the next tick. A signal payload is
 {source,lineageId,body,tiers,strength,physical,arrivalYear}; ordinary payloads carry signal=null.
-Signals addressed to the same lineage are ignored. Receivers retain signals sorted by source; the inbox snapshot omits arrivalYear. Duplicate sources do not duplicate
+Signals addressed to the same lineage are ignored. Receivers retain signals sorted by source; the inbox snapshot retains arrivalYear (M4c). Duplicate sources do not duplicate
 edges. An occupied-body voyage rejection also supplies a physical-meeting signal.
 No extinct source is needed to deliver an already emitted signal.
 
@@ -2924,6 +2924,34 @@ explicit-fixture exception. Witness encoding and dynamics are unchanged.
 P/D stability goldens change because both bundle and contract namespaces
 change; full old/new receipts are in the M4b annex after the witness annex
 (outside the hashed contract, avoiding self-reference). M1 is unchanged.
+
+## Revision log (M4c, 2026-10-04)
+
+Supersedes the corresponding M4a rules. All choices below are authored
+**[scenario]**, not research calibration. No new RNG purpose.
+
+* Generic COLLAPSE remains eligible after four recoveries. Divide each stress
+  and overhead Q32 term by (1+min(4,region.recoveries)), flooring each term.
+  Positive overhead at eligible complexity keeps hazard nonzero. Cache inputs
+  and hazard provenance include recoveries. RECOVERY still saturates at 4.
+* Launch targeting ignores same-lineage occupancy, allowing reinforcement,
+  but retains failure cooldowns. Foreign delivered observations block only
+  while year < arrivalYear+2000. Expired occupancy is UNKNOWN, never empty.
+  SIGNAL receipts retain arrivalYear and replace the same source's prior
+  observation, allowing refresh. No live foreign state is queried; existing
+  one-shot broadcasts remain one-shot.
+* Colony maintenance retains the full-credit 1000-year cliff. Diagnostics
+  report age at EXTINCTION, p10/p50/p90 and deaths in inclusive age interval
+  [1000,1200]; surviving colony arcs are right censored.
+* Reporting only: absent lineages with pending delivery at/after the horizon
+  are PENDING_ORIGIN (right-censored); exhausted/preempted origins are
+  NO_LINEAGE. Both stay in N. Duration accounting separates pendingOrigin
+  from noLineage; neither is an observed attainment.
+* doomed-star uses versioned m4c-doomed-star domain/system, doom year 25000.
+  M4b crowded industrial E3->E5 observed p10/p50/p90=4290/13120/22240 years
+  (18/30 attained). 25000 allows roughly p90 plus margin within the existing
+  30000-year horizon; T7 evacuation is not guaranteed. Old m3b 3000-year
+  system/domain remains an unregistered early control. No hazard is tuned.
 
 ## Machine-readable table
 
@@ -6054,7 +6082,46 @@ Atomic records do not grant permission to create undeclared record members.
         "INIT"
       ]
     }
-  ]
+  ],
+  "m4c": {
+    "classification": "scenario",
+    "collapse": {
+      "recoveriesSaturate": 4,
+      "termDivisor": "1+min(4,region.recoveries)",
+      "rounding": "floor each Q32 term",
+      "cacheInputs": [
+        "region.id",
+        "stress",
+        "complexity",
+        "region.recoveries"
+      ],
+      "closesExposure": false
+    },
+    "targeting": {
+      "ownOccupancyBlocks": false,
+      "foreignObservationYears": 2000,
+      "expiryFrom": "signal.arrivalYear",
+      "expiredState": "UNKNOWN",
+      "refresh": "replace same-source delivered signal retaining arrivalYear",
+      "targetFailureCooldown": "unchanged"
+    },
+    "colonyReserve": {
+      "fullCreditYears": 1000,
+      "taperYears": 0,
+      "deathDiagnosticWindowAfterEndYears": 200
+    },
+    "reporting": {
+      "pendingLabel": "PENDING_ORIGIN",
+      "terminalAbsentLabel": "NO_LINEAGE",
+      "allRemainInN": true
+    },
+    "doomedStar": {
+      "domain": "fixtures/domains/m4c-doomed-star.json",
+      "stellarDoomYear": 25000,
+      "earlyControlDomain": "fixtures/domains/m3b-doomed-star.json",
+      "earlyControlRegistered": false
+    }
+  }
 }
 ```
 

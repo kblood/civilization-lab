@@ -9,3 +9,10 @@ test('from-scratch scenario begins at E0; lonely retains unforced hard-step orig
   assert.equal(lonely.def.forced.initial,null);assert.equal(lonely.def.planets[0].lifecycle.value.habitableUntilYear,2000000);
   assert.equal(loadScenario('lonely-earthlike').untilYear,320000);
 });
+
+test('M4c doom grants the declared industrial window and preserves early control',async()=>{
+  const {readFixture}=await import('../src/environment.mjs');
+  const {world}=createScenario('doomed-star','m4c-doom',{untilYear:10});
+  assert.equal(world.def.planets.find(p=>p.body==='stub:s00:b0').lifecycle.value.stellarDoomYear,25000);
+  assert.equal(readFixture('fixtures/planets/m3b-doomed-star-system.json').bodies[0].lifecycle.value.stellarDoomYear,3000);
+});

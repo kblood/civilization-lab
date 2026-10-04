@@ -8,21 +8,21 @@ const root=resolve(arg('--root','.'));
 const load=name=>import(pathToFileURL(join(root,'src',name+'.mjs')));
 export const quantile=(xs,p)=>{const sorted=[...xs].sort((a,b)=>a-b);return sorted.length?sorted[Math.floor((sorted.length-1)*p/100)]:null;};
 const counts=xs=>Object.fromEntries([...new Set(xs)].sort().map(x=>[x,xs.filter(y=>y===x).length]));
-const spans=[[0,1],[1,3],[3,4],[4,5],[5,6],[6,7],[3,7]];
+const spans=[[0,1],[1,3],[3,4],[4,5],[5,6],[6,7],[3,5],[3,7]];
 function render(report){
   const lines=['M4 plausibility: seeded scenarios, model attribution, not predictions',
     'Quantiles: sorted[floor((n-1)*p/100)]; durations in years.',
-    'Left = start above source; right = inhabited but target not reached; no-lineage separately censored.',
+    'Left = start above source; right = inhabited but target not reached; pending origins and true no-lineage separately censored.',
     'Late events = accepted P events in last half of configured horizon with owning pre-state perils=exited.',
     'Counts retain all N; outcome classes may overlap in multi-lineage domains.'];
   for(const s of report.scenarios){
     lines.push('',`${s.scenario}: N=${s.N}; errors=${s.errors.length}`,
       `Outcomes ${JSON.stringify(s.outcomeClasses)}`,`Lineage outcomes ${JSON.stringify(s.lineageOutcomeClasses)}`,
-      `Reach ${JSON.stringify(s.reach)}`,'Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)');
-    for(const d of s.durations)lines.push(`E${d.from}->E${d.to} ${d.observed} ${d.p10}/${d.p50}/${d.p90} ${d.leftCensored}/${d.rightCensored}/${d.noLineage}/${d.errors} (${d.sourceNotReached})`);
+      `Reach ${JSON.stringify(s.reach)}`,'Era duration: from->to observed p10/p50/p90 left/right/no-lineage/pending/errors (source not reached)');
+    for(const d of s.durations)lines.push(`E${d.from}->E${d.to} ${d.observed} ${d.p10}/${d.p50}/${d.p90} ${d.leftCensored}/${d.rightCensored}/${d.noLineage}/${d.pendingOrigin??0}/${d.errors} (${d.sourceNotReached})`);
     lines.push(`Extinctions ${JSON.stringify(s.extinctionEvents)}`,`Colonisation ${JSON.stringify(s.colonisation)}`,
       `Collapse per seed ${JSON.stringify(s.collapsePerSeed)}; perils collapses ${JSON.stringify(s.perilsCollapsePerSeed)}`,
-      `Late post-exit ${JSON.stringify(s.latePostExit)}`);
+      `Colony death ages ${JSON.stringify(s.colonyDeaths)}`,`Late post-exit ${JSON.stringify(s.latePostExit)}`);
   }
   return lines.join('\n')+'\n';
 }
@@ -59,8 +59,15 @@ async function measure(scenario,seed){
     }
     for(const e of late){const arc=e.refs.find(r=>r.role==='arc')?.entityId;if(safe.has(e.tick+'|'+arc))lateKinds.push(e.kind);}
   }
+  const colonyBirths=new Map();
+  for(const e of events)if(e.kind==='COLONY_FOUNDED'&&e.data.stage==='FOUNDED'){
+    const id=e.data.target;
+    if(id)colonyBirths.set(id,e.dateYear);
+  }
+  const colonyDeathAges=events.filter(e=>e.kind==='EXTINCTION'&&arcs.get(e.ownerId)?.isColony)
+    .map(e=>{const birth=colonyBirths.get(e.ownerId);if(birth===undefined)throw new Error('Missing colony birth '+e.ownerId);return e.dateYear-birth;}).sort((a,b)=>a-b);
   return {_compileMs:compileMs,seed,horizon,outcome:run.outcome,classes:run.classes,lineageClasses:result.outcomes.map(l=>l.outcome),startedEra:run.startedEra,
-    firstEras:run.firstEras,multiBody:run.flags.interplanetary,resultDigest:result.resultDigest,
+    colonyDeathAges,colonyArcs:[...arcs.values()].filter(a=>a.isColony).length,firstEras:run.firstEras,multiBody:run.flags.interplanetary,resultDigest:result.resultDigest,
     extinctionEvents:counts(events.filter(e=>e.kind==='LINEAGE_EXTINCTION').map(e=>e.data.outcome)),
     colonisation:{LAUNCH:launches.length,COLONY_FOUNDED:arrivals.filter(e=>e.data.outcome!=='rejected').length,
       newColonies:arrivals.filter(e=>e.data.stage==='FOUNDED').length,reinforcements:arrivals.filter(e=>e.data.stage==='REINFORCEMENT').length,
@@ -76,11 +83,12 @@ export function aggregate(scenario,runs){
     const left=good.filter(r=>r.startedEra!==null&&r.startedEra>from),cohort=good.filter(r=>r.startedEra!==null&&r.startedEra<=from);
     const reached=cohort.filter(r=>r.firstEras[from]!==null&&r.firstEras[to]!==null),values=reached.map(r=>r.firstEras[to]-r.firstEras[from]);
     return {from,to,observed:values.length,p10:quantile(values,10),p50:quantile(values,50),p90:quantile(values,90),
-      leftCensored:left.length,rightCensored:cohort.length-reached.length,noLineage:good.filter(r=>r.startedEra===null).length,
+      leftCensored:left.length,rightCensored:cohort.length-reached.length,noLineage:good.filter(r=>r.startedEra===null&&!r.classes.includes('PENDING_ORIGIN')).length,pendingOrigin:good.filter(r=>r.classes.includes('PENDING_ORIGIN')).length,
       sourceNotReached:cohort.filter(r=>r.firstEras[from]===null).length,errors:n-good.length};
   });
   const merge=fn=>{const keys=[...new Set(good.flatMap(r=>Object.keys(fn(r))))].sort();return Object.fromEntries(keys.map(k=>[k,sum(r=>fn(r)[k]??0)]));};
-  return {scenario,N:n,errors:runs.filter(r=>r.error),outcomeClasses:counts(good.flatMap(r=>r.classes)),lineageOutcomeClasses:counts(good.flatMap(r=>r.lineageClasses)),
+  const ages=good.flatMap(r=>r.colonyDeathAges??[]);
+  return {scenario,N:n,colonyDeaths:{count:ages.length,p10:quantile(ages,10),p50:quantile(ages,50),p90:quantile(ages,90),within200YearsAfterReserve:ages.filter(a=>a>=1000&&a<=1200).length,rightCensored:sum(r=>r.colonyArcs??0)-ages.length},errors:runs.filter(r=>r.error),outcomeClasses:counts(good.flatMap(r=>r.classes)),lineageOutcomeClasses:counts(good.flatMap(r=>r.lineageClasses)),
     reach:{E3:share(r=>r.firstEras[3]!==null),E4:share(r=>r.firstEras[4]!==null),E5plus:share(r=>r.firstEras[5]!==null),multiBody:share(r=>r.multiBody)},durations,
     extinctionEvents:merge(r=>r.extinctionEvents),colonisation:{...Object.fromEntries(['LAUNCH','COLONY_FOUNDED','newColonies','reinforcements','COLONY_LOST','VOYAGE_LOST','repeatLaunchesToFailedTarget'].map(k=>[k,sum(r=>r.colonisation[k])])),rejected:merge(r=>r.colonisation.rejected)},
     collapsePerSeed:{median:quantile(good.map(r=>r.collapses),50),max:good.length?Math.max(...good.map(r=>r.collapses)):null},
@@ -111,7 +119,7 @@ if(args.includes('--worker')){
     });rows.push({scenario:task.scenario,...answer.result});overBudget ||= answer.overBudget;
   }}));
   const report={version:'m4-plausibility-1',method:{seedPattern:'scenario-i, i=0..N-1',quantile:'sorted[floor((n-1)*p/100)]',
-    durations:'Exclude starts above source; separate no-lineage, errors, and right censoring including source not reached. No-lineage is also unobserved advancement, never an observed duration.',
+    durations:'Exclude starts above source; separate pending origins, true no-lineage, errors, and right censoring including source not reached. No-lineage is also unobserved advancement, never an observed duration.',
     latePostExit:'Accepted P events dated in last half of configured horizon whose owning arc pre-state has perils=exited; exact event-tick inspection, including reentry. D events excluded because D has no perils state.',
     multiBody:'At least two bodies ever inhabited by one lineage, not necessarily simultaneous. Outcome class counts are per seed; lineage counts separate.',
     failures:'Repeat launch counts use actual earlier failures (omniscient measurement only), not the causal knowledge available to targeting.'},

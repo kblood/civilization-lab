@@ -18,11 +18,24 @@ test('streamed perils observations exactly match inspection and cannot mutate hi
 test('duration observations, both censors, no-lineage and errors exhaust N',()=>{
   const row=(startedEra,firstEras)=>({seed:String(startedEra),classes:[],lineageClasses:[],startedEra,firstEras,multiBody:false,
     extinctionEvents:{},colonisation:{LAUNCH:0,COLONY_FOUNDED:0,newColonies:0,reinforcements:0,COLONY_LOST:0,VOYAGE_LOST:0,repeatLaunchesToFailedTarget:0,rejected:{}},
-    collapses:0,perilsCollapses:0,latePostExitEvents:0,latePostExitKinds:{}});
+    colonyArcs:3,colonyDeathAges:[1040,1300],collapses:0,perilsCollapses:0,latePostExitEvents:0,latePostExitKinds:{}});
   const s=aggregate('fixture',[row(3,[0,0,0,0,100,null,null,null]),row(4,[0,0,0,0,0,null,null,null]),
-    row(0,[0,null,null,null,null,null,null,null]),row(null,Array(8).fill(null)),{seed:'error',error:'fixture'}]);
+    row(0,[0,null,null,null,null,null,null,null]),row(null,Array(8).fill(null)),{...row(null,Array(8).fill(null)),classes:['PENDING_ORIGIN']},{seed:'error',error:'fixture'}]);
   const d=s.durations.find(d=>d.from===3&&d.to===4);
   assert.deepEqual([d.observed,d.p50,d.leftCensored,d.rightCensored,d.noLineage,d.errors,d.sourceNotReached],[1,100,1,1,1,1,1]);
-  assert.equal(d.observed+d.leftCensored+d.rightCensored+d.noLineage+d.errors,s.N);
-  assert.deepEqual(s.reach.E4,{count:2,N:5,permille:400});
+  assert.equal(d.observed+d.leftCensored+d.rightCensored+d.noLineage+d.pendingOrigin+d.errors,s.N);
+  assert.equal(d.pendingOrigin,1);
+  assert.deepEqual(s.colonyDeaths,{count:10,p10:1040,p50:1040,p90:1300,within200YearsAfterReserve:5,rightCensored:5});
+  assert.deepEqual(s.reach.E4,{count:2,N:6,permille:333});
+});
+
+test('pending origins are distinct from true no-lineage and stay in N',async()=>{
+  const {createScenario}=await import('../src/scenario.mjs');
+  const {summarizeRun,aggregate:ensembleAggregate}=await import('../src/ensemble.mjs');
+  const {world}=createScenario('lonely-earthlike','pending-label',{untilYear:10});
+  const result=world.compileSummary(),task={scenario:'lonely-earthlike',seed:'pending-label'};
+  const pending=summarizeRun(task,world,{...result,outcomes:[],state:{...result.state,lineages:[],origins:[{status:'pending',deliveryTick:100n}]}});
+  assert.equal(pending.outcome,'PENDING_ORIGIN');assert.equal(pending.flags.noLineage,false);
+  const absent=summarizeRun(task,world,{...result,outcomes:[],state:{...result.state,lineages:[],origins:[{status:'no-lineage',deliveryTick:null}]}});
+  assert.equal(absent.outcome,'NO_LINEAGE');assert.equal(ensembleAggregate([pending,absent]).n,2);
 });

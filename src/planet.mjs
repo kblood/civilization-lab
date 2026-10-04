@@ -235,12 +235,12 @@ function opportunities(def,pre) {
       term('culture',F(2147483n*BigInt(dist),1000n))],{attacker:attacker.id,defender:defender.id,to:target.id});
   }
   let collapseCache=collapseOpportunities.get(def);if(!collapseCache){collapseCache=new Map();collapseOpportunities.set(def,collapseCache);}
-  for(const r of pre.regions.filter(r=>r.pop>0n&&r.era>=1&&!r.collapse?.active&&r.recoveries<MAX_RECOVERIES)) {
+  for(const r of pre.regions.filter(r=>r.pop>0n&&r.era>=1&&!r.collapse?.active)) {
     const owner=polityById(pre,r.polityId),stress=owner?.stress??100,complexity=r.tiers.reduce((a,b)=>a+b,0);
     const old=collapseCache.get(r.id);
-    if(old&&old.stress===stress&&old.complexity===complexity){out.push(old.entry);continue;}
-    add('COLLAPSE',r.id,[term('stress',F(4294967n*BigInt(stress)*BigInt(stress),1000000n)),term('overhead',F(42949n*BigInt(complexity),7n))],{r:r.id});
-    collapseCache.set(r.id,{stress,complexity,entry:out.at(-1)});
+    if(old&&old.stress===stress&&old.complexity===complexity&&old.recoveries===r.recoveries){out.push(old.entry);continue;}
+    add('COLLAPSE',r.id,[term('stress',F(4294967n*BigInt(stress)*BigInt(stress),1000000n*BigInt(1+Math.min(MAX_RECOVERIES,r.recoveries)))),term('overhead',F(42949n*BigInt(complexity),7n*BigInt(1+Math.min(MAX_RECOVERIES,r.recoveries))))],{r:r.id});
+    collapseCache.set(r.id,{stress,complexity,recoveries:r.recoveries,entry:out.at(-1)});
   }
   extraOpportunities(def,pre,add);
   for(const edge of pre.diffusionEdges)for(const r of pre.regions.filter(r=>r.pop>0n))for(let d=0;d<7;d++)if(edge.tiers[d]>r.tiers[d]&&gate(r,d,def.planet.profile,polityById(pre,r.polityId)).eligible)
@@ -263,7 +263,7 @@ function opportunitySlots(def,pre,o,term) {
   if(o.kind==='POLITY_FOUNDING')return slots(r,'pop','K');
   if(o.kind==='COLLAPSE') {
     const owner=polityById(pre,r.polityId);
-    return term==='stress'?(owner?[[owner.id,'polity.stress']]:[]):slots(r,'tiers','pop');
+    return [...slots(r,'recoveries'),...(term==='stress'?(owner?[[owner.id,'polity.stress']]:[]):slots(r,'tiers','pop'))];
   }
   if(o.kind==='WAR') {
     const attacker=polityById(pre,o.attacker),defender=polityById(pre,o.defender);
@@ -569,7 +569,7 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
     if(m.type==='SHARED')catastrophe(boundary,pre,e,op,m.payload);
     if(m.type==='PERILS_EXIT')op.set(e,pre,'arc','perils','exited');
     if(m.type==='PERILS_REENTER')op.set(e,pre,'arc','perils',pre.outcome.industrialEra>=3||pre.perils!=='none'?'active':'none');
-    if(m.type==='SIGNAL'&&m.payload.signal&&!pre.signals.some(s=>s.source===m.payload.signal.source))op.set(e,pre,'arc','signals',[...pre.signals,m.payload.signal].sort((a,b)=>compare(a.source,b.source)));
+    if(m.type==='SIGNAL'&&m.payload.signal)op.set(e,pre,'arc','signals',[...pre.signals.filter(s=>s.source!==m.payload.signal.source),{...m.payload.signal,arrivalYear:m.payload.signal.arrivalYear??year}].sort((a,b)=>compare(a.source,b.source)));
     phase0Sequence=op.getSequence();
     inboxEffects.push({messageId:m.id,causeEventId:m.causeEventId,effects:e.effects,sets:e.data.sets.sort((a,b)=>compare(a.target,b.target)||compare(a.field,b.field))});
   }

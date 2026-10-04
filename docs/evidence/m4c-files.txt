@@ -1,0 +1,26 @@
+ M README.md
+ M docs/evidence/m4-plausibility-after.json
+ M docs/evidence/m4-plausibility-after.txt
+ M docs/m4-implementation.md
+ M docs/m4-plausibility.md
+ M docs/transition-table-v1.md
+ M fixtures/scenarios/doomed-star.json
+ M src/domain.mjs
+ M src/ensemble.mjs
+ M src/m2b.mjs
+ M src/planet.mjs
+ M src/report.mjs
+ M tests/civ-determinism.test.mjs
+ M tests/m4-collapse.test.mjs
+ M tests/m4-colony.test.mjs
+ M tests/m4-occupancy.test.mjs
+ M tests/m4-plausibility.test.mjs
+ M tests/m4-scenarios.test.mjs
+ M tests/perf-budget.test.mjs
+ M tests/refinement-order-child.mjs
+ M tests/report.test.mjs
+ M tools/m4-plausibility.mjs
+?? docs/evidence/m4b-plausibility-after.json
+?? docs/evidence/m4c-files.txt
+?? fixtures/domains/m4c-doomed-star.json
+?? fixtures/planets/m4c-doomed-star-system.json

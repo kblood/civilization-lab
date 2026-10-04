@@ -1,270 +1,177 @@
-# M4a/M4b plausibility audit — 2026-10-04
+# M4c plausibility audit — 2026-10-04
 
-These are authored scenarios and model attribution, not predictions. No new
-research claim supports the cost schedule, colony reserve, cooldowns, learning
-bound or political renewal rate. All are **[scenario]**. The existing Morris
-energy figures retain their attribution in the transition table.
+These are authored scenarios and model attribution, not predictions. All numerical choices are **[scenario]**. No new research claim or calibration is made. Local evidence has high confidence as a record of these runs, not as a forecast.
 
-## Method
+## Method and receipts
 
-`tools/m4-plausibility.mjs` uses the public `createScenario`,
-`compileSummary` and `summarizeRun` APIs. The same code reads the pre-M4 source
-root at `.agent-scratch/before` (3d3453a) and the current root. Each registered
-scenario gets seeds `<scenario>-0` through `<scenario>-29`. The bounded P-only
-`lonely-bounded` fixture is a refinement test helper, not a registered ensemble
-scenario. The new `forager-future` has no pre-M4 counterpart.
+`node tools/m4-plausibility.mjs --n 30 --jobs 4 --out docs/evidence/m4-plausibility-after.json` observes all six registered scenarios, seeds `<scenario>-0` through `-29`. All counts retain N=30, including errors and pending origins. Timings remain outside deterministic JSON/text. Observed exit **1**, zero simulation errors; eight compiles exceeded 30 seconds (maximum 78,634.87 ms). The exact performance receipt is in the [M4c handoff](m4-implementation.md#m4c--critique-fixes).
 
-Each JSON includes all seed result digests, outcome classes, first-era witnesses,
-counts, censoring, and per-seed collapses. The accompanying text is a compact
-rendering of those same statistics. No timings enter either artifact. Timings
-go to stderr; primary compilation and the additional diagnostic inspection are
-reported separately. Errors remain in N and have their own count.
+[Pre-M4 JSON](evidence/m4-plausibility-before.json) and [text](evidence/m4-plausibility-before.txt) remain untouched. [M4b JSON](evidence/m4b-plausibility-after.json) preserves the incoming comparison. [M4c JSON](evidence/m4-plausibility-after.json) and [text](evidence/m4-plausibility-after.txt) contain every digest and seed result. Tables below compare **M4b → M4c**, except the explicitly labelled pre-M4 collapse column.
 
-Reach includes advanced starts and means ever reached. Multi-body means one
-lineage ever inhabited two bodies; it does not require simultaneous survival.
-Crowded-domain has multiple lineages, so per-seed outcome-class counts can sum
-above N. Separate lineage-class counts and LINEAGE_EXTINCTION event counts are
-also retained. Domain era durations follow the domain frontier; in a crowded
-domain, different lineages may supply different first-era witnesses.
+The shared binding contract changes the manifest/RNG namespace, so equal seed names do not hold variates fixed. The doomed-star lifecycle also changes. These comparisons do not isolate a single mechanism’s causal effect.
 
-Duration percentiles use sorted[floor((n−1)×p/100)], with no interpolation.
-A duration is observed only if the run starts at/below its source era, reaches
-that source, and reaches the target. Starts above the source are left censored.
-Inhabited runs missing the source or target are right censored, with source-not-
-reached a separately identified subset. NO_LINEAGE is separately censored,
-never silently removed. Observed + left + right + no-lineage + errors = N for
-every duration row. Extinction before attainment is retained among unobserved
-durations; it is a competing terminal outcome, not evidence of eventual advance.
-The reported quantiles are conditional on observed attainment, not survival-
-analysis estimates of the whole population.
+Quantiles are sorted[floor((n−1)×p/100)], without interpolation. Era durations are conditional on observed attainment. Starts above the source are left censored; inhabited nonattainment is right censored (source-not-reached is retained separately in JSON). Pending origins and true NO_LINEAGE are separate censor categories. Observed + left + right + no-lineage + pending + errors = N. Extinction before attainment is a competing outcome, not evidence of eventual advancement.
 
-The late-history statistic counts accepted **P** events dated in the final
-50% of the configured horizon, whose owning arc's event-tick pre-state has
-perils=`exited`. A read-only per-tick callback streams those pre-state flags in M4. On older
-roots a second public inspection pass samples exactly those event ticks and
-checks the same result digest. The callback is checked against full inspection. This handles exits and reentries
-exactly; it does not extrapolate from sparse century plots. D has no perils
-state, so D events are excluded. This is an activity measure, not a measure of
-cultural novelty. A terminal run ending before the midpoint contributes zero.
+Reach includes advanced starts. Multi-body means a lineage ever inhabited at least two bodies, not simultaneous survival. Crowded outcome classes can overlap across lineages. Accepted founding includes reinforcement; rejected arrivals remain separate. Repeat-failure launch measurement is omniscient only in the diagnostic; targeting uses delivered messages. Late activity counts accepted P events in the final half of the configured horizon whose exact tick pre-state has perils=exited; it excludes D events.
 
-COLONY_FOUNDED accepted counts exclude scheduled arrival rejections, even
-though those dispositions are accepted ledger events. Rejection reasons remain
-separate. Repeated launches are measured against actual earlier failures at
-that lineage/target, including failures whose notices have not arrived. That
-omniscient measurement is confined to this tool; launch policy itself has only
-delivered knowledge. COLONY_LOST is the model's small-positive-population event;
-an abrupt habitat failure can pass directly to zero and EXTINCTION without it.
+## B1: origin censoring
 
-Changing the binding table changes the RNG manifest. Identical seed names
-therefore do not hold every random variate fixed across revisions. Further,
-lonely-earthlike changes from a 100 kyr habitability window / 120 kyr horizon
-to a 2 Myr window / 320 kyr horizon. Its before/after figures compare declared
-scenarios; they do not isolate any single mechanism's causal effect.
+The incoming M4b lonely audit’s 11 “NO_LINEAGE” runs were pending beyond 320 kyr (supplied independent critique: scheduled 325,131–1,340,714 years, within the 2 Myr window). Correct interpretation: **19/30 emerged by 320 kyr; 11/30 censored pending; 0 true no-lineage**. PENDING_ORIGIN is now an observation label; it does not change simulation state/results.
 
-## Authored target spans
+With the M4c manifest: **20/30 emerged by 320 kyr; 9/30 censored pending; 1/30 true no-lineage; 0/30 errors**. Both absent categories remain in N.
 
-| Era interval | Intended rough scale [scenario] |
-|---|---:|
-| E0→E1 | 1–20 kyr |
-| E1→E3 | 2–30 kyr |
-| E3→E4 | 0.3–5 kyr |
-| E4→E5 | 1–15 kyr |
-| E5→E6 | 2–30 kyr |
-| E6→E7 | 2–50 kyr |
+## Attainment counts
 
-An initial M4 trial overshot the middle-tier targets: crowded-domain E3→E4
-median 7,650 years, and forager-future median 17,890. It is preserved in
-`out/m4-first-trial.json`. The final schedule reduces middle-tier costs while
-keeping costs increasing within each domain and retaining expensive final
-tiers. Targets were declared before that trial and were not relabelled to fit
-the observations. The final receipts below use the final schedule only.
+| Scenario | E3 | E4 | E5+ | Multi-body | M4c pending / true no-lineage |
+|---|---|---|---|---|---|
+| crowded-domain | 30 → 30 | 30 → 30 | 18 → 17 | 11 → 11 | 0 / 0 |
+| doomed-star | 30 → 30 | 5 → 22 | 0 → 4 | 0 → 5 | 0 / 0 |
+| forager-future | 26 → 26 | 24 → 24 | 7 → 7 | 10 → 14 | 0 / 0 |
+| harsh-anoxic | 10 → 5 | 7 → 4 | 2 → 0 | 4 → 1 | 0 / 0 |
+| high-perils | 30 → 30 | 11 → 0 | 0 → 0 | 0 → 0 | 0 / 0 |
+| lonely-earthlike | 15 → 19 | 13 → 19 | 5 → 4 | 7 → 8 | 9 / 1 |
 
-## Final before/after results (M4b refresh)
+## Outcome classes (seeds containing each class)
 
-The after ensemble was regenerated after the horizon manifest revision with
-`node tools/m4-plausibility.mjs --n 30 --jobs 1 --out docs/evidence/m4-plausibility-after.json`.
-All 180 seeds completed with zero simulation errors. Exit was **1** because
-lonely-earthlike-6 compiled in **35,868.78 ms** (diagnostic **36,179.71 ms**),
-exceeding the tool's 30-second compile budget on this shared machine. This
-is a complete ensemble receipt, not a passing performance receipt.
+| Scenario | M4b | M4c |
+|---|---|---|
+| crowded-domain | COLLAPSED_RECOVERING=24, EXISTENTIAL_CAP=17, EXTANT_MULTI_BODY=3, EXTANT_PLANETARY=26, EXTINCT_NATURAL=3, EXTINCT_SELF=12 | COLLAPSED_RECOVERING=21, EXISTENTIAL_CAP=19, EXTANT_MULTI_BODY=5, EXTANT_MULTI_SYSTEM=2, EXTANT_PLANETARY=26, EXTINCT_NATURAL=3, EXTINCT_SELF=10 |
+| doomed-star | EXTINCT_STELLAR=30 | EXTANT_MULTI_BODY=1, EXTINCT_NATURAL=4, EXTINCT_SELF=2, EXTINCT_STELLAR=23 |
+| forager-future | COLLAPSED_RECOVERING=8, EXISTENTIAL_CAP=6, EXTANT_MULTI_BODY=1, EXTANT_MULTI_SYSTEM=2, EXTANT_PLANETARY=5, EXTINCT_NATURAL=1, EXTINCT_SELF=7 | COLLAPSED_RECOVERING=7, EXISTENTIAL_CAP=11, EXTANT_MULTI_BODY=2, EXTANT_MULTI_SYSTEM=3, EXTANT_PLANETARY=4, EXTINCT_NATURAL=1, EXTINCT_SELF=2 |
+| harsh-anoxic | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=1, EXTANT_MULTI_BODY=3, EXTANT_PLANETARY=21, EXTINCT_SELF=1 | COLLAPSED_RECOVERING=2, EXISTENTIAL_CAP=1, EXTANT_MULTI_BODY=1, EXTANT_PLANETARY=26 |
+| high-perils | COLLAPSED_RECOVERING=19, EXISTENTIAL_CAP=5, EXTANT_PLANETARY=5, EXTINCT_SELF=1 | COLLAPSED_RECOVERING=30 |
+| lonely-earthlike | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=4, EXTANT_MULTI_SYSTEM=4, EXTANT_PLANETARY=5, EXTINCT_SELF=2, NO_LINEAGE=11 | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=8, EXTANT_MULTI_BODY=1, EXTANT_MULTI_SYSTEM=1, EXTANT_PLANETARY=2, EXTINCT_NATURAL=1, EXTINCT_SELF=3, NO_LINEAGE=1, PENDING_ORIGIN=9 |
 
-**The numbers changed.** All six scenario summaries and all 180 result digests
-differ from M4a after the shared contract/manifest RNG namespace revision.
-No dynamics or calibration constants were changed in M4b; equal seed names
-across revisions do not imply equal variates. The pre-M4 baseline is unchanged.
+## Lineage extinction events
 
-- [Before JSON](evidence/m4-plausibility-before.json) / [before text](evidence/m4-plausibility-before.txt).
-- [M4b after JSON](evidence/m4-plausibility-after.json) / [after text](evidence/m4-plausibility-after.txt).
+| Scenario | M4b | M4c |
+|---|---|---|
+| crowded-domain | EXTINCT_NATURAL=3, EXTINCT_SELF=15 | EXTINCT_NATURAL=3, EXTINCT_SELF=12 |
+| doomed-star | EXTINCT_STELLAR=30 | EXTINCT_NATURAL=4, EXTINCT_SELF=2, EXTINCT_STELLAR=23 |
+| forager-future | EXTINCT_NATURAL=1, EXTINCT_SELF=7 | EXTINCT_NATURAL=1, EXTINCT_SELF=2 |
+| harsh-anoxic | EXTINCT_SELF=1 | none |
+| high-perils | EXTINCT_SELF=1 | none |
+| lonely-earthlike | EXTINCT_SELF=2 | EXTINCT_NATURAL=1, EXTINCT_SELF=3 |
 
-Values separated by → below are **pre-M4 → M4b**, except the explicitly labelled M4a comparison. All denominators are 30; a dash marks the new forager scenario.
+## B2: generic collapse and late activity
 
-### Attainment counts
+The former four-recovery exclusion was permanent generic-collapse immunity. M4c divides each stress/overhead hazard term by 1+min(4,recoveries), with integer flooring; positive overhead remains. Recoveries enter the cache key and provenance. Counts below are per seed, not per region; separate perils-collapse counts remain in JSON.
 
-| Scenario | E3 | E4 | E5+ | Multi-body | NO_LINEAGE |
-| --- | --- | --- | --- | --- | --- |
-| crowded-domain | 30 → 30 | 30 → 30 | 30 → 18 | 30 → 11 | 0 → 0 |
-| doomed-star | 30 → 30 | 24 → 5 | 19 → 0 | 19 → 0 | 0 → 0 |
-| forager-future | — → 26 | — → 24 | — → 7 | — → 10 | — → 0 |
-| harsh-anoxic | 16 → 10 | 15 → 7 | 12 → 2 | 12 → 4 | 0 → 0 |
-| high-perils | 30 → 30 | 15 → 11 | 3 → 0 | 1 → 0 | 0 → 0 |
-| lonely-earthlike | 7 → 15 | 7 → 13 | 4 → 5 | 4 → 7 | 23 → 11 |
+| Scenario | Pre-M4 collapse median/max | M4b → M4c median/max | Late accepted P events M4b → M4c | M4c seeds with late activity |
+|---|---|---|---|---|
+| crowded-domain | 26/48 | 14/21 → 11/18 | 5275 → 6057 | 15/30 |
+| doomed-star | 3/13 | 0/1 → 1/5 | 0 → 779 | 5/30 |
+| forager-future | — | 10/65 → 10/77 | 22356 → 35583 | 11/30 |
+| harsh-anoxic | 1/13 | 0/5 → 0/3 | 247 → 0 | 0/30 |
+| high-perils | 35/301 | 15/26 → 33/88 | 0 → 0 | 0/30 |
+| lonely-earthlike | 0/47 | 0/117 → 7/134 | 54851 → 33657 | 4/30 |
 
-E3 starts in crowded-domain, doomed-star and high-perils are left-censored advanced starts. Lonely produces a lineage in 19/30 seeds versus 7/30 before; the longer declared scenario window remains part of that comparison.
+## B3: colonisation and targeting
 
-### Change from the M4a after ensemble
+Own-lineage occupancy now permits reinforcement, while target-failure cooldowns still apply. Foreign observations expire to UNKNOWN after 2,000 years from arrival unless refreshed. UNKNOWN is targetable, never known-empty. Undelivered knowledge cannot affect policy. One-shot alien broadcasts remain one-shot; foreign extinctions are not instantaneously known.
 
-| Scenario | E4 M4a → M4b | E5+ M4a → M4b | Multi-body M4a → M4b |
-| --- | --- | --- | --- |
-| crowded-domain | 30 → 30 | 13 → 18 | 7 → 11 |
-| doomed-star | 8 → 5 | 0 → 0 | 0 → 0 |
-| forager-future | 25 → 24 | 5 → 7 | 10 → 10 |
-| harsh-anoxic | 7 → 7 | 1 → 2 | 1 → 4 |
-| high-perils | 12 → 11 | 0 → 0 | 0 → 0 |
-| lonely-earthlike | 18 → 13 | 4 → 5 | 9 → 7 |
+| Scenario | Launches | Accepted founding | New colonies | Reinforcements | Lost voyages | Repeated failed-target launches | M4c rejected reasons |
+|---|---|---|---|---|---|---|---|
+| crowded-domain | 59 → 454 | 59 → 381 | 45 → 35 | 14 → 346 | 0 → 1 | 22 → 168 | occupied-by-other-lineage=62 |
+| doomed-star | 0 → 495 | 0 → 494 | 0 → 17 | 0 → 477 | 0 → 1 | 0 → 406 | none |
+| forager-future | 129 → 6149 | 128 → 6095 | 83 → 100 | 45 → 5995 | 1 → 25 | 79 → 4390 | none |
+| harsh-anoxic | 10 → 1 | 10 → 1 | 10 → 1 | 0 → 0 | 0 → 0 | 2 → 0 | none |
+| high-perils | 0 → 0 | 0 → 0 | 0 → 0 | 0 → 0 | 0 → 0 | 0 → 0 | none |
+| lonely-earthlike | 221 → 4665 | 221 → 4651 | 112 → 99 | 109 → 4552 | 0 → 13 | 167 → 4054 | none |
+
+## B4: authored evacuation window
+
+Before choosing the new doom date, the incoming M4b crowded industrial cohort had E3→E5 p10/median/p90 **4,290/13,120/22,240 years**, conditional on 18/30 attainments. The explicitly versioned `m4c-doomed-star-system.json` and domain set doom to **25,000 years [scenario]**, giving roughly that observed p90 plus margin within the unchanged 30 kyr horizon. E5 era requires Energy≥5, but evacuation on these routes also requires T7; this choice does not guarantee success. No hazard was tuned.
+
+The original `m3b-doomed-star-system.json` and domain remain available as an **unregistered 3,000-year early-doom control**. Its incoming M4b N=30 evidence is 30 EXTINCT_STELLAR, 0 launches, 0 accepted colonies, 0 multi-body. These are historical M4b control numbers, not a new M4c control ensemble. The registered doomed-star now uses only the versioned late fixture.
+
+M4c late-doom N=30: EXTANT_MULTI_BODY=1, EXTINCT_NATURAL=4, EXTINCT_SELF=2, EXTINCT_STELLAR=23; 495 launches, 494 accepted colonies/reinforcements, 5 multi-body histories.
+
+## B5: reserve cliff and colony death ages
+
+The permitted minimal option **keeps the 1,000-year cliff**. It is not fixed by relabelling it as gradual degradation. The ordinary forced founding fixture survives beyond expiry (observed through 2,100 years); an authored zero-growth control fixes inadequate support and produces TECH_LOSS at year 1,030 and EXTINCTION at 1,050 (colony ages 1,020/1,040). Neither behaviour proves general survival.
+
+Diagnostics use accepted COLONY_FOUNDED/FOUNDED arc identities and EXTINCTION event dates. Percentiles condition on deaths; survivors/unfinished arcs are right censored. “Near expiry” means inclusive death age 1,000–1,200 years [scenario]. Across all scenarios, 201 deaths include 61 near expiry. The old JSON did not retain death ages, so there is no fabricated M4b age comparison.
+
+| Scenario | Deaths | Death-age p10 / p50 / p90 (years) | Near expiry | Right-censored colony arcs |
+|---|---|---|---|---|
+| crowded-domain | 18 | 1040 / 1440 / 10780 | 8 | 17 |
+| doomed-star | 15 | 1510 / 4190 / 8130 | 0 | 2 |
+| forager-future | 74 | 1040 / 7810 / 22320 | 6 | 26 |
+| harsh-anoxic | 0 | None / None / None | 0 | 1 |
+| high-perils | 0 | None / None / None | 0 | 0 |
+| lonely-earthlike | 94 | 1040 / 1070 / 16990 | 47 | 5 |
+
+## Era durations and authored targets
+
+Target spans [scenario]: E0→E1 1–20 kyr; E1→E3 2–30 kyr; E3→E4 0.3–5 kyr; E4→E5 1–15 kyr; E5→E6 2–30 kyr; E6→E7 2–50 kyr. All M4c duration rows follow, including empty cohorts. L/R/N/P = left/right/true no-lineage/pending. Null means undefined, not zero. Errors are listed in JSON.
+
+| Scenario | Interval | Observed | p10 / p50 / p90 years | L/R/N/P |
+|---|---|---|---|---|
+| crowded-domain | E0→E1 | 0 | None / None / None | 30/0/0/0 |
+| crowded-domain | E1→E3 | 0 | None / None / None | 30/0/0/0 |
+| crowded-domain | E3→E4 | 30 | 1030 / 3330 / 9310 | 0/0/0/0 |
+| crowded-domain | E4→E5 | 17 | 3420 / 10030 / 12760 | 0/13/0/0 |
+| crowded-domain | E5→E6 | 11 | 4200 / 14390 / 20020 | 0/19/0/0 |
+| crowded-domain | E6→E7 | 2 | 4590 / 4590 / 4590 | 0/28/0/0 |
+| crowded-domain | E3→E5 | 17 | 5530 / 11040 / 18750 | 0/13/0/0 |
+| crowded-domain | E3→E7 | 2 | 27320 / 27320 / 27320 | 0/28/0/0 |
+| doomed-star | E0→E1 | 0 | None / None / None | 30/0/0/0 |
+| doomed-star | E1→E3 | 0 | None / None / None | 30/0/0/0 |
+| doomed-star | E3→E4 | 22 | 1460 / 4800 / 17740 | 0/8/0/0 |
+| doomed-star | E4→E5 | 4 | 11020 / 14080 / 17880 | 0/26/0/0 |
+| doomed-star | E5→E6 | 0 | None / None / None | 0/30/0/0 |
+| doomed-star | E6→E7 | 0 | None / None / None | 0/30/0/0 |
+| doomed-star | E3→E5 | 4 | 18980 / 19670 / 19870 | 0/26/0/0 |
+| doomed-star | E3→E7 | 0 | None / None / None | 0/30/0/0 |
+| forager-future | E0→E1 | 30 | 1140 / 8890 / 59410 | 0/0/0/0 |
+| forager-future | E1→E3 | 26 | 9440 / 20390 / 52650 | 0/4/0/0 |
+| forager-future | E3→E4 | 24 | 1380 / 5020 / 16050 | 0/6/0/0 |
+| forager-future | E4→E5 | 7 | 2450 / 6090 / 20680 | 0/23/0/0 |
+| forager-future | E5→E6 | 6 | 600 / 12140 / 23110 | 0/24/0/0 |
+| forager-future | E6→E7 | 6 | 3810 / 5980 / 12330 | 0/24/0/0 |
+| forager-future | E3→E5 | 7 | 4700 / 7890 / 32060 | 0/23/0/0 |
+| forager-future | E3→E7 | 6 | 13390 / 25190 / 50500 | 0/24/0/0 |
+| harsh-anoxic | E0→E1 | 19 | 1180 / 9400 / 22840 | 0/11/0/0 |
+| harsh-anoxic | E1→E3 | 5 | 5680 / 13440 / 18340 | 0/25/0/0 |
+| harsh-anoxic | E3→E4 | 4 | 3370 / 3660 / 4010 | 0/26/0/0 |
+| harsh-anoxic | E4→E5 | 0 | None / None / None | 0/30/0/0 |
+| harsh-anoxic | E5→E6 | 0 | None / None / None | 0/30/0/0 |
+| harsh-anoxic | E6→E7 | 0 | None / None / None | 0/30/0/0 |
+| harsh-anoxic | E3→E5 | 0 | None / None / None | 0/30/0/0 |
+| harsh-anoxic | E3→E7 | 0 | None / None / None | 0/30/0/0 |
+| high-perils | E0→E1 | 0 | None / None / None | 30/0/0/0 |
+| high-perils | E1→E3 | 0 | None / None / None | 30/0/0/0 |
+| high-perils | E3→E4 | 0 | None / None / None | 0/30/0/0 |
+| high-perils | E4→E5 | 0 | None / None / None | 0/30/0/0 |
+| high-perils | E5→E6 | 0 | None / None / None | 0/30/0/0 |
+| high-perils | E6→E7 | 0 | None / None / None | 0/30/0/0 |
+| high-perils | E3→E5 | 0 | None / None / None | 0/30/0/0 |
+| high-perils | E3→E7 | 0 | None / None / None | 0/30/0/0 |
+| lonely-earthlike | E0→E1 | 19 | 2770 / 9470 / 31760 | 0/1/1/9 |
+| lonely-earthlike | E1→E3 | 19 | 8600 / 21120 / 77030 | 0/1/1/9 |
+| lonely-earthlike | E3→E4 | 19 | 1350 / 4500 / 19230 | 0/1/1/9 |
+| lonely-earthlike | E4→E5 | 4 | 7660 / 12680 / 13380 | 0/16/1/9 |
+| lonely-earthlike | E5→E6 | 2 | 4160 / 4160 / 4160 | 0/18/1/9 |
+| lonely-earthlike | E6→E7 | 2 | 1730 / 1730 / 1730 | 0/18/1/9 |
+| lonely-earthlike | E3→E5 | 4 | 11100 / 15940 / 16960 | 0/16/1/9 |
+| lonely-earthlike | E3→E7 | 2 | 30600 / 30600 / 30600 | 0/18/1/9 |
+
+## Still implausible / NOT MET
+
+The unchanged four-seed Kremer check is also NOT MET (cold lower median 19,223 versus temperate 37,206 years; existing skip). Refinement-query-order and signatures exceed the two-second individual-file target.
+
+Calibration bands are not all met; conditional observed medians and censor counts above are not population estimates. Thirty seeds give weak tails, especially with sparse late-era attainment. No historical prediction is established.
+
+The far-future addition is only political churn: energy capture remains static within eras. There are no evolving E7 energy stocks, megaprojects, richer post-biological futures, continuous astronomy or resource economics. Existing wars, plagues and natural hazards persist; finite topology and fixed short routes remain.
+
+The reserve cliff remains an acknowledged failure mode. Archives, tools and instruction do not model schools, occupations, spare parts, actual archive degradation or supply chains. Failure beacons and expiring occupancy simplify communication and diplomacy; rejected arrivals still kill passengers under the inherited recipe. Reinforcement can produce large launch counts and does not establish sustainable settlement.
+
+The saturating recovery reduction is an authored abstraction, not four historically justified lessons. It no longer confers immunity, but recovery can still remain active for long intervals without restoring knowledge. Sapience remains an uncalibrated three-hard-step lottery; the E0 fixture starts with 10,000 people rather than reconstructing Earth.
+
+The 30-second compilation budget is NOT MET on this shared machine; see the handoff for the exact final test and timing receipts. No perf:panel or visual review was performed.
 
 
-### Outcome classes (seeds containing each class)
-
-| Scenario | Before | After |
-| --- | --- | --- |
-| crowded-domain | COLLAPSED_RECOVERING=10, EXISTENTIAL_CAP=16, EXTANT_MULTI_BODY=17, EXTANT_MULTI_SYSTEM=21, EXTANT_PLANETARY=24, EXTINCT_NATURAL=4, EXTINCT_SELF=11 | COLLAPSED_RECOVERING=24, EXISTENTIAL_CAP=17, EXTANT_MULTI_BODY=3, EXTANT_PLANETARY=26, EXTINCT_NATURAL=3, EXTINCT_SELF=12 |
-| doomed-star | COLLAPSED_RECOVERING=2, EXTANT_MULTI_SYSTEM=5, EXTANT_PLANETARY=6, EXTINCT_NATURAL=3, EXTINCT_STELLAR=11, REGRESSED_STABLE=3 | EXTINCT_STELLAR=30 |
-| forager-future | — | COLLAPSED_RECOVERING=8, EXISTENTIAL_CAP=6, EXTANT_MULTI_BODY=1, EXTANT_MULTI_SYSTEM=2, EXTANT_PLANETARY=5, EXTINCT_NATURAL=1, EXTINCT_SELF=7 |
-| harsh-anoxic | COLLAPSED_RECOVERING=3, EXISTENTIAL_CAP=3, EXTANT_MULTI_SYSTEM=10, EXTANT_PLANETARY=14 | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=1, EXTANT_MULTI_BODY=3, EXTANT_PLANETARY=21, EXTINCT_SELF=1 |
-| high-perils | COLLAPSED_RECOVERING=17, EXISTENTIAL_CAP=6, EXTINCT_SELF=7 | COLLAPSED_RECOVERING=19, EXISTENTIAL_CAP=5, EXTANT_PLANETARY=5, EXTINCT_SELF=1 |
-| lonely-earthlike | COLLAPSED_RECOVERING=1, EXTANT_MULTI_SYSTEM=1, EXTINCT_NATURAL=1, EXTINCT_SELF=2, NO_LINEAGE=23, REGRESSED_STABLE=2 | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=4, EXTANT_MULTI_SYSTEM=4, EXTANT_PLANETARY=5, EXTINCT_SELF=2, NO_LINEAGE=11 |
-
-
-### Lineage extinction events by class
-
-| Scenario | Before | After |
-| --- | --- | --- |
-| crowded-domain | EXTINCT_NATURAL=4, EXTINCT_SELF=12 | EXTINCT_NATURAL=3, EXTINCT_SELF=15 |
-| doomed-star | EXTINCT_NATURAL=3, EXTINCT_STELLAR=11 | EXTINCT_STELLAR=30 |
-| forager-future | — | EXTINCT_NATURAL=1, EXTINCT_SELF=7 |
-| harsh-anoxic | none | EXTINCT_SELF=1 |
-| high-perils | EXTINCT_SELF=7 | EXTINCT_SELF=1 |
-| lonely-earthlike | EXTINCT_NATURAL=1, EXTINCT_SELF=2 | EXTINCT_SELF=2 |
-
-
-### Colonisation
-
-Accepted includes founding and reinforcement. Their separate counts are in the receipts. All COLONY_LOST counts remain zero in both ensembles; abrupt zero-population deaths instead emit EXTINCTION.
-
-| Scenario | LAUNCH | Accepted COLONY_FOUNDED | Rejected by reason | VOYAGE_LOST | Repeat failed target launches |
-| --- | --- | --- | --- | --- | --- |
-| crowded-domain | 7975 → 59 | 3215 → 59 | occupied-by-other-lineage=4571 → none | 28 → 0 | 5597 → 22 |
-| doomed-star | 1373 → 0 | 1233 → 0 | destination-uninhabitable=131 → none | 4 → 0 | 349 → 0 |
-| forager-future | — → 129 | — → 128 | — → none | — → 1 | — → 79 |
-| harsh-anoxic | 684 → 10 | 670 → 10 | none → none | 2 → 0 | 209 → 2 |
-| high-perils | 1 → 0 | 1 → 0 | none → none | 0 → 0 | 0 → 0 |
-| lonely-earthlike | 1007 → 221 | 909 → 221 | destination-uninhabitable=94 → none | 2 → 0 | 409 → 167 |
-
-The small-founder test verifies removal of immediate maintenance death; it does not establish universal colony survival. Later deaths and repeat attempts remain.
-
-### Generic collapse and late history
-
-| Scenario | Collapse median/max before | Collapse median/max after | Late post-exit accepted P events before → after | After seeds with late activity |
-| --- | --- | --- | --- | --- |
-| crowded-domain | 26/48 | 14/21 | 62647 → 5275 | 15/30 |
-| doomed-star | 3/13 | 0/1 | 6916 → 0 | 0/30 |
-| forager-future | — | 10/65 | — → 22356 | 8/30 |
-| harsh-anoxic | 1/13 | 0/5 | 6975 → 247 | 3/30 |
-| high-perils | 35/301 | 15/26 | 0 → 0 | 0/30 |
-| lonely-earthlike | 0/47 | 0/117 | 14975 → 54851 | 5/30 |
-
-High-perils-4 has 59 → 23 generic collapses. The bound remains per region and per arc; it is not a seed-wide cap. New colony episodes can increase totals. Perils collapses are reported separately.
-
-The baseline already had substantial late activity, so this audit does not establish a blanket pre-M4 static-history claim. Renewal guarantees exposure, not a firing in every finite interval. High-perils has no sampled post-exit late activity in either revision.
-
-### Era durations versus the authored targets
-
-Durations are years conditional on observed attainment. L/R/N are left/right/no-lineage censor counts; errors are zero. R includes source-not-reached (separately listed in JSON/text). All M4b intervals are included, even empty cohorts.
-
-| Scenario/version | Interval | Observed | p10 / p50 / p90 | L/R/N |
-| --- | --- | --- | --- | --- |
-| crowded-domain before | E3→E4 | 30 | 190 / 290 / 470 | 0/0/0 |
-| crowded-domain before | E4→E5 | 30 | 50 / 160 / 380 | 0/0/0 |
-| crowded-domain before | E5→E6 | 30 | 30 / 70 / 210 | 0/0/0 |
-| crowded-domain before | E6→E7 | 30 | 10 / 20 / 90 | 0/0/0 |
-| crowded-domain before | E3→E7 | 30 | 420 / 540 / 1290 | 0/0/0 |
-| crowded-domain after | E0→E1 | 0 | — / — / — | 30/0/0 |
-| crowded-domain after | E1→E3 | 0 | — / — / — | 30/0/0 |
-| crowded-domain after | E3→E4 | 30 | 1160 / 3190 / 6510 | 0/0/0 |
-| crowded-domain after | E4→E5 | 18 | 2700 / 8520 / 18630 | 0/12/0 |
-| crowded-domain after | E5→E6 | 6 | 6050 / 9560 / 11190 | 0/24/0 |
-| crowded-domain after | E6→E7 | 3 | 1110 / 4670 / 4670 | 0/27/0 |
-| crowded-domain after | E3→E7 | 3 | 20150 / 21860 / 21860 | 0/27/0 |
-| doomed-star after | E0→E1 | 0 | — / — / — | 30/0/0 |
-| doomed-star after | E1→E3 | 0 | — / — / — | 30/0/0 |
-| doomed-star after | E3→E4 | 5 | 1440 / 1660 / 2470 | 0/25/0 |
-| doomed-star after | E4→E5 | 0 | — / — / — | 0/30/0 |
-| doomed-star after | E5→E6 | 0 | — / — / — | 0/30/0 |
-| doomed-star after | E6→E7 | 0 | — / — / — | 0/30/0 |
-| doomed-star after | E3→E7 | 0 | — / — / — | 0/30/0 |
-| forager-future after | E0→E1 | 30 | 960 / 6830 / 67790 | 0/0/0 |
-| forager-future after | E1→E3 | 26 | 10530 / 26530 / 74400 | 0/4/0 |
-| forager-future after | E3→E4 | 24 | 1340 / 4720 / 20320 | 0/6/0 |
-| forager-future after | E4→E5 | 7 | 2670 / 14080 / 28860 | 0/23/0 |
-| forager-future after | E5→E6 | 5 | 890 / 16820 / 44630 | 0/25/0 |
-| forager-future after | E6→E7 | 4 | 5410 / 11270 / 12100 | 0/26/0 |
-| forager-future after | E3→E7 | 4 | 29750 / 34550 / 69940 | 0/26/0 |
-| harsh-anoxic after | E0→E1 | 18 | 370 / 2220 / 6510 | 0/12/0 |
-| harsh-anoxic after | E1→E3 | 10 | 10190 / 14820 / 21150 | 0/20/0 |
-| harsh-anoxic after | E3→E4 | 7 | 2380 / 3130 / 5220 | 0/23/0 |
-| harsh-anoxic after | E4→E5 | 2 | 3090 / 3090 / 3090 | 0/28/0 |
-| harsh-anoxic after | E5→E6 | 0 | — / — / — | 0/30/0 |
-| harsh-anoxic after | E6→E7 | 0 | — / — / — | 0/30/0 |
-| harsh-anoxic after | E3→E7 | 0 | — / — / — | 0/30/0 |
-| high-perils after | E0→E1 | 0 | — / — / — | 30/0/0 |
-| high-perils after | E1→E3 | 0 | — / — / — | 30/0/0 |
-| high-perils after | E3→E4 | 11 | 9600 / 16900 / 25580 | 0/19/0 |
-| high-perils after | E4→E5 | 0 | — / — / — | 0/30/0 |
-| high-perils after | E5→E6 | 0 | — / — / — | 0/30/0 |
-| high-perils after | E6→E7 | 0 | — / — / — | 0/30/0 |
-| high-perils after | E3→E7 | 0 | — / — / — | 0/30/0 |
-| lonely-earthlike after | E0→E1 | 16 | 5810 / 10970 / 26680 | 0/3/11 |
-| lonely-earthlike after | E1→E3 | 15 | 11910 / 28760 / 52760 | 0/4/11 |
-| lonely-earthlike after | E3→E4 | 13 | 1840 / 7920 / 21920 | 0/6/11 |
-| lonely-earthlike after | E4→E5 | 5 | 4550 / 8330 / 42650 | 0/14/11 |
-| lonely-earthlike after | E5→E6 | 4 | 5660 / 9550 / 47400 | 0/15/11 |
-| lonely-earthlike after | E6→E7 | 4 | 3850 / 8520 / 10370 | 0/15/11 |
-| lonely-earthlike after | E3→E7 | 4 | 18170 / 25110 / 80290 | 0/15/11 |
-
-Crowded-domain E3→E7 observed median grows **540 → 21,860 years** and E6→E7 **20 → 4,670 years**; only 3/30 seeds reach E7, so these are not whole-ensemble typical times.
-
-**Calibration targets remain unmet overall.** Forager E3→E4 and E4→E5 medians are now **4,720** and **14,080** years, inside their bands, but only 7/30 reach E5. Its E0→E1 p10/p90 remain outside the 1–20 kyr span at **960/67,790** years. Lonely E3→E4 median **7,920** and high-perils **16,900** still exceed 5 kyr, with 6 and 19 right-censored runs respectively (lonely also has 11 no-lineage runs). No new calibration is claimed.
-
-Forager reaches E3 in 26/30, E4 in 24/30, E5+ in 7/30, multi-body history in 10/30 and E7 in 4/30 by 120 kyr. Nonattainment remains in the denominator.
-
-## Still implausible / not modelled
-
-The four-recovery bound is a coarse assertion that this generic failure
-mechanism has four learnable institutional weaknesses. It should not be read
-as a historical law or permanent immunity. New colony episodes reset that
-region-local learning; perils and external catastrophes remain separate risks.
-Recovery can remain active for a long time without restoring lost knowledge.
-
-The founding reserve abstracts manuals, tools and automated instruction into
-maintenance capability for 1,000 years. It does not model occupations, schools,
-spare parts, actual archive degradation, supply chains or parent subsidies.
-Catastrophes can still remove habitat-critical tiers during the reserve period.
-The failure beacon and conservative stale-occupancy policy simplify unreliable
-communication, reconnaissance and diplomatic access. Rejected arrivals still
-kill passengers under the inherited disposition recipe.
-
-Political renewal produces events after perils exit; energy capture stays fixed
-within an era. There are no megaproject stocks, evolving E7 capture, richer
-post-biological futures, continuous astronomy, migration diplomacy or resource
-economics. Many wars and plagues remain generated by the inherited recipes.
-The topology has a finite number of bodies and short fixed routes.
-
-The E0 scenario reuses the existing post-sapience fixture: 10,000 people in one
-region, above its initial forager capacity, so initial demographic correction
-is part of the scenario. It is not an Earth reconstruction. Sapience is still
-the authored three-hard-step lottery in lonely-earthlike, with uncalibrated
-rates. Thirty seeds give weak tail information, especially when only one or a
-few seeds attain a late era. Censored rows cannot establish a typical future.
-
-M4b fixes P/D forced-fixture horizon dependence; the after receipts above
-use that revised manifest. No visual work or Luna review was required or performed.
+Final `npm test` (sole invocation): **147 tests, 146 pass, 0 fail, 1 skipped,
+exit 0**, duration 42004.2065 ms. The skip is the unchanged Kremer NOT MET
+check. No child-process timeout occurred in the final run.

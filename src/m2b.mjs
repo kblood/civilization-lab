@@ -12,9 +12,11 @@ export function message(domain,tick,source,type,target,causeEventId,data,ordinal
   return {id:`${domain}#msg:${tick}~${source}~${type}~${target}~${ordinal}`,type,causeEventId,targetId:target,deliveryTick,payload:payload(data)};
 }
 export const berths=r=>[4000n,8000n,16000n][r.tiers[3]-5]??0n;
+// M4c [scenario]: foreign occupancy becomes unknown after 2,000 years.
+export const OCCUPANCY_YEARS=2000;
 export function routesFor(def,r,pre=null) {
   return (def.routes??[]).filter(e=>e.from===def.planet.body&&e.travelYearsByTransportTier[r.tiers[3]]!==null&&
-    (!pre||!pre.signals.some(s=>s.body===e.to)&&!pre.targetFailures.some(f=>f.body===e.to&&Number(pre.tick*10n)<f.untilYear))&&
+    (!pre||!pre.signals.some(s=>s.body===e.to&&s.lineageId!==pre.lineageId&&Number(pre.tick*10n)<s.arrivalYear+OCCUPANCY_YEARS)&&!pre.targetFailures.some(f=>f.body===e.to&&Number(pre.tick*10n)<f.untilYear))&&
     (e.destinationHosting==='habitable'||e.destinationHosting==='habitat-buildable'&&r.tiers[0]>=5&&r.tiers[1]>=5));
 }
 export function extraOpportunities(def,pre,add) {

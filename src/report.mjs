@@ -56,8 +56,8 @@ export function defaultTimelines(runs){
   const chosen=[];
   for(const scenario of [...new Set(runs.map(r=>r.scenario))].sort(compare)){
     const own=runs.filter(r=>r.scenario===scenario).sort((a,b)=>compare(a.seed,b.seed));
-    const active=own.filter(r=>r.outcome!=='NO_LINEAGE'&&r.outcome!=='ERROR').sort((a,b)=>salientCount(b)-salientCount(a)||compare(a.seed,b.seed));
-    const empty=own.find(r=>r.outcome==='NO_LINEAGE');
+    const active=own.filter(r=>!['NO_LINEAGE','PENDING_ORIGIN'].includes(r.outcome)&&r.outcome!=='ERROR').sort((a,b)=>salientCount(b)-salientCount(a)||compare(a.seed,b.seed));
+    const empty=own.find(r=>['NO_LINEAGE','PENDING_ORIGIN'].includes(r.outcome));
     if(active.length)chosen.push(active[0].seed);else if(empty)chosen.push(empty.seed);
     if(empty&&!chosen.includes(empty.seed))chosen.push(empty.seed);
   }
@@ -69,7 +69,7 @@ export function timelineSVG(run){
   const arcs=[...data.arcs].sort((a,b)=>compare(peak(b.id),peak(a.id))||compare(a.id,b.id)).slice(0,8).sort((a,b)=>compare(a.id,b.id));
   const bodies=[...new Set(arcs.map(a=>a.body))].sort(compare),color=b=>COLORS[bodies.indexOf(b)%COLORS.length];
   const short=a=>`B${bodies.indexOf(a.body)+1}/a${arcs.indexOf(a)+1}`;
-  const empty=run.outcome==='NO_LINEAGE';
+  const empty=['NO_LINEAGE','PENDING_ORIGIN'].includes(run.outcome);
   const maxPop=arcs.reduce((n,a)=>peak(a.id)>n?peak(a.id):n,1n),popTop=logFixed(maxPop+1n)||1n;
   const points=rows.filter((_,i)=>i===rows.length-1||i%Math.max(1,Math.ceil(rows.length/700))===0);
   const events=stratifiedEvents(data.events.filter(e=>!e.resolution||e.resolution==='accepted'),horizon);
@@ -165,7 +165,7 @@ export function reportMarkdown(runs,{timelines=[],extraRuns=[]}={}){
   const sorted=[...runs].sort((a,b)=>compare(a.scenario,b.scenario)||compare(a.seed,b.seed)),a=aggregate(sorted);
   const table=a=>['| Measure | Count / runs (%) |','|---|---|',...a.table.map(r=>`| ${metricLabel(r.metric)} | ${r.fraction} |`)].join('\n');
   const out=['# Civilization Lab ensemble',LABEL,'',`Runs: ${runs.length}. Seeds: global index i = 0..N-1; scenario = named scenario, or SCENARIOS[i % 5]; seed = <scenario>-<i>. No seed is dropped. Jobs affect execution only and are excluded from report bytes.`,
-    'Percentages truncate to one decimal using integer arithmetic. Measures count runs with at least one qualifying lineage; outcome classes can overlap in multi-origin domains. Proximate cause counts count lineages within that outcome class; INITIAL_STATE and NATURAL_UPDATE explicitly indicate no proximate event. Era times are years since the earliest inhabited boundary. Starting era is the frontier at that boundary. Lower medians exclude runs starting at/above the threshold (left censored), runs never attaining it (right censored, including NO_LINEAGE), and errors (unknown). All counts retain the full N. Later origins in a multi-origin run may contribute to its frontier; these are run-level measures. Zero eligible attainments are undefined.',
+    'Percentages truncate to one decimal using integer arithmetic. Measures count runs with at least one qualifying lineage; outcome classes can overlap in multi-origin domains. Proximate cause counts count lineages within that outcome class; INITIAL_STATE and NATURAL_UPDATE explicitly indicate no proximate event. Era times are years since the earliest inhabited boundary. Starting era is the frontier at that boundary. Lower medians exclude runs starting at/above the threshold (left censored), runs never attaining it (right censored, including PENDING_ORIGIN and NO_LINEAGE), and errors (unknown). All counts retain the full N. Later origins in a multi-origin run may contribute to its frontier; these are run-level measures. Zero eligible attainments are undefined.',
     'First era years mean first attainment of at least that era. Physical multi-body/system occupancy includes past arcs, grouped by lineage, independently of E5/E6. Colony-only loss is an EXTINCTION of a colony arc with its lineage extant at the horizon; COLONY_LOST alone means nonviability, not extinction.',
     '',table(a),'','```text',aggregateText(a),'```'];
   for(const scenario of [...new Set(sorted.map(r=>r.scenario))].sort(compare)){const own=sorted.filter(r=>r.scenario===scenario),stats=aggregate(own);out.push('',`## ${scenario}`,'',table(stats),'','```text',eraText(stats),'```');}

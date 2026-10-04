@@ -1,22 +1,19 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
-**M4a:** tier-dependent invention costs, bounded colony knowledge reserves,
-causal target memory, recovery learning and post-perils political renewal.
-Six ensemble scenarios now include an E0-to-future run. See the
-[M4 implementation handoff](docs/m4-implementation.md) and
-[30-seed-per-scenario plausibility audit](docs/m4-plausibility.md).
-M4b fixes forced-fixture horizon dependence in P and D; execution duration
-is excluded from hashed model data. See the M4b section of the handoff for
-before/after experiments and revised P/D goldens. M1 is unchanged.
-M4b final `npm test`: **142 pass, 0 fail, 0 skipped; exit 0**. The refreshed
-180-seed ensemble has zero simulation errors; one compile exceeds 30 seconds,
-and the unchanged signatures file exceeds the two-second lean-test target.
-Astra's sole full test run returned **134 pass / 3 fail**; those legacy fixture
-expectations were updated and focused reruns passed **9/9**. Runner rerun of
-`npm test` on the committed M4a tree: **135 pass / 2 fail, exit 1**; both
-failures were 1500 ms child-process timeouts on a heavily loaded machine
-(`civ-determinism`, `refinement-query-order`), and both files pass alone (exit 0).
+**M4:** tier-dependent invention, colony maintenance reserves, causal target
+memory, recovery learning and post-perils political renewal. M4b preserves
+P/D horizon independence; M4c distinguishes pending origins, removes collapse
+immunity, permits reinforcement, expires foreign occupancy knowledge and gives
+the versioned doomed-star fixture a 25 kyr industrial window. The 1 kyr colony
+reserve cliff remains explicitly diagnosed. Six authored ensemble scenarios;
+see the [implementation handoff](docs/m4-implementation.md) and
+[30-seed-per-scenario audit](docs/m4-plausibility.md). M1 is unchanged.
+Final M4c `npm test`: **146 pass, 0 fail, 1 skipped; exit 0** (147 tests).
+The skip is the unchanged Kremer NOT MET check. All 180 ensemble runs completed
+without simulation errors; eight exceeded the compile budget. Refinement-order
+and signatures exceed the individual two-second target. Full receipts and
+remaining calibration limitations are in the handoff.
 
 **M3 legibility round 2:** exact-year event guides, 16-pixel minimum text,
 compact empty histories, explicit scale breaks and directed voyage connectors.
@@ -154,7 +151,7 @@ Default horizons are 320,000 years for lonely-earthlike, 120,000 for
 forager-future and 30,000 for the other four. Default jobs = min(4, CPU count). Results are sorted by scenario
 and seed before aggregation; errored seeds stay in N. Output is out/report.md
 and a representative timeline per scenario: the inhabited non-error seed with
-the most accepted salient events, ties by seed. The first NO_LINEAGE seed per
+the most accepted salient events, ties by seed. The first empty-history (NO_LINEAGE or PENDING_ORIGIN) seed per
 scenario also gets a timeline when present; it is the fallback if no active
 history exists. All-error scenarios have no automatic timeline. Repeated --timeline flags add requested
 seeds; additional seeds outside the ensemble get timelines but do not change N.
@@ -162,6 +159,9 @@ An extra seed needs a scenario prefix or --scenario. Percentages truncate to
 one decimal using integer arithmetic. Wall times print separately to stderr,
 never into the byte-reproducible report or SVG. These are **seeded scenarios,
 model attribution, not predictions**.
+
+PENDING_ORIGIN means an origin scheduled beyond the horizon (right-censored);
+NO_LINEAGE means its window was exhausted or it was preempted. Both stay in N.
 
 Era counts E3–E6 distinguish starts at/above, attainment during the run from
 below, and never reached, with errors separately unknown; every fraction keeps

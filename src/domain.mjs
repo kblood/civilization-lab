@@ -171,9 +171,9 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
           const a=state.arcs.find(a=>a.body===m.targetId||a.id===m.targetId);if(!a)continue;
           const e=dEvent(def,state,'SIGNAL_ARRIVAL',a.id,messageIntent(m.id),{mode:'scheduled'},Number(t*10n),0);
           e.params={arrivalYear:String(m.payload.signal.arrivalYear),deliveryYear:String(t*10n)};
-          const {arrivalYear,...signal}=m.payload.signal;
+          const signal=m.payload.signal;
           e.data.source=signal.source;e.data.target=a.id;
-          const signals=a.signals.some(s=>s.source===signal.source)?a.signals:[...a.signals,signal].sort((a,b)=>compare(a.source,b.source));
+          const signals=[...a.signals.filter(s=>s.source!==signal.source),signal].sort((a,b)=>compare(a.source,b.source));
           e.effects.push({target:a.id,field:'arc.signals',op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.signals',value:signals});
           writable(a).inbox.push({...m,payload:{...m.payload,signal},causeEventId:e.id});tickEvents.push(finishEvent(e));continue;
         }

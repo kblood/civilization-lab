@@ -483,3 +483,152 @@ ensemble tool's 30-second compilation target for lonely-earthlike-6 and the
 unchanged signatures test's two-second file target, detailed above. Neither
 was hidden by changing a timeout, assertion, model parameter or seed panel.
 No visual review was requested or performed.
+
+
+## M4c — critique fixes
+
+2026-10-04. Exactly B1–B5 addressed; no git writes, network, preview, or
+changes to Universe Atlas or `.agent-scratch/before`. The pre-M4 evidence is
+untouched. The incoming M4b after JSON is retained as
+[evidence/m4b-plausibility-after.json](evidence/m4b-plausibility-after.json).
+All new numeric choices are **[scenario]** authored values. No new research
+claim, calibration claim, or RNG purpose is introduced.
+
+* B1: summary/report labels distinguish PENDING_ORIGIN from true NO_LINEAGE;
+  both remain in N. Duration rows have a separate pendingOrigin censor count.
+  This observation change does not write simulation state or results.
+* B2: generic collapse eligibility persists after recovery; both Q32 terms
+  are divided by 1+min(4,recoveries), with integer flooring. Positive overhead
+  guarantees nonzero natural exposure. The cache and provenance include
+  recoveries. Saturation and forced-fixture hazard overrides remain intact.
+* B3: own occupancy permits reinforcement, subject to failure cooldowns.
+  Foreign knowledge expires 2000 years after signal arrival into UNKNOWN.
+  Delivered same-source signals refresh the record; arrivalYear remains in
+  committed signals. No foreign live state is read.
+* B4: new m4c-doomed-star system/domain places doom at 25000 years. Incoming
+  M4b crowded E3->E5 p10/p50/p90 are 4290/13120/22240 years, conditional on
+  18/30 attainments. The chosen time allows roughly that p90 plus margin;
+  it does not guarantee T7 or evacuation. The 3000-year m3b fixture/domain
+  is preserved unregistered; its M4b control numbers are in the audit.
+* B5: the permitted minimal option retains the reserve cliff. The ordinary
+  founding test now observes 2100 years and survives. A zero-growth authored
+  fixture isolates inadequate support: TECH_LOSS at 1030 and EXTINCTION at
+  1050, colony ages 1020/1040. It intentionally demonstrates the defect,
+  rather than asserting universal survival. Tool diagnostics include death
+  ages, p10/p50/p90, inclusive ages 1000–1200 count, and surviving arcs.
+
+### M4c goldens
+
+| Check | M4b old | M4c new |
+|---|---|---|
+| P temperate / civ-m2a-golden / 100 years | `1567cb59f6fcb4243e8b492ef3243ea6631711335ea0ba048027e2db795213f8` | `c54edd6106c8367b0380ecb65fd6c1304e390a86e04d2a082893f69ea9cf9f1f` |
+| D toy-12 / toy-1 / 100 years | `c998e6fff27bc9394f24e9882959f8ef08409c9871eb28a334c796ade079dbed` | `38c4b80bb32d3dd4a7dcce8d0bb8086c0c06f65c28d6e10147d4229283570cd1` |
+| M1 | `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc` | unchanged, observed |
+
+Observed commands: `node src/cli.mjs --civ temperate --seed civ-m2a-golden --years 100 --digest`,
+`node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1 --years 100 --digest`,
+and `npm run digest` (all produced the values above; exit 0).
+The dated binding prose and machine-readable rules change the manifest/RNG
+namespace. Equal seed names across revisions do not hold variates fixed;
+ensemble differences cannot isolate one fix's causal effect.
+
+### Workload exposure and intermediate checks
+
+No assertion or timeout was weakened or removed. The collapse-immunity
+assertion was replaced with the requested persistent-exposure assertion.
+The busy workload changes civ-m2a-9 (9 events under M4c) to civ-m2a-2
+(253 events, terminal history with retained advanced tiers). All workload,
+terminal-stop, digest and 2000 ms assertions remain. The lonely refinement
+fixture changes m3-4 (no local annotations) to m3-1 (2 anchors, 2 local
+annotations). Crowded m3-2 is unchanged. Query order and cold-process checks
+are unchanged. Seed changes restore exposure, not plausibility targets.
+
+Intermediate command receipts (logs in out/):
+
+* `node --test tests/m4-collapse.test.mjs tests/m4-occupancy.test.mjs tests/m4-colony.test.mjs tests/m4-plausibility.test.mjs tests/catalogue.test.mjs tests/report.test.mjs`:
+  18 pass / 1 fail, exit 1. The first colony death test incorrectly assumed the
+  growing control would die. The zero-growth fixture corrects this assumption.
+* `node --test tests/m4-colony.test.mjs`: 3 pass, exit 0, 513.4503 ms.
+* `node --test tests/civ-determinism.test.mjs tests/refinement-query-order.test.mjs tests/perf-budget.test.mjs tests/m4-plausibility.test.mjs tests/report.test.mjs`:
+  16 pass / 2 fail, exit 1 (lost workload exposures described above).
+* `node --test tests/refinement-query-order.test.mjs tests/perf-budget.test.mjs tests/m4-plausibility.test.mjs tests/m4-scenarios.test.mjs`:
+  8 pass / 1 fail, exit 1 (1500 ms refinement child timeout while ensemble
+  workers ran). Busy workload observed 1626.56 ms / 253 events and passed.
+* `node --test tests/expansion.test.mjs tests/contact-horizon.test.mjs tests/stellar-grace.test.mjs tests/horizon-prefix.test.mjs tests/m4b-horizon.test.mjs`:
+  13 pass, 0 fail, exit 0, 1156.3672 ms.
+
+Final ensemble, individually measured changed files and sole full-suite
+receipts follow below after completion. No perf:panel or visual review.
+
+### Final ensemble and focused verification
+
+`node tools/m4-plausibility.mjs --n 30 --jobs 4 --out docs/evidence/m4-plausibility-after.json`
+completed **180/180 seeds, zero simulation errors, exit 1**. Eight compiles
+exceeded 30 seconds: forager-future-{2,3,14,10} and
+lonely-earthlike-{6,10,7,20}. Slowest was lonely-earthlike-7 at **78,634.87 ms**
+(compilation), **79,366.27 ms** including diagnostics. This is NOT MET,
+not an ensemble correctness failure. Log: out/m4c-ensemble.txt.
+
+M4b → M4c lonely: 19 emerged / 11 pending / 0 true no-lineage →
+20 emerged / 9 pending / 1 true no-lineage. High-perils generic collapse
+median/max: 15/26 → 33/88. Doomed-star: 0 → 495 launches;
+30 → 23 EXTINCT_STELLAR (different declared lifecycle). Across the M4c
+ensemble 201 colony deaths include 61 within ages 1000–1200. The growing
+fixture survives; the zero-growth fixture still dies at age 1040. See the
+audit for every scenario, censor count, colonisation result and duration.
+
+Individual commands are `node --test <file>`, run sequentially after the
+ensemble ended. All exit 0; out/m4c-individual.txt records full output.
+
+| File | Pass | Node ms | Process ms |
+|---|---:|---:|---:|
+| tests/m4-collapse.test.mjs | 3 | 199.8209 | 290.4346 |
+| tests/m4-colony.test.mjs | 3 | 478.1397 | 563.9801 |
+| tests/m4-occupancy.test.mjs | 1 | 170.1987 | 258.0828 |
+| tests/m4-plausibility.test.mjs | 4 | 305.2022 | 393.5687 |
+| tests/m4-scenarios.test.mjs | 2 | 290.2742 | 376.9465 |
+| tests/report.test.mjs | 7 | 849.4839 | 934.5523 |
+| tests/civ-determinism.test.mjs | 4 | 1247.5835 | 1340.0902 |
+| tests/perf-budget.test.mjs | 2 | 1177.2463 | 1267.6061 |
+| tests/refinement-query-order.test.mjs | 1 | 2677.1314 | 2758.2974 |
+
+All change-specific M4 files meet the two-second target. **NOT MET:** the
+existing refinement-query-order file, using the replacement exposure seed,
+takes 2677.1314 ms alone (its assertions pass); its timeout remains 1500 ms.
+No timeout was increased or query/coverage assertion removed.
+
+`node --test tests/signatures.test.mjs`: **1 pass, 0 fail, 1 skipped, exit 0**,
+8603.1781 ms alone. The unchanged four-seed signature panel has cold lower
+median 19,223 <= temperate 37,206 years, invoking its existing NOT MET skip.
+Both cohorts have three observed attainments; no seed, horizon, assertion,
+or prior was changed. Its two-second file target is also NOT MET.
+
+### Sole final full-suite execution
+
+`npm test` ran **exactly once**, after the final source, fixture, test and
+ensemble edits. Observed exit **0**; out/m4c-full-tests.txt records:
+
+```text
+ℹ tests 147
+ℹ suites 0
+ℹ pass 146
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 42004.2065
+```
+
+The skip is the existing Kremer NOT MET check above. Neither civ-determinism
+nor refinement-query-order timed out in this invocation, so no conditional
+post-suite timeout rerun was needed. The earlier preflight timeout remains
+reported. Only documentation receipts and inventory followed the full run.
+`git --no-optional-locks diff --check` returned exit 0 (line-ending notices
+only). Changed-file inventory: [m4c-files.txt](evidence/m4c-files.txt).
+
+**NOT MET:** all calibration bands; the unchanged Kremer panel; the 30-second
+compile target (8/180); two-second file target for refinement-query-order and
+signatures. The colony reserve cliff is deliberately retained under B5's
+permitted minimal option and still causes deaths. Far future remains only
+political churn with static within-era energy capture; N=30 has weak tails.
+No universal plausibility, sustainability or calibrated prediction is claimed.
