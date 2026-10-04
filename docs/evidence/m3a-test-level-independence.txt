@@ -1,0 +1,13 @@
+$ node --test tests/level-independence.test.mjs
+✔ none/some/all cells, shuffled refinements, views, narrative and cold starts preserve P/D roots (253.9019ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 319.6548
+
+Exit: 0
+Wall ms: 352.84

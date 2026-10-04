@@ -1,0 +1,18 @@
+$ node --test tests/outcomes.test.mjs
+✔ collapse is not extinction; regression can recover; permanent cap blocks its domains (45.4543ms)
+✔ nonviable colony keeps living people; extinction waits for all arcs and voyages (59.5459ms)
+✔ O5 sends EXIT at the barrier and delivers it only on the next tick (32.7242ms)
+✔ shared catastrophe uses one resolved payload at t+1 with no recipient resampling (17.9225ms)
+✔ loss of two self-sustaining colonies queues REENTER and delivers it one tick later (19.8522ms)
+✔ natural extinction override cannot silently exceed the rate cap (8.3357ms)
+✔ same-lineage reinforcement rescues a nonviable colony without importing higher tiers (15.6741ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 262.0421
+
+Exit: 0

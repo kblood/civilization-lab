@@ -27,3 +27,8 @@ test('D delta table covers every field, including archived voyages; structural m
   assert.notEqual(domainStateDigest(changed),domainStateDigest(r.state));
   for(const cp of r.checkpoints)assert.deepEqual(Object.keys(cp).sort(),['archiveRecords','live','tick']);
 });
+import {contactFixture} from './m3-kind-helpers.mjs';
+test('signal delivery, contact and diffusion preserve arc-step permutation order',()=>{
+  const {input,f}=contactFixture(),w=createDomain(input,f.seed,{forced:f}),a=w.compileSummary(),b=w.compileSummary({arcOrder:'reverse'});
+  assert.ok(a.events.some(e=>e.kind==='FIRST_CONTACT'));assert.deepEqual(a.events,b.events);assert.equal(a.resultDigest,b.resultDigest);
+});

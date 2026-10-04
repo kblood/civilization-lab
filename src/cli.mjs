@@ -4,8 +4,11 @@ import { createPlanet, salientEvents } from './planet.mjs';
 import { IMPLEMENTED } from './catalogue.mjs';
 import { compareEvents } from './events.mjs';
 import {createDomain} from './domain.mjs';
+import {scenarioCLI} from './scenario-cli.mjs';
 const args=process.argv.slice(2), value=key=>args[args.indexOf(key)+1];
-if(args.includes('--domain')) {
+if(args.includes('--scenario')) {
+  scenarioCLI(value('--scenario'),args.includes('--seed')?value('--seed'):'s1',args.includes('--until-year')?Number(value('--until-year')):undefined);
+} else if(args.includes('--domain')) {
   const fixture=value('--domain'),seed=args.includes('--seed')?value('--seed'):'toy-1';
   const world=createDomain(fixture,seed,{years:args.includes('--years')?Number(value('--years')):undefined});
   if(world.status){console.log(`${world.status}: ${world.reason}`);process.exitCode=1;}

@@ -1,10 +1,10 @@
 import { compare } from './canonical.mjs';
 import { sha256Hex } from './digest.mjs';
 
-export const WITNESS_VERSION='m2a-delta-witness-1';
+export const WITNESS_VERSION='m3a-delta-witness-1';
 // These field orders are part of the witness schema, not object insertion order.
 export const REGION_FIELDS=Object.freeze(['id','localId','pop','Kbase','K','renewable','infra','fuel','forcing','immunityTicks','damage','polityId','cultureId','culture','tiers','caps','era','energy','resources','collapse','lowTicks','ceilings','spaceflight','berthsUsed'].sort(compare));
-export const ARC_FIELDS=Object.freeze(['id','lineageId','body','episode','foundedYear','foundingTiers','lastDeath','isColony','colonizer','polities','hazardEpisodes','chains','provenance','latches','perils','nonviable','outcome','scenarioParams','inbox','outbox','tick'].sort(compare));
+export const ARC_FIELDS=Object.freeze(['id','lineageId','body','episode','foundedYear','foundingTiers','lastDeath','isColony','colonizer','polities','hazardEpisodes','chains','provenance','latches','perils','nonviable','outcome','scenarioParams','inbox','outbox','tick','evacuating','signals','contacts','diffusionEdges'].sort(compare));
 // Lengths count UTF-16 code units; the completed text is hashed as UTF-8.
 // s<string-length>:<string>, n<integer>;, z/f/t, a<count>:<values>,
 // o<count>:<sorted key/value pairs>. BigInts use decimal strings, as in M1.

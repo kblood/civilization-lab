@@ -7,7 +7,7 @@ import {weightedPick} from './rng.mjs';
 import {population,members,regionById,splitRecords} from './polities.mjs';
 import {min,max} from './tech.mjs';
 export const PERILS=['NUCLEAR_WAR','ENGINEERED_PANDEMIC','RUNAWAY_TECH'];
-export const payload=(patch={})=>({voyageId:null,kind:null,outcome:null,lossPermille:0,infraLossPermille:0,tierDrop:0,damagePermille:0,damageTicks:0,caps:null,launch:null,...patch});
+export const payload=(patch={})=>({voyageId:null,kind:null,outcome:null,lossPermille:0,infraLossPermille:0,tierDrop:0,damagePermille:0,damageTicks:0,caps:null,launch:null,signal:null,...patch});
 export function message(domain,tick,source,type,target,causeEventId,data,ordinal=0,deliveryTick=tick+1n) {
   return {id:`${domain}#msg:${tick}~${source}~${type}~${target}~${ordinal}`,type,causeEventId,targetId:target,deliveryTick,payload:payload(data)};
 }
@@ -20,6 +20,8 @@ export function extraOpportunities(def,pre,add) {
   if(!population(pre.regions))return;
   const term=(name,value)=>({name,value});
   add('NATURAL_CATASTROPHE',pre.id,[term('impact',214748n),term('volcano',214748n)]);
+  const information=pre.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.tiers[4]):n,0);
+  for(const signal of pre.signals)if(!pre.contacts.some(c=>c.source===signal.source)&&(information>0||signal.physical))add('FIRST_CONTACT',pre.id,[term('signal',F(42949673n*BigInt(Math.max(signal.physical?1:0,information))*BigInt(signal.strength),1000n))],{source:signal.source},{edgeId:signal.source});
   for(const p of pre.polities) {
     const rs=members(pre,p),maxI=rs.reduce((n,r)=>Math.max(n,r.tiers[4]),0);
     if(rs.length>=2) {
@@ -38,8 +40,8 @@ export function extraOpportunities(def,pre,add) {
       if(armed.length>=2&&wars)add('NUCLEAR_WAR',pre.id,[term('prior',pre.scenarioParams.nuclearQ32*BigInt(Math.min(4,wars)))]);
     }
   }
-  if(pre.colonizer&&pre.tick%10n===0n&&def.routes?.length)for(const r of pre.regions)if(r.spaceflight&&r.tiers[3]>=5&&r.pop>4000n&&min(min(F(r.infra,10n),F(r.fuel,5n)),berths(r))>=2000n&&routesFor(def,r).length)
-    add('LAUNCH',r.id,[term('window',429496730n)],{r:r.id},{edgeId:r.id+'~window'});
+  if(override(def,'oracle.launchPeriodYears')===undefined&&(pre.colonizer||pre.evacuating)&&(pre.tick%10n===0n||pre.evacuating)&&def.routes?.length)for(const r of pre.regions)if(r.spaceflight&&r.tiers[3]>=5&&r.pop>4000n&&min(min(F(r.infra,10n),F(r.fuel,5n)),berths(r))>=2000n&&routesFor(def,r).length)
+    add('LAUNCH',r.id,[term('window',pre.evacuating?4294967300n:429496730n)],{r:r.id},{edgeId:r.id+'~window'});
 }
 export function extraMagnitudes(def,pre,e,o) {
   if(e.kind==='NATURAL_CATASTROPHE') {
@@ -80,6 +82,12 @@ export function catastrophe(pre,next,e,op,p) {
 export function applyExtra(def,pre,next,i,op,preempt,splitEvents) {
   const e=i.e,r=next.regions.find(r=>r.id===i.r),p=next.polities.find(p=>p.id===e.ownerId);
   switch(e.kind) {
+    case 'FIRST_CONTACT': {
+      if(next.contacts.some(c=>c.source===i.source)){preempt(e,'already-contacted');break;}
+      const signal=pre.signals.find(s=>s.source===i.source);e.data.source=i.source;
+      op.set(e,next,'arc','contacts',[...next.contacts,{source:i.source,eventId:e.id,dateYear:e.dateYear}].sort((a,b)=>compare(a.source,b.source)));
+      op.set(e,next,'arc','diffusionEdges',[...next.diffusionEdges,{source:i.source,tiers:[...signal.tiers]}].sort((a,b)=>compare(a.source,b.source)));break;
+    }
     case 'HEGEMONY':if(p)op.set(e,p,'polity','hegemony',true);break;
     case 'FRAGMENTATION': {
       if(!p||p.endedYear!==null){preempt(e,'target-ended');break;}

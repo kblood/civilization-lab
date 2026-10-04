@@ -1,0 +1,416 @@
+{
+  "schemaVersion": "civ-domain-stub-1",
+  "id": "crowded-four",
+  "systems": [
+    {
+      "id": "s00",
+      "fixture": "fixtures/planets/home-system.json",
+      "bodyPrefix": "stub:s00"
+    },
+    {
+      "id": "s01",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s01"
+    },
+    {
+      "id": "s02",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s02"
+    },
+    {
+      "id": "s03",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s03"
+    },
+    {
+      "id": "s04",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s04"
+    },
+    {
+      "id": "s05",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s05"
+    },
+    {
+      "id": "s06",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s06"
+    },
+    {
+      "id": "s07",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s07"
+    },
+    {
+      "id": "s08",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s08"
+    },
+    {
+      "id": "s09",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s09"
+    },
+    {
+      "id": "s10",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s10"
+    },
+    {
+      "id": "s11",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s11"
+    }
+  ],
+  "routes": [
+    {
+      "from": "stub:s00:b0",
+      "to": "stub:s01:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s01:b0",
+      "to": "stub:s00:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s01:b0",
+      "to": "stub:s02:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s02:b0",
+      "to": "stub:s01:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s02:b0",
+      "to": "stub:s03:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s03:b0",
+      "to": "stub:s02:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s03:b0",
+      "to": "stub:s04:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s04:b0",
+      "to": "stub:s03:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s04:b0",
+      "to": "stub:s05:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s05:b0",
+      "to": "stub:s04:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s05:b0",
+      "to": "stub:s06:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s06:b0",
+      "to": "stub:s05:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s06:b0",
+      "to": "stub:s07:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s07:b0",
+      "to": "stub:s06:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s07:b0",
+      "to": "stub:s08:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s08:b0",
+      "to": "stub:s07:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s08:b0",
+      "to": "stub:s09:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s09:b0",
+      "to": "stub:s08:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s09:b0",
+      "to": "stub:s10:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s10:b0",
+      "to": "stub:s09:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    }
+  ],
+  "origins": [
+    "stub:s00:b0",
+    "stub:s01:b0",
+    "stub:s02:b0",
+    "stub:s03:b0"
+  ],
+  "fromYear": 0,
+  "untilYear": 2000000
+}

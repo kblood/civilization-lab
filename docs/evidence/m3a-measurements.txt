@@ -1,0 +1,44 @@
+npm test
+exit=0 wall_ms=10480.38
+
+npm run digest
+exit=0 wall_ms=333.54
+
+node --test tests/horizon-prefix.test.mjs
+exit=0 wall_ms=442.73 cap_ms=2000
+
+node --test tests/projection-cell.test.mjs
+exit=0 wall_ms=1845.64 cap_ms=2000
+
+node --test tests/projection-year.test.mjs
+exit=0 wall_ms=1169.75 cap_ms=2000
+
+node --test tests/level-independence.test.mjs
+exit=0 wall_ms=352.84 cap_ms=2000
+
+node --test tests/views.test.mjs
+exit=0 wall_ms=196.18 cap_ms=2000
+
+node --test tests/narrative-isolation.test.mjs
+exit=0 wall_ms=123.69 cap_ms=2000
+
+node --test tests/front-speed.test.mjs
+exit=0 wall_ms=147.18 cap_ms=2000
+
+node --test tests/scenario.test.mjs
+exit=0 wall_ms=432.92 cap_ms=2000
+
+node src/cli.mjs --scenario lonely-earthlike --seed m3-1
+exit=0 wall_ms=139.04 cap_ms=15000
+
+node src/cli.mjs --scenario crowded-domain --seed m3-1
+exit=0 wall_ms=297.58 cap_ms=15000
+
+node src/cli.mjs --scenario harsh-anoxic --seed m3-1
+exit=0 wall_ms=136.19 cap_ms=15000
+
+node src/cli.mjs --scenario doomed-star --seed m3-1
+exit=0 wall_ms=114.89 cap_ms=15000
+
+node src/cli.mjs --scenario high-perils --seed m3-1
+exit=0 wall_ms=156.71 cap_ms=15000

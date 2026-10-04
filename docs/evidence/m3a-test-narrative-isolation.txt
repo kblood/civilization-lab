@@ -1,0 +1,14 @@
+$ node --test tests/narrative-isolation.test.mjs
+✔ transitive import graph isolates narrative and keeps refiners away from solver writes (0.5033ms)
+✔ grammar changes narrative digest without changing the causal result (22.6216ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87.3377
+
+Exit: 0
+Wall ms: 123.69

@@ -39,8 +39,8 @@ function validate(value,s) {
     value.forEach(v=>validate(v,s.items));
   }
   if(s.type==='object') {
-    exact(value,s.required);
-    for(const k of Object.keys(s.properties).sort(compare))validate(value[k],s.properties[k]);
+    if(!value||Array.isArray(value)||typeof value!=='object'||s.required.some(k=>!Object.hasOwn(value,k))||Object.keys(value).some(k=>!Object.hasOwn(s.properties,k)))throw new TypeError('Invalid closed record');
+    for(const k of Object.keys(value).sort(compare))validate(value[k],s.properties[k]);
   }
 }
 export const validateStub=(value,type)=>{canonicalBytes(value);validate(value,schema.$defs[type]);return value;};
@@ -54,12 +54,12 @@ export function validatePlanet(p) {
   for(const key of ['lifecycle','partition','epochs'])if(p[key].status==='known'&&digest(p[key].value)!==p[key].digest)throw new TypeError('Availability digest mismatch');
   if(p.lifecycle.status==='known') {
     const l=p.lifecycle.value;
-    if(l.habitableUntilYear<=l.habitableFromYear||[l.habitableFromYear,l.habitableUntilYear,l.complexLifeFromYear,l.stellarDoomYear].some(y=>y!==null&&y%10!==0))throw new TypeError('Invalid lifecycle');
+    if(l.habitableUntilYear<=l.habitableFromYear||[l.habitableFromYear,l.habitableUntilYear,l.complexLifeFromYear,l.stellarDoomYear??null].some(y=>y!==null&&y%10!==0))throw new TypeError('Invalid lifecycle');
   }
   if(p.partition.status==='known') {
     const rs=p.partition.value.regions; sortedUnique(rs,r=>r.id);
     for(const r of rs) {
-      sortedUnique(r.cells,c=>c.id); sortedUnique(r.adjacency,e=>e.to);
+      if(r.cells)sortedUnique(r.cells,c=>c.id); sortedUnique(r.adjacency,e=>e.to);
       for(const e of r.adjacency) {
         const back=rs.find(v=>v.id===e.to)?.adjacency.find(v=>v.to===r.id);
         if(e.to===r.id||!back||back.barrier!==e.barrier||back.contactPermille!==e.contactPermille)throw new TypeError('Asymmetric adjacency');

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "civ-domain-stub-1",
+  "id": "doomed-system",
+  "systems": [
+    {
+      "id": "s00",
+      "fixture": "fixtures/planets/doomed.json",
+      "bodyPrefix": "stub:s00"
+    }
+  ],
+  "routes": [],
+  "origins": [
+    "stub:s00:b0"
+  ],
+  "fromYear": 0,
+  "untilYear": 2000000
+}

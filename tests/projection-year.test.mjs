@@ -1,0 +1,21 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {refineYear,aggregateYears} from '../src/refine-year.mjs';
+import {refineCell} from '../src/refine-cell.mjs';
+import {scenarioRun,regional} from './m3-helpers.mjs';
+function check(p){const c=refineYear({},p,{tick:p.tick});assert.deepEqual(aggregateYears(c),p);
+  for(let j=0;j<10;j++){const residual=10n*(p.start.pop-c.samples[j].pop)+BigInt(j)*p.naturalDelta;assert.ok(residual>=0n&&residual<10n);assert.ok(c.samples[j].pop>=0n);}
+  assert.deepEqual(c.samples[10],{year:Number(BigInt(p.tick)*10n)+10,...p.end});
+  c.samples[4].pop++;assert.throws(()=>aggregateYears(c),/REFINEMENT_CONTRACT_ERROR/);
+}
+test('arc, region and every cell: exact end boundaries, nonnegative values, rational error less than one',()=>{
+  check({tick:'0',start:{pop:10n},end:{pop:0n},naturalDelta:-9n});
+  check({tick:'0',start:{pop:0n},end:{pop:100n},naturalDelta:0n});
+  for(const t of scenarioRun('lonely-earthlike','m3-1',200).ticks){let delta=0n;
+    for(const r of t.pre.regions){const {def,contract,address}=regional(t,r),child=refineCell(def,contract,address);delta+=contract.naturalDelta;
+      check({tick:String(t.tick),start:{pop:r.pop,tiers:r.tiers,polityId:r.polityId,era:r.era},end:{pop:contract.end.pop,tiers:contract.end.tiers,polityId:contract.end.polityId,era:contract.end.era},naturalDelta:contract.naturalDelta});
+      for(const c of child.cells)check({tick:String(t.tick),start:{...c.start,pop:c.annualStart},end:c.end,naturalDelta:c.naturalDelta});
+    }
+    check({tick:String(t.tick),start:{pop:t.pre.regions.reduce((n,r)=>n+r.pop,0n),outcome:t.pre.outcome},end:{pop:t.end.regions.reduce((n,r)=>n+r.pop,0n),outcome:t.end.outcome},naturalDelta:delta});
+  }
+});

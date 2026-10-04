@@ -1,0 +1,15 @@
+$ node --test tests/horizon-prefix.test.mjs
+✔ standalone complete chapters and an unaligned last tick are horizon independent (236.3215ms)
+✔ toy-12 event IDs, P and D tick digests and chapter prefix roots agree (82.7438ms)
+✔ negative control: hashing execution horizon into the manifest fails the same prefix comparison (13.7662ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 406.3735
+
+Exit: 0
+Wall ms: 442.73

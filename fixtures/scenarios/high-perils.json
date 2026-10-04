@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "civ-scenario-1",
+  "id": "high-perils",
+  "description": "fixtures/planets/temperate.json",
+  "startingFixture": "fixtures/regimes/industrial.json",
+  "overrides": [
+    {
+      "key": "hazard.COLLAPSE.q32",
+      "value": "429496730"
+    },
+    {
+      "key": "hazard.ENGINEERED_PANDEMIC.q32",
+      "value": "429496730"
+    },
+    {
+      "key": "hazard.RUNAWAY_TECH.q32",
+      "value": "429496730"
+    }
+  ],
+  "untilYear": 1000
+}

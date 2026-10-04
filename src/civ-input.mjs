@@ -43,6 +43,8 @@ export function validateForced(f,planet) {
     if(['parameters.g','parameters.build'].includes(o.key)){tuple(o.value,Array(8).fill(Number.MAX_SAFE_INTEGER));continue;}
     if(!nat(o.value))throw new TypeError('Canonical nonnegative override required');
     if(o.key==='origin.deliveryYear'){if(BigInt(o.value)%10n||BigInt(o.value)>400000n)throw new TypeError('Invalid origin boundary');continue;}
+    if(o.key==='origins.startingRegime'&&o.value==='1'&&f.initial!==null)continue;
+    if(o.key==='oracle.launchPeriodYears'&&BigInt(o.value)>=10n&&BigInt(o.value)%10n===0n)continue;
     if(o.key==='parameters.keepPermille'){if(BigInt(o.value)>1000n)throw new TypeError('Invalid keep');continue;}
     if(o.key==='parameters.naturalExtinctionPpm'){if(BigInt(o.value)>1000000n)throw new TypeError('Invalid natural extinction');continue;}
     const h=/^hazard\.([A-Z_]+)\.q32$/.exec(o.key);
@@ -81,10 +83,12 @@ export function validateForced(f,planet) {
   const h=BigInt(f.overrides.find(o=>o.key==='hazard.NATURAL_CATASTROPHE.q32')?.value??429496),p=BigInt(f.overrides.find(o=>o.key==='parameters.naturalExtinctionPpm')?.value??(h>3067833000n?3067833000000n/h:1000n));
   if(h*p>3067833000000n)throw new RangeError('Natural extinction rate cap');
 }
-export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null}={}) {
+export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null,untilYear}={}) {
   if(typeof seed!=='string'||!seed.isWellFormed()||!Number.isSafeInteger(years)||years<10||years%10||years>400000)throw new RangeError('Invalid run');
   const {path,planet:original}=loadPlanet(fixture);
-  forced=structuredClone(forced??postSapience(path,seed,years/10));
+  const executionTicks=untilYear===undefined?(forced===null?years/10:forced.ticks):F(untilYear,10)-Number(forced?.initial?.atTick??0);
+  if(!Number.isSafeInteger(executionTicks)||executionTicks<1||executionTicks>40000)throw new RangeError('Invalid execution horizon');
+  forced=structuredClone(forced??postSapience(path,seed,40000));
   const initialOverride=forced.overrides.find(o=>o.key==='initial');
   if(initialOverride){if(forced.initial!==null&&digest(forced.initial)!==digest(initialOverride.value))throw new TypeError('Conflicting initial overrides');forced.initial=initialOverride.value;forced.overrides=forced.overrides.filter(o=>o.key!=='initial');}
   if(forced.seed!==seed||forced.base!==path)throw new TypeError('Forced seed/base mismatch');
@@ -99,8 +103,8 @@ export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=200
   const manifest={manifestVersion:'civ-manifest-1',modelVersion:'civ-m2-1',rngVersion:'civ-rng-1',samplerVersion:'civ-samplers-1',arithmeticVersion:'civ-fixed-1',catalogueVersion:'civ-catalogue-1',partitionVersion:'civ-stub-regions-1',tickYears:10,chapterTicks:640,envEpochYears:1000,atlasVersions:{},
     inputBundleDigest:digest({domain,systems,forced}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
       originRateLog2:[12,22],learningLog2:[8,12],innovationLog2:[17,23],nuclearLog2:[8,24],pandemicLog2:[12,28],runawayLog2:[14,29],sharedLog2:[0,19],colonizerLog2:[15,19]}};
-  const fromTick=BigInt(forced.initial?.atTick??'0'),untilTick=fromTick+BigInt(forced.ticks),arcId=`arc:${planet.body}:lin:${planet.body}:0`;
-  const def={compactHazards:true,seed,manifest:deepFreeze(manifest),manifestDigest:digest(manifest),recipeDigest:digest({seed,manifest,fromTick,untilTick}),fromTick,untilTick,forced:deepFreeze(forced),planet:deepFreeze(planet),domain,arcId,env};
+  const fromTick=BigInt(forced.initial?.atTick??'0'),untilTick=fromTick+BigInt(executionTicks),arcId=`arc:${planet.body}:lin:${planet.body}:0`;
+  const def={compactHazards:true,seed,manifest:deepFreeze(manifest),manifestDigest:digest(manifest),recipeDigest:digest({seed,manifest,fromTick}),fromTick,untilTick,forced:deepFreeze(forced),planet:deepFreeze(planet),domain,arcId,env};
   const rates=[0,1,2].map(j=>1n<<(12n+below(address(def,originId(planet.body),`orig.rate.${j}`,'D'),11n)));
   const waits=rates.map((rate,j)=>{const e=expQ32(address(def,originId(planet.body),`orig.step.${j}`,'D'));return F(e+rate-1n,rate);});
   def.origin={body:planet.body,rates,waitYears:waits,sapienceYear:Number(override(def,'origin.deliveryYear')??fromTick*10n),deliveryTick:BigInt(override(def,'origin.deliveryYear')??fromTick*10n)/10n,status:'founded'};

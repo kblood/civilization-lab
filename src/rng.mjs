@@ -1,7 +1,7 @@
 import { logPos, positiveQ32 } from './fixed.mjs';
 import { compare } from './canonical.mjs';
 export const PURPOSES = Object.freeze(['evt.toy.magnitude', 'evt.war.campaign', 'haz.boom',
-  'haz.plague', 'haz.toy', 'nar.name', 'pol.split.part', 'ref.cell.site',
+  'haz.plague', 'haz.toy', 'nar.name', 'nar.arc', 'nar.polity', 'nar.culture', 'nar.settlement', 'pol.split.part', 'ref.cell.site', 'ref.cell.anchor', 'ref.cell.local', 'haz.FIRST_CONTACT',
   'haz.MIGRATION', 'haz.AGRICULTURE', 'haz.PLAGUE', 'haz.NATURAL_CATASTROPHE',
   'haz.DISCOVERY', 'haz.DIFFUSION', 'haz.POLITY_FOUNDING', 'haz.WAR',
   'haz.FRAGMENTATION', 'haz.REVOLUTION', 'haz.SCHISM', 'haz.COLLAPSE',

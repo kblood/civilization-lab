@@ -1,0 +1,69 @@
+ M README.md
+ M docs/transition-table-v1.md
+ M src/catalogue-data.json
+ M src/civ-input.mjs
+ M src/cli.mjs
+ M src/delta-witness.mjs
+ M src/domain.mjs
+ M src/environment.mjs
+ M src/events.mjs
+ M src/m2b.mjs
+ M src/planet.mjs
+ M src/rng.mjs
+ M tests/catalogue.test.mjs
+ M tests/civ-determinism.test.mjs
+ M tests/contact-horizon.test.mjs
+ M tests/determinism-lint.test.mjs
+ M tests/domain-order.test.mjs
+ M tests/fixtures-reach.test.mjs
+?? docs/evidence/m3a-diff-check.txt
+?? docs/evidence/m3a-digest.txt
+?? docs/evidence/m3a-measurements.txt
+?? docs/evidence/m3a-npm-scenario.txt
+?? docs/evidence/m3a-outcomes.txt
+?? docs/evidence/m3a-scenario-crowded-domain.txt
+?? docs/evidence/m3a-scenario-doomed-star.txt
+?? docs/evidence/m3a-scenario-harsh-anoxic.txt
+?? docs/evidence/m3a-scenario-high-perils.txt
+?? docs/evidence/m3a-scenario-lonely-earthlike.txt
+?? docs/evidence/m3a-test-front-speed.txt
+?? docs/evidence/m3a-test-horizon-prefix.txt
+?? docs/evidence/m3a-test-level-independence.txt
+?? docs/evidence/m3a-test-narrative-isolation.txt
+?? docs/evidence/m3a-test-projection-cell.txt
+?? docs/evidence/m3a-test-projection-year.txt
+?? docs/evidence/m3a-test-scenario.txt
+?? docs/evidence/m3a-test-views.txt
+?? docs/evidence/m3a-tests.txt
+?? docs/m3-implementation.md
+?? fixtures/domains/crowded-four.json
+?? fixtures/domains/doomed-star.json
+?? fixtures/planets/doomed.json
+?? fixtures/regimes/agrarian.json
+?? fixtures/regimes/industrial.json
+?? fixtures/regimes/post-sapience.json
+?? fixtures/scenarios/crowded-domain.json
+?? fixtures/scenarios/doomed-star.json
+?? fixtures/scenarios/harsh-anoxic.json
+?? fixtures/scenarios/high-perils.json
+?? fixtures/scenarios/lonely-earthlike.json
+?? src/inspection.mjs
+?? src/name-grammar.json
+?? src/narrative.mjs
+?? src/refine-cell.mjs
+?? src/refine-year.mjs
+?? src/refinement-contract.mjs
+?? src/scenario-cli.mjs
+?? src/scenario.mjs
+?? src/views.mjs
+?? tests/front-speed.test.mjs
+?? tests/horizon-prefix.test.mjs
+?? tests/level-independence.test.mjs
+?? tests/m3-helpers.mjs
+?? tests/m3-kind-helpers.mjs
+?? tests/narrative-isolation.test.mjs
+?? tests/projection-cell.test.mjs
+?? tests/projection-year.test.mjs
+?? tests/scenario.test.mjs
+?? tests/views.test.mjs
+?? tools/verify-m3a.mjs

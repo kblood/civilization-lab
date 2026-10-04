@@ -1714,23 +1714,666 @@ requires a new version or declared override.
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:civ:stub-schema:1",
-  "oneOf": [{"$ref":"#/$defs/PlanetStub"},{"$ref":"#/$defs/SystemStub"},{"$ref":"#/$defs/DomainStub"}],
+  "oneOf": [
+    {
+      "$ref": "#/$defs/PlanetStub"
+    },
+    {
+      "$ref": "#/$defs/SystemStub"
+    },
+    {
+      "$ref": "#/$defs/DomainStub"
+    }
+  ],
   "$defs": {
-    "AvailabilityEpochs": {"oneOf":[{"type":"object","additionalProperties":false,"required":["digest","status","value"],"properties":{"status":{"const":"known"},"value":{"$ref":"#/$defs/Epochs"},"digest":{"type":"string","pattern":"^[a-f0-9]{64}$"}}},{"type":"object","additionalProperties":false,"required":["reason","status"],"properties":{"status":{"const":"absent"},"reason":{"type":"string","minLength":1}}},{"type":"object","additionalProperties":false,"required":["capability","status"],"properties":{"status":{"const":"unsupported"},"capability":{"type":"string","minLength":1}}}]},
-    "AvailabilityLifecycle": {"oneOf":[{"type":"object","additionalProperties":false,"required":["digest","status","value"],"properties":{"status":{"const":"known"},"value":{"$ref":"#/$defs/Lifecycle"},"digest":{"type":"string","pattern":"^[a-f0-9]{64}$"}}},{"type":"object","additionalProperties":false,"required":["reason","status"],"properties":{"status":{"const":"absent"},"reason":{"type":"string","minLength":1}}},{"type":"object","additionalProperties":false,"required":["capability","status"],"properties":{"status":{"const":"unsupported"},"capability":{"type":"string","minLength":1}}}]},
-    "AvailabilityPartition": {"oneOf":[{"type":"object","additionalProperties":false,"required":["digest","status","value"],"properties":{"status":{"const":"known"},"value":{"$ref":"#/$defs/Partition"},"digest":{"type":"string","pattern":"^[a-f0-9]{64}$"}}},{"type":"object","additionalProperties":false,"required":["reason","status"],"properties":{"status":{"const":"absent"},"reason":{"type":"string","minLength":1}}},{"type":"object","additionalProperties":false,"required":["capability","status"],"properties":{"status":{"const":"unsupported"},"capability":{"type":"string","minLength":1}}}]},
-    "CellStub": {"type":"object","additionalProperties":false,"required":["id","weight"],"properties":{"id":{"type":"string","pattern":"^c(0[0-9]|1[0-5])$"},"weight":{"type":"string","pattern":"^(0|[1-9][0-9]*)$"}}},
-    "DomainStub": {"type":"object","additionalProperties":false,"required":["fromYear","id","origins","routes","schemaVersion","systems","untilYear"],"properties":{"schemaVersion":{"const":"civ-domain-stub-1"},"id":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"systems":{"type":"array","items":{"$ref":"#/$defs/SystemRef"},"minItems":1,"maxItems":32},"routes":{"type":"array","items":{"$ref":"#/$defs/RouteStub"},"minItems":0},"origins":{"type":"array","items":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"minItems":0,"maxItems":4},"fromYear":{"type":"integer","minimum":-9007199254740991,"maximum":9007199254740991},"untilYear":{"type":"integer","minimum":-9007199254740991,"maximum":9007199254740991}}},
-    "EdgeStub": {"type":"object","additionalProperties":false,"required":["barrier","contactPermille","to"],"properties":{"to":{"type":"string","pattern":"^r(0[0-9]|[12][0-9]|3[01])$"},"contactPermille":{"type":"integer","minimum":0,"maximum":1000},"barrier":{"type":"boolean"}}},
-    "EpochStub": {"type":"object","additionalProperties":false,"required":["Kbase","airClass","aridityClass","domesticablesPpm","fromEpoch","gravityMicroMS2","landPpm","regionId","resources","tempClass","untilEpoch"],"properties":{"fromEpoch":{"type":"string","pattern":"^(0|-?[1-9][0-9]*)$"},"untilEpoch":{"type":"string","pattern":"^(0|-?[1-9][0-9]*)$"},"regionId":{"type":"string","pattern":"^r(0[0-9]|[12][0-9]|3[01])$"},"Kbase":{"type":"string","pattern":"^(0|[1-9][0-9]*)$"},"landPpm":{"type":"integer","minimum":0,"maximum":1000000},"tempClass":{"type":"integer","minimum":0,"maximum":4},"aridityClass":{"type":"integer","minimum":0,"maximum":4},"airClass":{"enum":["oxic","anoxic","none"]},"gravityMicroMS2":{"type":"integer","minimum":1,"maximum":100000000},"resources":{"type":"array","items":{"type":"integer","minimum":0,"maximum":1000},"minItems":4,"maxItems":4},"domesticablesPpm":{"type":"integer","minimum":0,"maximum":1000000}}},
-    "Epochs": {"type":"object","additionalProperties":false,"required":["rows"],"properties":{"rows":{"type":"array","items":{"$ref":"#/$defs/EpochStub"},"minItems":1}}},
-    "Lifecycle": {"type":"object","additionalProperties":false,"required":["complexLifeFromYear","habitableFromYear","habitableUntilYear","stellarDoomYear"],"properties":{"habitableFromYear":{"type":"integer","minimum":-9007199254740991,"maximum":9007199254740991},"habitableUntilYear":{"type":"integer","minimum":-9007199254740991,"maximum":9007199254740991},"complexLifeFromYear":{"anyOf":[{"type":"integer","minimum":-9007199254740991,"maximum":9007199254740991},{"type":"null"}]},"stellarDoomYear":{"anyOf":[{"type":"integer","minimum":-9007199254740991,"maximum":9007199254740991},{"type":"null"}]}}},
-    "Partition": {"type":"object","additionalProperties":false,"required":["partitionVersion","regions"],"properties":{"partitionVersion":{"const":"civ-stub-regions-1"},"regions":{"type":"array","items":{"$ref":"#/$defs/RegionStub"},"minItems":8,"maxItems":32}}},
-    "PlanetStub": {"type":"object","additionalProperties":false,"required":["body","epochs","hosting","lifecycle","partition","profile","schemaVersion","system"],"properties":{"schemaVersion":{"const":"civ-planet-stub-1"},"body":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"system":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"profile":{"enum":["temperate","arid","cold","anoxic","habitat","barren"]},"lifecycle":{"$ref":"#/$defs/AvailabilityLifecycle"},"partition":{"$ref":"#/$defs/AvailabilityPartition"},"epochs":{"$ref":"#/$defs/AvailabilityEpochs"},"hosting":{"enum":["habitable","habitat-buildable","barren"]}}},
-    "RegionStub": {"type":"object","additionalProperties":false,"required":["adjacency","cells","id","weight"],"properties":{"id":{"type":"string","pattern":"^r(0[0-9]|[12][0-9]|3[01])$"},"weight":{"type":"string","pattern":"^(0|[1-9][0-9]*)$"},"adjacency":{"type":"array","items":{"$ref":"#/$defs/EdgeStub"},"minItems":0},"cells":{"type":"array","items":{"$ref":"#/$defs/CellStub"},"minItems":16,"maxItems":16}}},
-    "RouteStub": {"type":"object","additionalProperties":false,"required":["destinationHosting","distanceMicroLy","from","kind","to","travelYearsByTransportTier"],"properties":{"from":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"to":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"kind":{"enum":["in-system","interstellar"]},"distanceMicroLy":{"type":"string","pattern":"^(0|[1-9][0-9]*)$"},"travelYearsByTransportTier":{"type":"array","items":{"anyOf":[{"type":"integer","minimum":1,"maximum":9007199254740991},{"type":"null"}]},"minItems":8,"maxItems":8},"destinationHosting":{"enum":["habitable","habitat-buildable","barren"]}}},
-    "SystemRef": {"type":"object","additionalProperties":false,"required":["bodyPrefix","fixture","id"],"properties":{"id":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"fixture":{"type":"string","minLength":1},"bodyPrefix":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"}}},
-    "SystemStub": {"type":"object","additionalProperties":false,"required":["bodies","id","routes","schemaVersion"],"properties":{"schemaVersion":{"const":"civ-system-stub-1"},"id":{"type":"string","pattern":"^[A-Za-z0-9_./:-]+$"},"bodies":{"type":"array","items":{"$ref":"#/$defs/PlanetStub"},"minItems":1,"maxItems":8},"routes":{"type":"array","items":{"$ref":"#/$defs/RouteStub"},"minItems":0}}}
+    "AvailabilityEpochs": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "digest",
+            "status",
+            "value"
+          ],
+          "properties": {
+            "status": {
+              "const": "known"
+            },
+            "value": {
+              "$ref": "#/$defs/Epochs"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reason",
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "absent"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "capability",
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "unsupported"
+            },
+            "capability": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "AvailabilityLifecycle": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "digest",
+            "status",
+            "value"
+          ],
+          "properties": {
+            "status": {
+              "const": "known"
+            },
+            "value": {
+              "$ref": "#/$defs/Lifecycle"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reason",
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "absent"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "capability",
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "unsupported"
+            },
+            "capability": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "AvailabilityPartition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "digest",
+            "status",
+            "value"
+          ],
+          "properties": {
+            "status": {
+              "const": "known"
+            },
+            "value": {
+              "$ref": "#/$defs/Partition"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reason",
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "absent"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "capability",
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "const": "unsupported"
+            },
+            "capability": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "CellStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "weight"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^c(0[0-9]|1[0-5])$"
+        },
+        "weight": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      }
+    },
+    "DomainStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fromYear",
+        "id",
+        "origins",
+        "routes",
+        "schemaVersion",
+        "systems",
+        "untilYear"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "civ-domain-stub-1"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "systems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SystemRef"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RouteStub"
+          },
+          "minItems": 0
+        },
+        "origins": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_./:-]+$"
+          },
+          "minItems": 0,
+          "maxItems": 4
+        },
+        "fromYear": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "untilYear": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "EdgeStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "barrier",
+        "contactPermille",
+        "to"
+      ],
+      "properties": {
+        "to": {
+          "type": "string",
+          "pattern": "^r(0[0-9]|[12][0-9]|3[01])$"
+        },
+        "contactPermille": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "barrier": {
+          "type": "boolean"
+        }
+      }
+    },
+    "EpochStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Kbase",
+        "airClass",
+        "aridityClass",
+        "domesticablesPpm",
+        "fromEpoch",
+        "gravityMicroMS2",
+        "landPpm",
+        "regionId",
+        "resources",
+        "tempClass",
+        "untilEpoch"
+      ],
+      "properties": {
+        "fromEpoch": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]*)$"
+        },
+        "untilEpoch": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]*)$"
+        },
+        "regionId": {
+          "type": "string",
+          "pattern": "^r(0[0-9]|[12][0-9]|3[01])$"
+        },
+        "Kbase": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "landPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "tempClass": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "aridityClass": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "airClass": {
+          "enum": [
+            "oxic",
+            "anoxic",
+            "none"
+          ]
+        },
+        "gravityMicroMS2": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000000
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "domesticablesPpm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "cellWeights": {
+          "type": "array",
+          "minItems": 16,
+          "maxItems": 16,
+          "items": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          }
+        }
+      }
+    },
+    "Epochs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rows"
+      ],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EpochStub"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "Lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complexLifeFromYear",
+        "habitableFromYear",
+        "habitableUntilYear"
+      ],
+      "properties": {
+        "habitableFromYear": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "habitableUntilYear": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "complexLifeFromYear": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stellarDoomYear": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      }
+    },
+    "Partition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "partitionVersion",
+        "regions"
+      ],
+      "properties": {
+        "partitionVersion": {
+          "const": "civ-stub-regions-1"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RegionStub"
+          },
+          "minItems": 8,
+          "maxItems": 32
+        }
+      }
+    },
+    "PlanetStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "body",
+        "epochs",
+        "hosting",
+        "lifecycle",
+        "partition",
+        "profile",
+        "schemaVersion",
+        "system"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "civ-planet-stub-1"
+        },
+        "body": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "system": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "profile": {
+          "enum": [
+            "temperate",
+            "arid",
+            "cold",
+            "anoxic",
+            "habitat",
+            "barren"
+          ]
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/AvailabilityLifecycle"
+        },
+        "partition": {
+          "$ref": "#/$defs/AvailabilityPartition"
+        },
+        "epochs": {
+          "$ref": "#/$defs/AvailabilityEpochs"
+        },
+        "hosting": {
+          "enum": [
+            "habitable",
+            "habitat-buildable",
+            "barren"
+          ]
+        }
+      }
+    },
+    "RegionStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adjacency",
+        "id",
+        "weight"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^r(0[0-9]|[12][0-9]|3[01])$"
+        },
+        "weight": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "adjacency": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EdgeStub"
+          },
+          "minItems": 0
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CellStub"
+          },
+          "minItems": 16,
+          "maxItems": 16
+        }
+      }
+    },
+    "RouteStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "destinationHosting",
+        "distanceMicroLy",
+        "from",
+        "kind",
+        "to",
+        "travelYearsByTransportTier"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "kind": {
+          "enum": [
+            "in-system",
+            "interstellar"
+          ]
+        },
+        "distanceMicroLy": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "travelYearsByTransportTier": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "destinationHosting": {
+          "enum": [
+            "habitable",
+            "habitat-buildable",
+            "barren"
+          ]
+        },
+        "lightYears": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000000
+        }
+      }
+    },
+    "SystemRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bodyPrefix",
+        "fixture",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "fixture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bodyPrefix": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        }
+      }
+    },
+    "SystemStub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bodies",
+        "id",
+        "routes",
+        "schemaVersion"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": "civ-system-stub-1"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_./:-]+$"
+        },
+        "bodies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PlanetStub"
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RouteStub"
+          },
+          "minItems": 0
+        }
+      }
+    }
   }
 }
 ```
@@ -2129,6 +2772,66 @@ All changes here are authored scenario/representation choices, not research clai
 - No M2a calibration constants changed. M2b kinds are enabled in the milestone
   manifest; M2 stability goldens must be regenerated. M1 bytes are unchanged.
 
+## Revision log (M3a, 2026-10-04)
+
+The execution horizon is excluded from the standalone default input bundle and
+both P/D recipes. Default standalone forced data declares a fixed 40,000-tick
+model bound. Explicit forced fixtures retain their declared bounds as data.
+Only canonical chapter boundaries and terminal ticks carry structural P hashes.
+Pending origins beyond an execution slice do not permit early terminal stopping.
+
+STELLAR_DOOM (32, P, phase 0) reads nullable lifecycle.stellarDoomYear (omission
+means null). At that exact boundary, any inhabited Energy>=5 region sets
+arc.evacuating=true; otherwise it removes every region's population, with the
+stellar death witness determining EXTINCT_STELLAR. Evacuation opens LAUNCH each
+tick with 10 times its ordinary pressure, subject to ordinary stock/route gates.
+The four new P fields initialize to false/empty and participate in every witness.
+
+SIGNAL_ARRIVAL (33, D, scheduled phase 0) delivers the first I>=3 emission on
+each outgoing route. Optional route.lightYears is an integer; the default is
+ceil(distanceMicroLy/1000000), including zero in-system. The existing ceil-based
+delivery rule applies, never earlier than the next tick. A signal payload is
+{source,lineageId,body,tiers,strength,physical,arrivalYear}; ordinary payloads carry signal=null.
+Signals addressed to the same lineage are ignored. Receivers retain signals sorted by source; the inbox snapshot omits arrivalYear. Duplicate sources do not duplicate
+edges. An occupied-body voyage rejection also supplies a physical-meeting signal.
+No extinct source is needed to deliver an already emitted signal.
+
+FIRST_CONTACT (34, P receiver hazard) uses max Information times strength with
+Q32 coefficient 42949673/1000; physical encounters allow Information zero using
+max(1,I). It writes a contact {source,eventId,dateYear} and one diffusion edge
+holding the signal's immutable tier snapshot. Only DIFFUSION can acquire tiers,
+using the ordinary gate, rate coefficient and per-domain acquisition lock.
+There is no immediate technology transfer on either arrival or contact.
+
+C-only ranks 35..39 are RAID, TOWN_FOUNDED, TOWN_ABANDONED, LOCAL_FLOOD and
+LOCAL_SUCCESSION. They annotate, never write stocks. C uses civ-cell-binary-1,
+16 sorted cells, recursive floor splits, unit-leaf zero-weight fallback and the
+epoch containing each boundary. Optional epoch.cellWeights overrides the static
+cell weights. The town threshold is 1000 persons [scenario], with transition IDs
+keyed by site and boundary tick. Local annotations have salience below macro
+events; placement/date purposes are ref.cell.site, ref.cell.anchor, ref.cell.local.
+Annual interior samples apply floorDiv(j*naturalDelta,10); resolved effects and
+staircase changes appear at the end boundary. N has separate nar.* addresses.
+
+Bounded scenario overrides may set origins.startingRegime=1 to initialize all
+origins in the declared regime. The fixture-only oracle.launchPeriodYears schedules
+one launch at foundedYear+period, a positive multiple of ten, retaining stock and
+route gates; existing overrides disable growth/hazards for the speed oracle.
+Missing RegionStub.cells derives 16 integer weights by quotient/remainder from
+region.weight in sorted cell order. These rules are authored fixture parameters.
+
+The new atomic P fields are arc.evacuating:Boolean (initial false),
+arc.signals:Array, arc.contacts:Array and arc.diffusionEdges:Array (initial empty).
+Their compound shapes are specified above; all enter the structural digest and
+the m3a-delta-witness-1 field vector. A received radio signal has strength=1000
+[scenario]. Its one-shot tier snapshot records knowledge at first emission.
+A region refinement contract may carry its own canonical boundary-population
+history, from the bounded initial state through the requested end. This is used
+only to recover town founding ticks, never sibling state. Town identity is the
+site ID plus that founding tick, including on abandonment and later re-founding.
+When no earlier history is supplied, the left boundary declares the settlement
+view genesis. Every annotation retains zero stock effects.
+
 ## Machine-readable table
 
 This is the sole fenced `json` block in this document. `phase` and `trigger`
@@ -2427,6 +3130,22 @@ Atomic records do not grant permission to create undeclared record members.
       "encoding": "SHA256(version+semicolon+previous+valueDelta(before,after)); valueDelta is the M2a annex grammar",
       "genesis": "structural SHA256 of the domain view with complete structural P roots",
       "checkpoint": "complete LIVE domain plus append-only archive; no RNG state"
+    },
+    "m3a": {
+      "horizon": "Execution horizon excluded from default forced data, manifest and recipe; structural witnesses only at canonical chapter boundaries or terminal state.",
+      "cellPartition": "civ-cell-binary-1",
+      "cellAllocation": "fixed binary sorted IDs; floorDiv at each node; zero sum uses unit leaf weights; boundary weights use containing epoch",
+      "townThreshold": 1000,
+      "signalLightYearsDefault": "ceilDiv(distanceMicroLy,1000000); zero in-system; delivery uses the existing ceil rule",
+      "contactRateQ32": "42949673 * receiver max Information * signal strength / 1000; physical meeting uses strength 1000 and max(1,Information)",
+      "doom": "phase0 at stellarDoomYear; E>=5 opens permanent evacuation pressure, else remove all persons; null disables",
+      "annotations": "RAID,TOWN_FOUNDED,TOWN_ABANDONED,LOCAL_FLOOD,LOCAL_SUCCESSION have no stock effects",
+      "signal": "first post-commit I>=3 emits once on each outgoing route; immutable tier snapshot; no technology transfer on arrival/contact; DIFFUSION only",
+      "startingRegime": "origins.startingRegime=1 copies the declared bounded initial regime to each origin, without replaying SAPIENCE stock grants",
+      "frontOracle": "oracle.launchPeriodYears is a fixture-only scheduled launch at foundedYear+period, once per arc; period is a positive multiple of ten. Ordinary stock, tier and route gates still apply; natural dynamics and losses are disabled only by explicit existing fixture overrides.",
+      "narrative": "N consumes sorted event log and IDs; grammar and N result are separately digested; no solver imports N",
+      "witnessVersion": "m3a-delta-witness-1",
+      "townIdentity": "(siteId, foundingTick) from region-only canonical boundary history; omitted history declares left-boundary view genesis"
     }
   },
   "frameworkReads": [
@@ -2743,7 +3462,8 @@ Atomic records do not grant permission to create undeclared record members.
         "region.polityId",
         "region.pop",
         "region.resources",
-        "region.tiers"
+        "region.tiers",
+        "arc.diffusionEdges"
       ],
       "writes": [
         "region.tiers"
@@ -3220,7 +3940,8 @@ Atomic records do not grant permission to create undeclared record members.
         "region.localId",
         "region.pop",
         "region.spaceflight",
-        "region.tiers"
+        "region.tiers",
+        "arc.evacuating"
       ],
       "writes": [
         "arc.outbox",
@@ -3400,6 +4121,126 @@ Atomic records do not grant permission to create undeclared record members.
         "lineage.extinctionCause",
         "lineage.outcomeClass"
       ]
+    },
+    {
+      "kind": "STELLAR_DOOM",
+      "kindRank": 32,
+      "owner": "P",
+      "trigger": "exogenous",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "arc.evacuating",
+        "region.pop",
+        "region.tiers",
+        "input.environment"
+      ],
+      "writes": [
+        "arc.evacuating",
+        "region.pop"
+      ],
+      "salience": 1000
+    },
+    {
+      "kind": "SIGNAL_ARRIVAL",
+      "kindRank": 33,
+      "owner": "D",
+      "trigger": "scheduled",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "message.payload",
+        "message.targetId",
+        "message.deliveryTick",
+        "arc.signals"
+      ],
+      "writes": [
+        "arc.signals"
+      ],
+      "salience": 650
+    },
+    {
+      "kind": "FIRST_CONTACT",
+      "kindRank": 34,
+      "owner": "P",
+      "trigger": "hazard",
+      "phase": 2,
+      "milestone": "M3a",
+      "reads": [
+        "arc.signals",
+        "arc.contacts",
+        "region.tiers"
+      ],
+      "writes": [
+        "arc.contacts",
+        "arc.diffusionEdges"
+      ],
+      "salience": 900
+    },
+    {
+      "kind": "RAID",
+      "kindRank": 35,
+      "owner": "C",
+      "trigger": "scheduled",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "cell.pop"
+      ],
+      "writes": [],
+      "salience": 100
+    },
+    {
+      "kind": "TOWN_FOUNDED",
+      "kindRank": 36,
+      "owner": "C",
+      "trigger": "scheduled",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "cell.pop"
+      ],
+      "writes": [],
+      "salience": 100
+    },
+    {
+      "kind": "TOWN_ABANDONED",
+      "kindRank": 37,
+      "owner": "C",
+      "trigger": "scheduled",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "cell.pop"
+      ],
+      "writes": [],
+      "salience": 100
+    },
+    {
+      "kind": "LOCAL_FLOOD",
+      "kindRank": 38,
+      "owner": "C",
+      "trigger": "scheduled",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "cell.pop"
+      ],
+      "writes": [],
+      "salience": 100
+    },
+    {
+      "kind": "LOCAL_SUCCESSION",
+      "kindRank": 39,
+      "owner": "C",
+      "trigger": "scheduled",
+      "phase": 0,
+      "milestone": "M3a",
+      "reads": [
+        "cell.pop"
+      ],
+      "writes": [],
+      "salience": 100
     }
   ],
   "fields": [
@@ -3438,6 +4279,24 @@ Atomic records do not grant permission to create undeclared record members.
       ]
     },
     {
+      "path": "arc.contacts",
+      "type": "Array",
+      "unit": "contact_records",
+      "writtenBy": [
+        "INIT",
+        "FIRST_CONTACT"
+      ]
+    },
+    {
+      "path": "arc.diffusionEdges",
+      "type": "Array",
+      "unit": "received_tier_snapshots",
+      "writtenBy": [
+        "INIT",
+        "FIRST_CONTACT"
+      ]
+    },
+    {
       "path": "arc.episode",
       "type": "Number",
       "unit": "count",
@@ -3445,6 +4304,15 @@ Atomic records do not grant permission to create undeclared record members.
         "COLONY_FOUNDED",
         "INIT",
         "SAPIENCE"
+      ]
+    },
+    {
+      "path": "arc.evacuating",
+      "type": "Boolean",
+      "unit": "flag",
+      "writtenBy": [
+        "INIT",
+        "STELLAR_DOOM"
       ]
     },
     {
@@ -3648,12 +4516,30 @@ Atomic records do not grant permission to create undeclared record members.
       ]
     },
     {
+      "path": "arc.signals",
+      "type": "Array",
+      "unit": "signal_records",
+      "writtenBy": [
+        "INIT",
+        "P0",
+        "SIGNAL_ARRIVAL"
+      ]
+    },
+    {
       "path": "arc.tick",
       "type": "BigInt",
       "unit": "tick",
       "writtenBy": [
         "INIT",
         "P5e"
+      ]
+    },
+    {
+      "path": "cell.pop",
+      "type": "BigInt",
+      "unit": "persons",
+      "writtenBy": [
+        "C"
       ]
     },
     {
@@ -4657,7 +5543,8 @@ Atomic records do not grant permission to create undeclared record members.
         "PLAGUE",
         "RUNAWAY_TECH",
         "SAPIENCE",
-        "WAR"
+        "WAR",
+        "STELLAR_DOOM"
       ]
     },
     {
@@ -4923,12 +5810,15 @@ inside string values. Omitted fields/entries retain their previous values.
 
 ```json
 {
-  "version": "m2a-delta-witness-1",
+  "version": "m3a-delta-witness-1",
   "arcFields": [
     "body",
     "chains",
     "colonizer",
+    "contacts",
+    "diffusionEdges",
     "episode",
+    "evacuating",
     "foundedYear",
     "foundingTiers",
     "hazardEpisodes",
@@ -4945,6 +5835,7 @@ inside string values. Omitted fields/entries retain their previous values.
     "polities",
     "provenance",
     "scenarioParams",
+    "signals",
     "tick"
   ],
   "regionFields": [
@@ -4991,7 +5882,7 @@ inside string values. Omitted fields/entries retain their previous values.
     "phase0",
     "archived"
   ],
-  "boundaries": "At chapter/checkpoint boundaries (tick divisible by 640), final model tick and terminal tick, structural is the full stateDigest. Otherwise null. The following startState uses structural when present, else previous endState. A checkpoint starts with stateDigest(live arc). Phase0 commits a boundary-to-pre delta when environment/founding runs, otherwise startState. EndState commits the pre-to-end delta.",
+  "boundaries": "At chapter/checkpoint boundaries (tick divisible by 640), terminal tick, structural is the full stateDigest. Otherwise null. The following startState uses structural when present, else previous endState. A checkpoint starts with stateDigest(live arc). Phase0 commits a boundary-to-pre delta when environment/founding runs, otherwise startState. EndState commits the pre-to-end delta.",
   "natural": "Compact ledgers omit redundant naturalDelta/polityNatural rows. stepPlanet still returns updates by default; run inspection ledgers expand them. EndState commits all resulting state changes; replay recomputes natural updates."
 }
 ```

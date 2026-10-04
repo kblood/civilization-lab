@@ -59,7 +59,7 @@ export function arcDefinition(def,body,lineageId,episode,fromTick,scenarioParams
   for(const r of planet.partition.value.regions){const from=arcId+'#'+r.id,queue=[{to:from,hops:0}];for(let j=0;j<queue.length;j++)for(const e of edges.filter(e=>e.from===queue[j].to))if(!queue.some(q=>q.to===e.to))queue.push({to:e.to,hops:queue[j].hops+1});distances.push(...queue.map(q=>({from,...q})));}
   return freezeGenerated({...def,planet,arcId,lineageId,episode,fromTick,scenarioParams,edges,distances:distances.sort((a,b)=>compare(a.from,b.from)||compare(a.to,b.to)),forced:{...def.forced,initial}});
 }
-export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null}={}) {
+export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null,untilYear}={}) {
   if(typeof seed!=='string'||!seed.isWellFormed()||years!==undefined&&(!Number.isSafeInteger(years)||years<10||years%10))throw new RangeError('Invalid run');
   const bundle=expandDomain(input),home=bundle.planets.find(p=>p.body===bundle.domain.origins[0])??bundle.planets[0];
   for(const p of bundle.planets)for(const key of ['lifecycle','partition','epochs'])if(p[key].status!=='known')return {status:p[key].status==='unsupported'?'not-modelled':'uninhabited',reason:p[key].capability??p[key].reason};
@@ -76,8 +76,9 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   def.fromTick=BigInt(forced?.initial?.atTick??F(bundle.domain.fromYear,10));
   const first=def.origins.filter(o=>o.deliveryTick!==null).reduce((n,o)=>min(n,o.deliveryTick),BigInt(F(bundle.domain.untilYear,10)));
   def.untilTick=forced?def.fromTick+BigInt(forced.ticks):min(BigInt(F(bundle.domain.untilYear,10)),first+BigInt((years??400000)/10));
+  if(untilYear!==undefined){if(!Number.isSafeInteger(untilYear))throw new RangeError('Invalid end year');def.untilTick=BigInt(F(untilYear,10));}
   if(def.fromTick>=def.untilTick||def.untilTick>BigInt(F(bundle.domain.untilYear,10)))throw new RangeError('outside-model-range');
-  def.recipeDigest=digest({seed,manifest,fromTick:def.fromTick,untilTick:def.untilTick});
+  def.recipeDigest=digest({seed,manifest,fromTick:def.fromTick});
   return freezeGenerated(def);
 }
 export const DOMAIN_FIELDS=Object.freeze(['id','tick','lineages','arcs','voyages','transit','messages','origins','bodyEpisodes','latches','coverage'].sort(compare));
@@ -156,6 +157,16 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       function writable(a) {if(!starts.has(a.id)){starts.set(a.id,a);const copy={...a,regions:a.regions.map(r=>({...r})),inbox:[...a.inbox]};state.arcs[state.arcs.findIndex(v=>v.id===a.id)]=copy;return copy;}return state.arcs.find(v=>v.id===a.id);}
       const due=state.messages.filter(m=>m.deliveryTick===t).sort(messageOrder);state.messages=state.messages.filter(m=>m.deliveryTick!==t);
       for(const m of due) {
+        if(m.type==='SIGNAL'){
+          const a=state.arcs.find(a=>a.body===m.targetId||a.id===m.targetId);if(!a||a.lineageId===m.payload.signal.lineageId)continue;
+          const e=dEvent(def,state,'SIGNAL_ARRIVAL',a.id,messageIntent(m.id),{mode:'scheduled'},Number(t*10n),0);
+          e.params={arrivalYear:String(m.payload.signal.arrivalYear),deliveryYear:String(t*10n)};
+          const {arrivalYear,...signal}=m.payload.signal;
+          e.data.source=signal.source;e.data.target=a.id;
+          const signals=a.signals.some(s=>s.source===signal.source)?a.signals:[...a.signals,signal].sort((a,b)=>compare(a.source,b.source));
+          e.effects.push({target:a.id,field:'arc.signals',op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.signals',value:signals});
+          writable(a).inbox.push({...m,payload:{...m.payload,signal},causeEventId:e.id});tickEvents.push(finishEvent(e));continue;
+        }
         if(m.type!=='ARRIVAL'){const a=state.arcs.find(a=>a.id===m.targetId);if(a)writable(a).inbox.push(m);continue;}
         const v=state.voyages.find(v=>v.id===m.payload.voyageId);if(!v||v.status!=='transit')continue;
         const account=state.transit.find(a=>a.id==='transit:'+v.id),persons=account.pop,p=def.planets.find(p=>p.body===v.destination);
@@ -165,7 +176,8 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         let a=state.arcs.find(a=>a.body===v.destination),reason=a&&a.lineageId!==v.lineageId?'occupied-by-other-lineage':null;
         const life=p.lifecycle.value,host=p.hosting==='habitable'||p.hosting==='habitat-buildable'&&v.tiers[0]>=5&&v.tiers[1]>=5;
         if(!reason&&(!host||Number(t*10n)<life.habitableFromYear||Number(t*10n)>=life.habitableUntilYear||!p.epochs.value.rows.some(r=>BigInt(r.fromEpoch)<=F(t,100n)&&F(t,100n)<BigInt(r.untilEpoch)&&BigInt(r.Kbase)>0n)))reason='destination-uninhabitable';
-        if(reason){e.data.outcome='rejected';e.data.stage='REJECTED';e.reason=reason;e.effects.push({target:account.id,field:'transit.pop',op:'add',amount:String(-persons)});account.pop=0n;v.status=reason==='occupied-by-other-lineage'?'turned-away':'lost';death(state,v,e,tickEvents.filter(x=>x.kind==='COLONY_FOUNDED'&&x.ownerId===v.destination).length,0);}
+        if(reason){e.data.outcome='rejected';e.data.stage='REJECTED';e.reason=reason;e.effects.push({target:account.id,field:'transit.pop',op:'add',amount:String(-persons)});account.pop=0n;v.status=reason==='occupied-by-other-lineage'?'turned-away':'lost';death(state,v,e,tickEvents.filter(x=>x.kind==='COLONY_FOUNDED'&&x.ownerId===v.destination).length,0);
+          if(reason==='occupied-by-other-lineage')state.messages.push(message(state.id,t,v.sourceArc,'SIGNAL',a.id,e.id,{signal:{source:v.sourceArc,lineageId:v.lineageId,body:v.destination,tiers:v.tiers,strength:1000,physical:true,arrivalYear:Number(t*10n)}}));}
         else {
           const fresh=!a;if(fresh){a=reserve(v.destination,v.lineageId);starts.set(a.id,structuredClone(a));a.isColony=true;a.foundingTiers=[...v.tiers];a.colonizer=chanceMagnitude(def,a.id,'arc.colonizer',a.scenarioParams.colonizerPpm);for(const r of a.regions){r.cultureId=v.cultureId;r.culture=[...v.culture];}
             const landing=a.regions[0];landing.tiers=[...v.tiers];installEnvironment(definitions.get(a.id),a);
@@ -190,7 +202,8 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         if(state.arcs.some(a=>a.body===o.body)){o.status='preempted';continue;}
         const p=def.planets.find(p=>p.body===o.body);
         if(!p.epochs.value.rows.some(r=>BigInt(r.fromEpoch)<=F(t,100n)&&F(t,100n)<BigInt(r.untilEpoch)&&BigInt(r.Kbase)>0n)){o.status='no-lineage';o.sapienceYear=null;o.deliveryTick=null;continue;}
-        const a=reserve(o.body,'lin:'+o.body);o.status='founded';founding.push(a.id);
+        const regime=override(def,'origins.startingRegime')==='1'?def.forced.initial:null;
+        const a=reserve(o.body,'lin:'+o.body,regime);o.status='founded';if(!regime)founding.push(a.id);
       }
       const losses=[];
       for(const v of state.voyages.filter(v=>v.status==='transit'&&t>F(BigInt(v.launchYear),10n)&&t<v.deliveryTick).sort((a,b)=>compare(a.hazard.key,b.hazard.key))) {
@@ -204,6 +217,14 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       for(const {id,out} of results){state.arcs[state.arcs.findIndex(a=>a.id===id)]=out.state;roots.set(id,out.ledger.structural??out.ledger.endState);const record=arcRecords.find(r=>r.id===id);record.ledgers.push(out.ledger);record.events.push(...out.events);pEvents.push(...out.events);retired.push(...out.ledger.archived);}
       // No P step can see any other step's output. Only this barrier expands it.
       const allTick=[...tickEvents,...pEvents].sort(compareEvents);
+      for(const a of [...state.arcs].sort(byId))if(a.regions.some(r=>r.pop>0n&&r.tiers[4]>=3)&&!state.latches.some(l=>l.kind==='SIGNAL_EMITTED'&&l.subject===a.id)){
+        state.latches.push({kind:'SIGNAL_EMITTED',subject:a.id,active:true});
+        const tiers=Array.from({length:7},(_,d)=>a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.tiers[d]):n,0));
+        for(const route of def.routes.filter(r=>r.from===a.body)){
+          const lightYears=route.lightYears??Number(C(BigInt(route.distanceMicroLy),1000000n)),emissionYear=Number((t+1n)*10n),arrivalYear=emissionYear+lightYears;
+          state.messages.push(message(state.id,t,a.id,'SIGNAL',route.to,null,{signal:{source:a.id,lineageId:a.lineageId,body:a.body,tiers,strength:1000,physical:false,arrivalYear}},0,max(t+1n,C(BigInt(arrivalYear),10n))));
+        }
+      }
       for(const e of pEvents.filter(e=>e.kind==='LAUNCH'&&e.resolution==='accepted').sort(compareEvents)){const x=e.effects.find(x=>x.op==='transfer');register(e.data.launch,BigInt(x.amount));transfers.push({eventId:e.id,...x});}
       const outbound=state.arcs.flatMap(a=>a.outbox.filter(m=>m.type==='SHARED').map(m=>({a,m}))).sort((a,b)=>compare(a.m.id,b.m.id));
       for(const {a,m} of outbound)for(const target of state.arcs.filter(b=>b.lineageId===a.lineageId&&b.id!==a.id&&!b.outcome.terminal))state.messages.push(message(state.id,t,a.id,'SHARED',target.id,m.causeEventId,m.payload,Number(m.id.split('~').at(-1))));
@@ -223,7 +244,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         l.perilsSafe=safe;l.outcomeClass=lineageOutcome(state,l,def.planets);
         if(l.foundedArcs>0&&!l.arcs.length&&!l.voyages.length&&!state.latches.some(x=>x.kind==='LINEAGE_EXTINCTION'&&x.subject===l.id&&x.active)) {
           const e=dEvent(def,state,'LINEAGE_EXTINCTION',l.id,thresholdIntent(l.id),{mode:'threshold',crossed:{var:'region.pop',value:'0',threshold:'0'}},Number(t*10n+9n),5);
-          l.outcomeClass=PERILS.includes(l.lastDeath?.kind)?'EXTINCT_SELF':'EXTINCT_NATURAL';l.extinctionCause=l.lastDeath?.eventId??null;
+          l.outcomeClass=l.lastDeath?.kind==='STELLAR_DOOM'?'EXTINCT_STELLAR':PERILS.includes(l.lastDeath?.kind)?'EXTINCT_SELF':'EXTINCT_NATURAL';l.extinctionCause=l.lastDeath?.eventId??null;
           e.params={livingArcs:'0',transitPop:'0'};e.refs=[{role:'lineage',entityId:l.id}];e.data.outcome=l.outcomeClass;
           if(l.extinctionCause){const causeEvent=events.concat(allTick).find(x=>x.id===l.extinctionCause);if(causeEvent&&compareEvents(causeEvent,e)<0)e.causes=[{eventId:l.extinctionCause,edge:'TRIGGERED',weightPermille:1000}];}
           for(const key of ['outcomeClass','extinctionCause'])if(key!=='extinctionCause'||l[key]!==null){e.effects.push({target:l.id,field:'lineage.'+key,op:'set',amount:'0'});e.data.sets.push({target:l.id,field:'lineage.'+key,value:l[key]});}
@@ -236,7 +257,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       const after=dView(state,roots);previous=sha256Hex('m2b-domain-delta-1;'+start+valueDelta(before,after));
       const ledger=freezeGenerated({domainId:state.id,tick:String(t),startState:start,endState:previous,eventIds:sortedD.map(e=>e.id),transfers,archived:retired});dLedgers.push(ledger);ticks++;
       if(inspect)snapshots.push({ledger,state:structuredClone(state),planets:results.map(r=>({id:r.id,...r.out}))});
-      const terminal=state.lineages.length>0&&state.lineages.every(l=>l.outcomeClass.startsWith('EXTINCT_'))&&!state.origins.some(o=>o.status==='pending'&&o.deliveryTick>=state.tick&&o.deliveryTick<def.untilTick);
+      const terminal=state.lineages.length>0&&state.lineages.every(l=>l.outcomeClass.startsWith('EXTINCT_'))&&!state.origins.some(o=>o.status==='pending'&&o.deliveryTick>=state.tick);
       if(state.tick%640n===0n||state.tick===def.untilTick||terminal){flush();checkpoints.push({tick:state.tick,live:structuredClone(state),archiveRecords:[...archives]});chapter=F(state.tick,640n);}
       if(terminal)break;
     }

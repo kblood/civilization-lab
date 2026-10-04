@@ -1,0 +1,47 @@
+$ node src/cli.mjs --scenario crowded-domain --seed m3-1
+Scenario crowded-domain; seed m3-1; through year 1000; 113 events.
+Outcome: EXTANT_PLANETARY; maximum era E7.
+E3 first reached: 0
+E4 first reached: 200
+E5 first reached: 710
+E6 first reached: 890
+E7 first reached: 960
+Most salient events (model attribution):
+FIRST_CONTACT@161 (arc:stub:s01:b0:lin:stub:s01:b0:0); causes none
+FIRST_CONTACT@175 (arc:stub:s02:b0:lin:stub:s02:b0:0); causes none
+FIRST_CONTACT@194 (arc:stub:s03:b0:lin:stub:s03:b0:0); causes none
+FIRST_CONTACT@272 (arc:stub:s02:b0:lin:stub:s02:b0:0); causes none
+FIRST_CONTACT@707 (arc:stub:s01:b0:lin:stub:s01:b0:0); causes none
+FIRST_CONTACT@757 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+SPACEFLIGHT@580 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01); causes TRIGGERED: DISCOVERY@579 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01)
+SPACEFLIGHT@610 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00); causes TRIGGERED: DISCOVERY@603 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00), TRIGGERED: DISCOVERY@606 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+SPACEFLIGHT@640 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01); causes TRIGGERED: DIFFUSION@631 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00~r01)
+SPACEFLIGHT@780 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00); causes TRIGGERED: DISCOVERY@771 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00), TRIGGERED: DISCOVERY@771 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00)
+HEGEMONY@0 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+HEGEMONY@0 (arc:stub:s01:b0:lin:stub:s01:b0:0#pol:fixture:a); causes none
+HEGEMONY@0 (arc:stub:s02:b0:lin:stub:s02:b0:0#pol:fixture:a); causes none
+HEGEMONY@0 (arc:stub:s03:b0:lin:stub:s03:b0:0#pol:fixture:a); causes none
+ENERGY_TRANSITION@191 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00); causes ENABLED: DISCOVERY@191 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+ENERGY_TRANSITION@565 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01); causes ENABLED: DISCOVERY@565 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01)
+ENERGY_TRANSITION@599 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00); causes ENABLED: DISCOVERY@599 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00)
+ENERGY_TRANSITION@607 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01); causes ENABLED: DISCOVERY@602 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01), ENABLED: DISCOVERY@607 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+ENERGY_TRANSITION@701 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01); causes ENABLED: DISCOVERY@701 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+ENERGY_TRANSITION@801 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01); causes ENABLED: DISCOVERY@801 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01)
+ENERGY_TRANSITION@846 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00); causes ENABLED: DISCOVERY@846 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+ENERGY_TRANSITION@881 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01); causes ENABLED: DISCOVERY@881 (arc:stub:s01:b0:lin:stub:s01:b0:0#r01)
+ENERGY_TRANSITION@891 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00); causes ENABLED: DISCOVERY@891 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+ENERGY_TRANSITION@920 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00); causes ENABLED: DISCOVERY@920 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00)
+ENERGY_TRANSITION@959 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00); causes ENABLED: DISCOVERY@959 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+ENERGY_TRANSITION@990 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01); causes ENABLED: DISCOVERY@990 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+SIGNAL_ARRIVAL@20 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+SIGNAL_ARRIVAL@20 (arc:stub:s01:b0:lin:stub:s01:b0:0); causes none
+SIGNAL_ARRIVAL@20 (arc:stub:s01:b0:lin:stub:s01:b0:0); causes none
+SIGNAL_ARRIVAL@20 (arc:stub:s02:b0:lin:stub:s02:b0:0); causes none
+Level consistency: PASS (36 sampled region-ticks, C and annual).
+Manifest digest: 20372e0481e379dcbcbd7a44029d0d9401e5ba37f6860f1c142737f9d95973c9
+Recipe digest: 548a59621546e9f7ee18f119524cca42013b9bbc2c1dd2eaeb3f9f5e3ea61c68
+Result digest: 625213caa50f8a1def5a4e3dc292fb9a06ffdb06463912968c4cd838d3e3d8a3
+Narrative digest: cf4587bf714206593109651e43a6ed7507ae9b63d3b761dfcbf5527363337ed9
+
+Exit: 0
+Wall ms: 297.58

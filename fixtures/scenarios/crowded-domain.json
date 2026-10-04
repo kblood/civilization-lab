@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "civ-scenario-1",
+  "id": "crowded-domain",
+  "description": "fixtures/domains/crowded-four.json",
+  "startingFixture": "fixtures/regimes/industrial.json",
+  "overrides": [
+    {
+      "key": "origins.startingRegime",
+      "value": "1"
+    }
+  ],
+  "untilYear": 1000
+}

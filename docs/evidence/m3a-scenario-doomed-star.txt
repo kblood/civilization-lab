@@ -1,0 +1,23 @@
+$ node src/cli.mjs --scenario doomed-star --seed m3-1
+Scenario doomed-star; seed m3-1; through year 510; 10 events.
+Outcome: EXTINCT_STELLAR; maximum era E1.
+E1 first reached: 0
+Most salient events (model attribution):
+EXTINCTION@500 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+STELLAR_DOOM@500 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+LINEAGE_EXTINCTION@509 (lin:stub:s00:b0); causes TRIGGERED: STELLAR_DOOM@500 (arc:stub:s00:b0:lin:stub:s00:b0:0)
+HEGEMONY@0 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+PLAGUE@160 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@170 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes CHAIN: PLAGUE@160 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+PLAGUE@180 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes CHAIN: PLAGUE@160 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+PLAGUE@344 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@350 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes CHAIN: PLAGUE@344 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+PLAGUE@360 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes CHAIN: PLAGUE@344 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+Level consistency: PASS (36 sampled region-ticks, C and annual).
+Manifest digest: 08c7738c1969000440267dbdff877a6c76846d31d52e3fb2bf80156f7ae55a14
+Recipe digest: b12489807e6be62ad7648b382e5cd043f78686936ea29b47956ce79a69a5615d
+Result digest: 7806caa195cbf5270036157cbcb50d948b00e159aee64e85ff12f11780730f07
+Narrative digest: 492b2244fe4900ab1ba995d8d9149d9d915778ffb698716f6e2623a1c6fed97b
+
+Exit: 0
+Wall ms: 114.89

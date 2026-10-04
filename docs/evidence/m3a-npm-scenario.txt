@@ -1,0 +1,32 @@
+$ npm run scenario -- --scenario lonely-earthlike --seed s1
+
+> civilization-lab@0.0.0 scenario
+> node src/cli.mjs --scenario lonely-earthlike --seed s1
+
+Scenario lonely-earthlike; seed s1; through year 1000; 15 events.
+Outcome: EXTANT_PLANETARY; maximum era E2.
+E1 first reached: 0
+E2 first reached: 650
+Most salient events (model attribution):
+HEGEMONY@0 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+ENERGY_TRANSITION@649 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes ENABLED: DISCOVERY@649 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+ENERGY_TRANSITION@984 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes ENABLED: DISCOVERY@984 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+DISCOVERY@186 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+DISCOVERY@649 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: PLAGUE@612 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@620 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+DISCOVERY@676 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: PLAGUE@612 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@620 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+DISCOVERY@707 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: PLAGUE@612 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@620 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+DISCOVERY@855 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+DISCOVERY@881 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+DISCOVERY@907 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+DISCOVERY@984 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+DISCOVERY@988 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@612 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@620 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes CHAIN: PLAGUE@612 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+PLAGUE@630 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes CHAIN: PLAGUE@612 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+Level consistency: PASS (36 sampled region-ticks, C and annual).
+Manifest digest: eab38841fda80910b9d8f839f4a8ccc10e661f9364079bec1f2acf11bd5eafd2
+Recipe digest: b8141c549459f2dd12a9dad401fcf7d5a3a8189438589cdc8a7240db4c5a9f58
+Result digest: 183559704d185f339011ab0faa175bbd8dd9ee54e641b063628b26f90752bc46
+Narrative digest: e478619512299d030ec1566d37037abe00b014074e77073f12fe7304bcbdaba8
+
+Exit: 0

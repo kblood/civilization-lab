@@ -1,0 +1,102 @@
+{
+  "atTick": "0",
+  "regions": [
+    {
+      "localId": "r00",
+      "pop": "10000",
+      "infra": "100000",
+      "fuel": "100000",
+      "forcing": "0",
+      "tiers": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        2,
+        3
+      ],
+      "culture": [
+        500,
+        500,
+        500
+      ],
+      "lowTicks": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "collapse": null,
+      "damage": []
+    },
+    {
+      "localId": "r01",
+      "pop": "8000",
+      "infra": "100000",
+      "fuel": "100000",
+      "forcing": "0",
+      "tiers": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        2,
+        3
+      ],
+      "culture": [
+        500,
+        500,
+        500
+      ],
+      "lowTicks": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "collapse": null,
+      "damage": []
+    }
+  ],
+  "polities": [
+    {
+      "label": "a",
+      "regionIds": [
+        "r00",
+        "r01"
+      ],
+      "regime": "state",
+      "eliteShare": 100,
+      "asabiya": 600,
+      "legitimacy": 600,
+      "stress": 100,
+      "warWeariness": 0,
+      "hegemony": false
+    }
+  ],
+  "arc": {
+    "isColony": false,
+    "colonizer": true,
+    "perils": "active",
+    "nonviable": false,
+    "caps": [
+      6,
+      5,
+      5,
+      7,
+      5,
+      4,
+      5
+    ],
+    "chains": []
+  },
+  "voyages": []
+}

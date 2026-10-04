@@ -1,0 +1,22 @@
+$ node src/cli.mjs --scenario harsh-anoxic --seed m3-1
+Scenario harsh-anoxic; seed m3-1; through year 1000; 9 events.
+Outcome: EXTANT_PLANETARY; maximum era E0.
+E0 first reached: 0
+Most salient events (model attribution):
+NATURAL_CATASTROPHE@39 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0); causes none
+HEGEMONY@0 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#pol:fixture:a); causes none
+PLAGUE@89 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01); causes RAISED_HAZARD: FAMINE@0 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01), RAISED_HAZARD: FAMINE@40 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01), RAISED_HAZARD: NATURAL_CATASTROPHE@39 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0)
+PLAGUE@90 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01); causes CHAIN: PLAGUE@89 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01)
+PLAGUE@100 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01); causes CHAIN: PLAGUE@89 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01)
+FAMINE@0 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r00); causes none
+FAMINE@0 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01); causes none
+FAMINE@40 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r00); causes TRIGGERED: FAMINE@0 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r00), TRIGGERED: NATURAL_CATASTROPHE@39 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0)
+FAMINE@40 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01); causes TRIGGERED: FAMINE@0 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0#r01), TRIGGERED: NATURAL_CATASTROPHE@39 (arc:stub:anoxic:b0:lin:stub:anoxic:b0:0)
+Level consistency: PASS (36 sampled region-ticks, C and annual).
+Manifest digest: 21ab8c7d8c0bfc5d35cb6434d9793e44a52d40ed3c324ed534c87bf2af5ff5cf
+Recipe digest: 96e2c9ef633730f0b776335c00a39b5fe1ab02680be6d6ac79d4e4d3cb1ecfbd
+Result digest: 03f8cd316c578f29916eca10270ea3f0d64cc328635f76fc885fcec52db8d827
+Narrative digest: d64d4ba44261d29b3ebf932055b5ea4e195aea011437e911d17439da1e9b290d
+
+Exit: 0
+Wall ms: 136.19

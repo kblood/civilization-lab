@@ -1,0 +1,17 @@
+$ node src/cli.mjs --scenario lonely-earthlike --seed m3-1
+Scenario lonely-earthlike; seed m3-1; through year 1000; 3 events.
+Outcome: EXTANT_PLANETARY; maximum era E2.
+E1 first reached: 0
+E2 first reached: 650
+Most salient events (model attribution):
+HEGEMONY@0 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+ENERGY_TRANSITION@647 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes ENABLED: DISCOVERY@647 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+DISCOVERY@647 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+Level consistency: PASS (36 sampled region-ticks, C and annual).
+Manifest digest: 3ac0e0f1d74d16c63b36e4cad7ced5822b542a359ae05e598fc5505d52147e0a
+Recipe digest: a6fd4c07d68bfbdf4da08220eb509155ede977e25534807ed6ab218898736e87
+Result digest: 28da4c2ac49a98c2f0ce22fc8ee8685a49363f8c9b341b165f83ff4bbb6d90e3
+Narrative digest: 34014f29679bc05fdc4182f01bbb190d191de926c89324ec2608805ef042994a
+
+Exit: 0
+Wall ms: 139.04

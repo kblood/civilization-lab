@@ -1,6 +1,13 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**M3a implemented for runner review:** horizon-independent P/D execution,
+stellar doom, signals/contact, cell and annual refinement, views, seeded
+narrative and five single-run scenarios. Final observed `npm test`: **101/101
+pass**; all eight new test files below two seconds, all five scenario examples
+below 0.3 seconds. See [the M3a handoff](docs/m3-implementation.md) for exact
+commands, changed goldens and the interior annual rounding limitation. M3b is
+not implemented. M1's golden remains unchanged.
 **M1 implemented:** deterministic core, one-region toy, chapter replay and exact
 annual projection, with independent RNG/Merkle vectors and negative controls.
 **M2b implemented for runner review:** all 31 kinds, hard-step origins,
@@ -71,6 +78,8 @@ npm run digest      # node src/cli.mjs --digest
 node src/cli.mjs --civ temperate --seed civ-m2a-1 --years 20000
 node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1
 node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-14 --years 100000
+npm run scenario -- --scenario lonely-earthlike --seed s1
+node src/cli.mjs --scenario crowded-domain --seed m3-1 --until-year 1000
 npm run perf        # tools/perf-civ.mjs: 400 kyr, measured outside src/
 npm run perf:panel  # 400 kyr, seeds civ-m2a-1, -2, -6; worst-seed verdict
 ```

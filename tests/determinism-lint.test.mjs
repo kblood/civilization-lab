@@ -44,7 +44,7 @@ test('runtime imports stay local; refiners and P have no narrative or Atlas impo
     for (const match of text.matchAll(/(?:from\s*|import\s*\()\s*['"]([^'"]+)['"]/g)) {
       const path = match[1];
       assert.ok(path.startsWith('./') || path.startsWith('node:'), `${file}: ${path}`);
-      assert.equal(/atlas|narrative/.test(path), false, `${file}: ${path}`);
+      assert.equal(/atlas/.test(path)||(/narrative/.test(path)&&basename(file)!=='scenario-cli.mjs'), false, `${file}: ${path}`);
     }
   }
 });

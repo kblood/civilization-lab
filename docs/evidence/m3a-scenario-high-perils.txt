@@ -1,0 +1,36 @@
+$ node src/cli.mjs --scenario high-perils --seed m3-1
+Scenario high-perils; seed m3-1; through year 1000; 21 events.
+Outcome: COLLAPSED_RECOVERING; maximum era E3.
+E1 first reached: 170
+E2 first reached: 10
+E3 first reached: 0
+Most salient events (model attribution):
+COLLAPSE@8 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+COLLAPSE@44 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+COLLAPSE@162 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: COLLAPSE@44 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@393 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes RAISED_HAZARD: WAR@375 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0)
+CONQUEST@400 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0); causes CHAIN: WAR@375 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0)
+HEGEMONY@0 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+ENERGY_TRANSITION@8 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes ENABLED: COLLAPSE@8 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+HEGEMONY@10 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0); causes TRIGGERED: COLLAPSE@8 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+ENERGY_TRANSITION@44 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes ENABLED: COLLAPSE@44 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+ENERGY_TRANSITION@162 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes ENABLED: COLLAPSE@162 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+HEGEMONY@180 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1); causes TRIGGERED: COLLAPSE@162 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), TRIGGERED: FAMINE@170 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+ENERGY_TRANSITION@393 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes ENABLED: COLLAPSE@393 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+RECOVERY@90 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes TRIGGERED: COLLAPSE@8 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+RECOVERY@120 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes TRIGGERED: COLLAPSE@44 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+WAR@375 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0); causes none
+WAR@380 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0); causes CHAIN: WAR@375 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0)
+WAR@390 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0); causes CHAIN: WAR@375 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0)
+DISCOVERY@976 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@998 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+FAMINE@170 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes TRIGGERED: COLLAPSE@162 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), TRIGGERED: COLLAPSE@44 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+FAMINE@400 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes TRIGGERED: WAR@380 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0), TRIGGERED: WAR@390 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:0:19:r00:0), TRIGGERED: COLLAPSE@393 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+Level consistency: PASS (36 sampled region-ticks, C and annual).
+Manifest digest: 5a77dc26437bff32c88dfc6e1a220d5c9af97f387bb23c300c28bcb52a75cd38
+Recipe digest: 0ffbe019d4998486af8ae63b11b4bc71a73268b4eb641db82c6408368dbd101c
+Result digest: 8aea1ee3a1b2123ec0125661151d47ad40882a4d8dad9257c84c382cdd84c170
+Narrative digest: 1624a02a64138f995acd12cf349cbddd7081181dee11e1c164e102641975e3c1
+
+Exit: 0
+Wall ms: 156.71

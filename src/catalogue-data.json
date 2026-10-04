@@ -251,7 +251,8 @@
       "region.polityId",
       "region.pop",
       "region.resources",
-      "region.tiers"
+      "region.tiers",
+      "arc.diffusionEdges"
     ],
     "writes": [
       "region.tiers"
@@ -745,7 +746,8 @@
       "region.localId",
       "region.pop",
       "region.spaceflight",
-      "region.tiers"
+      "region.tiers",
+      "arc.evacuating"
     ],
     "writes": [
       "arc.outbox",
@@ -931,5 +933,125 @@
       "lineage.outcomeClass"
     ],
     "salience": 1000
+  },
+  {
+    "kind": "STELLAR_DOOM",
+    "kindRank": 32,
+    "owner": "P",
+    "trigger": "exogenous",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "arc.evacuating",
+      "region.pop",
+      "region.tiers",
+      "input.environment"
+    ],
+    "writes": [
+      "arc.evacuating",
+      "region.pop"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "SIGNAL_ARRIVAL",
+    "kindRank": 33,
+    "owner": "D",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "message.payload",
+      "message.targetId",
+      "message.deliveryTick",
+      "arc.signals"
+    ],
+    "writes": [
+      "arc.signals"
+    ],
+    "salience": 650
+  },
+  {
+    "kind": "FIRST_CONTACT",
+    "kindRank": 34,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M3a",
+    "reads": [
+      "arc.signals",
+      "arc.contacts",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.contacts",
+      "arc.diffusionEdges"
+    ],
+    "salience": 900
+  },
+  {
+    "kind": "RAID",
+    "kindRank": 35,
+    "owner": "C",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "cell.pop"
+    ],
+    "writes": [],
+    "salience": 100
+  },
+  {
+    "kind": "TOWN_FOUNDED",
+    "kindRank": 36,
+    "owner": "C",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "cell.pop"
+    ],
+    "writes": [],
+    "salience": 100
+  },
+  {
+    "kind": "TOWN_ABANDONED",
+    "kindRank": 37,
+    "owner": "C",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "cell.pop"
+    ],
+    "writes": [],
+    "salience": 100
+  },
+  {
+    "kind": "LOCAL_FLOOD",
+    "kindRank": 38,
+    "owner": "C",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "cell.pop"
+    ],
+    "writes": [],
+    "salience": 100
+  },
+  {
+    "kind": "LOCAL_SUCCESSION",
+    "kindRank": 39,
+    "owner": "C",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M3a",
+    "reads": [
+      "cell.pop"
+    ],
+    "writes": [],
+    "salience": 100
   }
 ]

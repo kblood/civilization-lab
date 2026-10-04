@@ -83,6 +83,7 @@ export function validateEvent(e) {
       CLIMATE_SHIFT:[],NATURAL_CATASTROPHE:['damageTicks','extinctionPpm','lossPermille'],HEGEMONY:[],FRAGMENTATION:[],REVOLUTION:['regimeIndex'],SCHISM:['coordinate'],
       NUCLEAR_WAR:['damagePermille','damageTicks','infraLossPermille','lossPermille','outcomeIndex','shared','tierDrop'],ENGINEERED_PANDEMIC:['damagePermille','damageTicks','infraLossPermille','lossPermille','outcomeIndex','shared','tierDrop'],RUNAWAY_TECH:['damagePermille','damageTicks','infraLossPermille','lossPermille','outcomeIndex','shared','tierDrop'],
       CLIMATE_CATASTROPHE:[],SPACEFLIGHT:['domainIndex'],LAUNCH:['persons','travelYears'],VOYAGE_LOST:[],COLONY_FOUNDED:['arrivalYear','deliveryYear','launchYear','persons'],COLONY_LOST:[],LINEAGE_EXTINCTION:['livingArcs','transitPop']};
+    Object.assign(paramsByKind,{STELLAR_DOOM:[],SIGNAL_ARRIVAL:['arrivalYear','deliveryYear'],FIRST_CONTACT:[],RAID:[],TOWN_FOUNDED:[],TOWN_ABANDONED:[],LOCAL_FLOOD:[],LOCAL_SUCCESSION:[]});
     if(Object.keys(e.params).sort(compare).join('|')!==paramsByKind[e.kind].sort(compare).join('|'))fail();
     if(t.mode==='hazard'&&typeof t.saturated!=='boolean')fail();
     if(e.data.launch!==null) {

@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "civ-scenario-1",
+  "id": "doomed-star",
+  "description": "fixtures/domains/doomed-star.json",
+  "startingFixture": "fixtures/regimes/agrarian.json",
+  "overrides": [],
+  "untilYear": 1000
+}
