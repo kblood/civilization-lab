@@ -9,8 +9,11 @@ export const Availability = Object.freeze({
   absent: reason => ({status:'absent',reason}),
   unsupported: capability => ({status:'unsupported',capability}),
 });
-export const CONTRACT_TEXT = readFileSync(new URL('../docs/transition-table-v1.md',import.meta.url),'utf8')
+const FULL_CONTRACT_TEXT = readFileSync(new URL('../docs/transition-table-v1.md',import.meta.url),'utf8')
   .replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n').replace(/\n*$/,'\n');
+// The original contract remains the RNG address domain. The append-only
+// witness annex versions encoding, not dynamics; its version is in every leaf.
+export const CONTRACT_TEXT=FULL_CONTRACT_TEXT.split('\n<!-- M2A-WITNESS-ANNEX -->')[0];
 export const TABLE = deepFreeze(JSON.parse(CONTRACT_TEXT.slice(CONTRACT_TEXT.indexOf('## Machine-readable table')).match(/```json\n([\s\S]*?)\n```/)[1]));
 const schema = JSON.parse(CONTRACT_TEXT.match(/```jsonschema\n([\s\S]*?)\n```/)[1]);
 export function exact(value, keys) {

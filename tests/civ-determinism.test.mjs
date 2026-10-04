@@ -5,7 +5,7 @@ import { createPlanet } from '../src/planet.mjs';
 import { canonicalBytes,freezeCanonical } from '../src/canonical.mjs';
 import { forced } from './civ-helpers.mjs';
 // Self-generated golden: stability only, not an independent correctness oracle.
-const GOLDEN='3e26dc98be723f670615397d4115b3edab0bd43bb3a914e826aa76b3ff767ee3';
+const GOLDEN='868931e18ed59a4c11a68df399be4ce074911d44d1886176a4f07bd9011c57e5';
 test('same seed twice and fresh process; other seed differs; self-generated golden',()=>{
   const make=seed=>createPlanet('temperate',seed,{years:100});
   const a=make('civ-m2a-golden'),root=a.resultDigest();assert.equal(root,GOLDEN);

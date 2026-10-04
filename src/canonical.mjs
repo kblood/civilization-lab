@@ -1,4 +1,29 @@
 export const compare = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+// Validation without allocating a discarded serialization. Event validation
+// needs the safety checks, while chapter hashing later encodes the same data.
+export function validateCanonical(value) {
+  const ancestors=[];
+  function visit(v) {
+    if(v===null||typeof v==='boolean'||typeof v==='bigint')return;
+    if(typeof v==='string'){if(!v.isWellFormed())throw new TypeError('Malformed Unicode');return;}
+    if(typeof v==='number'){if(!Number.isSafeInteger(v))throw new TypeError('Only safe integer numbers are canonical');return;}
+    if(typeof v!=='object'||ancestors.includes(v))throw new TypeError('Unsupported or cyclic canonical value');
+    const array=Array.isArray(v);
+    if(!array&&Object.getPrototypeOf(v)!==Object.prototype&&Object.getPrototypeOf(v)!==null)throw new TypeError('Plain records required');
+    if(Object.getOwnPropertySymbols(v).length)throw new TypeError('Symbol keys unsupported');
+    const keys=Object.keys(v).sort(compare);
+    if(array&&keys.length!==v.length)throw new TypeError('Dense arrays required');
+    ancestors.push(v);
+    for(let i=0;i<keys.length;i++) {
+      const k=array?String(i):keys[i],d=Object.getOwnPropertyDescriptor(v,k);
+      if(!d||!('value' in d))throw new TypeError('Data properties required');
+      if(!array&&!k.isWellFormed())throw new TypeError('Malformed Unicode');
+      visit(d.value);
+    }
+    ancestors.pop();
+  }
+  visit(value);return value;
+}
 // Entries are installed only after recursively validating and freezing every
 // descendant. Weak identity memoisation has no iteration or causal state.
 const immutableBytes = new WeakMap();

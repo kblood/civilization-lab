@@ -11,7 +11,10 @@ export function regionTuple(r) {
     r.collapse&&[r.collapse.active,String(r.collapse.recoverPop),String(r.collapse.recoverInfra)],r.lowTicks,
     r.ceilings.map(c=>[c.domain,c.targetTier,c.reason]),r.spaceflight,r.berthsUsed];
 }
-const hazardHash=h=>cachedHash(h,v=>generatedString(v));
+// Same canonical keyed bytes as generatedString, but the closed hazard schema
+// needs no recursive traversal, sorting or intermediate string cache.
+const hazardHash=h=>cachedHash(h,v=>'{"E_q32":"'+v.E_q32+'","H_q32":"'+v.H_q32+'","atTick":"'+v.atTick+'","closed":'+v.closed+
+  ',"episode":"'+v.episode+'","hazardId":'+generatedString(v.hazardId)+',"key":'+JSON.stringify(v.key)+',"rate":"'+v.rate+'"}');
 const hazardRoot=entries=>cachedHash(entries,v=>JSON.stringify(v.map(hazardHash)));
 const episodeRoot=entries=>cachedHash(entries,v=>generatedString(v));
 // Versioned structural commitment: every region field is in the fixed tuple;

@@ -1,0 +1,110 @@
+{
+  "baselineCommit": "4228517",
+  "years": 150000,
+  "idsHashDefinition": "SHA256(UTF8(JSON.stringify(event IDs sorted lexically)))",
+  "fullEventsHashDefinition": "SHA256(canonicalBytes(events in event order))",
+  "comparisons": [
+    {
+      "seed": "civ-m2a-1",
+      "before": {
+        "seed": "civ-m2a-1",
+        "counts": {
+          "AGRICULTURE": 6,
+          "COLLAPSE": 66,
+          "CONQUEST": 1058,
+          "DIFFUSION": 66,
+          "DISCOVERY": 882,
+          "ENERGY_TRANSITION": 46,
+          "EXTINCTION": 0,
+          "FAMINE": 68,
+          "MIGRATION": 20,
+          "PLAGUE": 793,
+          "POLITY_FOUNDING": 13,
+          "RECOVERY": 66,
+          "SAPIENCE": 1,
+          "TECH_LOSS": 0,
+          "WAR": 3235
+        },
+        "idsHash": "dc6e593a4eb1d4e89728dca41a1dbe69aa8de7b8699ad398da5b8e2184688009",
+        "fullEventsHash": "33ce4520d43abef6d194db851d003072515fe1a1293c3fa549b8e0f9947ee843",
+        "resultDigest": "b86fc18bf771c556512bd3797436ee11aad92e7aa46941970fae2c20b09bd2a3"
+      },
+      "after": {
+        "seed": "civ-m2a-1",
+        "years": 150000,
+        "counts": {
+          "AGRICULTURE": 6,
+          "COLLAPSE": 66,
+          "CONQUEST": 1058,
+          "DIFFUSION": 66,
+          "DISCOVERY": 882,
+          "ENERGY_TRANSITION": 46,
+          "EXTINCTION": 0,
+          "FAMINE": 68,
+          "MIGRATION": 20,
+          "PLAGUE": 793,
+          "POLITY_FOUNDING": 13,
+          "RECOVERY": 66,
+          "SAPIENCE": 1,
+          "TECH_LOSS": 0,
+          "WAR": 3235
+        },
+        "idsHash": "dc6e593a4eb1d4e89728dca41a1dbe69aa8de7b8699ad398da5b8e2184688009",
+        "fullEventsHash": "33ce4520d43abef6d194db851d003072515fe1a1293c3fa549b8e0f9947ee843",
+        "resultDigest": "c640571804f47f544cce203afa50aaab09a6d0e61894a8e3ea6fd40d90c1d64d"
+      },
+      "identical": true
+    },
+    {
+      "seed": "civ-m2a-2",
+      "before": {
+        "seed": "civ-m2a-2",
+        "counts": {
+          "AGRICULTURE": 3,
+          "COLLAPSE": 30,
+          "CONQUEST": 505,
+          "DIFFUSION": 259,
+          "DISCOVERY": 338,
+          "ENERGY_TRANSITION": 50,
+          "EXTINCTION": 0,
+          "FAMINE": 36,
+          "MIGRATION": 19,
+          "PLAGUE": 510,
+          "POLITY_FOUNDING": 12,
+          "RECOVERY": 30,
+          "SAPIENCE": 1,
+          "TECH_LOSS": 0,
+          "WAR": 1541
+        },
+        "idsHash": "8fad4f6e94925cf4de239e382ad2a10619f1b9ce0c62da90d599b38b1c662241",
+        "fullEventsHash": "4a35709611c2784d308f4abb1910b767e90046b7286acd1677421b2b84c2ec96",
+        "resultDigest": "ab07d9e0c9a57be58277a74c6c7f3688dbb63564b210519df5c4388449403a67"
+      },
+      "after": {
+        "seed": "civ-m2a-2",
+        "years": 150000,
+        "counts": {
+          "AGRICULTURE": 3,
+          "COLLAPSE": 30,
+          "CONQUEST": 505,
+          "DIFFUSION": 259,
+          "DISCOVERY": 338,
+          "ENERGY_TRANSITION": 50,
+          "EXTINCTION": 0,
+          "FAMINE": 36,
+          "MIGRATION": 19,
+          "PLAGUE": 510,
+          "POLITY_FOUNDING": 12,
+          "RECOVERY": 30,
+          "SAPIENCE": 1,
+          "TECH_LOSS": 0,
+          "WAR": 1541
+        },
+        "idsHash": "8fad4f6e94925cf4de239e382ad2a10619f1b9ce0c62da90d599b38b1c662241",
+        "fullEventsHash": "4a35709611c2784d308f4abb1910b767e90046b7286acd1677421b2b84c2ec96",
+        "resultDigest": "bd7fb910f632541c5c42bbc9aa887baa4b8041fd3eb30c3c24879e8570db76e2"
+      },
+      "identical": true
+    }
+  ]
+}

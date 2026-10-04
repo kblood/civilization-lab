@@ -7,8 +7,11 @@ annual projection, with independent RNG/Merkle vectors and negative controls.
 three explicit environment stubs, ordered stock effects, chains, provenance,
 archives and chapter checkpoints. The M2a fix round adds regional one-tier collapse, war-to-stress provenance,
 compact digest witnesses, completed-hazard archival and readable CLI causes.
-The 20 kyr benchmark is below 700 ms; the 400 kyr / 10 s target is **still not met**.
-Do not accept this round as complete until that blocking budget passes. M2b remains unimplemented.
+Performance round 2 measures 400 kyr at **9380.25 ms / 374.24 MiB RSS**;
+20 kyr takes 110.99 ms. The 10 s / 400 MiB budgets pass on this machine, with
+limited time margin for the runner's remeasurement. All 59 tests pass. Delta
+witnesses preserve the audited event histories; see the current handoff below.
+M2b remains unimplemented.
 This repository exists to work out — on paper first, then in small deterministic
 Node simulations — how civilisations can be generated so that they cohere with
 a deterministic 4D universe.

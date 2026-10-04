@@ -1,4 +1,5 @@
-import { canonicalBytes, compare, freezeCanonical } from './canonical.mjs';
+import { canonicalBytes, compare, freezeCanonical, validateCanonical } from './canonical.mjs';
+import { freezeGenerated } from './witness.mjs';
 import { encodeFields } from './rng.mjs';
 import { floorDiv } from './time.mjs';
 import { kindOf } from './catalogue.mjs';
@@ -24,7 +25,7 @@ function compareTuple(a, b) {
   for (let i = 0; i < a.length; i++) { const c = compare(a[i], b[i]); if (c) return c; }
   return 0;
 }
-export const compareEvents = (a, b) => compareTuple(orderKey(a), orderKey(b));
+export const compareEvents = (a, b) => compare(a.dateYear,b.dateYear)||compare(a.phase,b.phase)||compare(a.ownerId,b.ownerId)||compare(a.kindRank,b.kindRank)||compare(a.intentKey,b.intentKey);
 function sortedUnique(items, key) {
   return items.every((x, i) => !i || compareTuple(key(items[i - 1]), key(x)) < 0);
 }
@@ -81,7 +82,7 @@ export function validateEvent(e) {
       ENERGY_TRANSITION:['fromEra','toEra'],POLITY_FOUNDING:[],CONQUEST:['winPpm','won'],COLLAPSE:['drop','splitCount'],RECOVERY:[],EXTINCTION:[]};
     if(row.milestone==='M2a'&&Object.keys(e.params).sort(compare).join('|')!==paramsByKind[e.kind].sort(compare).join('|'))fail();
   }
-  canonicalBytes(e); // Reject unsupported values even in optional fields.
+  validateCanonical(e); // Reject unsupported values even in optional fields.
   return e;
 }
 export function sortEvents(events) {
@@ -96,7 +97,7 @@ export function sortEvents(events) {
     if (!group) { group = { key, next: 0 }; groups.set(key, group); }
     const ordinal=group.next++;
     if(e.ordinal!==ordinal||!Object.isFrozen(e))e=sorted[i]={...e,ordinal};
-    if(e.modelVersion==='civ-m2-1'){freezeCanonical(e);validatedEvents.add(e);}
+    if(e.modelVersion==='civ-m2-1'){freezeGenerated(e);validatedEvents.add(e);}
   }
   return sorted;
 }

@@ -1,4 +1,178 @@
-# M2a fix-round handoff
+# M2a performance round 2 — runner handoff
+
+**Observed budget pass:** `node tools/perf-civ.mjs 400000` completes in
+**9380.25 ms**, with **374.24 MiB end RSS**, 16797 events and a largest P+D
+chapter of 1.81 MiB. Another final-implementation run measured 9338.46 ms /
+367.50 MiB. The desired 7 s margin is not achieved; Opus should remeasure.
+Node was v24.7.0. No heap flags, explicit GC, skipped ticks, network, dependencies,
+git writes, commits or Atlas edits were used. Profiles and scratch stayed in TEMP.
+
+## Performance changes and memory lifetime
+
+- Hazard identities and static opportunity descriptors are memoized per
+  definition. The owner table is capped at 256 owners; each owner's possible
+  entries are bounded by the fixed partition, domains and maximum tiers.
+  Regional and collapse caches retain one latest input vector per region.
+  Rate templates are ephemeral solver workspace, never embedded in state or
+  witnesses; diffusion target tiers are refreshed with the current opportunity.
+- Provenance slots are materialized only for firing opportunities. Incoming
+  adjacency, gates for all seven domains, learning thresholds and effective
+  populations avoid repeated calculations. Non-firing hazard changes avoid
+  threshold advancement/identity revalidation; the arithmetic and lazy clock
+  values are unchanged. BigInt remains in all stock and hazard calculations.
+- The prepared arc, population, pressure and hazard-index workspaces retain
+  only the current evaluation. Historical or interleaved queries use the pure
+  fallback/rebuild path. All Maps/Sets are keyed lookup workspaces; none are
+  iterated to construct state or digests. Sorted source arrays determine order.
+- Events are validated and sorted when created. Chronologically disjoint tick
+  batches concatenate directly. Canonical safety validation no longer builds
+  an event serialization merely to discard it. Its unsafe-value rejection is
+  tested against canonicalBytes. SHA-256 uses Node's equivalent one-shot API.
+- P/D chapter bytes stream through a small UTF-8 buffer. No encoded chapter or
+  event trees/strings are retained. Chapter caching is a **two-entry LRU**,
+  including reverse and cold result-root queries. compileSummary retains events,
+  archive/checkpoints and live/current-chapter state, never the full tick history.
+  `run()` remains an explicit inspection API returning per-tick full snapshots;
+  it is not the long-history memory-budget API.
+
+## Witness representation and replay
+
+The normative append-only annex in [transition-table-v1.md](transition-table-v1.md)
+specifies `m2a-delta-witness-1`. Each tick chains a SHA-256 commitment to the
+changed arc/region fields and changed live hazards. Typed, length-prefixed text
+avoids constructing and serializing a JSON patch tree. Equality is by value;
+copy-on-write identity is only a shortcut. Full structural state digests remain
+at every 640-tick checkpoint/chapter boundary, the final model tick and terminal
+tick. Checkpoint records remain exactly `{tick,live,archiveRecords}`.
+
+`ledger.endState` is now a transition commitment; `ledger.structural` is the
+full stateDigest at a boundary, otherwise null. The next tick starts from the
+structural digest when present, otherwise the prior endState. Compact ledgers
+omit redundant naturalDelta/polityNatural rows; inspection output and the default
+stepPlanet updates retain them. All resulting state changes are committed.
+
+The prior contract prefix and machine table remain the RNG manifest domain.
+The representation-only annex is excluded from CONTRACT_TEXT; its version is
+committed in each P ledger and transition hash. This deliberate separation keeps
+the manifest, RNG addresses, calibration and event outcomes unchanged. Editing
+the original contract prefix still changes the RNG manifest. Result digests
+change solely because the witness representation changes.
+
+An independent test decoder reads the annex grammar, reconstructs every
+replayed state from checkpoint 640 through environment epoch 700, checks the
+full structural commitment, every tick ledger and the next chapter leaf.
+Additional checks cover serialized clones, complete field coverage, streamed
+encoder parity, warm/cold/interleaved caches, eviction and cache clearing.
+
+## Exact observed checks (round 2)
+
+`npm test`: **59 tests, 59 pass, 0 fail, 0 skipped, 0 todo**, 3579.3917 ms.
+The determinism lint and M1 tests pass. The new test file alone,
+`node --test tests/m2a-perf.test.mjs`, reports **5 pass, 0 fail**, 1107.9622 ms;
+it is the largest file in this round and remains under two seconds. The suite's
+20 kyr check measured 111.17 ms. Transcript:
+[m2a-perf-round2-tests.txt](evidence/m2a-perf-round2-tests.txt).
+
+`npm run digest`:
+
+```text
+c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc
+```
+
+The updated self-generated 100-year M2 witness golden (not an independent
+correctness oracle) is
+`868931e18ed59a4c11a68df399be4ce074911d44d1886176a4f07bd9011c57e5`.
+
+`node tools/perf-civ.mjs 20000`:
+
+```text
+20000 years: 110.99 ms; target 700 ms; 3 events; 82dcfb55bc598208b9d53a386b57d0403346f5316d651618bab33abda957d675
+RSS: 109.38 MiB; largest P+D chapter: 0.34 MiB
+Events digest (sorted IDs, JSON): 0a3f42fbaa13922ce809686748f663dc1347317618579e178a5c903b0da41766
+Heap: 32.82 MiB used; 49.97 MiB reserved
+CPU: 281.00 ms
+```
+
+`node tools/perf-civ.mjs 150000`:
+
+```text
+150000 years: 3049.13 ms; target not specified; 6320 events; c640571804f47f544cce203afa50aaab09a6d0e61894a8e3ea6fd40d90c1d64d
+RSS: 283.69 MiB; largest P+D chapter: 2.17 MiB
+Events digest (sorted IDs, JSON): dc6e593a4eb1d4e89728dca41a1dbe69aa8de7b8699ad398da5b8e2184688009
+Heap: 151.22 MiB used; 219.75 MiB reserved
+CPU: 4452.00 ms
+```
+
+`node tools/perf-civ.mjs 400000`:
+
+```text
+400000 years: 9380.25 ms; target 10000 ms; 16797 events; e09da2d6624c2afc1b5688e102fa1e7e8c1e212b9a6bf7f8dd24a534be329a43
+RSS: 374.24 MiB; largest P+D chapter: 1.81 MiB
+Events digest (sorted IDs, JSON): 4903cd4325a4cb5605d1a9e1fc46d7c5f7cf9f5d9bcaf069c7f3398bbcca3938
+Heap: 164.31 MiB used; 305.86 MiB reserved
+CPU: 12031.00 ms
+```
+
+These are complete fresh-process compilations including root hashing. Optional
+`--identity` work and printing occur after the timed compilation and RSS sample.
+
+## Event identity before/after at 150 kyr
+
+Baseline was captured from 4228517 before source edits. Full records, not just
+IDs, match: kinds, dates, owners, effects, causes and resolutions are identical.
+Counts include accepted and pre-empted events. Evidence, including both old/new
+result roots: [m2a-perf-round2-events.json](evidence/m2a-perf-round2-events.json).
+Reproduce the after records with `node tools/perf-civ.mjs 150000 civ-m2a-1 --identity`
+and the same command with `civ-m2a-2`.
+
+| Kind | Seed 1 before → after | Seed 2 before → after |
+|---|---:|---:|
+| AGRICULTURE | 6 → 6 | 3 → 3 |
+| COLLAPSE | 66 → 66 | 30 → 30 |
+| CONQUEST | 1058 → 1058 | 505 → 505 |
+| DIFFUSION | 66 → 66 | 259 → 259 |
+| DISCOVERY | 882 → 882 | 338 → 338 |
+| ENERGY_TRANSITION | 46 → 46 | 50 → 50 |
+| EXTINCTION | 0 → 0 | 0 → 0 |
+| FAMINE | 68 → 68 | 36 → 36 |
+| MIGRATION | 20 → 20 | 19 → 19 |
+| PLAGUE | 793 → 793 | 510 → 510 |
+| POLITY_FOUNDING | 13 → 13 | 12 → 12 |
+| RECOVERY | 66 → 66 | 30 → 30 |
+| SAPIENCE | 1 → 1 | 1 → 1 |
+| TECH_LOSS | 0 → 0 | 0 → 0 |
+| WAR | 3235 → 3235 | 1541 → 1541 |
+
+```text
+Sorted IDs: SHA256(UTF8(JSON.stringify(lexically sorted IDs)))
+civ-m2a-1 before dc6e593a4eb1d4e89728dca41a1dbe69aa8de7b8699ad398da5b8e2184688009
+civ-m2a-1 after  dc6e593a4eb1d4e89728dca41a1dbe69aa8de7b8699ad398da5b8e2184688009
+civ-m2a-2 before 8fad4f6e94925cf4de239e382ad2a10619f1b9ce0c62da90d599b38b1c662241
+civ-m2a-2 after  8fad4f6e94925cf4de239e382ad2a10619f1b9ce0c62da90d599b38b1c662241
+
+Full records: SHA256(canonicalBytes(events in event order))
+civ-m2a-1 before 33ce4520d43abef6d194db851d003072515fe1a1293c3fa549b8e0f9947ee843
+civ-m2a-1 after  33ce4520d43abef6d194db851d003072515fe1a1293c3fa549b8e0f9947ee843
+civ-m2a-2 before 4a35709611c2784d308f4abb1910b767e90046b7286acd1677421b2b84c2ec96
+civ-m2a-2 after  4a35709611c2784d308f4abb1910b767e90046b7286acd1677421b2b84c2ec96
+```
+
+## Round 2 files and known gaps
+
+Runtime: `canonical.mjs`, `delta-witness.mjs` (new), `digest.mjs`,
+`environment.mjs`, `events.mjs`, `hazard.mjs`, `planet.mjs`, `polities.mjs`,
+`provenance.mjs`, `state-witness.mjs`, `tech.mjs`, `witness.mjs` under src/.
+Tests: `m2a-perf.test.mjs` (new), `m2a-fix.test.mjs`, `civ-determinism.test.mjs`.
+Tool: `tools/perf-civ.mjs`. Docs: this handoff, README, the table annex and two
+round-2 evidence files. No calibration, fixture, catalogue or event recipe changed.
+
+The final measured time margin is about 620 ms; **under 7 s was not achieved**.
+Runner remeasurement is still needed. The full eight-seed 400 kyr survey was
+not rerun; the minimum two-seed 150 kyr audit additionally verifies all event
+fields. The earlier eight-seed survey below is historical evidence, not a new
+round-2 measurement. M2b and the earlier non-performance scope gaps remain deferred.
+
+## Historical fix-round 1 handoff (4228517; performance superseded above)
 
 **Not ready for acceptance: the 400 kyr / 10 s budget still fails.** The dynamics
 survey meets the requested progression target (8/8 reach E4). The 20 kyr run is

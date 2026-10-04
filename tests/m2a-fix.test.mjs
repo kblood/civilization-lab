@@ -15,7 +15,7 @@ test('checkpoint replay reproduces every tick witness and chapter leaf; encoder 
   let state=cp.live.arcs[0];const ledgers=[],events=[];
   for(let t=640n;t<646n;t++) {
     const out=stepPlanet(world.def,state);ledgers.push(out.ledger);events.push(...out.events);
-    assert.equal(stateDigest(out.state),out.ledger.endState);state=out.state;
+    if(out.ledger.structural!==null)assert.equal(stateDigest(out.state),out.ledger.structural);state=out.state;
   }
   assert.deepEqual(ledgers,chapter.ledgers);
   const replay={arcId:world.def.arcId,chapter:'1',ledgers,events};

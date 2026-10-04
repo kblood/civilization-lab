@@ -33,9 +33,11 @@ export function deriveScores(boundary,final,scores,splitIds=[]) {
     return ids.sort(compare);
   };
   const credit=(target,field,b,a,deps,extra=[])=>{
-    const ids=[...contributors(deps),...extra].sort(compare).filter((id,i,all)=>!i||id!==all[i-1]);
+    if(b===a)return;
     let score=distance(b,a,field)-(scores.find(s=>s.target===target&&s.field===field)?.entries.reduce((n,e)=>n+e.score,0n)??0n);
-    if(score<=0n||!ids.length)return;
+    if(score<=0n)return;
+    const ids=[...contributors(deps),...extra].sort(compare).filter((id,i,all)=>!i||id!==all[i-1]);
+    if(!ids.length)return;
     const q=F(score,BigInt(ids.length)),rem=Number(score%BigInt(ids.length));
     ids.forEach((id,i)=>addScore(scores,target,field,id,q+(i<rem?1n:0n)));
   };

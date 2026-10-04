@@ -1,16 +1,22 @@
 import { compare } from './canonical.mjs';
 import { floorDiv as F } from './time.mjs';
-import { pressure, prepareRegion, max } from './tech.mjs';
+import { pressure, prepareRegions, max } from './tech.mjs';
 export const clamp = (x,a=0,b=1000)=>Math.min(b,Math.max(a,x));
-const snapshots=new WeakMap(),populations=new WeakMap();
+// Bounded evaluation workspace for the most recently prepared immutable
+// pre-state. Historical/other arcs use the pure fallback. Maps are lookup-only.
+let preparedArc=null;
+const workspace={regions:new Map(),polities:new Map(),groups:new Map(),wars:new Set(),powers:new Map()};
+const snapshots={get:arc=>arc===preparedArc?workspace:undefined,has:arc=>arc===preparedArc};
+const populations=new Map();
 export function prepareArc(arc) {
-  const regions=new Map(arc.regions.map(r=>[r.id,r])),polities=new Map(arc.polities.map(p=>[p.id,p]));
-  const groups=new Map(arc.polities.map(p=>[p.id,[]])),wars=new Set();
-  for(const r of arc.regions){prepareRegion(r);groups.get(r.polityId)?.push(r);}
+  preparedArc=arc;const {regions,polities,groups,wars,powers}=workspace;
+  regions.clear();polities.clear();groups.clear();wars.clear();powers.clear();populations.clear();
+  for(const p of arc.polities){polities.set(p.id,p);groups.set(p.id,[]);}
+  prepareRegions(arc.regions);
+  for(const r of arc.regions){regions.set(r.id,r);groups.get(r.polityId)?.push(r);}
   for(const c of arc.chains)if(c.kind==='WAR'&&c.status==='active')for(const r of c.refs)if(['attacker','defender'].includes(r.role))wars.add(r.entityId);
   populations.set(arc.regions,arc.regions.reduce((n,r)=>n+r.pop,0n));
   for(const p of arc.polities){const rs=groups.get(p.id);populations.set(rs,rs.reduce((n,r)=>n+r.pop,0n));}
-  snapshots.set(arc,{regions,polities,groups,wars});
 }
 export const regionById=(arc,id)=>snapshots.get(arc)?.regions.get(id)??arc.regions.find(r=>r.id===id);
 export const polityById=(arc,id)=>snapshots.get(arc)?.polities.get(id)??arc.polities.find(p=>p.id===id);
@@ -37,15 +43,22 @@ export function naturalPolity(arc,p) {
 }
 const distanceLookups=new WeakMap();
 export function powerAt(arc,p,target,distances) {
+  // Snapshot-local memo lookup only, never iterated into state or a digest.
+  const cache=snapshots.get(arc)?.powers;
+  let record=cache?.get(p);
+  if(cache&&record?.distances!==distances){record={distances,values:new Map()};cache.set(p,record);}
+  const powers=record?.values;
+  if(powers?.has(target))return powers.get(target);
   let lookup=distanceLookups.get(distances);
   if(!lookup){lookup=new Map(distances.map(d=>[d.from+'|'+d.to,d.hops]));distanceLookups.set(distances,lookup);}
-  return members(arc,p).reduce((sum,r)=>{
+  const result=members(arc,p).reduce((sum,r)=>{
     const hops=lookup.get(r.id+'|'+target);
     if(hops===undefined)return sum;
     let v=F(r.pop*BigInt(1+r.tiers[2])*BigInt(500+p.asabiya),1000n);
     for(let i=0;i<hops;i++)v=F(v*800n,1000n);
     return sum+v;
   },0n);
+  powers?.set(target,result);return result;
 }
 export function rebuildOwnership(arc,year) {
   for(const p of arc.polities) {

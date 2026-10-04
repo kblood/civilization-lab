@@ -2,7 +2,10 @@ import { encodeFields, expQ32 } from './rng.mjs';
 import { sha256Hex } from './digest.mjs';
 import { ceilDiv } from './fixed.mjs';
 const keys = new Map();
+// Identity lookup only; never iterated. Mutable public inputs are not cached.
+const identityKeys = new WeakMap(), compactIdentityKeys = new WeakMap();
 export function hazardKey(id) {
+  const cached=id&&identityKeys.get(id);if(cached!==undefined)return cached;
   if (!id || typeof id.ownerId !== 'string' || typeof id.kind !== 'string') throw new TypeError('Invalid hazard identity');
   // Presence bits distinguish an omitted component from an empty string or zero.
   const fields = [id.ownerId, id.kind];
@@ -18,12 +21,15 @@ export function hazardKey(id) {
   const cacheKey=JSON.stringify(fields);
   let key=keys.get(cacheKey);
   if(key===undefined){key=encodeFields(fields).toString('hex');if(keys.size<16384)keys.set(cacheKey,key);}
+  if(Object.isFrozen(id))identityKeys.set(id,key);
   return key;
 }
 const compactKeys=new Map();
 export function compactHazardKey(id) {
+  const cached=id&&compactIdentityKeys.get(id);if(cached!==undefined)return cached;
   const raw=hazardKey(id);let key=compactKeys.get(raw);
   if(key===undefined){key=sha256Hex(raw);if(compactKeys.size<16384)compactKeys.set(raw,key);}
+  if(Object.isFrozen(id))compactIdentityKeys.set(id,key);
   return key;
 }
 export function threshold(def, hazardId, episode) {

@@ -4842,3 +4842,112 @@ Atomic records do not grant permission to create undeclared record members.
   ]
 }
 ```
+
+<!-- M2A-WITNESS-ANNEX -->
+## Revision log (M2a performance round 2)
+
+This append-only, representation-only annex supersedes the compact tick-witness
+encoding above. The original machine block continues to specify the full
+structural state digest at boundaries. Rates, gates, event outcomes and RNG
+addresses are unchanged. `CONTRACT_TEXT` excludes the delimiter newline and this
+annex, retaining the exact prior contract bytes in the RNG manifest. The new
+version is committed in every P tick ledger and delta hash, hence in chapter and
+result roots. Editing the original contract still changes the RNG manifest.
+
+A delta commits every changed arc/region field and every changed live hazard
+record, plus the previous witness. It is value-defined: shared identity is only
+a fast equality check. Existing hazard identities cannot change without a new
+key. Full structural boundary commitments and complete checkpoints let replay
+from any checkpoint reproduce every tick witness and the chapter root without
+a hidden RNG cursor or cached digest. Intermediate witnesses describe transitions,
+not standalone structural state hashes. Auditors must replay the transition;
+`stateDigest` still verifies a complete boundary state independently.
+
+Natural-step rows remain available in inspection output. Compact leaves commit
+the resulting state delta and event IDs instead of repeating those rows. P and
+D chapter encoding remains canonical JSON, now hashed as bounded UTF-8 chunks.
+Chapter memoization is a two-entry LRU; only explicit `run()` inspection requests
+retain per-tick snapshots. Caches may be evicted without changing results.
+
+### Delta witness encoding (normative)
+
+Lengths count JavaScript UTF-16 code units; the completed text is encoded as
+UTF-8 for SHA-256. Counts and indices are nonnegative decimal integers. Scalars
+use the same integer/BigInt semantics as canonical JSON. Prefix tags and counts
+make the encoding self-delimiting, including arbitrary Unicode and delimiters
+inside string values. Omitted fields/entries retain their previous values.
+
+```json
+{
+  "version": "m2a-delta-witness-1",
+  "arcFields": [
+    "body",
+    "chains",
+    "colonizer",
+    "episode",
+    "foundedYear",
+    "foundingTiers",
+    "hazardEpisodes",
+    "id",
+    "inbox",
+    "isColony",
+    "lastDeath",
+    "latches",
+    "lineageId",
+    "nonviable",
+    "outbox",
+    "outcome",
+    "perils",
+    "polities",
+    "provenance",
+    "scenarioParams",
+    "tick"
+  ],
+  "regionFields": [
+    "K",
+    "Kbase",
+    "berthsUsed",
+    "caps",
+    "ceilings",
+    "collapse",
+    "culture",
+    "cultureId",
+    "damage",
+    "energy",
+    "era",
+    "forcing",
+    "fuel",
+    "id",
+    "immunityTicks",
+    "infra",
+    "localId",
+    "lowTicks",
+    "polityId",
+    "pop",
+    "renewable",
+    "resources",
+    "spaceflight",
+    "tiers"
+  ],
+  "hash": "SHA256(UTF8(transitionText))",
+  "text": "version + semicolon + previous digest (64 hex characters) + arc field patch + region patch + hazard patch",
+  "value": "z=null; f/t=boolean; n<integer>;=Number; s<UTF16 length>:<text>=string (BigInts become decimal strings); a<count>:<values>=array; o<count>:<sorted string key/value pairs>=object",
+  "delta": "v<value>=replace; a<count>:<index>;<delta>...=patch equal-length array; o<count>:<index>;<delta>...=patch equal-key object, indices into sorted old keys; equality emits nothing",
+  "fields": "<count>:<field index>;<delta>...; indices into arcFields or regionFields",
+  "regions": "<count>:<region index>;<field patch>...; fixed partition order",
+  "hazards": "<count>:<64-hex-key><operation>... in sorted key order. d=delete. v<value>=new complete record. c<H>;<atTick>;<rate>;<E or empty>;<episode or empty>;<t/f closed>=update. Empty E/episode means unchanged; identity is immutable for an existing key.",
+  "ledger": [
+    "witnessVersion",
+    "arcId",
+    "tick",
+    "startState",
+    "eventIds",
+    "endState",
+    "structural",
+    "phase0",
+    "archived"
+  ],
+  "boundaries": "At chapter/checkpoint boundaries (tick divisible by 640), final model tick and terminal tick, structural is the full stateDigest. Otherwise null. The following startState uses structural when present, else previous endState. A checkpoint starts with stateDigest(live arc). Phase0 commits a boundary-to-pre delta when environment/founding runs, otherwise startState. EndState commits the pre-to-end delta.",
+  "natural": "Compact ledgers omit redundant naturalDelta/polityNatural rows. stepPlanet still returns updates by default; run inspection ledgers expand them. EndState commits all resulting state changes; replay recomputes natural updates."
+}
+```
