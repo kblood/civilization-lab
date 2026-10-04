@@ -28,7 +28,9 @@ export const compareEvents = (a, b) => compareTuple(orderKey(a), orderKey(b));
 function sortedUnique(items, key) {
   return items.every((x, i) => !i || compareTuple(key(items[i - 1]), key(x)) < 0);
 }
+const validatedEvents=new WeakSet();
 export function validateEvent(e) {
+  if(validatedEvents.has(e))return e;
   const fail = () => { throw new TypeError('Invalid CivEvent'); };
   if (!e || typeof e !== 'object') fail();
   const m2 = e.modelVersion === 'civ-m2-1';
@@ -83,15 +85,18 @@ export function validateEvent(e) {
   return e;
 }
 export function sortEvents(events) {
-  const sorted = events.map(e => ({ ...validateEvent(e) })).sort(compareEvents);
-  const groups = [];
+  const sorted = events.map(validateEvent).sort(compareEvents);
+  const groups = new Map();
   const ids = sorted.map(e => e.id).sort(compare);
   if (ids.some((id, i) => i && id === ids[i - 1])) throw new TypeError('Duplicate event ID');
-  for (const e of sorted) {
-    const key = tuple([e.ownerId, e.kind, BigInt(e.tick)]);
-    let group = groups.find(g => g.key === key);
-    if (!group) { group = { key, next: 0 }; groups.push(group); groups.sort((a, b) => compare(a.key, b.key)); }
-    e.ordinal = group.next++;
+  for (let i=0;i<sorted.length;i++) {
+    let e=sorted[i];
+    const key = JSON.stringify([e.ownerId, e.kind, e.tick]);
+    let group = groups.get(key);
+    if (!group) { group = { key, next: 0 }; groups.set(key, group); }
+    const ordinal=group.next++;
+    if(e.ordinal!==ordinal||!Object.isFrozen(e))e=sorted[i]={...e,ordinal};
+    if(e.modelVersion==='civ-m2-1'){freezeCanonical(e);validatedEvents.add(e);}
   }
   return sorted;
 }

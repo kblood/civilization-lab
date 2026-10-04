@@ -4,6 +4,7 @@ import { floorDiv as F } from './time.mjs';
 import { compareEvents } from './events.mjs';
 export const slotSort=(a,b)=>compare(a.target,b.target)||compare(a.field,b.field);
 export function distance(a,b,field='') {
+  if(a===b)return 0n;
   if(typeof a==='number'||typeof a==='bigint')return BigInt(a)>BigInt(b)?BigInt(a)-BigInt(b):BigInt(b)-BigInt(a);
   if(field==='region.damage')return distance(a.reduce((n,x)=>n+x.permille,0),b.reduce((n,x)=>n+x.permille,0));
   if(Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every(x=>typeof x==='number'))return a.reduce((n,x,i)=>n+distance(x,b[i]),0n);
@@ -16,14 +17,16 @@ export function addScore(slots,target,field,eventId,score) {
   const entry=slot.entries.find(e=>e.eventId===eventId);
   if(entry)entry.score+=score;else slot.entries.push({eventId,score});
 }
-export function mergeProvenance(old,added) {
+export function mergeProvenance(old,added,stressed=[]) {
+  if(!added.length&&old.every(s=>s.field==='polity.stress'&&stressed.includes(s.target)&&s.entries.every(e=>e.score===1n)))return old;
   const out=[];
-  for(const s of old)for(const e of s.entries)addScore(out,s.target,s.field,e.eventId,F(e.score,2n));
+  for(const s of old)for(const e of s.entries)addScore(out,s.target,s.field,e.eventId,(s.field==='polity.stress'&&stressed.includes(s.target)?F(e.score+1n,2n):F(e.score,2n)));
   for(const s of added)for(const e of s.entries)addScore(out,s.target,s.field,e.eventId,e.score);
   for(const s of out)s.entries.sort((a,b)=>compare(b.score,a.score)||compare(a.eventId,b.eventId)).splice(3);
   return out.sort(slotSort);
 }
 export function deriveScores(boundary,final,scores,splitIds=[]) {
+  if(!scores.length&&!splitIds.length)return;
   const contributors=slots=>{
     const ids=[];
     for(const s of scores)if(slots.some(([t,f])=>s.target===t&&s.field===f))for(const e of s.entries)if(!ids.includes(e.eventId))ids.push(e.eventId);

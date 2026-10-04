@@ -10,6 +10,13 @@ function operands(a, b) {
   return [BigInt(a), BigInt(b)];
 }
 export function floorDiv(a, b) {
+  if(typeof a==='bigint'&&typeof b==='bigint') {
+    if(b===0n)throw new RangeError('Division by zero');
+    const q=a/b;return (a<0n)!==(b<0n)&&a%b!==0n?q-1n:q;
+  }
+  // Small integer ratios cannot round across an integer boundary in binary64.
+  // Retain the exact BigInt path for safe-integer edge cases.
+  if(typeof a==='number'&&typeof b==='number'&&Number.isSafeInteger(a)&&Number.isSafeInteger(b)&&b!==0&&Math.abs(a)<=2147483647&&Math.abs(b)<=2147483647)return a===0?0:Math.floor(a/b);
   const [x, y] = operands(a, b);
   let q = x / y;
   if (x % y !== 0n && (x < 0n) !== (y < 0n)) q--;

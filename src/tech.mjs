@@ -22,7 +22,15 @@ export const GATES = deepFreeze([
   [[[[1,1]],[]],[[[4,2]],[]],[[[0,3],[4,3]],[]],[[[4,4],[2,4]],[]]],
   [[[[1,1]],[]],[[[1,2],[4,1]],[]],[[[3,2],[4,2]],[]],[[[4,3],[3,4]],[]],[[[4,4],[3,6]],[]]],
 ]);
-export function gate(r, d, profile, polity = null) {
+const gateCaches=new WeakMap();
+export function gate(r,d,profile,polity=null) {
+  if(r.pop===0n||!Object.isFrozen(r.tiers)||!Object.isFrozen(r.caps)||!Object.isFrozen(r.resources))return computeGate(r,d,profile,polity);
+  let entries=gateCaches.get(r.tiers);if(!entries){entries=[];gateCaches.set(r.tiers,entries);}
+  const old=entries.find(e=>e.d===d&&e.caps===r.caps&&e.resources===r.resources&&e.profile===profile&&e.hegemony===!!polity?.hegemony);
+  if(old)return old.result;
+  const result=computeGate(r,d,profile,polity);entries.push({d,caps:r.caps,resources:r.resources,profile,hegemony:!!polity?.hegemony,result});return result;
+}
+function computeGate(r, d, profile, polity = null) {
   const target = r.tiers[d]+1, ceilings = [];
   if (target > MAX_TIERS[d]) return {eligible:false, ceilings, prerequisites:[]};
   let [prerequisites, resources] = GATES[d][target-1];
@@ -42,7 +50,9 @@ export function era([E,S,M,T,I,V,O]) {
 }
 export const damage = r => Math.min(1000,r.damage.reduce((n,d)=>n+d.permille,0));
 export const capacity = r => F(r.Kbase*SUBS[r.tiers[1]]*BigInt(1000-damage(r)),1000000n);
-export const pressure = r => Number(min(2000n,F(r.pop*1000n,max(1n,r.K))));
+const pressures=new WeakMap();
+export const prepareRegion=r=>pressures.set(r,Number(min(2000n,F(r.pop*1000n,max(1n,r.K)))));
+export const pressure=r=>pressures.get(r)??Number(min(2000n,F(r.pop*1000n,max(1n,r.K))));
 export const min = (a,b)=>a<b?a:b;
 export const max = (a,b)=>a>b?a:b;
 export function bevertonHolt(P,K,g) {

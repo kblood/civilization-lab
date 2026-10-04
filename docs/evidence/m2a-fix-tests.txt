@@ -1,0 +1,67 @@
+
+> civilization-lab@0.0.0 test
+> node --test --test-concurrency=1 "tests/**/*.test.mjs"
+
+✔ catalogue agrees with independently parsed binding JSON; undeclared read rejected (2.7412ms)
+✔ three explicit stubs and availability cannot confuse missing with empty (10.7344ms)
+✔ every causal edge is strictly earlier; real chains and hazards are covered (40.2479ms)
+✔ provenance decays, merges repeated sources, breaks score ties by event ID (0.5011ms)
+✔ natural extinction records every active-chain invalidation once and archives all owners (11.8737ms)
+✔ same seed twice and fresh process; other seed differs; self-generated golden (101.6995ms)
+✔ chapter-boundary fixture forward, reverse, cold and cache clearing agree (42.2181ms)
+✔ immutable serialization cache preserves bytes and rejects unsafe values (0.2115ms)
+✔ 800 permille migrations resolve 80 then 16; each transfer balances every tick (16.7521ms)
+✔ src/ has no clock or unseeded randomness (2.9898ms)
+✔ lint negative self-checks detect every forbidden family (0.1302ms)
+✔ runtime imports stay local; refiners and P have no narrative or Atlas imports (1.3432ms)
+✔ toy golden, same seed twice, different seed, and fresh Node child process (270.3749ms)
+✔ canonical sorted bytes, decimal BigInts and strict input domain (0.97ms)
+✔ independent Merkle roots: empty, one, two, three and five leaves (0.957ms)
+✔ effects affect result; observations and key insertion order do not; manifest is pinned (13.2328ms)
+✔ half-up BH bounds, zero guards and infrastructure decay (15.1425ms)
+✔ stock replay matches every boundary; losses read remaining stocks (13.4822ms)
+✔ one gain per domain; derived transition iff committed era changes; ceilings recorded (14.1821ms)
+✔ K=0 natural death precedes migration, next-tick extinction retains witness (12.3936ms)
+✔ simultaneous same-domain loss and gain use pre-state gates and one remaining-tier increment (9.2014ms)
+✔ insertion independent IDs, total key, intent tie-break and dense group ordinals (2.0961ms)
+✔ schema rejects invalid event fields, nested records and identity mismatch (0.3835ms)
+✔ ported logPos is within one Q32 ulp over fixed binary/mantissa grid (1.0807ms)
+✔ floor, ceil and Q32 rounding directions (0.2984ms)
+✔ all fifteen M2a kinds fire through their actual guards and hazards (121.3231ms)
+✔ cumulative crossings equal independent yearly accumulation, including 2nd/3rd and cap (1.4101ms)
+✔ zero hazard and ineligibility pause exactly; resumption preserves episode (0.1646ms)
+✔ structured identities distinguish domains, optional presence, tiers and edges; causes break ties (0.6742ms)
+✔ checkpoint replay reproduces every tick witness and chapter leaf; encoder parity (34.7234ms)
+✔ regional collapse loses one tier, preserves another region and cannot repeat in the tick (8.0973ms)
+✔ war-induced stress supplies a real RAISED_HAZARD cause to later collapse (24.3378ms)
+✔ completed acquisition hazards archive once and counters prevent episode reuse (6.9474ms)
+✔ salience selection preserves rank with a documented kind diversity cap (7.1758ms)
+✔ damage expires at its exact tick between environment epochs (10.0591ms)
+✔ every region field and structural witness matches the independently parsed table (7.9094ms)
+✔ lazy hazard clocks equal eager M1 advancement through pauses and reopenings (17.2767ms)
+Observed 20 kyr: 305.75 ms
+✔ one temperate seed compiles 20000 years including all root hashing in under 2000 ms (307.0283ms)
+✔ conquest conserves territory, ownership is unique, retired IDs never return (21.8781ms)
+✔ reciprocal war keeps smaller owner and duplicate declarations never open extra chains (8.7682ms)
+✔ overlapping collapse splits claim parent once and preserve flat identity and regions (8.9405ms)
+✔ every tick of 1000 years projects exactly; annual samples stay nonnegative; debits use remaining stock (18.5867ms)
+✔ write-back and independent annual changes fail; caller parent is never adjusted (4.2594ms)
+✔ Beverton-Holt zero cases, overshoot decline and integer floor (0.1781ms)
+✔ forward, reverse checkpoints, fixed shuffle, cold replay and refinement-first agree (583.6013ms)
+✔ negative control: shared sequential stream changes roots with query order (117.8735ms)
+✔ independent mix64, counter, FNV, encoding, key and u53 vectors (1.5121ms)
+✔ encoding is typed, unambiguous and rejects invalid input (0.7311ms)
+✔ addressed draws and all rejection vectors, boundaries and exhaustion (3.6165ms)
+✔ exponential vectors, strict positivity and exact endpoint goldens (0.1848ms)
+✔ chance, sorted weighted selection and uniform year tie order (0.5009ms)
+✔ Atlas year constant, negative nanoseconds and explicit outside-model-range (0.7198ms)
+✔ division remains exact at safe-integer limits and only valid nesting edges (1.0802ms)
+✔ millennia cross chapter boundaries; half-open membership and intersection (0.2281ms)
+ℹ tests 54
+ℹ suites 0
+ℹ pass 54
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2924.777

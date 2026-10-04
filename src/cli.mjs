@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { createToy } from './toy.mjs';
-import { createPlanet } from './planet.mjs';
+import { createPlanet, salientEvents } from './planet.mjs';
 import { IMPLEMENTED } from './catalogue.mjs';
 import { compareEvents } from './events.mjs';
 const args=process.argv.slice(2), value=key=>args[args.indexOf(key)+1];
@@ -14,10 +14,13 @@ if(args.includes('--civ')) {
     else {
       console.log(`M2a ${fixture}; seed ${seed}; ${result.ticks*10} years; ${result.state.regions.length} regions; ${result.events.length} events.`);
       console.log(`Outcome: ${result.outcome}; population ${result.state.regions.reduce((n,r)=>n+r.pop,0n)}; era E${result.state.outcome.industrialEra}; live polities ${result.state.polities.length}.`);
+      console.log(`Maximum era: E${result.maxEra}; first reached at year ${result.firstReachedYear}.`);
       console.log('Event counts (all / accepted / openers / steps / pre-empted / eligible hazard opportunity-ticks):');
       for(const k of IMPLEMENTED){const es=result.events.filter(e=>e.kind===k.kind);console.log(`${k.kind}: ${es.length} / ${es.filter(e=>e.resolution==='accepted').length} / ${es.filter(e=>['OUTBREAK','DECLARED'].includes(e.data.stage)).length} / ${es.filter(e=>e.phase===3).length} / ${es.filter(e=>e.resolution==='pre-empted').length} / ${k.trigger==='hazard'?result.exposures.find(e=>e.kind===k.kind).opportunityTicks:'n/a'}`);}
       console.log('Most salient events (model attribution):');
-      for(const e of [...result.events].sort((a,b)=>b.salience-a.salience||compareEvents(a,b)).slice(0,30))console.log(`${e.dateYear} ${e.kind} ${e.ownerId}; causes ${e.causes.map(c=>c.eventId).join(', ')||'none'}`);
+      const byId=new Map(result.events.map(e=>[e.id,e]));
+      const label=e=>`${e.kind}@${e.dateYear} (${e.ownerId.replaceAll(world.def.arcId+'#','').replaceAll(world.def.arcId,'arc')})`;
+      for(const e of salientEvents(result.events))console.log(`${label(e)}; causes ${e.causes.map(c=>`${c.edge}: ${label(byId.get(c.eventId))}`).join(', ')||'none'}`);
       console.log(`Manifest digest: ${result.manifestDigest}\nRecipe digest: ${result.recipeDigest}\nResult digest: ${result.resultDigest}`);
     }
   }

@@ -1,5 +1,7 @@
 import { encodeFields, expQ32 } from './rng.mjs';
+import { sha256Hex } from './digest.mjs';
 import { ceilDiv } from './fixed.mjs';
+const keys = new Map();
 export function hazardKey(id) {
   if (!id || typeof id.ownerId !== 'string' || typeof id.kind !== 'string') throw new TypeError('Invalid hazard identity');
   // Presence bits distinguish an omitted component from an empty string or zero.
@@ -13,7 +15,16 @@ export function hazardKey(id) {
       fields.push(id[name]);
     }
   }
-  return encodeFields(fields).toString('hex');
+  const cacheKey=JSON.stringify(fields);
+  let key=keys.get(cacheKey);
+  if(key===undefined){key=encodeFields(fields).toString('hex');if(keys.size<16384)keys.set(cacheKey,key);}
+  return key;
+}
+const compactKeys=new Map();
+export function compactHazardKey(id) {
+  const raw=hazardKey(id);let key=compactKeys.get(raw);
+  if(key===undefined){key=sha256Hex(raw);if(compactKeys.size<16384)compactKeys.set(raw,key);}
+  return key;
 }
 export function threshold(def, hazardId, episode) {
   return expQ32({ worldSeed: def.seed, manifestDigest: def.manifestDigest, level: 'P',
@@ -21,13 +32,13 @@ export function threshold(def, hazardId, episode) {
     episodeOrBucket: episode, ordinal: 0 });
 }
 export function createHazard(def, hazardId) {
-  return { hazardId: { ...hazardId }, key: hazardKey(hazardId), episode: 0n, H_q32: 0n,
+  return { hazardId: { ...hazardId }, key: def.compactHazards?compactHazardKey(hazardId):hazardKey(hazardId), episode: 0n, H_q32: 0n,
     E_q32: threshold(def, hazardId, 0n) };
 }
 export function advanceHazard(def, entry, h, eligible = true, thresholdFn = threshold) {
   if (typeof h !== 'bigint' || h < 0n || typeof entry.episode !== 'bigint' || entry.episode < 0n ||
       typeof entry.H_q32 !== 'bigint' || typeof entry.E_q32 !== 'bigint' ||
-      entry.H_q32 < 0n || entry.H_q32 >= entry.E_q32 || entry.key !== hazardKey(entry.hazardId)) throw new RangeError('Invalid hazard ledger');
+      entry.H_q32 < 0n || entry.H_q32 >= entry.E_q32 || entry.key !== (def.compactHazards?compactHazardKey(entry.hazardId):hazardKey(entry.hazardId))) throw new RangeError('Invalid hazard ledger');
   if (!eligible || h === 0n) return { entry: { ...entry }, firings: [] };
   const H_start = entry.H_q32;
   let episode = entry.episode, E_cur = entry.E_q32;

@@ -5,8 +5,10 @@
 annual projection, with independent RNG/Merkle vectors and negative controls.
 **M2a implemented for runner review:** the 15-kind standalone planet solver,
 three explicit environment stubs, ordered stock effects, chains, provenance,
-archives and chapter checkpoints. The 20 kyr acceptance check passes; the
-400 kyr / 10 s performance target is **not met**. M2b remains unimplemented.
+archives and chapter checkpoints. The M2a fix round adds regional one-tier collapse, war-to-stress provenance,
+compact digest witnesses, completed-hazard archival and readable CLI causes.
+The 20 kyr benchmark is below 700 ms; the 400 kyr / 10 s target is **still not met**.
+Do not accept this round as complete until that blocking budget passes. M2b remains unimplemented.
 This repository exists to work out — on paper first, then in small deterministic
 Node simulations — how civilisations can be generated so that they cohere with
 a deterministic 4D universe.
@@ -82,3 +84,9 @@ M1's API choices, toy parameters and acceptance map are in
 [docs/m1-implementation.md](docs/m1-implementation.md).
 M2a's APIs, acceptance map, measurements and limitations are in
 [docs/m2-implementation.md](docs/m2-implementation.md).
+
+M2a fix-round evidence and remaining performance work are recorded in
+[docs/m2-implementation.md](docs/m2-implementation.md). Reproduce the eight-seed
+400 kyr survey with `node tools/survey-civ.mjs` (long-running, outside the lean
+unit suite). It writes counts, maximum eras, first attainment years and roots to
+`docs/evidence/m2a-fix-survey.json`. No survey outcome is a unit-test assertion.

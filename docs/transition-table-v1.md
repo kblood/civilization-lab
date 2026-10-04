@@ -593,7 +593,7 @@ Nstar rows list tier 0 through maximum, in persons:
 | Domain | Nstar | a_d: Q32 per effective person per decade |
 |---|---|---:|
 | E | 0,100,500,2000,5000,10000,20000 | 400 |
-| S | 0,50,100,500,2000,5000 | 40 |
+| S | 0,50,100,500,2000,5000 | 400 |
 | M | 0,100,500,1000,3000,8000 | 400 |
 | T | 0,100,300,1000,3000,5000,8000,12000 | 400 |
 | I | 0,50,200,1000,3000,8000 | 400 |
@@ -710,7 +710,7 @@ General effect helpers, with exact within-event ordering:
   not region ownership. Recovery and collapse flags follow event order;
   RECOVERY clears only the pre-state collapse episode (if a prior effect this
   tick replaced/enlarged it, RECOVERY is pre-empted `new-collapse`).
-* Arc-wide perils and collapse do not lock stock debits: sequential losses
+* Arc-wide perils and regional collapse do not lock stock debits: sequential losses
   compose. After an actual extinction-class effect, all later local intents
   needing living people are pre-empted `no-people`. Natural zero is treated
   identically. Already registered voyages are unaffected.
@@ -962,17 +962,18 @@ lock all affected regions as a group. No unspecified cultural-distance RNG.
 
 ### 19 COLLAPSE — P; hazard; phase 2; salience 900; M2a
 
-Owner=arc; eligible total pop>0 and frontier era>=1. Let s be maximum live
-polity stress, default 100; complexity=sum over occupied regions of sum tiers.
-Terms `stress=F(42949673*s*s,1000000)` and
+Owner=region; eligible pop>0, era>=1, and no active collapse. Let s be its
+owner's stress (100 if unowned), complexity=sum of this region's tiers.
+Terms `stress=F(4294967*s*s,1000000)` and
 `overhead=F(42949*complexity,7)`.
-Draw evt.collapse.drop below(2)+1. In region order, collapse(r,drop,300,700).
-Then split each pre-state live multi-region polity in ID order, assigning
-part indices 0/1 per parent, with its smallest local region as the flat-ID anchor.
-Ownership conflict pre-empts only that split component; stock consequences
-still apply, and params splitCount records the accepted count. New children
-not in pre-state cannot themselves split this tick. The region split formula
-is unchanged. No population set to zero merely because recovery is difficult.
+Draw evt.collapse.drop below(1)+1 (one tier). Apply collapse(r,1,300,700)
+only to the owner region. Its pre-state multi-region polity may split once,
+using the existing territory locks and flat IDs. Other regions retain their
+stocks and tiers even if their political owner splits. Params splitCount
+records accepted splits. One accepted COLLAPSE per region per tick; subsequent
+firings are pre-empted target-conflict. No repeat exposure while recovery remains active.
+RECOVERY still restores demographic/infrastructure viability, not lost tiers;
+rediscovery and diffusion restore knowledge. Losses never impose a permanent cap.
 
 ### 20 RECOVERY — P; threshold; phase 1; salience 700; M2a
 
@@ -1151,7 +1152,7 @@ NO_LINEAGE is an origin/domain result, not a LINEAGE_EXTINCTION firing.
    ARRIVAL can add people. Terminal arc messages are consumed with no local
    effect. Freeze this complete post-inbox state as **pre-state**. The ledger
    includes a `phase0` witness as an additional M2 field: `{eventIds,state}`;
-   naturalDelta is measured from phase0.state. This resolves boundary replay.
+   state is a digest; naturalDelta is measured from the replayed phase-0 state. This resolves boundary replay.
 2. **1:** evaluate latches and threshold intents on pre-state. Reset bookkeeping
    latches whenever false. SPACEFLIGHT false flag and viability recovery are
    queued framework effects committed at 5b before ordered event effects;
@@ -1188,12 +1189,12 @@ NO_LINEAGE is an origin/domain result, not a LINEAGE_EXTINCTION firing.
    No recursive derived events. Final sortEvents assigns dense ordinals.
 10. **5e:** provenance update, ledger and checkpoint. Increment arc.tick to t+1.
     tickLedger retains M1 fields and adds phase0 and archived as above; naturalDelta rows
-    contain regionId/pop plus infra,fuel,forcing,renewable,immunityTicks,
-    culture,lowTicks deltas (signed component tuples). Polity natural updates
-    are in `polityNatural`, sorted `{polityId,eliteShare,asabiya,legitimacy,
-    stress,warWeariness}` deltas. These are M2 ledger extensions, not event
-    effects. endState is the complete LIVE authoritative arc state, including
-    outbound records until the D barrier consumes them, excluding the archive. Store complete domain
+    are fixed tuples `[regionId,pop,infra,fuel,forcing,renewable,immunityTicks,
+    culture,lowTicks]` (signed deltas). Polity natural updates are sorted tuples
+    `[polityId,eliteShare,asabiya,legitimacy,stress,warWeariness]` in polityNatural.
+    Inspection APIs may expand these tuples into the original named records. These are M2 ledger extensions, not event
+    effects. endState is the structural digest of the complete LIVE authoritative
+    arc state, including outbound records and excluding the archive. Store complete domain
     checkpoints at every globally aligned chapter boundary and genesis.
 
 For phase-0 ARRIVAL, the D event is the authoritative transfer/founding event;
@@ -1299,7 +1300,7 @@ hazards, active chains, current provenance/latches and pending messages. At
 P5e move each ended polity, closed hazard and terminal chain exactly once into
 that tick's `archived` array. An archive entry is `{scope,kind,id,record}`,
 where scope is arc.id or `D:`+domain.id, kind is polity/hazard/chain/arc/voyage/
-transit, and id is respectively polity.id/hazard.key/chain.chainId/arc.id/
+transit, and id is respectively polity.id/(hazard.key+":"+episode)/chain.chainId/arc.id/
 voyage.id/transit.id. Sort by `(scope,kind,id)`; record is the complete final
 closed typed record, not a digest. Remove it from the live collection. At that same retirement, discard provenance
 slots and latches whose target/subject is the retired polity, chain or hazard
@@ -1310,8 +1311,11 @@ ledger and is not copied into that record. Region slots stay bounded by the
 fixed partition. A
 polity retirement also closes every hazard whose owner/participants include
 it; the framework uses the structured HazardId and typed chain refs, never
-substring matching. Region and edge hazards pause while empty and close only
-on arc termination. Extinction closes the remaining local entries.
+substring matching. Region and edge hazards pause while empty. Acquisition hazards additionally
+close when their target tier is attained. Archive the final entry and retain only
+`{key,episode:closed.episode+1}` in sorted arc.hazardEpisodes. Reacquisition after
+a loss opens that next episode at H=0; no previously used RNG address returns.
+Other region/edge hazards close only on arc termination. Extinction closes the remaining local entries.
 
 D2 archives terminal arcs and disposed voyages/zero transit accounts; before
 removal it merges their death witnesses into lineage.lastDeath and removes
@@ -1325,9 +1329,10 @@ Terminal arcs cannot retain live chains, polities or open hazards. Empty
 lineages remain small summary records; there are at most four origins.
 
 Both P and D ledgers contain `archived` for **that tick only**. startState is
-SHA256(canonicalBytes(LIVE start state)); phase0.state and endState contain
-complete LIVE state only. D endState includes current live arcs, never their
-archives. At genesis and each chapter boundary a checkpoint is exactly
+the structural digest of LIVE start state; phase0.state and endState are
+structural digests too. Complete states are reconstructed by checkpoint replay.
+In standalone M2a only, D tick witnesses are `{domainId,tick,arcState,archived}`;
+arcState is the P end digest. D has no coupling or independent events yet. At genesis and each chapter boundary a checkpoint is exactly
 `{tick:BigInt,live:DomainState,archiveRecords:ArchiveEntry[]}`. archiveRecords
 is the concatenation of archive batches in numeric tick order, then scope/
 kind/id order within each tick; records occur once and are immutable. The
@@ -1639,9 +1644,9 @@ merge under original source IDs and use original event order for DAG filtering.
 
 Back-of-envelope checks (rates are Q32 per decade, before chain spread): WAR
 ratio1000/stress300/weariness0 now gives 128849019=0.03Q, about one declaration
-per directed pair per 330 years while exposed. COLLAPSE stress500 contributes
-10737418=0.0025Q, about 4000 years; stress300 contributes 3865470=0.0009Q,
-about 11111 years, plus the unchanged overhead. PLAGUE S2,V0 with pressure1000,
+per directed pair per 330 years while exposed. COLLAPSE now acts per region: stress500 contributes
+1073741 (about 40000 years); stress300 contributes 386547 (about 111111 years),
+plus local overhead. A tier sum of 28 adds 171796 (about 250000 years). PLAGUE S2,V0 with pressure1000,
 connectivity2000,susceptible1000 has product 600000000000000 and rate42949672,
 about 0.01Q (1000 years); S0 urban10 gives1431655, about0.000333Q (30000 years).
 Medicine reduces later urban outbreaks by its stated factor. Origin rates
@@ -1661,7 +1666,7 @@ kinds may remain zero in this horizon. Constant temperate epoch inputs produce
 no CLIMATE_SHIFT before lifecycle closure. Do not assert this qualitative mix
 as truth or tune away inconvenient seeds: print exposures, opener/step counts,
 pre-emptions and zero-count kinds, then compare with these expectations.
-No additional rate calibration changes beyond D5 are made in this revision.
+The M2a fix round below revises collapse scope/rate and Subsistence calibration.
 
 ## Fixture JSON schema and exact fixture recipes [scenario]
 
@@ -2061,6 +2066,51 @@ chain retirement, event serialization, lifecycle closure and mechanical
 provenance. Rebuilt minimal permissions and field writers. Recorded every
 runner decision and critique resolution; no source code or fixture file changed.
 
+## Revision log (M2a fix round)
+
+All changes here are authored scenario/representation choices, not research claims.
+
+1. P start/phase0/end witnesses now contain structural SHA-256 digests. Complete
+   checkpoints and tick archives remain replay inputs. The digest is exactly
+   SHA256 of `[rest,regionTuples,hazardRoot,episodeRoot]` in canonical JSON.
+   The machine block specifies every tuple position; all remaining arc fields
+   keep their canonical sorted keys. HazardRoot hashes the ordered list of
+   per-entry SHA256 hashes; episodeRoot hashes the compact episode counters.
+   Natural delta rows use the machine block's fixed tuples to reduce key overhead. Checkpoint replay must
+   reproduce every tick digest and chapter root. Standalone M2a D witnesses
+   reference the P digest; M2b is not implemented.
+2. M2 hazard keys use SHA-256 of the M1 hex key. Threshold RNG addresses retain
+   the original key. Event/cause references retain full event IDs with compact
+   intents. M1 encoding is unchanged.
+3. M2 hazard records add atTick and rate. Effective accumulated hazard at boundary
+   t is H_q32+(t-atTick)*rate. Same-rate non-firing ticks need no record mutation;
+   rate changes, pauses and firings materialize H. No RNG cursor is stored.
+4. Subsistence coefficient is 400 rather than 40 (agriculture domesticables
+   multiplier stays). This also reconciles the implementation's existing 400
+   for post-agriculture Subsistence discoveries with the table. D6 still permits
+   slow seeds. This is a general rate change, not a seed exception.
+5. Collapse is regional, stress coefficient 4294967 (one tenth), local complexity,
+   exactly one tier per domain and no exposure during active recovery. Population
+   and infrastructure losses remain 300/700 permille. Only the victim's polity
+   can split; one collapse is accepted per victim per tick. Recovery has no tier gift; neighbouring knowledge survives for
+   diffusion. ENERGY_TRANSITION still records both increases and decreases.
+6. Natural wartime legitimacy losses and stress increases propagate WAR opener
+   attribution. Pre-state legitimacy/stress/weariness contributors propagate into
+   increasing stress. Stress score decay rounds up while stress exceeds 100,
+   retaining at most three real sources; other score decay stays floor-half.
+   No historical event is invented for natural baseline stress. Famine lowers
+   population pressure in this model and need not raise collapse hazard.
+7. CLI selects in descending base salience/event order, at most three per kind
+   within 30 rows, and resolves causes to kind/year/owner. It reports historical
+   maximum occupied era and its earliest committed boundary year. This diversity
+   cap is presentation only; all events remain in the digest and count report.
+
+8. Completed acquisition hazards now retire into the append-only archive when
+   the target tier is attained. A compact next-episode counter prevents RNG reuse
+   after a later loss. This removes completed targets from the per-tick working
+   set; other ineligible hazards remain paused. Retirement materializes their
+   final accumulated H at the ending boundary. Archive IDs include the episode.
+
 ## Machine-readable table
 
 This is the sole fenced `json` block in this document. `phase` and `trigger`
@@ -2108,7 +2158,7 @@ Atomic records do not grant permission to create undeclared record members.
       "formula": "F(coefficientQ32*min(2000,pressure)*connectivity*susceptible*urban[S]*medicine[V],denominator)",
       "contact": "effectiveContact"
     },
-    "collapseStressCoefficientQ32": "42949673",
+    "collapseStressCoefficientQ32": "4294967",
     "originRateLog2": [
       12,
       22
@@ -2154,7 +2204,8 @@ Atomic records do not grant permission to create undeclared record members.
         "live",
         "archiveRecords"
       ],
-      "endState": "LIVE only"
+      "endState": "structural digest of LIVE state",
+      "hazardId": "key + colon + episode"
     },
     "deathOrder": [
       "tick",
@@ -2210,12 +2261,135 @@ Atomic records do not grant permission to create undeclared record members.
         "polity.endedYear"
       ]
     },
-    "forcedTickMaximum": 40000
+    "forcedTickMaximum": 40000,
+    "collapse": {
+      "owner": "region",
+      "eligible": "pop>0 && era>=1 && !collapse.active",
+      "complexity": "sum(region.tiers)",
+      "drop": 1,
+      "populationLossPermille": 300,
+      "infrastructureLossPermille": 700,
+      "split": "only victim region pre-state polity; existing locks",
+      "recovery": "unchanged; no tier gift",
+      "sameTick": "one accepted collapse per region; later firings pre-empted target-conflict"
+    },
+    "subsistenceCoefficientQ32": "400",
+    "tickWitness": {
+      "version": "m2a-state-witness-2",
+      "arc": "SHA256(UTF8(JSON array [rest, regionTuples, hazardRoot, episodeRoot]))",
+      "rest": "all arc fields except regions, hazardLedger, hazardEpisodes; canonical sorted keys",
+      "regionTuple": [
+        "id",
+        "localId",
+        "pop",
+        "Kbase",
+        "K",
+        "renewable",
+        "infra",
+        "fuel",
+        "forcing",
+        "immunityTicks",
+        "damage",
+        "polityId",
+        "cultureId",
+        "culture",
+        "tiers",
+        "caps",
+        "era",
+        "energy",
+        "resources",
+        "collapse",
+        "lowTicks",
+        "ceilings",
+        "spaceflight",
+        "berthsUsed"
+      ],
+      "regionNestedTuples": {
+        "damage": [
+          "eventId",
+          "permille",
+          "untilTick"
+        ],
+        "collapse": [
+          "active",
+          "recoverPop",
+          "recoverInfra"
+        ],
+        "ceilings": [
+          "domain",
+          "targetTier",
+          "reason"
+        ]
+      },
+      "bigints": "decimal JSON strings, same as M1",
+      "hazardRoot": "SHA256(canonicalBytes(hazardLedger.map(h => SHA256(canonicalBytes(h)))))",
+      "episodeRoot": "SHA256(canonicalBytes(hazardEpisodes))",
+      "phase0": "state digest",
+      "endState": "state digest",
+      "naturalDeltaTuple": [
+        "regionId",
+        "pop",
+        "infra",
+        "fuel",
+        "forcing",
+        "renewable",
+        "immunityTicks",
+        "culture",
+        "lowTicks"
+      ],
+      "polityNaturalTuple": [
+        "polityId",
+        "eliteShare",
+        "asabiya",
+        "legitimacy",
+        "stress",
+        "warWeariness"
+      ],
+      "standaloneD": [
+        "domainId",
+        "tick",
+        "arcState",
+        "archived"
+      ]
+    },
+    "compactHazardKey": "SHA256(UTF8(M1 hex hazard key)); RNG threshold address remains M1 hex key",
+    "hazardClock": {
+      "atTick": "BigInt boundary of stored H_q32",
+      "rate": "BigInt Q32 per tick; zero when paused",
+      "effectiveH": "H_q32+(tick-atTick)*rate",
+      "anchor": "rewrite only on rate change, pause or firing; store next boundary after advance",
+      "firing": "unchanged M1 advanceHazard and evidence"
+    },
+    "naturalStressProvenance": {
+      "legitimacyLoss": "credit active WAR opener with size of natural loss",
+      "stressIncrease": "credit active WAR opener and pre-state legitimacy/stress/warWeariness contributors with size of increase",
+      "stressDecay": "ceil(score/2) while polity stress>100, otherwise floor(score/2); existing top-three cap",
+      "interpretation": "bounded persistent model attribution while stress remains elevated"
+    },
+    "cliSelection": {
+      "order": "base salience descending then event order",
+      "capPerKind": 3,
+      "causes": "kind@year (owner); resolve stored event IDs",
+      "maxEra": "highest occupied era from initial state and committed ENERGY_TRANSITION; earliest commit boundary year"
+    },
+    "acquisitionHazardRetirement": {
+      "eligibleKinds": [
+        "AGRICULTURE",
+        "DISCOVERY",
+        "DIFFUSION"
+      ],
+      "close": "target region tier >= targetTier after effects",
+      "archiveId": "key + colon + episode",
+      "counter": "arc.hazardEpisodes sorted {key,episode}; next episode = closed entry episode + 1",
+      "reopen": "zero accumulated H and threshold at saved episode; previous pending threshold invalidated",
+      "otherHazards": "retain paused entries until owner retirement or terminal arc"
+    }
   },
   "frameworkReads": [
     "arc.body",
     "arc.chains",
     "arc.episode",
+    "arc.hazardEpisodes",
     "arc.hazardLedger",
     "arc.id",
     "arc.inbox",
@@ -2256,6 +2430,7 @@ Atomic records do not grant permission to create undeclared record members.
     "voyage.lastDeath"
   ],
   "frameworkWrites": [
+    "arc.hazardEpisodes",
     "arc.hazardLedger",
     "arc.lastDeath",
     "arc.latches",
@@ -3246,6 +3421,15 @@ Atomic records do not grant permission to create undeclared record members.
         "COLONY_FOUNDED",
         "INIT",
         "SAPIENCE"
+      ]
+    },
+    {
+      "path": "arc.hazardEpisodes",
+      "type": "Array",
+      "unit": "next_episode_per_acquisition_key",
+      "writtenBy": [
+        "INIT",
+        "P5e"
       ]
     },
     {

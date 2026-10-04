@@ -34,7 +34,7 @@ function validateForced(f,planet) {
   exact(f,['schemaVersion','id','base','seed','ticks','initial','overrides','expect']);
   if(f.schemaVersion!=='civ-forced-stub-1'||!Number.isSafeInteger(f.ticks)||f.ticks<1||f.ticks>40000||!IMPLEMENTED.some(k=>k.kind===f.expect))throw new TypeError('Invalid forced fixture');
   sortedUnique(f.overrides,o=>o.key);
-  const support={'evt.sapience.regions':[1,2],'evt.migration.fraction':[50,250],'evt.plague.loss':[100,300],'evt.collapse.drop':[1,2],'evt.war.campaign':[20,100],'evt.conquest.win':[0,1]};
+  const support={'evt.sapience.regions':[1,2],'evt.migration.fraction':[50,250],'evt.plague.loss':[100,300],'evt.collapse.drop':[1,1],'evt.war.campaign':[20,100],'evt.conquest.win':[0,1]};
   for(const o of f.overrides) {
     exact(o,['key','value']);
     if(o.key==='epoch.rows')continue;
@@ -90,7 +90,7 @@ export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=200
     inputBundleDigest:digest({domain,systems,forced}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2a',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
       originRateLog2:[12,22],learningLog2:[8,12],innovationLog2:[17,23],nuclearLog2:[8,24],pandemicLog2:[12,28],runawayLog2:[14,29],sharedLog2:[0,19],colonizerLog2:[15,19]}};
   const fromTick=BigInt(forced.initial?.atTick??'0'),untilTick=fromTick+BigInt(forced.ticks),arcId=`arc:${planet.body}:lin:${planet.body}:0`;
-  const def={seed,manifest:deepFreeze(manifest),manifestDigest:digest(manifest),recipeDigest:digest({seed,manifest,fromTick,untilTick}),fromTick,untilTick,forced:deepFreeze(forced),planet:deepFreeze(planet),domain,arcId,env};
+  const def={compactHazards:true,seed,manifest:deepFreeze(manifest),manifestDigest:digest(manifest),recipeDigest:digest({seed,manifest,fromTick,untilTick}),fromTick,untilTick,forced:deepFreeze(forced),planet:deepFreeze(planet),domain,arcId,env};
   const rates=[0,1,2].map(j=>1n<<(12n+below(address(def,originId(planet.body),`orig.rate.${j}`,'D'),11n)));
   const waits=rates.map((rate,j)=>{const e=expQ32(address(def,originId(planet.body),`orig.step.${j}`,'D'));return F(e+rate-1n,rate);});
   def.origin={body:planet.body,rates,waitYears:waits,sapienceYear:Number(override(def,'origin.deliveryYear')??fromTick*10n),deliveryTick:BigInt(override(def,'origin.deliveryYear')??fromTick*10n)/10n,status:'founded'};
