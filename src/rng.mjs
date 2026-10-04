@@ -1,7 +1,17 @@
 import { logPos, positiveQ32 } from './fixed.mjs';
 import { compare } from './canonical.mjs';
 export const PURPOSES = Object.freeze(['evt.toy.magnitude', 'evt.war.campaign', 'haz.boom',
-  'haz.plague', 'haz.toy', 'nar.name', 'pol.split.part', 'ref.cell.site'].sort(compare));
+  'haz.plague', 'haz.toy', 'nar.name', 'pol.split.part', 'ref.cell.site',
+  'haz.MIGRATION', 'haz.AGRICULTURE', 'haz.PLAGUE', 'haz.NATURAL_CATASTROPHE',
+  'haz.DISCOVERY', 'haz.DIFFUSION', 'haz.POLITY_FOUNDING', 'haz.WAR',
+  'haz.FRAGMENTATION', 'haz.REVOLUTION', 'haz.SCHISM', 'haz.COLLAPSE',
+  'haz.NUCLEAR_WAR', 'haz.ENGINEERED_PANDEMIC', 'haz.RUNAWAY_TECH', 'haz.LAUNCH', 'haz.VOYAGE_LOST',
+  'orig.rate.0', 'orig.rate.1', 'orig.rate.2', 'orig.step.0', 'orig.step.1', 'orig.step.2',
+  'prior.learning', 'prior.innovation', 'prior.nuclear', 'prior.pandemic', 'prior.runaway', 'prior.shared', 'prior.colonizer',
+  'evt.sapience.regions', 'evt.migration.fraction', 'evt.plague.loss', 'evt.natural.loss', 'evt.natural.duration',
+  'out.NATURAL_CATASTROPHE', 'evt.collapse.drop', 'evt.revolution.regime', 'evt.schism.coordinate',
+  'evt.conquest.win', 'evt.perils.drop', 'evt.perils.shared', 'out.NUCLEAR_WAR', 'out.ENGINEERED_PANDEMIC',
+  'out.RUNAWAY_TECH', 'evt.launch.destination', 'arc.colonizer'].sort(compare));
 const MOD = 1n << 64n, MASK = MOD - 1n;
 function integer(value) {
   if (typeof value === 'bigint') return value;

@@ -3,6 +3,10 @@
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
 **M1 implemented:** deterministic core, one-region toy, chapter replay and exact
 annual projection, with independent RNG/Merkle vectors and negative controls.
+**M2a implemented for runner review:** the 15-kind standalone planet solver,
+three explicit environment stubs, ordered stock effects, chains, provenance,
+archives and chapter checkpoints. The 20 kyr acceptance check passes; the
+400 kyr / 10 s performance target is **not met**. M2b remains unimplemented.
 This repository exists to work out — on paper first, then in small deterministic
 Node simulations — how civilisations can be generated so that they cohere with
 a deterministic 4D universe.
@@ -57,6 +61,8 @@ Requires Node 22 or newer; there are no dependencies.
 npm test            # node --test "tests/**/*.test.mjs"  (fast, deterministic, no browser/GPU)
 npm run scenario    # node src/cli.mjs
 npm run digest      # node src/cli.mjs --digest
+node src/cli.mjs --civ temperate --seed civ-m2a-1 --years 20000
+npm run perf        # tools/perf-civ.mjs: 400 kyr, measured outside src/
 ```
 
 ## Layout
@@ -66,8 +72,13 @@ npm run digest      # node src/cli.mjs --digest
   Core modules: `time.mjs`, `fixed.mjs`, `rng.mjs`, `canonical.mjs`,
   `digest.mjs`, `events.mjs`, `hazard.mjs`, `manifest.mjs`, `levels.mjs`;
   `toy.mjs` supplies the M1 solver and annual refinement.
+- M2a: `catalogue.mjs`, `planet.mjs`, `tech.mjs`, `polities.mjs`,
+  `chains.mjs`, `provenance.mjs`, `environment.mjs`, `civ-input.mjs`;
+  `fixtures/planets/` contains temperate, arid and cold-archipelago inputs.
 - `tests/` — `node --test` files, each well under two seconds.
 
 See [AGENTS.md](AGENTS.md) for the rules that agents working here follow.
 M1's API choices, toy parameters and acceptance map are in
 [docs/m1-implementation.md](docs/m1-implementation.md).
+M2a's APIs, acceptance map, measurements and limitations are in
+[docs/m2-implementation.md](docs/m2-implementation.md).

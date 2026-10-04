@@ -1,0 +1,935 @@
+[
+  {
+    "kind": "SAPIENCE",
+    "kindRank": 1,
+    "owner": "P",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M2a",
+    "reads": [
+      "input.environment",
+      "lineage.scenarioParams",
+      "origin.body",
+      "origin.deliveryTick",
+      "origin.status",
+      "region.Kbase",
+      "region.id",
+      "region.localId"
+    ],
+    "writes": [
+      "arc.body",
+      "arc.chains",
+      "arc.colonizer",
+      "arc.episode",
+      "arc.foundedYear",
+      "arc.foundingTiers",
+      "arc.id",
+      "arc.inbox",
+      "arc.isColony",
+      "arc.lineageId",
+      "arc.nonviable",
+      "arc.outbox",
+      "arc.outcome",
+      "arc.perils",
+      "arc.polities",
+      "arc.regions",
+      "arc.scenarioParams",
+      "region.K",
+      "region.Kbase",
+      "region.berthsUsed",
+      "region.caps",
+      "region.ceilings",
+      "region.collapse",
+      "region.culture",
+      "region.cultureId",
+      "region.damage",
+      "region.energy",
+      "region.era",
+      "region.forcing",
+      "region.fuel",
+      "region.id",
+      "region.immunityTicks",
+      "region.infra",
+      "region.localId",
+      "region.lowTicks",
+      "region.polityId",
+      "region.pop",
+      "region.renewable",
+      "region.resources",
+      "region.spaceflight",
+      "region.tiers"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "MIGRATION",
+    "kindRank": 2,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "chain.kind",
+      "chain.refs",
+      "chain.status",
+      "input.environment",
+      "region.K",
+      "region.damage",
+      "region.id",
+      "region.polityId",
+      "region.pop",
+      "region.renewable"
+    ],
+    "writes": [
+      "region.pop"
+    ],
+    "salience": 200
+  },
+  {
+    "kind": "AGRICULTURE",
+    "kindRank": 3,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "arc.scenarioParams",
+      "input.environment",
+      "region.caps",
+      "region.id",
+      "region.pop",
+      "region.resources",
+      "region.tiers"
+    ],
+    "writes": [
+      "region.tiers"
+    ],
+    "salience": 700
+  },
+  {
+    "kind": "FAMINE",
+    "kindRank": 4,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2a",
+    "reads": [
+      "region.K",
+      "region.damage",
+      "region.id",
+      "region.pop",
+      "region.renewable"
+    ],
+    "writes": [
+      "region.pop",
+      "region.renewable"
+    ],
+    "salience": 500
+  },
+  {
+    "kind": "PLAGUE",
+    "kindRank": 5,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "chain.chainId",
+      "chain.deadlineTick",
+      "chain.frontier",
+      "chain.kind",
+      "chain.nextTick",
+      "chain.refs",
+      "chain.status",
+      "chain.step",
+      "chain.visited",
+      "input.environment",
+      "polity.eliteShare",
+      "polity.id",
+      "region.K",
+      "region.id",
+      "region.immunityTicks",
+      "region.polityId",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.chains",
+      "chain.chainId",
+      "chain.deadlineTick",
+      "chain.frontier",
+      "chain.kind",
+      "chain.nextTick",
+      "chain.reason",
+      "chain.refs",
+      "chain.status",
+      "chain.step",
+      "chain.visited",
+      "polity.eliteShare",
+      "region.immunityTicks",
+      "region.pop"
+    ],
+    "salience": 600
+  },
+  {
+    "kind": "CLIMATE_SHIFT",
+    "kindRank": 6,
+    "owner": "P",
+    "trigger": "exogenous",
+    "phase": 0,
+    "milestone": "M2b",
+    "reads": [
+      "input.environment",
+      "region.Kbase",
+      "region.id",
+      "region.localId",
+      "region.resources"
+    ],
+    "writes": [
+      "region.Kbase",
+      "region.resources"
+    ],
+    "salience": 400
+  },
+  {
+    "kind": "NATURAL_CATASTROPHE",
+    "kindRank": 7,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "region.damage",
+      "region.id",
+      "region.infra",
+      "region.pop"
+    ],
+    "writes": [
+      "region.damage",
+      "region.infra",
+      "region.pop"
+    ],
+    "salience": 850
+  },
+  {
+    "kind": "DISCOVERY",
+    "kindRank": 8,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "arc.scenarioParams",
+      "input.environment",
+      "polity.hegemony",
+      "polity.id",
+      "region.caps",
+      "region.id",
+      "region.polityId",
+      "region.pop",
+      "region.resources",
+      "region.tiers"
+    ],
+    "writes": [
+      "region.tiers"
+    ],
+    "salience": 650
+  },
+  {
+    "kind": "DIFFUSION",
+    "kindRank": 9,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "input.environment",
+      "polity.hegemony",
+      "polity.id",
+      "region.caps",
+      "region.id",
+      "region.polityId",
+      "region.pop",
+      "region.resources",
+      "region.tiers"
+    ],
+    "writes": [
+      "region.tiers"
+    ],
+    "salience": 450
+  },
+  {
+    "kind": "TECH_LOSS",
+    "kindRank": 10,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2a",
+    "reads": [
+      "region.id",
+      "region.lowTicks",
+      "region.tiers"
+    ],
+    "writes": [
+      "region.lowTicks",
+      "region.tiers"
+    ],
+    "salience": 500
+  },
+  {
+    "kind": "ENERGY_TRANSITION",
+    "kindRank": 11,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 5,
+    "milestone": "M2a",
+    "reads": [
+      "region.era",
+      "region.id",
+      "region.tiers"
+    ],
+    "writes": [],
+    "salience": 750
+  },
+  {
+    "kind": "POLITY_FOUNDING",
+    "kindRank": 12,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "region.K",
+      "region.id",
+      "region.localId",
+      "region.polityId",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.polities",
+      "polity.asabiya",
+      "polity.capital",
+      "polity.eliteShare",
+      "polity.endedYear",
+      "polity.foundedYear",
+      "polity.hegemony",
+      "polity.id",
+      "polity.legitimacy",
+      "polity.parentIds",
+      "polity.regime",
+      "polity.regions",
+      "polity.stress",
+      "polity.warWeariness",
+      "region.polityId"
+    ],
+    "salience": 650
+  },
+  {
+    "kind": "WAR",
+    "kindRank": 13,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "chain.chainId",
+      "chain.deadlineTick",
+      "chain.kind",
+      "chain.nextTick",
+      "chain.refs",
+      "chain.status",
+      "chain.step",
+      "input.environment",
+      "polity.asabiya",
+      "polity.capital",
+      "polity.endedYear",
+      "polity.id",
+      "polity.regions",
+      "polity.stress",
+      "polity.warWeariness",
+      "region.culture",
+      "region.id",
+      "region.infra",
+      "region.polityId",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.chains",
+      "chain.chainId",
+      "chain.deadlineTick",
+      "chain.frontier",
+      "chain.kind",
+      "chain.nextTick",
+      "chain.reason",
+      "chain.refs",
+      "chain.status",
+      "chain.step",
+      "chain.visited",
+      "polity.warWeariness",
+      "region.infra",
+      "region.pop"
+    ],
+    "salience": 700
+  },
+  {
+    "kind": "CONQUEST",
+    "kindRank": 14,
+    "owner": "P",
+    "trigger": "chain",
+    "phase": 3,
+    "milestone": "M2a",
+    "reads": [
+      "chain.chainId",
+      "chain.deadlineTick",
+      "chain.kind",
+      "chain.nextTick",
+      "chain.refs",
+      "chain.status",
+      "chain.step",
+      "input.environment",
+      "polity.asabiya",
+      "polity.endedYear",
+      "polity.id",
+      "polity.regions",
+      "polity.warWeariness",
+      "region.id",
+      "region.polityId",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "chain.frontier",
+      "chain.nextTick",
+      "chain.reason",
+      "chain.status",
+      "chain.step",
+      "chain.visited",
+      "region.polityId"
+    ],
+    "salience": 800
+  },
+  {
+    "kind": "HEGEMONY",
+    "kindRank": 15,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2b",
+    "reads": [
+      "polity.endedYear",
+      "polity.hegemony",
+      "polity.id",
+      "polity.regions",
+      "region.id",
+      "region.pop"
+    ],
+    "writes": [
+      "polity.hegemony"
+    ],
+    "salience": 750
+  },
+  {
+    "kind": "FRAGMENTATION",
+    "kindRank": 16,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "polity.eliteShare",
+      "polity.endedYear",
+      "polity.id",
+      "polity.regime",
+      "polity.regions",
+      "polity.stress",
+      "polity.warWeariness",
+      "region.id",
+      "region.localId",
+      "region.polityId"
+    ],
+    "writes": [
+      "arc.polities",
+      "polity.asabiya",
+      "polity.capital",
+      "polity.eliteShare",
+      "polity.endedYear",
+      "polity.foundedYear",
+      "polity.hegemony",
+      "polity.id",
+      "polity.legitimacy",
+      "polity.parentIds",
+      "polity.regime",
+      "polity.regions",
+      "polity.stress",
+      "polity.warWeariness",
+      "region.polityId"
+    ],
+    "salience": 700
+  },
+  {
+    "kind": "REVOLUTION",
+    "kindRank": 17,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "polity.eliteShare",
+      "polity.endedYear",
+      "polity.id",
+      "polity.legitimacy",
+      "polity.regime",
+      "polity.regions",
+      "polity.stress",
+      "region.id",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "polity.eliteShare",
+      "polity.legitimacy",
+      "polity.regime",
+      "polity.stress"
+    ],
+    "salience": 650
+  },
+  {
+    "kind": "SCHISM",
+    "kindRank": 18,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "polity.capital",
+      "polity.endedYear",
+      "polity.id",
+      "polity.regions",
+      "polity.stress",
+      "region.culture",
+      "region.cultureId",
+      "region.id",
+      "region.localId"
+    ],
+    "writes": [
+      "region.culture",
+      "region.cultureId"
+    ],
+    "salience": 600
+  },
+  {
+    "kind": "COLLAPSE",
+    "kindRank": 19,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2a",
+    "reads": [
+      "polity.eliteShare",
+      "polity.endedYear",
+      "polity.id",
+      "polity.regime",
+      "polity.regions",
+      "polity.stress",
+      "polity.warWeariness",
+      "region.collapse",
+      "region.era",
+      "region.id",
+      "region.infra",
+      "region.localId",
+      "region.polityId",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.polities",
+      "polity.asabiya",
+      "polity.capital",
+      "polity.eliteShare",
+      "polity.endedYear",
+      "polity.foundedYear",
+      "polity.hegemony",
+      "polity.id",
+      "polity.legitimacy",
+      "polity.parentIds",
+      "polity.regime",
+      "polity.regions",
+      "polity.stress",
+      "polity.warWeariness",
+      "region.collapse",
+      "region.infra",
+      "region.polityId",
+      "region.pop",
+      "region.tiers"
+    ],
+    "salience": 900
+  },
+  {
+    "kind": "RECOVERY",
+    "kindRank": 20,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2a",
+    "reads": [
+      "region.collapse",
+      "region.id",
+      "region.infra",
+      "region.pop"
+    ],
+    "writes": [
+      "region.collapse"
+    ],
+    "salience": 700
+  },
+  {
+    "kind": "NUCLEAR_WAR",
+    "kindRank": 21,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "arc.perils",
+      "arc.scenarioParams",
+      "chain.kind",
+      "chain.refs",
+      "chain.status",
+      "polity.endedYear",
+      "polity.id",
+      "polity.regions",
+      "region.caps",
+      "region.collapse",
+      "region.damage",
+      "region.id",
+      "region.infra",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.outbox",
+      "message.causeEventId",
+      "message.deliveryTick",
+      "message.id",
+      "message.payload",
+      "message.targetId",
+      "message.type",
+      "region.caps",
+      "region.collapse",
+      "region.damage",
+      "region.infra",
+      "region.pop",
+      "region.tiers"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "ENGINEERED_PANDEMIC",
+    "kindRank": 22,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "arc.perils",
+      "arc.scenarioParams",
+      "region.caps",
+      "region.collapse",
+      "region.id",
+      "region.infra",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.outbox",
+      "message.causeEventId",
+      "message.deliveryTick",
+      "message.id",
+      "message.payload",
+      "message.targetId",
+      "message.type",
+      "region.caps",
+      "region.collapse",
+      "region.infra",
+      "region.pop",
+      "region.tiers"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "RUNAWAY_TECH",
+    "kindRank": 23,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "arc.perils",
+      "arc.scenarioParams",
+      "region.caps",
+      "region.collapse",
+      "region.id",
+      "region.infra",
+      "region.pop",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.outbox",
+      "message.causeEventId",
+      "message.deliveryTick",
+      "message.id",
+      "message.payload",
+      "message.targetId",
+      "message.type",
+      "region.caps",
+      "region.collapse",
+      "region.infra",
+      "region.pop",
+      "region.tiers"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "CLIMATE_CATASTROPHE",
+    "kindRank": 24,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2b",
+    "reads": [
+      "region.damage",
+      "region.forcing",
+      "region.id",
+      "region.pop"
+    ],
+    "writes": [
+      "region.damage"
+    ],
+    "salience": 850
+  },
+  {
+    "kind": "SPACEFLIGHT",
+    "kindRank": 25,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2b",
+    "reads": [
+      "region.id",
+      "region.spaceflight",
+      "region.tiers"
+    ],
+    "writes": [
+      "region.spaceflight"
+    ],
+    "salience": 850
+  },
+  {
+    "kind": "LAUNCH",
+    "kindRank": 26,
+    "owner": "P",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "arc.colonizer",
+      "input.routes",
+      "region.berthsUsed",
+      "region.culture",
+      "region.cultureId",
+      "region.fuel",
+      "region.id",
+      "region.infra",
+      "region.localId",
+      "region.pop",
+      "region.spaceflight",
+      "region.tiers"
+    ],
+    "writes": [
+      "arc.outbox",
+      "message.causeEventId",
+      "message.deliveryTick",
+      "message.id",
+      "message.payload",
+      "message.targetId",
+      "message.type",
+      "region.berthsUsed",
+      "region.fuel",
+      "region.infra",
+      "region.pop",
+      "transit.id",
+      "transit.pop"
+    ],
+    "salience": 900
+  },
+  {
+    "kind": "VOYAGE_LOST",
+    "kindRank": 27,
+    "owner": "D",
+    "trigger": "hazard",
+    "phase": 2,
+    "milestone": "M2b",
+    "reads": [
+      "transit.id",
+      "transit.pop",
+      "voyage.deliveryTick",
+      "voyage.id",
+      "voyage.launchYear",
+      "voyage.status",
+      "voyage.tiers"
+    ],
+    "writes": [
+      "transit.pop",
+      "voyage.status"
+    ],
+    "salience": 900
+  },
+  {
+    "kind": "COLONY_FOUNDED",
+    "kindRank": 28,
+    "owner": "D",
+    "trigger": "scheduled",
+    "phase": 0,
+    "milestone": "M2b",
+    "reads": [
+      "arc.outcome",
+      "input.environment",
+      "lineage.id",
+      "lineage.scenarioParams",
+      "message.deliveryTick",
+      "message.id",
+      "message.payload",
+      "region.K",
+      "region.Kbase",
+      "region.id",
+      "region.localId",
+      "region.pop",
+      "transit.id",
+      "transit.pop",
+      "voyage.arrivalYear",
+      "voyage.culture",
+      "voyage.cultureId",
+      "voyage.deliveryTick",
+      "voyage.destination",
+      "voyage.id",
+      "voyage.launchEventId",
+      "voyage.launchYear",
+      "voyage.lineageId",
+      "voyage.status",
+      "voyage.tiers"
+    ],
+    "writes": [
+      "arc.body",
+      "arc.chains",
+      "arc.colonizer",
+      "arc.episode",
+      "arc.foundedYear",
+      "arc.foundingTiers",
+      "arc.id",
+      "arc.inbox",
+      "arc.isColony",
+      "arc.lineageId",
+      "arc.nonviable",
+      "arc.outbox",
+      "arc.outcome",
+      "arc.perils",
+      "arc.polities",
+      "arc.regions",
+      "arc.scenarioParams",
+      "domain.arcs",
+      "domain.bodyEpisodes",
+      "lineage.arcs",
+      "lineage.foundedArcs",
+      "region.K",
+      "region.Kbase",
+      "region.berthsUsed",
+      "region.caps",
+      "region.ceilings",
+      "region.collapse",
+      "region.culture",
+      "region.cultureId",
+      "region.damage",
+      "region.energy",
+      "region.era",
+      "region.forcing",
+      "region.fuel",
+      "region.id",
+      "region.immunityTicks",
+      "region.infra",
+      "region.localId",
+      "region.lowTicks",
+      "region.polityId",
+      "region.pop",
+      "region.renewable",
+      "region.resources",
+      "region.spaceflight",
+      "region.tiers",
+      "transit.pop",
+      "voyage.status"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "COLONY_LOST",
+    "kindRank": 29,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2b",
+    "reads": [
+      "arc.isColony",
+      "arc.nonviable",
+      "region.pop"
+    ],
+    "writes": [
+      "arc.nonviable"
+    ],
+    "salience": 850
+  },
+  {
+    "kind": "EXTINCTION",
+    "kindRank": 30,
+    "owner": "P",
+    "trigger": "threshold",
+    "phase": 1,
+    "milestone": "M2a",
+    "reads": [
+      "arc.outcome",
+      "polity.endedYear",
+      "polity.id",
+      "region.id",
+      "region.polityId",
+      "region.pop"
+    ],
+    "writes": [
+      "arc.outcome",
+      "polity.endedYear",
+      "region.polityId"
+    ],
+    "salience": 1000
+  },
+  {
+    "kind": "LINEAGE_EXTINCTION",
+    "kindRank": 31,
+    "owner": "D",
+    "trigger": "threshold",
+    "phase": 5,
+    "milestone": "M2b",
+    "reads": [
+      "lineage.foundedArcs",
+      "lineage.id",
+      "lineage.lastDeath",
+      "transit.id",
+      "transit.pop",
+      "voyage.lineageId",
+      "voyage.status"
+    ],
+    "writes": [
+      "lineage.extinctionCause",
+      "lineage.outcomeClass"
+    ],
+    "salience": 1000
+  }
+]

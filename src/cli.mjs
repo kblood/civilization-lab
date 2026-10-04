@@ -1,5 +1,27 @@
 #!/usr/bin/env node
 import { createToy } from './toy.mjs';
+import { createPlanet } from './planet.mjs';
+import { IMPLEMENTED } from './catalogue.mjs';
+import { compareEvents } from './events.mjs';
+const args=process.argv.slice(2), value=key=>args[args.indexOf(key)+1];
+if(args.includes('--civ')) {
+  const fixture=value('--civ'),seed=args.includes('--seed')?value('--seed'):'civ-m2a-1',years=args.includes('--years')?Number(value('--years')):20000;
+  const world=createPlanet(fixture,seed,{years});
+  if(world.status){console.log(`${world.status}: ${world.reason}`);process.exitCode=1;}
+  else {
+    const result=world.compileSummary();
+    if(args.includes('--digest'))console.log(result.resultDigest);
+    else {
+      console.log(`M2a ${fixture}; seed ${seed}; ${result.ticks*10} years; ${result.state.regions.length} regions; ${result.events.length} events.`);
+      console.log(`Outcome: ${result.outcome}; population ${result.state.regions.reduce((n,r)=>n+r.pop,0n)}; era E${result.state.outcome.industrialEra}; live polities ${result.state.polities.length}.`);
+      console.log('Event counts (all / accepted / openers / steps / pre-empted / eligible hazard opportunity-ticks):');
+      for(const k of IMPLEMENTED){const es=result.events.filter(e=>e.kind===k.kind);console.log(`${k.kind}: ${es.length} / ${es.filter(e=>e.resolution==='accepted').length} / ${es.filter(e=>['OUTBREAK','DECLARED'].includes(e.data.stage)).length} / ${es.filter(e=>e.phase===3).length} / ${es.filter(e=>e.resolution==='pre-empted').length} / ${k.trigger==='hazard'?result.exposures.find(e=>e.kind===k.kind).opportunityTicks:'n/a'}`);}
+      console.log('Most salient events (model attribution):');
+      for(const e of [...result.events].sort((a,b)=>b.salience-a.salience||compareEvents(a,b)).slice(0,30))console.log(`${e.dateYear} ${e.kind} ${e.ownerId}; causes ${e.causes.map(c=>c.eventId).join(', ')||'none'}`);
+      console.log(`Manifest digest: ${result.manifestDigest}\nRecipe digest: ${result.recipeDigest}\nResult digest: ${result.resultDigest}`);
+    }
+  }
+} else {
 const toy = createToy();
 const root = toy.resultDigest();
 if (process.argv.includes('--digest')) console.log(root);
@@ -7,4 +29,5 @@ else {
   const chapters = [toy.chapter(0), toy.chapter(1)];
   console.log(`Toy civ-toy-1: 12,800 years, 1 region, ${chapters.reduce((n, c) => n + c.events.length, 0)} events; final population ${chapters[1].ledgers.at(-1).endState.pop}.`);
   console.log(`Result digest: ${root}`);
+}
 }

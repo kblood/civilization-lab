@@ -9,8 +9,9 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test \"tests/**/*.test.mjs\"",
+    "test": "node --test --test-concurrency=1 \"tests/**/*.test.mjs\"",
     "scenario": "node src/cli.mjs",
-    "digest": "node src/cli.mjs --digest"
+    "digest": "node src/cli.mjs --digest",
+    "perf": "node tools/perf-civ.mjs"
   }
 }

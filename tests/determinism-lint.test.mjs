@@ -6,7 +6,7 @@ import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'src');
-const FORBIDDEN = [/\bDate\.now\s*\(/, /\bnew\s+Date\s*\(/, /\bMath\.random\s*\(/, /\bperformance\.now\s*\(/, /\bcrypto\.getRandomValues\s*\(/, /\brandomUUID\s*\(/];
+const FORBIDDEN = [/\bDate\.now\s*\(/, /\bnew\s+Date\s*\(/, /\bMath\.random\s*\(/, /\bperformance\.now\s*\(/, /\bcrypto\.getRandomValues\s*\(/, /\brandomUUID\s*\(/, /\bprocess\.hrtime\b/];
 const LOCALE = /\blocaleCompare\b/;
 const TRANSCENDENTAL = /\bMath\s*\.\s*(?:exp|expm1|log|log1p|log2|log10|pow|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asinh|acosh|atanh|cbrt|hypot)\s*\(/;
 
@@ -31,7 +31,7 @@ test('src/ has no clock or unseeded randomness', () => {
 });
 
 test('lint negative self-checks detect every forbidden family', () => {
-  const samples = ['Date.now()', 'new Date()', 'Math.random()', 'performance.now()', 'crypto.getRandomValues(a)', 'randomUUID()'];
+  const samples = ['Date.now()', 'new Date()', 'Math.random()', 'performance.now()', 'crypto.getRandomValues(a)', 'randomUUID()', 'process.hrtime.bigint()'];
   for (let i = 0; i < FORBIDDEN.length; i++) assert.ok(FORBIDDEN[i].test(samples[i]));
   for (const name of ['exp', 'log', 'pow', 'sin', 'cos', 'atan2', 'hypot', 'log1p']) assert.ok(TRANSCENDENTAL.test(`Math.${name}(x)`));
   assert.ok(LOCALE.test('a.localeCompare(b)'));

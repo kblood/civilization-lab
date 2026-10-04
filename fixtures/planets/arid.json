@@ -1,0 +1,834 @@
+{
+  "schemaVersion": "civ-planet-stub-1",
+  "body": "stub:arid:b0",
+  "system": "arid",
+  "profile": "arid",
+  "hosting": "habitable",
+  "lifecycle": {
+    "status": "known",
+    "value": {
+      "habitableFromYear": 0,
+      "habitableUntilYear": 2000000,
+      "complexLifeFromYear": 0,
+      "stellarDoomYear": null
+    },
+    "digest": "4ab6d4143950ea80e6a2559e07affa58906d9fdc477dee752d5e3e9afa5ca8fa"
+  },
+  "partition": {
+    "status": "known",
+    "value": {
+      "partitionVersion": "civ-stub-regions-1",
+      "regions": [
+        {
+          "id": "r00",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r01",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r07",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r01",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r00",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r02",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r02",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r01",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r03",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r03",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r02",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r04",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r04",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r03",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r05",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r05",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r04",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r06",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r06",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r05",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r07",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        },
+        {
+          "id": "r07",
+          "weight": "1",
+          "adjacency": [
+            {
+              "to": "r00",
+              "contactPermille": 300,
+              "barrier": false
+            },
+            {
+              "to": "r06",
+              "contactPermille": 300,
+              "barrier": false
+            }
+          ],
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "digest": "6824e90201c7034b5c52ec8474e5b8bce215bedb125fc1fe36dbdf89afbb6d9f"
+  },
+  "epochs": {
+    "status": "known",
+    "value": {
+      "rows": [
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r00",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r01",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r02",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r03",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r04",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r05",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r06",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r07",
+          "Kbase": "1500",
+          "landPpm": 900000,
+          "tempClass": 3,
+          "aridityClass": 4,
+          "airClass": "oxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            600,
+            300,
+            200
+          ],
+          "domesticablesPpm": 200000
+        }
+      ]
+    },
+    "digest": "9850919374aa838cbcfb2a0c197f760aeac7627f7ead3752460d5abb48d00b7e"
+  }
+}

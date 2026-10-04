@@ -1612,14 +1612,14 @@ The dependency map is **exhaustive**:
 
 | Derived slot | Primitive slots (same region unless stated) |
 |---|---|
-| region.Kbase | BigInt | persons | INIT,P0,P5c |
-| region.K | BigInt | persons | INIT,P0,P5c |
-| region.era | Number | era | INIT,P0,P5c |
-| region.energy | BigInt | kcal_per_day | INIT,P0,P5c |
-| region.ceilings | Array | ceiling_records | INIT,P5c |
+| region.Kbase | region.tiers |
+| region.K | region.Kbase, region.tiers, region.damage |
+| region.era | region.tiers |
+| region.energy | region.pop, region.tiers |
+| region.ceilings | region.tiers, region.caps, region.resources |
 | polity.regions, polity.capital, polity.endedYear | all arc region.polityId; explicit retirement of this polity |
 | polity.hegemony (clearing) | all arc region.pop, region.polityId; this polity.hegemony |
-| arc.outcome | Outcome | outcome_axes | INIT,P0,P5c |
+| arc.outcome | region.pop, region.tiers, region.polityId, polity.endedYear; split occurrence this tick |
 | arc.perils (onset only) | all arc region.tiers, region.pop |
 
 Permanent-cap tier clamps count as a derived region.tiers change with inputs
@@ -1697,7 +1697,7 @@ requires a new version or declared override.
 | DomainStub | schemaVersion:`civ-domain-stub-1`; id:String; systems:SystemRef[1..32] sorted id; routes:RouteStub[] sorted `(from,to)`; origins:String[0..4] sorted unique body IDs; fromYear:Int; untilYear:Int greater, both multiples of 10 |
 | SystemRef | id:String; fixture:String relative planet/system fixture path; bodyPrefix:String (canonical body IDs must be unique after substitution) |
 | RouteStub | from:body ID; to:body ID; kind:in-system/interstellar; distanceMicroLy:NatString (0 for in-system, positive for interstellar); travelYearsByTransportTier:IntOrNull[8] indexed T0..T7; destinationHosting:habitable/habitat-buildable/barren |
-| ForcedFixture | schemaVersion:`civ-forced-stub-1`; id:String; base:String; seed:String; ticks:Int 1..640; initial:InitialOverrideOrNull; overrides:Override[] sorted key; expect:catalogue kind |
+| ForcedFixture | schemaVersion:`civ-forced-stub-1`; id:String; base:String; seed:String; ticks:Int 1..40000; initial:InitialOverrideOrNull; overrides:Override[] sorted key; expect:catalogue kind |
 | InitialOverride | atTick:IntString; regions:RegionOverride[] sorted localId; polities:PolityOverride[] sorted label; arc:ArcOverride; voyages:VoyageOverride[] sorted label |
 | RegionOverride | localId:String; pop:NatString; infra:NatString; fuel:NatString; forcing:NatString; tiers:Int[7]; culture:Int[3]; lowTicks:Int[7]; collapse:CollapseOrNull (BigInts as NatString); damage:damage records (tick as IntString) |
 | PolityOverride | label:String; regionIds:String[]; regime:regime enum; eliteShare,asabiya,legitimacy,stress,warWeariness:Int each 0..1000; hegemony:Boolean |
@@ -2045,6 +2045,15 @@ There are no deferred implementation choices in this contract.
 
 ## Revision log (M2.0 review)
 
+M2a implementation corrections (runner review pending): repaired the six
+malformed rows in the mechanical provenance dependency map, whose right-hand
+cells accidentally repeated field-register type/unit/writer columns. The
+corresponding explicit dependency lists are now also in rules.provenanceDependencies.
+Raised ForcedFixture.ticks maximum from 640 to 40000 (rules.forcedTickMaximum):
+the required 20 kyr and 400 kyr post-sapience runs must be recorded forced
+genesis inputs and could not fit the previous cap. Reachability recipes retain
+their stated one-to-four-tick bounds. No rates or gates changed.
+
 Replaced early delivery, recursive IDs, full-history tick witnesses and
 undated loss attribution. Applied all four rate changes, the O5 gate and BH
 rounding; added event-mix guidance. Completed manifests, initialization,
@@ -2172,7 +2181,36 @@ Atomic records do not grant permission to create undeclared record members.
       "field"
     ],
     "provenanceDerivedScore": "max(0,distance(final,preP0)-sumPrimitiveScoresToSameField); intermediate touched contributors; divide by sorted unique eventId; merge then drop zeros",
-    "manifestConstants": "SHA256(normalized complete UTF-8 contract with LF and one terminal LF); tableDigest=SHA256(canonicalBytes(parsedTable))"
+    "manifestConstants": "SHA256(normalized complete UTF-8 contract with LF and one terminal LF); tableDigest=SHA256(canonicalBytes(parsedTable))",
+    "provenanceDependencies": {
+      "region.Kbase": [
+        "region.tiers"
+      ],
+      "region.K": [
+        "region.Kbase",
+        "region.tiers",
+        "region.damage"
+      ],
+      "region.era": [
+        "region.tiers"
+      ],
+      "region.energy": [
+        "region.pop",
+        "region.tiers"
+      ],
+      "region.ceilings": [
+        "region.tiers",
+        "region.caps",
+        "region.resources"
+      ],
+      "arc.outcome": [
+        "region.pop",
+        "region.tiers",
+        "region.polityId",
+        "polity.endedYear"
+      ]
+    },
+    "forcedTickMaximum": 40000
   },
   "frameworkReads": [
     "arc.body",
