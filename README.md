@@ -1,9 +1,17 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
-**M3 fix round:** revised timelines, representative and empty-history SVGs,
+**M3 legibility round 2:** exact-year event guides, 16-pixel minimum text,
+compact empty histories, explicit scale breaks and directed voyage connectors.
+`npm test`: **123 pass, 0 fail, 1 skipped**; the changed report test file took
+**0.627 seconds** alone. The M1 digest and prior 64-seed report are unchanged.
+The report and all six SVGs are byte-identical at jobs=1 and jobs=4.
+Visual check NOT done; rasterisation and Luna review remain runner work.
+See [the M3 handoff](docs/m3-implementation.md) for fresh validation evidence.
+
+**Previous M3 fix round:** revised timelines, representative and empty-history SVGs,
 time-stratified event/voyage samples, launch density and explicit era censoring.
-Final `npm test`: **122 pass, 0 fail, 1 skipped**; all seven changed test
+Previous round `npm test`: **122 pass, 0 fail, 1 skipped**; all seven changed test
 files finish below two seconds alone. Fresh commands and timing evidence are in
 [the M3 handoff](docs/m3-implementation.md). The M1 digest is unchanged.
 The full 64-seed report and six SVGs are byte-identical at jobs=4 and jobs=1.

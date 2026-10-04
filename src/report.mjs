@@ -30,11 +30,12 @@ export function textBox(x,y,value,size=14,anchor='start'){
 export function thinTicks(axis,horizon){
   const selected=[horizon];
   for(const year of axis.ticks.filter(y=>y!==horizon&&y!==1)){
-    const box=textBox(Number(axis.x(year))/100,0,year,14,'middle');
-    if(selected.every(v=>{const other=textBox(Number(axis.x(v))/100,0,v,14,'middle');return box.right+12<other.left||other.right+12<box.left;}))selected.push(year);
+    const box=textBox(Number(axis.x(year))/100,0,year,16,'middle');
+    if(selected.every(v=>{const other=textBox(Number(axis.x(v))/100,0,v,16,'middle');return box.right+12<other.left||other.right+12<box.left;}))selected.push(year);
   }
   return selected.sort((a,b)=>a-b);
 }
+const finishSVG=s=>s.join('\n').replace(/\b(x|y|x1|y1|x2|y2|cx|cy|r|width|height)="(\d+(?:\.\d+)?)"/g,(_,key,value)=>`${key}="${Number(value).toFixed(2)}"`)+'\n';
 const COLORS=['#0072b2','#d55e00','#009e73','#cc79a7','#a17c00','#56b4e9','#332288','#222222'];
 const ERAS=['#cbd5e1','#c6d8ac','#c7be8d','#efba73','#77c8c0','#75a9e0','#a995d5','#dc9eba'];
 const FAMILY=[['demographic','#53727f'],['technology','#205bb5'],['political','#9055a2'],['catastrophe/peril','#bd3434'],['expansion','#25864e'],['contact','#9a6300']];
@@ -68,33 +69,46 @@ export function timelineSVG(run){
   const arcs=[...data.arcs].sort((a,b)=>compare(peak(b.id),peak(a.id))||compare(a.id,b.id)).slice(0,8).sort((a,b)=>compare(a.id,b.id));
   const bodies=[...new Set(arcs.map(a=>a.body))].sort(compare),color=b=>COLORS[bodies.indexOf(b)%COLORS.length];
   const short=a=>`B${bodies.indexOf(a.body)+1}/a${arcs.indexOf(a)+1}`;
-  const empty=run.outcome==='NO_LINEAGE',emptyMessage=`No lineage arose before year ${horizon}: nothing to plot`;
+  const empty=run.outcome==='NO_LINEAGE';
   const maxPop=arcs.reduce((n,a)=>peak(a.id)>n?peak(a.id):n,1n),popTop=logFixed(maxPop+1n)||1n;
   const points=rows.filter((_,i)=>i===rows.length-1||i%Math.max(1,Math.ceil(rows.length/700))===0);
   const events=stratifiedEvents(data.events.filter(e=>!e.resolution||e.resolution==='accepted'),horizon);
+  const voyages=data.events.filter(e=>e.kind==='LAUNCH'&&e.data?.launch),eligible=voyages.filter(e=>{const v=e.data.launch,source=data.arcs.find(a=>a.id===v.sourceArc)?.body;return bodies.includes(source)&&bodies.includes(v.destination);});
+  const shown=stratifiedEvents(eligible,horizon,12,()=>0,e=>e.data.launch.launchYear);
   const placements=[],ends=[];
-  events.forEach((e,i)=>{const x=Number(axis.x(e.dateYear))/100,w=textWidth(i+1),left=x-w/2;let row=0;while((ends[row]??-100)>=left-16)row++;ends[row]=x+w/2;placements.push({e,i,x,row});});
-  const markerBottom=280+Math.max(1,ends.length)*28,popTitle=markerBottom+40,popStart=popTitle+30;
-  const popHeight=Math.max(240,Number((popTop+65535n)/65536n)*24),popBottom=popStart+popHeight;
+  events.forEach((e,i)=>{const x=Number(axis.x(e.dateYear))/100,w=32,left=x-w/2;let row=0;while((ends[row]??-100)>=left-8)row++;ends[row]=x+w/2;placements.push({e,i,x,row});});
+  const markerBottom=280+Math.max(1,ends.length)*36,popTitle=markerBottom+40,popStart=popTitle+30;
+  const popHeight=Math.max(240,arcs.length*32),popBottom=popStart+popHeight;
   const py=p=>BigInt(popBottom)*100n-ratio(logFixed(BigInt(p)+1n),popTop,BigInt(popHeight)*100n);
-  const keyY=popBottom+35,polTitle=keyY+(Math.ceil(arcs.length/2)+1)*24+35,polTop=polTitle+30,polBottom=polTop+100;
-  const voyageTitle=polBottom+45,laneTop=voyageTitle+60,laneBottom=laneTop+Math.max(2,bodies.length)*26,densityTitle=laneBottom+35,densityBottom=densityTitle+65;
-  const axisY=densityBottom+30,listY=axisY+110,footer=listY+Math.ceil(events.length/2)*26+40,height=footer+60;
-  const s=['<?xml version="1.0" encoding="UTF-8"?>',`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="${height}" viewBox="0 0 1600 ${height}">`,`<rect width="1600" height="${height}" fill="#fafbfc"/>`,'<g font-family="monospace" font-size="14" fill="#17212b">'];
-  const text=(x,y,value,extra='')=>s.push(`<text x="${x}" y="${y}" ${extra}>${xml(value)}</text>`);
+  const keyY=popBottom+35,polTitle=keyY+(Math.ceil(arcs.length/2)+1)*30+35,polTop=polTitle+30,polBottom=polTop+100;
+  const voyageTitle=polBottom+45,laneTop=voyageTitle+100,laneBottom=voyages.length?laneTop+Math.max(1,bodies.length-1)*42:voyageTitle+62,densityTitle=laneBottom+45,densityBottom=densityTitle+(voyages.length?65:0);
+  const axisY=densityBottom+40,listY=axisY+150,footer=listY+Math.ceil(events.length/2)*32+40,height=empty?300:footer+60;
+  const s=['<?xml version="1.0" encoding="UTF-8"?>',`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="${height}" viewBox="0 0 1600 ${height}">`,`<rect width="1600" height="${height}" fill="#fafbfc"/>`,'<g font-family="monospace" font-size="16" fill="#17212b">'];
+  const text=(x,y,value,extra='')=>s.push(`<text x="${x}" y="${y}" ${extra.includes('font-size=')?'':'font-size="16"'} ${extra}>${xml(value)}</text>`);
   const line=(x1,y1,x2,y2,extra='')=>s.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c5ced7" ${extra}/>`);
-  const message=y=>text(800,y,emptyMessage,'text-anchor="middle"');
   text(40,32,`${run.scenario} | ${run.seed}`, 'font-size="23" font-weight="bold"');
   text(40,60,`${run.outcome} | horizon ${horizon} years | ${LABEL}`);
-  text(40,84,axis.mode+'; stocks at decade boundaries. Population: log2(persons + 1).');
+  if(!empty)text(40,84,axis.mode+'; stocks at decade boundaries. Population: log2(persons + 1).');
+  if(empty){
+    text(40,132,'No lineage arose before year '+horizon+': nothing to plot','font-size="20" font-weight="bold"');
+    text(40,168,'No inhabited population, polity or voyage history exists within this observation horizon.');
+    text(40,204,'Empty panels omitted. No time axis is plotted.');
+    text(40,256,`Result digest: ${run.resultDigest??'ERROR'}`);
+    s.push('</g></svg>');return finishSVG(s);
+  }
   ERA_NAMES.forEach((name,i)=>{const x=40+(i%4)*385,y=112+Math.floor(i/4)*25;s.push(`<rect x="${x}" y="${y-12}" width="16" height="14" fill="${ERAS[i]}"/>`);text(x+23,y,`E${i} ${name}`);});
-  text(40,175,'Frontier era');
-  if(empty)message(208);else points.forEach((r,i)=>{const end=points[i+1]?.year??Math.min(horizon,run.endYear??horizon),x=axis.x(r.year),w=axis.x(end)-x,live=r.arcs.filter(a=>BigInt(a.pop)>0n),era=live.reduce((n,a)=>Math.max(n,a.era),0);if(w>0n&&live.length)s.push(`<rect data-era="E${era}" x="${dec(x)}" y="195" width="${dec(w)}" height="24" fill="${ERAS[era]}"/>`);});
-  text(40,250,'Numbered events: best per equal-year segment, then salience; colours identify families.');
-  if(empty)message(280);else if(!events.length)text(800,280,'No accepted events in this history','text-anchor="middle"');
-  for(const {e,i,x,row} of placements){const y=280+row*28,c=FAMILY[family(e.kind)][1];s.push(`<circle data-event-id="${xml(e.id)}" cx="${x}" cy="${y-5}" r="12" fill="#ffffff" stroke="${c}"/>`);text(x,y,i+1,`data-marker-number="${i+1}" data-event-id="${xml(e.id)}" text-anchor="middle" fill="${c}"`);}
-  text(40,popTitle,'Population — persons; log2(persons + 1)');
-  if(empty)message(popStart+Math.floor(popHeight/2));else{
+  text(40,175,'Frontier era | '+axis.mode);
+  points.forEach((r,i)=>{const end=points[i+1]?.year??Math.min(horizon,run.endYear??horizon),x=axis.x(r.year),w=axis.x(end)-x,live=r.arcs.filter(a=>BigInt(a.pop)>0n),era=live.reduce((n,a)=>Math.max(n,a.era),0);if(w>0n&&live.length)s.push(`<rect data-era="E${era}" x="${dec(x)}" y="195" width="${dec(w)}" height="24" fill="${ERAS[era]}"/>`);});
+  // Guides share the exact year coordinate; only marker rows may move.
+  for(const {e,i,x,row} of placements){
+    for(const [top,bottom] of [[195,219],[280+row*36+12,markerBottom],[popStart,popBottom],[polTop,polBottom],...(voyages.length?[[laneTop-12,laneBottom],[densityTitle+20,densityBottom]]:[])])
+      line(x,top,x,bottom,`data-event-guide="${i+1}" data-year="${e.dateYear}" stroke-dasharray="3 3" stroke-width="1"`);
+  }
+  text(40,250,'Events at exact years; vertical guides cross panels. Numbers stack when dates cluster.');
+  if(!events.length)text(800,280,'No accepted events in this history','text-anchor="middle"');
+  for(const {e,i,x,row} of placements){const y=280+row*36,c=FAMILY[family(e.kind)][1];s.push(`<circle data-event-id="${xml(e.id)}" cx="${x}" cy="${y-5}" r="15" fill="#ffffff" stroke="${c}"/>`);text(x,y,i+1,`data-marker-number="${i+1}" data-event-id="${xml(e.id)}" text-anchor="middle" fill="${c}"`);}
+  text(40,popTitle,'Population — persons; log2(persons + 1) | '+axis.mode);
+  {
     line(140,popBottom,1260,popBottom);text(125,popBottom+5,'0 persons','text-anchor="end"');
     let last=popBottom+5;
     for(let p=1n;p<=maxPop;p*=10n){const y=Number(py(p))/100+5;if(last-y<20)continue;line(140,y-5,1260,y-5);text(125,y,String(p),'text-anchor="end"');last=y;}
@@ -106,22 +120,22 @@ export function timelineSVG(run){
     labels.forEach((l,i)=>{const y=Math.max(lastY+24,Math.min(l.y,popBottom-(labels.length-i-1)*24));lastY=y;line(l.x,l.y,1280,y);text(1290,y+5,short(l.a),`fill="${color(l.a.body)}"`);});
   }
   text(40,keyY,`${arcs.length} arcs plotted; ${Math.max(0,data.arcs.length-arcs.length)} omitted. Key: body and arc labels.`);
-  arcs.forEach((a,i)=>text(40+i%2*760,keyY+24+Math.floor(i/2)*24,`${short(a)} = ${a.body}`,`fill="${color(a.body)}"`));
+  arcs.forEach((a,i)=>text(40+i%2*760,keyY+30+Math.floor(i/2)*30,`${short(a)} = ${a.body}`,`fill="${color(a.body)}"`));
   const count=r=>r.arcs.reduce((n,a)=>n+a.polities,0),maxPol=BigInt(Math.max(1,...rows.map(count))),qy=n=>BigInt(polBottom)*100n-ratio(BigInt(n),maxPol,10000n);
-  text(40,polTitle,'Live polities');
-  if(empty)message(polTop+55);else{
+  text(40,polTitle,'Live polities — count | '+axis.mode);
+  {
     for(const n of [...new Set([0,Number(maxPol/2n),Number(maxPol)])]){line(140,dec(qy(n)),1260,dec(qy(n)));text(125,dec(qy(n)+500n),String(n),'text-anchor="end"');}
     let d='';points.forEach((r,i)=>{const x=dec(axis.x(r.year)),y=dec(qy(count(r)));d+=i?` H ${x} V ${y}`:`M ${x} ${y}`;});if(d)s.push(`<path d="${d}" fill="none" stroke="#26384c" stroke-width="2"/>`);
   }
-  const ly=b=>laneTop+bodies.indexOf(b)*26;
+  s.push('<defs><marker id="arrival" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#26384c"/></marker></defs>');
+  const ly=b=>laneTop+bodies.indexOf(b)*42;
   text(40,voyageTitle,'Body lanes / voyages');
-  const voyages=data.events.filter(e=>e.kind==='LAUNCH'&&e.data?.launch),eligible=voyages.filter(e=>{const v=e.data.launch,source=data.arcs.find(a=>a.id===v.sourceArc)?.body;return bodies.includes(source)&&bodies.includes(v.destination);});
-  const shown=stratifiedEvents(eligible,horizon,12,()=>0,e=>e.data.launch.launchYear);
-  text(40,voyageTitle+24,`${shown.length}/${voyages.length} voyages: first per 12 equal-year bins, then chronological fill (plotted bodies only).`);
-  if(!voyages.length)text(800,laneTop+30,'No voyages in this history','text-anchor="middle"');else{
+  text(40,voyageTitle+28,`${shown.length} of ${voyages.length} voyages shown — SAMPLE, not the full history`, 'font-size="20" font-weight="bold"');
+  if(voyages.length)text(40,voyageTitle+56,'First per 12 equal-year bins, then chronological fill; plotted bodies only. Circle = launch; arrow = arrival.');
+  if(!voyages.length)text(40,voyageTitle+56,'No voyages in this history');else{
     bodies.forEach(b=>{line(140,ly(b),1260,ly(b));text(125,ly(b)+5,`B${bodies.indexOf(b)+1}`,'text-anchor="end"');});
     if(!shown.length)text(800,laneBottom,'No voyages between plotted bodies','text-anchor="middle"');
-    for(const e of shown){const v=e.data.launch,source=data.arcs.find(a=>a.id===v.sourceArc)?.body,x=axis.x(v.launchYear),end=axis.x(v.arrivalYear),y=ly(source),ey=ly(v.destination);s.push(`<path data-event-id="${xml(e.id)}" d="M ${dec(x)} ${y} Q ${dec((x+end)/2n)} ${Math.min(y,ey)-15} ${dec(end)} ${ey}" fill="none" stroke="${color(source)}" stroke-width="2"/>`);}
+    for(const e of shown){const v=e.data.launch,source=data.arcs.find(a=>a.id===v.sourceArc)?.body,x=axis.x(v.launchYear),end=axis.x(v.arrivalYear),y=ly(source),ey=ly(v.destination);s.push(`<path data-event-id="${xml(e.id)}" d="M ${dec(x)} ${y} L ${dec(end)} ${ey}" fill="none" stroke="${color(source)}" stroke-width="3" marker-end="url(#arrival)"/><circle cx="${dec(x)}" cy="${y}" r="4" fill="${color(source)}"/>`);}
   }
   const bins=Array(12).fill(0);for(const e of voyages)bins[Math.min(11,Math.floor(e.data.launch.launchYear*12/Math.max(1,horizon)))]++;
   text(40,densityTitle,'All launches per equal-year bin (bar height = count; total '+voyages.length+')');
@@ -130,12 +144,18 @@ export function timelineSVG(run){
   line(140,axisY,1260,axisY);
   for(const year of thinTicks(axis,horizon)){const x=dec(axis.x(year));line(x,axisY-6,x,axisY+6);text(x,axisY+26,String(year),'text-anchor="middle"');}
   text(1320,axisY+26,'Year');
-  if(axis.split!==null)text(40,axisY+52,`E2 ${axis.split}: log / linear scale break at x=${dec(axis.x(axis.split))}`);
-  FAMILY.forEach(([name,c],i)=>text(40+i*255,axisY+80,name,`fill="${c}"`));
-  events.forEach((e,i)=>text(40+i%2*760,listY+Math.floor(i/2)*26,`${i+1}. ${e.kind}@${e.dateYear}`,`data-list-number="${i+1}" data-event-id="${xml(e.id)}" fill="${FAMILY[family(e.kind)][1]}"`));
+  if(axis.split!==null){
+    const bx=Number(axis.x(axis.split))/100;
+    for(const [top,bottom] of [[195,219],[popStart,popBottom],[polTop,polBottom],...(voyages.length?[[laneTop-12,laneBottom]]:[])])
+      line(bx,top,bx,bottom,'data-scale-break="true" stroke-width="3" stroke-dasharray="8 4"');
+    s.push(`<path data-scale-break-glyph="true" d="M ${bx-12} ${axisY+8} l 8 -16 m 0 16 l 8 -16 m 0 16 l 8 -16" stroke="#17212b" stroke-width="3" fill="none"/>`);
+    text(40,axisY+56,`SCALE CHANGE at E2, year ${axis.split}: left = log2(year + 1); right = linear years.`, 'font-size="18" font-weight="bold"');
+  }else text(40,axisY+56,axis.mode+'; all panels share this year axis.');
+  FAMILY.forEach(([name,c],i)=>text(40+i*255,axisY+108,name,`fill="${c}"`));
+  events.forEach((e,i)=>text(40+i%2*760,listY+Math.floor(i/2)*32,`${i+1}. ${e.kind}@${e.dateYear}`,`data-list-number="${i+1}" data-event-id="${xml(e.id)}" fill="${FAMILY[family(e.kind)][1]}"`));
   text(40,footer,'Model attribution; seeded scenario. Event dates are not in-tick stock jumps. No empirical prediction.');
   text(40,footer+26,`Result digest: ${run.resultDigest??'ERROR'}`);s.push('</g></svg>');
-  return s.join('\n').replace(/\b(x|y|x1|y1|x2|y2|cx|cy|r|width|height)="(\d+(?:\.\d+)?)"/g,(_,key,value)=>`${key}="${Number(value).toFixed(2)}"`)+'\n';
+  return finishSVG(s);
 }
 const legacyEraMetrics=new Set(['industrialE3','atomicE4','eraE5','eraE6']);
 const metricLabel=metric=>metric+(legacyEraMetrics.has(metric)?' (includes starts at/above threshold)':'');

@@ -813,3 +813,81 @@ Kremer status: OBSERVED
 }
 ```
 16-seed direction MET; four-seed regression still reported separately
+
+
+## M3 legibility round 2
+
+Only the report renderer, its report tests, README and this handoff change.
+The solver, fixtures, priors, RNG and goldens are untouched.
+
+Event circles retain exact shared-axis year coordinates, with thin vertical
+guides through the frontier, population, polity, voyage and launch panels.
+Collisions reserve 36-pixel marker rows and never displace the x coordinate.
+Text is at least 16 pixels at the native 1600-pixel width; sample disclosures
+are 20 pixels. Keys and event lists have larger row spacing. Population height
+now follows curve count instead of the number of population logarithm bits.
+NO_LINEAGE produces a single 300-pixel summary with outcome, horizon and the
+reason no data is plotted, omitting all empty panels. Zero-voyage histories
+collapse the lanes and launch chart to short explanations. Voyage connectors
+join the source lane at launch to the destination lane at arrival, with a start
+circle and arrowhead; the selected-versus-total count remains prominent.
+Mixed time axes have a triple-slash break glyph, a vertical transition rule,
+explicit left log2(year + 1) / right linear labels, and mapping in panel headers.
+The mapping and sampling algorithms themselves are unchanged.
+
+Regression checks cover exact marker/guide coordinates for linear, log and
+mixed axes, equal-date stacking, minimum font size, compact empty output,
+scale-change labels/glyphs, and voyage direction/endpoints. XML, text collision,
+event-number correspondence and byte-repeatability checks remain.
+
+Visual check NOT done for this round. The runner must rasterise the six SVGs
+and ask Luna again; structural checks are not a visual verdict.
+
+
+Final-source checks observed in this round:
+
+- `node --test tests/report.test.mjs`: exit 0; 6 tests, 6 pass, 0 fail.
+  Node duration 553.1528 ms; complete process wall time measured with
+  PowerShell Stopwatch: **627.0941 ms**, below 2 seconds. This is the only
+  changed test file.
+- `npm test`: exit 0; tests 124, pass 123, fail 0, skipped 1;
+  duration 18575.2077 ms. The existing skipped calibration test remains skipped.
+- `npm run digest`: exit 0;
+  `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc`.
+- `npm run scenario -- --ensemble 64 --jobs 4`: exit 0;
+  `Ensemble wall ms: 48301.96`; six SVG files generated in `out/`.
+- Final six SVGs: XML, conservative text-collision and horizontal text-bounds
+  checks passed (inline Node command reusing the report test helper). Heights,
+  respectively: crowded-domain-1 2023; doomed-star-28 1881; harsh-anoxic-22
+  1845; high-perils-59 1520; lonely-earthlike-0 300;
+  lonely-earthlike-35 2077 pixels. These are structural checks only.
+- `out/report.md` is byte-identical to the prior round's
+  `out/m3fix-repeat/report.md`, including all 64 history result digests.
+- `git diff --check`: exit 0.
+
+Ensemble summary lines (unchanged):
+
+```text
+PASS: outcome classes >= 4; observed 10
+PASS: collapse then recovery >= 1; observed 43
+PASS: E3 >= 1; observed 48
+PASS: self-extinction >= 1; observed 5
+PASS: multi-body lineage >= 1; observed 31
+PASS: NO_LINEAGE >= 1; observed 10
+```
+
+The first focused run caught inconsistent numeric formatting in the new empty
+summary branch; it was fixed by sharing the final SVG serialization. A later
+new test assumed the opposite alphabetical lane order; its direction assertion
+was corrected. A scan of every SVG in `out/` also encountered an older leftover
+file with a collision; the final check selects only the six regenerated files
+listed by this round's command. A text encoding issue found in diff review was
+corrected before these final-source checks and final regeneration.
+
+- `npm run scenario -- --ensemble 64 --jobs 1 --out out/legibility-final-jobs1`:
+  exit 0; `Ensemble wall ms: 93471.47`.
+- Inline Node comparison using `assert.deepEqual` on file buffers: exit 0;
+  `jobs=1 vs jobs=4: 7/7 files byte-identical` (report plus all six SVGs).
+  The single-worker directory contains exactly those seven output files.
+  Logs: `out/legibility-round2-jobs4.log`, `out/legibility-final-jobs1.log`,
+  `out/legibility-round2-tests.log`.

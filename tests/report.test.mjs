@@ -45,8 +45,8 @@ function assertNumberBijection(svg){
 test('timeline text does not collide, including log endpoints, crowded markers and empty panels',()=>{
   const empty={scenario:'lonely-earthlike',seed:'empty',outcome:'NO_LINEAGE',untilYear:120000,firstEras:Array(8).fill(null),timeline:{arcs:[],observations:[],events:[]}};
   const svg=timelineSVG(empty);assertNoTextOverlap(svg);assertNumberBijection(svg);checkXML(svg);
-  assert.equal([...svg.matchAll(/No lineage arose before year 120000: nothing to plot/g)].length,4);
-  assert.match(svg,/No voyages in this history/);assert.doesNotMatch(svg,/data-era="E0"/);
+  assert.equal([...svg.matchAll(/No lineage arose before year 120000: nothing to plot/g)].length,1);
+  assert.doesNotMatch(svg,/Body lanes|Live polities|data-launch-count/);assert.ok(Number(svg.match(/height="(\d+)/)[1])<=320);assert.doesNotMatch(svg,/data-era="E0"/);
   const ticks=thinTicks(timeAxis(120000,null),120000);assert.ok(ticks.includes(120000));assert.ok(!ticks.includes(100000));assert.ok(!(ticks.includes(0)&&ticks.includes(1)));
   const arcs=Array.from({length:8},(_,i)=>({id:`a${i}`,body:`stub:body${i}`}));
   const events=Array.from({length:24},(_,i)=>({id:`event${i}`,kind:'COLLAPSE',dateYear:i<12?1:i*5000,data:{}}));
@@ -69,6 +69,31 @@ test('voyage sampling spans the history and density counts every launch',()=>{
   const run={scenario:'voyages',seed:'fixed',outcome:'EXTANT_MULTI_BODY',untilYear:30000,firstEras:[0,0,0,0,null,null,null,null],timeline:{arcs,events:launches,observations:[{year:0,arcs:arcs.map(a=>({...a,pop:'1000',era:3,polities:1}))},{year:30000,arcs:arcs.map(a=>({...a,pop:'1000',era:3,polities:1}))}]}};
   const svg=timelineSVG(run);assertNoTextOverlap(svg);assertNumberBijection(svg);checkXML(svg);
   const paths=[...svg.matchAll(/<path data-event-id="(launch\d+)"/g)].map(m=>m[1]);
-  assert.equal(paths.length,12);assert.ok(paths.includes('launch110'));
+  assert.equal(paths.length,12);
+  for(const [,x,y,ex,ey] of svg.matchAll(/<path data-event-id="launch\d+" d="M ([\d.]+) ([\d.]+) L ([\d.]+) ([\d.]+)"/g)){
+    assert.ok(Number(ex)>Number(x));assert.equal(Number(ey)-Number(y),-42);
+  }
+  assert.equal([...svg.matchAll(/marker-end="url\(#arrival\)"/g)].length,12);
+  assert.match(svg,/12 of 120 voyages shown/);assert.ok(paths.includes('launch110'));
   const bins=[...svg.matchAll(/data-launch-count="(\d+)"/g)].map(m=>Number(m[1]));assert.deepEqual(bins,Array(12).fill(10));
+});
+
+test('event years stay on the shared axis through collisions and scale changes',()=>{
+  for(const e2 of [0,3560,64600,null]){
+    const events=Array.from({length:12},(_,i)=>({id:`e${i}`,kind:'COLLAPSE',dateYear:i<6?100:100+i,data:{}}));
+    const run={scenario:'mapping',seed:'fixed',outcome:'EXTANT_PLANETARY',untilYear:120000,firstEras:[0,0,e2],timeline:{arcs:[],observations:[],events}};
+    const svg=timelineSVG(run),axis=timeAxis(120000,e2);
+    assertNoTextOverlap(svg);checkXML(svg);
+    const markers=[...svg.matchAll(/<circle data-event-id="(e\d+)" cx="([^"]+)" cy="([^"]+)"/g)];
+    assert.equal(markers.length,12);
+    for(const [,id,x] of markers){
+      const event=events.find(e=>e.id===id);assert.equal(Number(x),Number(axis.x(event.dateYear))/100);
+      const guides=[...svg.matchAll(/<line ([^>]*data-event-guide=[^>]*)/g)].filter(m=>m[1].includes(`data-year="${event.dateYear}"`));
+      assert.ok(guides.length>=4);
+      for(const [,attrs] of guides)for(const key of ['x1','x2'])assert.equal(Number(attrs.match(new RegExp(`${key}="([^" ]+)"`))[1]),Number(x));
+    }
+    assert.equal(new Set(markers.slice(0,6).map(m=>m[3])).size,6);
+    for(const [,size] of svg.matchAll(/font-size="(\d+)"/g))assert.ok(Number(size)>=16);
+    if(axis.split!==null){assert.match(svg,/data-scale-break-glyph/);assert.match(svg,/left = log2\(year \+ 1\); right = linear years/);}
+  }
 });
