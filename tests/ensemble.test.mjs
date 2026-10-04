@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregate,ensemblePlan,fraction,causalExplanation,METRICS,runEnsemble,summarizeRun} from '../src/ensemble.mjs';
 test('hand-built summaries have exact counts, lower medians, explanations and observed bands',()=>{
-  const rows=[['EXTINCT_SELF',{extinctSelf:true,extinct:true,industrialE3:true},['RUNAWAY_TECH'],10],['EXTANT_MULTI_BODY',{interplanetary:true,collapseRecovery:true,industrialE3:true},[],30],['NO_LINEAGE',{noLineage:true},[],null],['EXISTENTIAL_CAP',{existentialCap:true},[],50]].map(([outcome,flags,causes,time],i)=>({scenario:'fixture',seed:String(i),classes:[outcome],outcome,flags,causes,timeE2:time,timeE3:time,explanation:outcome+': fixture'}));
+  const rows=[['EXTINCT_SELF',{extinctSelf:true,extinct:true,industrialE3:true},['RUNAWAY_TECH'],10],['EXTANT_MULTI_BODY',{interplanetary:true,collapseRecovery:true,industrialE3:true},[],30],['NO_LINEAGE',{noLineage:true},[],null],['EXISTENTIAL_CAP',{existentialCap:true},[],50]].map(([outcome,flags,causes,time],i)=>({scenario:'fixture',seed:String(i),classes:[outcome],outcome,flags,causes,startedEra:time===null?null:0,originYear:0,firstEras:[0,0,time,time,null,null,null,null],timeE2:time,timeE3:time,explanation:outcome+': fixture'}));
   const a=aggregate(rows.reverse());assert.equal(a.n,4);assert.equal(a.medianE2,30);assert.equal(a.medianE3,30);
   assert.equal(a.table.find(r=>r.metric==='industrialE3').fraction,'2/4 (50.0%)');assert.equal(a.table.find(r=>r.metric==='atomicE4').fraction,'0/4 (0.0%)');
   const expected={industrialE3:2,interplanetary:1,extinct:1,extinctSelf:1,noLineage:1,collapseRecovery:1,existentialCap:1};
@@ -33,4 +33,29 @@ test('past colony extinction is a colony-only loss; nonviability alone is not ex
   const a=summarizeRun(task,world,result);assert.equal(a.flags.colonyOnlyLoss,true);assert.equal(a.flags.interplanetary,true);assert.equal(a.flags.interstellar,true);assert.equal(a.flags.eraE5,false);
   result.events[0].kind='COLONY_LOST';assert.equal(summarizeRun(task,world,result).flags.colonyOnlyLoss,false);
   result.seenArcs[1].lineageId='other';assert.equal(summarizeRun(task,world,result).flags.interplanetary,false);
+});
+
+test('left-censored starts are counted but excluded from time-to-era medians',()=>{
+  const row=(seed,startedEra,firstEras,outcome='EXTANT_PLANETARY')=>({scenario:'fixture',seed,startedEra,originYear:100,firstEras,outcome,classes:[outcome],flags:{industrialE3:firstEras[3]!==null},causes:[],explanation:'fixture'});
+  const a=aggregate([
+    row('start',4,[100,100,100,100,100,300,400,500]),
+    row('reach',1,[100,100,120,160,200,300,null,null]),
+    row('never',1,[100,100,null,null,null,null,null,null]),
+    row('empty',null,Array(8).fill(null),'NO_LINEAGE'),
+    row('error',null,Array(8).fill(null),'ERROR'),
+  ]);
+  const e=a.eraThresholds.find(e=>e.era===3);
+  assert.deepEqual(e,{era:3,n:5,started:1,reached:1,never:2,unknown:1,startedFraction:'1/5 (20.0%)',reachedFraction:'1/5 (20.0%)',neverFraction:'2/5 (40.0%)',median:60,leftCensored:1,rightCensored:2});
+  assert.equal(a.medianE2,20);assert.equal(a.medianE3,60);
+  assert.equal(a.table.find(r=>r.metric==='industrialE3').k,2);
+  assert.equal(aggregate([row('only',3,[100,100,100,100,null,null,null,null])]).medianE3,null);
+});
+
+test('industrial calibration includes exactly E3 starts and excludes nonattainment from medians',()=>{
+  const rows=[
+    {startedEra:3,firstEras:[100,100,100,100,200,500,700,900]},
+    {startedEra:3,firstEras:[100,100,100,100,300,700,null,null]},
+    {startedEra:4,firstEras:[100,100,100,100,100,110,120,130]},
+  ].map((r,i)=>({...r,scenario:'fixture',seed:String(i),originYear:100,outcome:'EXTANT_PLANETARY',classes:['EXTANT_PLANETARY'],flags:{},causes:[],explanation:'fixture'}));
+  assert.deepEqual(aggregate(rows).calibration,[{era:5,n:2,reached:2,censored:0,median:400},{era:6,n:2,reached:1,censored:1,median:600},{era:7,n:2,reached:1,censored:1,median:800}]);
 });

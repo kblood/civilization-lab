@@ -1,0 +1,54 @@
+$ node src/cli.mjs --ensemble 64 --jobs 1 --out out/m3fix-repeat
+Aggregate (seeded scenarios, model attribution, not predictions)
+industrialE3 (includes starts at/above threshold): 48/64 (75.0%)
+atomicE4 (includes starts at/above threshold): 40/64 (62.5%)
+interplanetary: 31/64 (48.4%)
+eraE5 (includes starts at/above threshold): 33/64 (51.5%)
+interstellar: 30/64 (46.8%)
+eraE6 (includes starts at/above threshold): 30/64 (46.8%)
+extinct: 10/64 (15.6%)
+extinctSelf: 5/64 (7.8%)
+extinctNatural: 1/64 (1.5%)
+extinctStellar: 4/64 (6.2%)
+extinctNaturalStellar: 5/64 (7.8%)
+colonyOnlyLoss: 27/64 (42.1%)
+noLineage: 10/64 (15.6%)
+collapseRecovery: 43/64 (67.1%)
+firstContact: 13/64 (20.3%)
+existentialCap: 9/64 (14.0%)
+error: 0/64 (0.0%)
+COLLAPSED_RECOVERING: 16/64 (25.0%); proximate causes: 14 COLLAPSE, 2 RUNAWAY_TECH, 1 ENGINEERED_PANDEMIC
+EXISTENTIAL_CAP: 8/64 (12.5%); proximate causes: 5 RUNAWAY_TECH, 3 ENGINEERED_PANDEMIC, 1 NUCLEAR_WAR
+EXTANT_MULTI_BODY: 7/64 (10.9%); proximate causes: 4 COLONY_FOUNDED, 3 ENERGY_TRANSITION
+EXTANT_MULTI_SYSTEM: 23/64 (35.9%); proximate causes: 13 COLONY_FOUNDED, 12 ENERGY_TRANSITION
+EXTANT_PLANETARY: 17/64 (26.5%); proximate causes: 21 ENERGY_TRANSITION, 2 INITIAL_STATE
+EXTINCT_NATURAL: 1/64 (1.5%); proximate causes: 1 NATURAL_UPDATE
+EXTINCT_SELF: 5/64 (7.8%); proximate causes: 3 ENGINEERED_PANDEMIC, 2 RUNAWAY_TECH
+EXTINCT_STELLAR: 4/64 (6.2%); proximate causes: 4 STELLAR_DOOM
+NO_LINEAGE: 10/64 (15.6%); proximate causes: none / not extinct
+REGRESSED_STABLE: 2/64 (3.1%); proximate causes: 2 ENERGY_TRANSITION
+E2: started at/above 38/64 (59.3%); reached during run (started below) 11/64 (17.1%); never reached 15/64 (23.4%); unknown/error 0/64. Lower median time: 5680 years; censored: left 38/64, right 15/64.
+E3: started at/above 38/64 (59.3%); reached during run (started below) 10/64 (15.6%); never reached 16/64 (25.0%); unknown/error 0/64. Lower median time: 6200 years; censored: left 38/64, right 16/64.
+E4: started at/above 0/64 (0.0%); reached during run (started below) 40/64 (62.5%); never reached 24/64 (37.5%); unknown/error 0/64. Lower median time: 700 years; censored: left 0/64, right 24/64.
+E5: started at/above 0/64 (0.0%); reached during run (started below) 33/64 (51.5%); never reached 31/64 (48.4%); unknown/error 0/64. Lower median time: 810 years; censored: left 0/64, right 31/64.
+E6: started at/above 0/64 (0.0%); reached during run (started below) 30/64 (46.8%); never reached 34/64 (53.1%); unknown/error 0/64. Lower median time: 880 years; censored: left 0/64, right 34/64.
+E7: started at/above 0/64 (0.0%); reached during run (started below) 30/64 (46.8%); never reached 34/64 (53.1%); unknown/error 0/64. Lower median time: 960 years; censored: left 0/64, right 34/64.
+Calibration, started exactly E3 -> E5: lower median 480 years; attained 23/38; censored 15/38.
+Calibration, started exactly E3 -> E6: lower median 540 years; attained 21/38; censored 17/38.
+Calibration, started exactly E3 -> E7: lower median 580 years; attained 21/38; censored 17/38.
+PASS: outcome classes >= 4; observed 10
+PASS: collapse then recovery >= 1; observed 43
+PASS: E3 >= 1; observed 48
+PASS: self-extinction >= 1; observed 5
+PASS: multi-body lineage >= 1; observed 31
+PASS: NO_LINEAGE >= 1; observed 10
+SVG files:
+timeline-crowded-domain-crowded-domain-1.svg
+timeline-doomed-star-doomed-star-28.svg
+timeline-harsh-anoxic-harsh-anoxic-22.svg
+timeline-high-perils-high-perils-59.svg
+timeline-lonely-earthlike-lonely-earthlike-0.svg
+timeline-lonely-earthlike-lonely-earthlike-35.svg
+
+Exit: 0
+Wall ms: 93507.70

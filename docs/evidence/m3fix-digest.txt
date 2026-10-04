@@ -1,0 +1,9 @@
+$ npm run digest
+
+> civilization-lab@0.0.0 digest
+> node src/cli.mjs --digest
+
+c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc
+
+Exit: 0
+Wall ms: 377.80

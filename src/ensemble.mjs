@@ -56,8 +56,12 @@ export function summarizeRun(task,world,result){
   }
   const causes=Object.values(classCauses).flat().sort(compare);
   const birth=events.filter(e=>e.kind==='SAPIENCE').map(e=>e.dateYear),originYear=world.def.forced.initial?Number(world.def.fromTick*10n):birth.length?Math.min(...birth):null;
-  return {scenario:task.scenario,seed:task.seed,untilYear:task.untilYear??world.def.untilTick*10n+'',endYear:Number(result.state.tick*10n),outcome,classes,flags,firstEras:first,firstEnergy:result.firstEnergy,maxEra:result.maxEra,
-    timeE2:first[2]===null||originYear===null?null:first[2]-originYear,timeE3:first[3]===null||originYear===null?null:first[3]-originYear,
+  // Earliest inhabited boundary, before that tick's technology transitions.
+  // First-era witnesses include the pre-state even when century plots omit it.
+  const eraOrigin=first[0]??originYear;
+  const startedEra=first[0]===null?null:first.reduce((n,y,i)=>y===first[0]?i:n,0);
+  return {scenario:task.scenario,seed:task.seed,untilYear:task.untilYear??world.def.untilTick*10n+'',endYear:Number(result.state.tick*10n),outcome,classes,flags,originYear:eraOrigin,startedEra,firstEras:first,firstEnergy:result.firstEnergy,maxEra:result.maxEra,
+    timeE2:first[2]===null||eraOrigin===null||startedEra>=2?null:first[2]-eraOrigin,timeE3:first[3]===null||eraOrigin===null||startedEra>=3?null:first[3]-eraOrigin,
     causes,classCauses,explanation:result.state.lineages.length?[...result.state.lineages].sort((a,b)=>compare(a.id,b.id)).map(l=>{
       const home=arcs.find(a=>a.lineageId===l.id&&!a.isColony),system=world.def.planets.find(p=>p.body===home?.body)?.system;
       const interstellar=events.find(e=>e.kind==='COLONY_FOUNDED'&&e.data.stage==='FOUNDED'&&belongs(l)(e)&&world.def.planets.find(p=>p.body===e.ownerId)?.system!==system);
@@ -69,6 +73,21 @@ export function runSeed(task){
   try{const {world,domain}=createScenario(task.scenario,task.seed,{untilYear:task.untilYear});if(!domain||world.status)throw new Error(world.status??'Ensemble requires domain');return summarizeRun(task,world,world.compileSummary({observe:true}));}
   catch(e){return {...task,outcome:'ERROR',classes:['ERROR'],flags:Object.fromEntries(METRICS.map(k=>[k,k==='error'])),causes:[],explanation:`ERROR: ${String(e.message).replace(/[\r\n]/g,' ')}`,firstEras:Array(8).fill(null),firstEnergy:Array(7).fill(null),timeE2:null,timeE3:null};}
 }
+export function eraStatistics(runs,era){
+  const n=runs.length,unknown=runs.filter(r=>r.outcome==='ERROR').length;
+  const started=runs.filter(r=>r.outcome!=='ERROR'&&r.startedEra!==null&&r.startedEra!==undefined&&r.startedEra>=era);
+  const below=runs.filter(r=>r.outcome!=='ERROR'&&!started.includes(r));
+  const reached=below.filter(r=>r.firstEras?.[era]!==null&&r.firstEras?.[era]!==undefined);
+  const never=below.length-reached.length;
+  const times=reached.map(r=>r.firstEras[era]-r.originYear);
+  return {era,n,started:started.length,reached:reached.length,never,unknown,
+    startedFraction:fraction(started.length,n),reachedFraction:fraction(reached.length,n),neverFraction:fraction(never,n),
+    median:lowerMedian(times),leftCensored:started.length,rightCensored:never};
+}
+export function industrialCalibration(runs){
+  const cohort=runs.filter(r=>r.startedEra===3&&r.outcome!=='ERROR');
+  return [5,6,7].map(era=>{const reached=cohort.filter(r=>r.firstEras[era]!==null);return {era,n:cohort.length,reached:reached.length,censored:cohort.length-reached.length,median:lowerMedian(reached.map(r=>r.firstEras[era]-r.firstEras[3]))};});
+}
 export function aggregate(runs){
   const sorted=[...runs].sort(order),n=sorted.length;
   const table=METRICS.map(metric=>{const k=sorted.filter(r=>r.flags[metric]).length;return {metric,k,n,fraction:fraction(k,n)};});
@@ -79,7 +98,8 @@ export function aggregate(runs){
     const own=sorted.filter(r=>r.classes.includes(outcome)),causes=own.flatMap(r=>r.classCauses?.[outcome]??r.causes),kinds=[...new Set(causes)].sort(compare);
     return {outcome,k:own.length,n,fraction:fraction(own.length,n),causes:kinds.map(kind=>({kind,count:causes.filter(c=>c===kind).length})).sort((a,b)=>b.count-a.count||compare(a.kind,b.kind))};
   });
-  return {n,table,outcomes,bands,medianE2:lowerMedian(sorted.map(r=>r.timeE2)),medianE3:lowerMedian(sorted.map(r=>r.timeE3)),explanations:sorted.map(r=>`${r.scenario}/${r.seed}: ${r.explanation}`)};
+  const eraThresholds=[2,3,4,5,6,7].map(era=>eraStatistics(sorted,era));
+  return {n,table,outcomes,bands,eraThresholds,calibration:industrialCalibration(sorted),medianE2:eraThresholds[0].median,medianE3:eraThresholds[1].median,explanations:sorted.map(r=>`${r.scenario}/${r.seed}: ${r.explanation}`)};
 }
 export async function runEnsemble(tasks,{jobs=DEFAULT_JOBS,timings=false}={}){
   if(!Number.isSafeInteger(jobs)||jobs<1)throw new RangeError('jobs must be a positive integer');

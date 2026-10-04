@@ -516,3 +516,300 @@ timeline-high-perils-high-perils-0.svg in that directory. The short ensemble's
 variety failures are expected observations, not overridden verdicts.
 
 `git diff --check` exited 0 with no output. No commit was made.
+
+## M3 fix round
+
+[Complete changed/new file inventory](evidence/m3fix-files.txt).
+
+The runner clarified that local commands are required and authorized. This
+completion pass reviewed the prepared edits, fixed the verification script's
+extra closing parenthesis, and ran the commands below. Opus retains commit
+ownership. No git writes, dependencies, network or external-directory edits.
+The initial syntax-error attempt ran no checks; subsequent real outputs are
+recorded below. Node used here is v24.7.0 (not a pinned Node 22 run).
+
+### Changes and rationale
+
+- `src/report.mjs`: panel titles sit above axes; text uses a shared conservative
+  0.62-em monospace glyph estimate. Time ticks reserve the endpoint, suppress
+  year 1 and thin colliding extents. Population ticks mean persons on
+  log2(persons+1), including `0 persons`. Height adapts to population range and
+  event-marker rows.
+- Events select the most salient accepted event in each of twelve equal-year
+  bins, then fill by salience, date and ID. Marker and list numbers correspond;
+  staggered rows avoid clustered numbers. No unexplained unnumbered dots.
+- Categorical body colours and direct Bn/an curve-end labels retain the full
+  body key. Collision avoidance uses leader lines to final nonzero points.
+  Up to eight arcs are selected by peak population, with ID ties.
+- Voyages choose the earliest eligible launch per twelve equal-year bins,
+  then fill chronologically, at most twelve total. Eligibility requires both
+  plotted bodies. Density counts **all** launches, including off-plot bodies.
+  The caption states the rule.
+- NO_LINEAGE gets centred messages in frontier, events, population and polity
+  panels, no E0 band, and an explicit no-voyages message.
+- Default seeds maximize accepted salient-event count among inhabited,
+  non-error runs; ties use code-unit seed order. Each scenario also writes its
+  first NO_LINEAGE example. Explicit `--timeline` remains additive.
+- `src/ensemble.mjs`: first-era witnesses identify the initial inhabited
+  frontier. E2–E7 summaries split starts at/above (left censored), reached from
+  below, never reached (right censored), and errors (unknown), retaining full N.
+  Medians use only reached-from-below durations since the inhabited boundary.
+  E3/E4/E5/E6 legacy names retain their flags and explicitly include starts.
+  These are run-level frontier statistics, including multi-origin domains.
+- Calibration rows give E3-to-E5/E6/E7 lower medians for exactly-E3 starts with
+  attained/censored counts. No model timing was changed.
+- Tests retain prior assertions and add pairwise estimated text-box checks on
+  real/synthetic SVGs, coincident markers, log endpoints, empty panels,
+  marker/list bijections, seed selection, voyage coverage/density and a
+  hand-built censoring case. The signature skip reason interpolates observed
+  four-seed values instead of hard-coding old numbers.
+
+### Kremer investigation: inspected evidence and observed measurements
+
+The panel fixed in `tools/m3fix-kremer.mjs` is **signature-0 through
+signature-15**, on both planets, horizon 10,000 years, recipe bound 40,000 ticks.
+The script writes the complete panel before running any seed. All outcomes
+remain, including nonattainment. It saves `docs/evidence/m3fix-kremer.json`:
+fixture values/digests, per-run digests, priors, accepted counts for each
+region/domain/target tier step, gate exposures, DIFFUSION opportunity-ticks,
+population and N_eff sums with exact denominators. It checks inspection/plain
+digest equality. The complete observed evidence is now saved.
+
+| Fixture property | Temperate | Cold archipelago |
+|---|---:|---:|
+| Ring regions | 12 | 10 |
+| Kbase per region / total | 5,000 / 60,000 | 1,000 / 10,000 |
+| Contact / barrier / effective contact | 500 / false / 500 | 100 / true / 25 |
+| Resources | 800,800,500,800 | 500,300,100,300 |
+| Domesticables ppm | 800,000 | 300,000 |
+| Initial r00 population | 10,000 | 10,000 |
+| Initial S1 capacity in r00 | 12,500 | 2,500 |
+
+Sources: [temperate input](../fixtures/planets/temperate.json),
+[cold input](../fixtures/planets/cold-archipelago.json), and documented fixture
+construction in [transition-table-v1.md](transition-table-v1.md). Confidence
+**high**, local source inspection. Fixtures express their declared contrast;
+there is no higher cold capacity/contact to correct.
+
+[Spec §7](spec.md) requires contact-weighted neighbour populations in N_eff.
+[planet.mjs](../src/planet.mjs) implements
+`pop + sum floor(neighbourPop * effectiveContact / 1000)`;
+[civ-input.mjs](../src/civ-input.mjs) divides barrier contact by four.
+DIFFUSION scales with tier gap times effective contact.
+[tech.mjs](../src/tech.mjs) uses identical prerequisite tables for cold and
+temperate (only anoxic has alternatives). Both resource vectors pass low-tier
+E2 resource gates. Confidence **high**, direct code inspection.
+Initially only r00 is inhabited, so neighbour contributions are zero and both
+N_eff values are 10,000. Different body IDs also address different RNG streams:
+equal seed strings do not pair identical draws.
+
+Mechanisms with competing effects: the initial population is four times
+cold S1 capacity, while strong contact also raises plague pressure and permits
+chain spread. Plague chains require contact >=100, admitting temperate edges
+and excluding cold's effective 25. This source-code fact
+([planet.mjs](../src/planet.mjs), confidence **high**) suggests a hypothesis;
+its contribution to the inversion remains **unverified** by the observational panel.
+No causal attribution from four medians alone is justified.
+
+Historical four-seed evidence: temperate `[4843,10001,3751,8314]`, cold
+`[3981,5990,1537,10001]`, where 10001 means no E2 by 10000; lower medians
+**4843** and **3981**. Source: [M3b signature transcript](evidence/m3b-signatures.txt),
+confidence **high** as transcription, not a fresh measurement. That signature
+remains **NOT MET** and skipped. The fresh panel reproduced those numbers.
+The 16-seed medians are cold **9,264** and temperate **4,866** (censored 7/16
+and 6/16); attained-only medians are **5,990** and **3,751**. Temperate has
+23,251 DIFFUSION opportunity-ticks and 163 accepted diffusion steps; cold has
+zero of both. Total tier steps are 697 versus 109. Temperate's N_eff sum is
+3,895,877,202 over 27,511 living-region ticks, including 1,270,455,910 from
+neighbours; cold's is 82,013,095 over 15,628 ticks, with zero neighbour
+contribution and no migration. These observations support the intended contact
+contrast. They do not isolate the cause of the four-seed inversion; a specific
+plague explanation remains unverified. The wider fixed panel's direction is
+MET while the original regression remains NOT MET. No fixture, prior, solver
+mechanism or golden changed; changed-golden list: **none**. See the
+[source-linked analysis](research/m3fix-kremer.md) and
+[per-tier audit](evidence/m3fix-audit.json).
+
+### Verification and open items
+
+`node tools/verify-m3fix.mjs` ran the exact required commands. After splitting
+slow existing projection tests, `node tools/verify-m3fix.mjs --checks-only`
+reran all checks and each changed test file alone, retaining the unchanged
+panel/ensemble transcripts. Exact final results follow below.
+
+Two pre-existing test files exceeded the standalone two-second budget:
+projection-cell 2,239.82 ms and projection-year 2,353.81 ms. The former now
+splits the same four scenarios between two files through a shared helper; the
+latter moves the hierarchy test into its own file. Every original scenario,
+tick, assertion and negative control remains. No solver optimization or test
+weakening was used. Final per-file times below supersede those initial timings.
+
+`node tools/m3fix-audit.mjs` exited 0: all six generated SVGs pass XML,
+pairwise estimated text-box and marker/list correspondence checks. Copies of
+the six SVGs are saved alongside the evidence report so its links resolve.
+`node tools/m3fix-repeat.mjs` exited 0; its full jobs=1 64-seed replay took
+93,507.70 ms and observed:
+
+```text
+PASS: report.md and all 6 selected SVGs byte-identical across full 64-seed jobs=4 and jobs=1 runs.
+```
+
+The exact report is [m3fix-report.md](evidence/m3fix-report.md), and the full
+aggregate/transcript is [m3fix-ensemble-64.txt](evidence/m3fix-ensemble-64.txt).
+The report retains per-scenario censoring counts as well as the overall rows.
+M1's observed digest remains
+`c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc`.
+
+Calibration: among the **38 exactly-E3 starts**, attained-only lower medians
+are **480 years to E5** (23/38 attained, 15 censored), **540 to E6** (21/38,
+17 censored), and **580 to E7** (21/38, 17 censored). These are run-level
+frontier times and can be set by different regions/arcs. They are faster than
+the supplied rough example estimate; no progression mechanism was changed.
+Rapid advance and long late-era residence remain open calibration items.
+
+Open/deviations: the four-seed Kremer signature remains skipped/NOT MET;
+**visual check NOT done** for revised SVGs (no network; rasterisation and Luna
+remain runner work); pinned Node 22 compatibility is not newly verified.
+M2's unrelated 400 kyr performance target remains historically NOT MET.
+No remote, commit, preview, deployment, install or write outside this repository.
+
+<!-- M3FIX-RUNNER-OBSERVATIONS -->
+### Runner observations (generated by tools/verify-m3fix.mjs)
+
+Command checks and modified-file timing limits: MET. Raw exit codes and timing limits follow.
+
+- `npm test`: exit 0; process wall 18966.79 ms. [Raw transcript](evidence/m3fix-tests.txt).
+- `npm run digest`: exit 0; process wall 377.80 ms. [Raw transcript](evidence/m3fix-digest.txt).
+- `node --test tests/report.test.mjs`: exit 0; process wall 601.52 ms. [Raw transcript](evidence/m3fix-report.txt).
+- `node --test tests/ensemble.test.mjs`: exit 0; process wall 276.90 ms. [Raw transcript](evidence/m3fix-ensemble.txt).
+- `node --test tests/signatures.test.mjs`: exit 0; process wall 995.28 ms. [Raw transcript](evidence/m3fix-signatures.txt).
+- `node --test tests/projection-cell.test.mjs`: exit 0; process wall 939.46 ms. [Raw transcript](evidence/m3fix-projection-cell.txt).
+- `node --test tests/projection-cell-domain.test.mjs`: exit 0; process wall 1743.05 ms. [Raw transcript](evidence/m3fix-projection-cell-domain.txt).
+- `node --test tests/projection-year.test.mjs`: exit 0; process wall 1369.73 ms. [Raw transcript](evidence/m3fix-projection-year.txt).
+- `node --test tests/projection-year-tree.test.mjs`: exit 0; process wall 947.43 ms. [Raw transcript](evidence/m3fix-projection-year-tree.txt).
+- `node tools/m3fix-kremer.mjs`: exit 0; process wall 16384.41 ms. [Raw transcript](evidence/m3fix-kremer.txt).
+- `npm run scenario -- --ensemble 64`: exit 0; process wall 39845.80 ms. [Raw transcript](evidence/m3fix-ensemble-64.txt).
+
+Exact npm test summary:
+```text
+ℹ tests 123
+ℹ suites 0
+ℹ pass 122
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 18677.4684
+```
+
+Exact ensemble aggregate and SVG file list:
+```text
+Aggregate (seeded scenarios, model attribution, not predictions)
+industrialE3 (includes starts at/above threshold): 48/64 (75.0%)
+atomicE4 (includes starts at/above threshold): 40/64 (62.5%)
+interplanetary: 31/64 (48.4%)
+eraE5 (includes starts at/above threshold): 33/64 (51.5%)
+interstellar: 30/64 (46.8%)
+eraE6 (includes starts at/above threshold): 30/64 (46.8%)
+extinct: 10/64 (15.6%)
+extinctSelf: 5/64 (7.8%)
+extinctNatural: 1/64 (1.5%)
+extinctStellar: 4/64 (6.2%)
+extinctNaturalStellar: 5/64 (7.8%)
+colonyOnlyLoss: 27/64 (42.1%)
+noLineage: 10/64 (15.6%)
+collapseRecovery: 43/64 (67.1%)
+firstContact: 13/64 (20.3%)
+existentialCap: 9/64 (14.0%)
+error: 0/64 (0.0%)
+COLLAPSED_RECOVERING: 16/64 (25.0%); proximate causes: 14 COLLAPSE, 2 RUNAWAY_TECH, 1 ENGINEERED_PANDEMIC
+EXISTENTIAL_CAP: 8/64 (12.5%); proximate causes: 5 RUNAWAY_TECH, 3 ENGINEERED_PANDEMIC, 1 NUCLEAR_WAR
+EXTANT_MULTI_BODY: 7/64 (10.9%); proximate causes: 4 COLONY_FOUNDED, 3 ENERGY_TRANSITION
+EXTANT_MULTI_SYSTEM: 23/64 (35.9%); proximate causes: 13 COLONY_FOUNDED, 12 ENERGY_TRANSITION
+EXTANT_PLANETARY: 17/64 (26.5%); proximate causes: 21 ENERGY_TRANSITION, 2 INITIAL_STATE
+EXTINCT_NATURAL: 1/64 (1.5%); proximate causes: 1 NATURAL_UPDATE
+EXTINCT_SELF: 5/64 (7.8%); proximate causes: 3 ENGINEERED_PANDEMIC, 2 RUNAWAY_TECH
+EXTINCT_STELLAR: 4/64 (6.2%); proximate causes: 4 STELLAR_DOOM
+NO_LINEAGE: 10/64 (15.6%); proximate causes: none / not extinct
+REGRESSED_STABLE: 2/64 (3.1%); proximate causes: 2 ENERGY_TRANSITION
+E2: started at/above 38/64 (59.3%); reached during run (started below) 11/64 (17.1%); never reached 15/64 (23.4%); unknown/error 0/64. Lower median time: 5680 years; censored: left 38/64, right 15/64.
+E3: started at/above 38/64 (59.3%); reached during run (started below) 10/64 (15.6%); never reached 16/64 (25.0%); unknown/error 0/64. Lower median time: 6200 years; censored: left 38/64, right 16/64.
+E4: started at/above 0/64 (0.0%); reached during run (started below) 40/64 (62.5%); never reached 24/64 (37.5%); unknown/error 0/64. Lower median time: 700 years; censored: left 0/64, right 24/64.
+E5: started at/above 0/64 (0.0%); reached during run (started below) 33/64 (51.5%); never reached 31/64 (48.4%); unknown/error 0/64. Lower median time: 810 years; censored: left 0/64, right 31/64.
+E6: started at/above 0/64 (0.0%); reached during run (started below) 30/64 (46.8%); never reached 34/64 (53.1%); unknown/error 0/64. Lower median time: 880 years; censored: left 0/64, right 34/64.
+E7: started at/above 0/64 (0.0%); reached during run (started below) 30/64 (46.8%); never reached 34/64 (53.1%); unknown/error 0/64. Lower median time: 960 years; censored: left 0/64, right 34/64.
+Calibration, started exactly E3 -> E5: lower median 480 years; attained 23/38; censored 15/38.
+Calibration, started exactly E3 -> E6: lower median 540 years; attained 21/38; censored 17/38.
+Calibration, started exactly E3 -> E7: lower median 580 years; attained 21/38; censored 17/38.
+PASS: outcome classes >= 4; observed 10
+PASS: collapse then recovery >= 1; observed 43
+PASS: E3 >= 1; observed 48
+PASS: self-extinction >= 1; observed 5
+PASS: multi-body lineage >= 1; observed 31
+PASS: NO_LINEAGE >= 1; observed 10
+SVG files:
+timeline-crowded-domain-crowded-domain-1.svg
+timeline-doomed-star-doomed-star-28.svg
+timeline-harsh-anoxic-harsh-anoxic-22.svg
+timeline-high-perils-high-perils-59.svg
+timeline-lonely-earthlike-lonely-earthlike-0.svg
+timeline-lonely-earthlike-lonely-earthlike-35.svg
+
+```
+
+Kremer status: OBSERVED
+```json
+{
+  "temperate": {
+    "times": [
+      4843,
+      10001,
+      3751,
+      8314,
+      10001,
+      4866,
+      1703,
+      4721,
+      902,
+      10001,
+      10001,
+      3114,
+      3153,
+      6355,
+      10001,
+      10001
+    ],
+    "median": 4866,
+    "attainedMedian": 3751,
+    "censored": 6,
+    "diffusionOpportunityTicks": 23251,
+    "tierStepCount": 697
+  },
+  "cold-archipelago": {
+    "times": [
+      3981,
+      5990,
+      1537,
+      10001,
+      10001,
+      6292,
+      5166,
+      10001,
+      9554,
+      4584,
+      10001,
+      10001,
+      10001,
+      10001,
+      6159,
+      9264
+    ],
+    "median": 9264,
+    "attainedMedian": 5990,
+    "censored": 7,
+    "diffusionOpportunityTicks": 0,
+    "tierStepCount": 109
+  }
+}
+```
+16-seed direction MET; four-seed regression still reported separately

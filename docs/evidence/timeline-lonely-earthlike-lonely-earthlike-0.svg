@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600.00" height="1339.00" viewBox="0 0 1600 1339">
+<rect width="1600.00" height="1339.00" fill="#fafbfc"/>
+<g font-family="monospace" font-size="14" fill="#17212b">
+<text x="40.00" y="32.00" font-size="23" font-weight="bold">lonely-earthlike | lonely-earthlike-0</text>
+<text x="40.00" y="60.00" >NO_LINEAGE | horizon 120000 years | seeded scenarios, model attribution, not predictions</text>
+<text x="40.00" y="84.00" >log years (year + 1); E2 not reached; stocks at decade boundaries. Population: log2(persons + 1).</text>
+<rect x="40.00" y="100.00" width="16.00" height="14.00" fill="#cbd5e1"/>
+<text x="63.00" y="112.00" >E0 Forager</text>
+<rect x="425.00" y="100.00" width="16.00" height="14.00" fill="#c6d8ac"/>
+<text x="448.00" y="112.00" >E1 Sedentary</text>
+<rect x="810.00" y="100.00" width="16.00" height="14.00" fill="#c7be8d"/>
+<text x="833.00" y="112.00" >E2 Agrarian state</text>
+<rect x="1195.00" y="100.00" width="16.00" height="14.00" fill="#efba73"/>
+<text x="1218.00" y="112.00" >E3 Industrial</text>
+<rect x="40.00" y="125.00" width="16.00" height="14.00" fill="#77c8c0"/>
+<text x="63.00" y="137.00" >E4 Atomic and information</text>
+<rect x="425.00" y="125.00" width="16.00" height="14.00" fill="#75a9e0"/>
+<text x="448.00" y="137.00" >E5 Interplanetary</text>
+<rect x="810.00" y="125.00" width="16.00" height="14.00" fill="#a995d5"/>
+<text x="833.00" y="137.00" >E6 Interstellar</text>
+<rect x="1195.00" y="125.00" width="16.00" height="14.00" fill="#dc9eba"/>
+<text x="1218.00" y="137.00" >E7 Stellar engineering</text>
+<text x="40.00" y="175.00" >Frontier era</text>
+<text x="800.00" y="208.00" text-anchor="middle">No lineage arose before year 120000: nothing to plot</text>
+<text x="40.00" y="250.00" >Numbered events: best per equal-year segment, then salience; colours identify families.</text>
+<text x="800.00" y="280.00" text-anchor="middle">No lineage arose before year 120000: nothing to plot</text>
+<text x="40.00" y="348.00" >Population — persons; log2(persons + 1)</text>
+<text x="800.00" y="498.00" text-anchor="middle">No lineage arose before year 120000: nothing to plot</text>
+<text x="40.00" y="653.00" >0 arcs plotted; 0 omitted. Key: body and arc labels.</text>
+<text x="40.00" y="712.00" >Live polities</text>
+<text x="800.00" y="797.00" text-anchor="middle">No lineage arose before year 120000: nothing to plot</text>
+<text x="40.00" y="887.00" >Body lanes / voyages</text>
+<text x="40.00" y="911.00" >0/0 voyages: first per 12 equal-year bins, then chronological fill (plotted bodies only).</text>
+<text x="800.00" y="977.00" text-anchor="middle">No voyages in this history</text>
+<text x="40.00" y="1034.00" >All launches per equal-year bin (bar height = count; total 0)</text>
+<rect data-launch-count="0" x="140.00" y="1099.00" width="882.04" height="0.00" fill="#53727f"><title>0–10000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1022.04" y="1099.00" width="66.37" height="0.00" fill="#53727f"><title>10000–20000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1088.41" y="1099.00" width="38.83" height="0.00" fill="#53727f"><title>20000–30000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1127.24" y="1099.00" width="27.55" height="0.00" fill="#53727f"><title>30000–40000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1154.79" y="1099.00" width="21.37" height="0.00" fill="#53727f"><title>40000–50000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1176.16" y="1099.00" width="17.46" height="0.00" fill="#53727f"><title>50000–60000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1193.62" y="1099.00" width="14.76" height="0.00" fill="#53727f"><title>60000–70000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1208.38" y="1099.00" width="12.79" height="0.00" fill="#53727f"><title>70000–80000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1221.17" y="1099.00" width="11.27" height="0.00" fill="#53727f"><title>80000–90000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1232.44" y="1099.00" width="10.10" height="0.00" fill="#53727f"><title>90000–100000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1242.54" y="1099.00" width="9.12" height="0.00" fill="#53727f"><title>100000–110000: 0 launches</title></rect>
+<rect data-launch-count="0" x="1251.66" y="1099.00" width="8.34" height="0.00" fill="#53727f"><title>110000–120000: 0 launches</title></rect>
+<line x1="140.00" y1="1129.00" x2="1260.00" y2="1129.00" stroke="#c5ced7" />
+<line x1="140.00" y1="1123.00" x2="140.00" y2="1135.00" stroke="#c5ced7" />
+<text x="140.00" y="1155.00" text-anchor="middle">0</text>
+<line x1="369.63" y1="1123.00" x2="369.63" y2="1135.00" stroke="#c5ced7" />
+<text x="369.63" y="1155.00" text-anchor="middle">10</text>
+<line x1="581.96" y1="1123.00" x2="581.96" y2="1135.00" stroke="#c5ced7" />
+<text x="581.96" y="1155.00" text-anchor="middle">100</text>
+<line x1="801.61" y1="1123.00" x2="801.61" y2="1135.00" stroke="#c5ced7" />
+<text x="801.61" y="1155.00" text-anchor="middle">1000</text>
+<line x1="1022.04" y1="1123.00" x2="1022.04" y2="1135.00" stroke="#c5ced7" />
+<text x="1022.04" y="1155.00" text-anchor="middle">10000</text>
+<line x1="1260.00" y1="1123.00" x2="1260.00" y2="1135.00" stroke="#c5ced7" />
+<text x="1260.00" y="1155.00" text-anchor="middle">120000</text>
+<text x="1320.00" y="1155.00" >Year</text>
+<text x="40.00" y="1209.00" fill="#53727f">demographic</text>
+<text x="295.00" y="1209.00" fill="#205bb5">technology</text>
+<text x="550.00" y="1209.00" fill="#9055a2">political</text>
+<text x="805.00" y="1209.00" fill="#bd3434">catastrophe/peril</text>
+<text x="1060.00" y="1209.00" fill="#25864e">expansion</text>
+<text x="1315.00" y="1209.00" fill="#9a6300">contact</text>
+<text x="40.00" y="1279.00" >Model attribution; seeded scenario. Event dates are not in-tick stock jumps. No empirical prediction.</text>
+<text x="40.00" y="1305.00" >Result digest: bb7ff0687e386ad6e063b0c59f44e756bba76c2d08d087a6b747ac45a5e88971</text>
+</g></svg>

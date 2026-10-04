@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600.00" height="1957.00" viewBox="0 0 1600 1957">
+<rect width="1600.00" height="1957.00" fill="#fafbfc"/>
+<g font-family="monospace" font-size="14" fill="#17212b">
+<text x="40.00" y="32.00" font-size="23" font-weight="bold">doomed-star | doomed-star-28</text>
+<text x="40.00" y="60.00" >EXTANT_MULTI_SYSTEM | horizon 30000 years | seeded scenarios, model attribution, not predictions</text>
+<text x="40.00" y="84.00" >linear years; stocks at decade boundaries. Population: log2(persons + 1).</text>
+<rect x="40.00" y="100.00" width="16.00" height="14.00" fill="#cbd5e1"/>
+<text x="63.00" y="112.00" >E0 Forager</text>
+<rect x="425.00" y="100.00" width="16.00" height="14.00" fill="#c6d8ac"/>
+<text x="448.00" y="112.00" >E1 Sedentary</text>
+<rect x="810.00" y="100.00" width="16.00" height="14.00" fill="#c7be8d"/>
+<text x="833.00" y="112.00" >E2 Agrarian state</text>
+<rect x="1195.00" y="100.00" width="16.00" height="14.00" fill="#efba73"/>
+<text x="1218.00" y="112.00" >E3 Industrial</text>
+<rect x="40.00" y="125.00" width="16.00" height="14.00" fill="#77c8c0"/>
+<text x="63.00" y="137.00" >E4 Atomic and information</text>
+<rect x="425.00" y="125.00" width="16.00" height="14.00" fill="#75a9e0"/>
+<text x="448.00" y="137.00" >E5 Interplanetary</text>
+<rect x="810.00" y="125.00" width="16.00" height="14.00" fill="#a995d5"/>
+<text x="833.00" y="137.00" >E6 Interstellar</text>
+<rect x="1195.00" y="125.00" width="16.00" height="14.00" fill="#dc9eba"/>
+<text x="1218.00" y="137.00" >E7 Stellar engineering</text>
+<text x="40.00" y="175.00" >Frontier era</text>
+<rect data-era="E3" x="140.00" y="195.00" width="3.73" height="24.00" fill="#efba73"/>
+<rect data-era="E3" x="143.73" y="195.00" width="3.73" height="24.00" fill="#efba73"/>
+<rect data-era="E3" x="147.46" y="195.00" width="3.74" height="24.00" fill="#efba73"/>
+<rect data-era="E3" x="151.20" y="195.00" width="3.73" height="24.00" fill="#efba73"/>
+<rect data-era="E3" x="154.93" y="195.00" width="3.73" height="24.00" fill="#efba73"/>
+<rect data-era="E4" x="158.66" y="195.00" width="3.74" height="24.00" fill="#77c8c0"/>
+<rect data-era="E4" x="162.40" y="195.00" width="3.73" height="24.00" fill="#77c8c0"/>
+<rect data-era="E4" x="166.13" y="195.00" width="3.73" height="24.00" fill="#77c8c0"/>
+<rect data-era="E4" x="169.86" y="195.00" width="3.74" height="24.00" fill="#77c8c0"/>
+<rect data-era="E5" x="173.60" y="195.00" width="3.73" height="24.00" fill="#75a9e0"/>
+<rect data-era="E7" x="177.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="181.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="184.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="188.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="192.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="196.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="199.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="203.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="207.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="210.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="214.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="218.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="222.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="225.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="229.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="233.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="237.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="240.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="244.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="248.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="252.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="255.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="259.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="263.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="266.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="270.66" y="195.00" width="0.38" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="271.04" y="195.00" width="3.36" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="274.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="278.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="281.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="285.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="289.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="293.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="296.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="300.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="304.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="308.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="311.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="315.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="319.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="322.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="326.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="330.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="334.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="337.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="341.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="345.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="349.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="352.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="356.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="360.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="364.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="367.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="371.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="375.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="378.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="382.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="386.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="390.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="393.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="397.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="401.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="405.06" y="195.00" width="1.12" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="406.18" y="195.00" width="2.62" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="408.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="412.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="416.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="420.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="423.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="427.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="431.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="434.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="438.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="442.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="446.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="449.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="453.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="457.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="461.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="464.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="468.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="472.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="476.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="479.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="483.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="487.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="490.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="494.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="498.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="502.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="505.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="509.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="513.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="517.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="520.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="524.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="528.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="532.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="535.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="539.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="543.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="546.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="550.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="554.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="558.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="561.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="565.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="569.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="573.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="576.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="580.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="584.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="588.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="591.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="595.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="599.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="602.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="606.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="610.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="614.13" y="195.00" width="2.61" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="616.74" y="195.00" width="1.12" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="617.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="621.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="625.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="629.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="632.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="636.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="640.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="644.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="647.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="651.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="655.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="658.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="662.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="666.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="670.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="673.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="677.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="681.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="685.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="688.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="692.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="696.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="700.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="703.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="707.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="711.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="714.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="718.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="722.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="726.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="729.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="733.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="737.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="741.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="744.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="748.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="752.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="756.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="759.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="763.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="767.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="770.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="774.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="778.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="782.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="785.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="789.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="793.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="797.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="800.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="804.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="808.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="812.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="815.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="819.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="823.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="826.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="830.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="834.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="838.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="841.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="845.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="849.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="853.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="856.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="860.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="864.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="868.00" y="195.00" width="1.86" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="869.86" y="195.00" width="1.87" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="871.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="875.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="879.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="882.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="886.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="890.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="894.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="897.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="901.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="905.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="909.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="912.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="916.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="920.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="924.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="927.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="931.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="935.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="938.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="942.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="946.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="950.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="953.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="957.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="961.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="965.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="968.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="972.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="976.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="980.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="983.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="987.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="991.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="994.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="998.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1002.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1006.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1009.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1013.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1017.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1021.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1024.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1028.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1032.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1036.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1039.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1043.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1047.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1050.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1054.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1058.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1062.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1065.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1069.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1073.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1077.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1080.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1084.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1088.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1092.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1095.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1099.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1103.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1106.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1110.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1114.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1118.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1121.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1125.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1129.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1133.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1136.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1140.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1144.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1148.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1151.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1155.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1159.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1162.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1166.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1170.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1174.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1177.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1181.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1185.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1189.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1192.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1196.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1200.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1204.00" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1207.73" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1211.46" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1215.20" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1218.93" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1222.66" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1226.40" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1230.13" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1233.86" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1237.60" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1241.33" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1245.06" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1248.80" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1252.53" y="195.00" width="3.73" height="24.00" fill="#dc9eba"/>
+<rect data-era="E7" x="1256.26" y="195.00" width="3.74" height="24.00" fill="#dc9eba"/>
+<text x="40.00" y="250.00" >Numbered events: best per equal-year segment, then salience; colours identify families.</text>
+<circle data-event-id="stub:s00:b1|COLONY_FOUNDED|92|m:m3b-doomed-star#msg:90~arc:stub:s00:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b1~0" cx="174.34" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="174.34" y="280.00" data-marker-number="1" data-event-id="stub:s00:b1|COLONY_FOUNDED|92|m:m3b-doomed-star#msg:90~arc:stub:s00:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b1~0" text-anchor="middle" fill="#25864e">1</text>
+<circle data-event-id="stub:s00:b0|COLONY_FOUNDED|261|m:m3b-doomed-star#msg:220~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" cx="237.44" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="237.44" y="280.00" data-marker-number="2" data-event-id="stub:s00:b0|COLONY_FOUNDED|261|m:m3b-doomed-star#msg:220~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" text-anchor="middle" fill="#25864e">2</text>
+<circle data-event-id="stub:s02:b0|COLONY_FOUNDED|631|m:m3b-doomed-star#msg:590~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" cx="375.57" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="375.57" y="280.00" data-marker-number="3" data-event-id="stub:s02:b0|COLONY_FOUNDED|631|m:m3b-doomed-star#msg:590~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" text-anchor="middle" fill="#25864e">3</text>
+<circle data-event-id="stub:s00:b0|COLONY_FOUNDED|781|m:m3b-doomed-star#msg:780~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" cx="431.57" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="431.57" y="280.00" data-marker-number="4" data-event-id="stub:s00:b0|COLONY_FOUNDED|781|m:m3b-doomed-star#msg:780~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" text-anchor="middle" fill="#25864e">4</text>
+<circle data-event-id="stub:s00:b0|COLONY_FOUNDED|1081|m:m3b-doomed-star#msg:1080~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" cx="543.57" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="543.57" y="280.00" data-marker-number="5" data-event-id="stub:s00:b0|COLONY_FOUNDED|1081|m:m3b-doomed-star#msg:1080~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" text-anchor="middle" fill="#25864e">5</text>
+<circle data-event-id="stub:s02:b0|COLONY_FOUNDED|1260|m:m3b-doomed-star#msg:1220~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" cx="610.40" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="610.40" y="280.00" data-marker-number="6" data-event-id="stub:s02:b0|COLONY_FOUNDED|1260|m:m3b-doomed-star#msg:1220~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" text-anchor="middle" fill="#25864e">6</text>
+<circle data-event-id="stub:s02:b0|COLONY_FOUNDED|1511|m:m3b-doomed-star#msg:1470~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" cx="704.10" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="704.10" y="280.00" data-marker-number="7" data-event-id="stub:s02:b0|COLONY_FOUNDED|1511|m:m3b-doomed-star#msg:1470~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" text-anchor="middle" fill="#25864e">7</text>
+<circle data-event-id="stub:s00:b0|COLONY_FOUNDED|1771|m:m3b-doomed-star#msg:1770~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" cx="801.17" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="801.17" y="280.00" data-marker-number="8" data-event-id="stub:s00:b0|COLONY_FOUNDED|1771|m:m3b-doomed-star#msg:1770~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" text-anchor="middle" fill="#25864e">8</text>
+<circle data-event-id="stub:s00:b0|COLONY_FOUNDED|2011|m:m3b-doomed-star#msg:1970~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" cx="890.77" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="890.77" y="280.00" data-marker-number="9" data-event-id="stub:s00:b0|COLONY_FOUNDED|2011|m:m3b-doomed-star#msg:1970~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" text-anchor="middle" fill="#25864e">9</text>
+<circle data-event-id="stub:s02:b0|COLONY_FOUNDED|2351|m:m3b-doomed-star#msg:2310~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" cx="1017.70" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="1017.70" y="280.00" data-marker-number="10" data-event-id="stub:s02:b0|COLONY_FOUNDED|2351|m:m3b-doomed-star#msg:2310~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" text-anchor="middle" fill="#25864e">10</text>
+<circle data-event-id="stub:s00:b0|COLONY_FOUNDED|2601|m:m3b-doomed-star#msg:2560~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" cx="1111.04" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="1111.04" y="280.00" data-marker-number="11" data-event-id="stub:s00:b0|COLONY_FOUNDED|2601|m:m3b-doomed-star#msg:2560~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" text-anchor="middle" fill="#25864e">11</text>
+<circle data-event-id="stub:s02:b0|COLONY_FOUNDED|2751|m:m3b-doomed-star#msg:2710~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" cx="1167.04" cy="275.00" r="12.00" fill="#ffffff" stroke="#25864e"/>
+<text x="1167.04" y="280.00" data-marker-number="12" data-event-id="stub:s02:b0|COLONY_FOUNDED|2751|m:m3b-doomed-star#msg:2710~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" text-anchor="middle" fill="#25864e">12</text>
+<text x="40.00" y="348.00" >Population — persons; log2(persons + 1)</text>
+<line x1="140.00" y1="906.00" x2="1260.00" y2="906.00" stroke="#c5ced7" />
+<text x="125.00" y="911.00" text-anchor="end">0 persons</text>
+<line x1="140.00" y1="881.97" x2="1260.00" y2="881.97" stroke="#c5ced7" />
+<text x="125.00" y="886.97" text-anchor="end">1</text>
+<line x1="140.00" y1="822.85" x2="1260.00" y2="822.85" stroke="#c5ced7" />
+<text x="125.00" y="827.85" text-anchor="end">10</text>
+<line x1="140.00" y1="745.95" x2="1260.00" y2="745.95" stroke="#c5ced7" />
+<text x="125.00" y="750.95" text-anchor="end">100</text>
+<line x1="140.00" y1="666.41" x2="1260.00" y2="666.41" stroke="#c5ced7" />
+<text x="125.00" y="671.41" text-anchor="end">1000</text>
+<line x1="140.00" y1="586.59" x2="1260.00" y2="586.59" stroke="#c5ced7" />
+<text x="125.00" y="591.59" text-anchor="end">10000</text>
+<line x1="140.00" y1="506.74" x2="1260.00" y2="506.74" stroke="#c5ced7" />
+<text x="125.00" y="511.74" text-anchor="end">100000</text>
+<line x1="140.00" y1="426.88" x2="1260.00" y2="426.88" stroke="#c5ced7" />
+<text x="125.00" y="431.88" text-anchor="end">1000000</text>
+<polyline points="140.00,566.20 143.73,510.06 147.46,482.38 151.20,464.24 154.93,459.81 158.66,457.03 162.40,456.66 166.13,450.19 169.86,433.03 173.60,425.05 177.33,422.43 181.06,421.27 184.80,420.82 188.53,421.66 192.26,420.97 196.00,420.46 199.73,420.27 203.46,420.39 207.20,420.25 210.93,420.21 214.66,420.18 218.40,420.10 222.13,419.89 225.86,418.93 229.60,417.60 233.33,414.63 237.06,413.13 240.80,412.72 244.53,412.77 248.26,410.84 252.00,407.72 255.73,414.59 259.46,412.31 263.20,411.85 266.93,412.79 270.66,906.00 271.04,906.00 274.40,906.00 278.13,906.00 281.86,906.00 285.60,906.00 289.33,906.00 293.06,906.00 296.80,906.00 300.53,906.00 304.26,906.00 308.00,906.00 311.73,906.00 315.46,906.00 319.20,906.00 322.93,906.00 326.66,906.00 330.40,906.00 334.13,906.00 337.86,906.00 341.60,906.00 345.33,906.00 349.06,906.00 352.80,906.00 356.53,906.00 360.26,906.00 364.00,906.00 367.73,906.00 371.46,906.00 375.20,906.00 378.93,906.00 382.66,906.00 386.40,906.00 390.13,906.00 393.86,906.00 397.60,906.00 401.33,906.00 405.06,906.00 406.18,906.00 408.80,906.00 412.53,906.00 416.26,906.00 420.00,906.00 423.73,906.00 427.46,906.00 431.20,906.00 434.93,906.00 438.66,906.00 442.40,906.00 446.13,906.00 449.86,906.00 453.60,906.00 457.33,906.00 461.06,906.00 464.80,906.00 468.53,906.00 472.26,906.00 476.00,906.00 479.73,906.00 483.46,906.00 487.20,906.00 490.93,906.00 494.66,906.00 498.40,906.00 502.13,906.00 505.86,906.00 509.60,906.00 513.33,906.00 517.06,906.00 520.80,906.00 524.53,906.00 528.26,906.00 532.00,906.00 535.73,906.00 539.46,906.00 543.20,906.00 546.93,906.00 550.66,906.00 554.40,906.00 558.13,906.00 561.86,906.00 565.60,906.00 569.33,906.00 573.06,906.00 576.80,906.00 580.53,906.00 584.26,906.00 588.00,906.00 591.73,906.00 595.46,906.00 599.20,906.00 602.93,906.00 606.66,906.00 610.40,906.00 614.13,906.00 616.74,906.00 617.86,906.00 621.60,906.00 625.33,906.00 629.06,906.00 632.80,906.00 636.53,906.00 640.26,906.00 644.00,906.00 647.73,906.00 651.46,906.00 655.20,906.00 658.93,906.00 662.66,906.00 666.40,906.00 670.13,906.00 673.86,906.00 677.60,906.00 681.33,906.00 685.06,906.00 688.80,906.00 692.53,906.00 696.26,906.00 700.00,906.00 703.73,906.00 707.46,906.00 711.20,906.00 714.93,906.00 718.66,906.00 722.40,906.00 726.13,906.00 729.86,906.00 733.60,906.00 737.33,906.00 741.06,906.00 744.80,906.00 748.53,906.00 752.26,906.00 756.00,906.00 759.73,906.00 763.46,906.00 767.20,906.00 770.93,906.00 774.66,906.00 778.40,906.00 782.13,906.00 785.86,906.00 789.60,906.00 793.33,906.00 797.06,906.00 800.80,906.00 804.53,906.00 808.26,906.00 812.00,906.00 815.73,906.00 819.46,906.00 823.20,906.00 826.93,906.00 830.66,906.00 834.40,906.00 838.13,906.00 841.86,906.00 845.60,906.00 849.33,906.00 853.06,906.00 856.80,906.00 860.53,906.00 864.26,906.00 868.00,906.00 869.86,906.00 871.73,906.00 875.46,906.00 879.20,906.00 882.93,906.00 886.66,906.00 890.40,906.00 894.13,906.00 897.86,906.00 901.60,906.00 905.33,906.00 909.06,906.00 912.80,906.00 916.53,906.00 920.26,906.00 924.00,906.00 927.73,906.00 931.46,906.00 935.20,906.00 938.93,906.00 942.66,906.00 946.40,906.00 950.13,906.00 953.86,906.00 957.60,906.00 961.33,906.00 965.06,906.00 968.80,906.00 972.53,906.00 976.26,906.00 980.00,906.00 983.73,906.00 987.46,906.00 991.20,906.00 994.93,906.00 998.66,906.00 1002.40,906.00 1006.13,906.00 1009.86,906.00 1013.60,906.00 1017.33,906.00 1021.06,906.00 1024.80,906.00 1028.53,906.00 1032.26,906.00 1036.00,906.00 1039.73,906.00 1043.46,906.00 1047.20,906.00 1050.93,906.00 1054.66,906.00 1058.40,906.00 1062.13,906.00 1065.86,906.00 1069.60,906.00 1073.33,906.00 1077.06,906.00 1080.80,906.00 1084.53,906.00 1088.26,906.00 1092.00,906.00 1095.73,906.00 1099.46,906.00 1103.20,906.00 1106.93,906.00 1110.66,906.00 1114.40,906.00 1118.13,906.00 1121.86,906.00 1125.60,906.00 1129.33,906.00 1133.06,906.00 1136.80,906.00 1140.53,906.00 1144.26,906.00 1148.00,906.00 1151.73,906.00 1155.46,906.00 1159.20,906.00 1162.93,906.00 1166.66,906.00 1170.40,906.00 1174.13,906.00 1177.86,906.00 1181.60,906.00 1185.33,906.00 1189.06,906.00 1192.80,906.00 1196.53,906.00 1200.26,906.00 1204.00,906.00 1207.73,906.00 1211.46,906.00 1215.20,906.00 1218.93,906.00 1222.66,906.00 1226.40,906.00 1230.13,906.00 1233.86,906.00 1237.60,906.00 1241.33,906.00 1245.06,906.00 1248.80,906.00 1252.53,906.00 1256.26,906.00 1260.00,906.00" fill="none" stroke="#0072b2" stroke-width="2.00"/>
+<polyline points="140.00,906.00 143.73,906.00 147.46,906.00 151.20,906.00 154.93,906.00 158.66,906.00 162.40,906.00 166.13,906.00 169.86,906.00 173.60,906.00 177.33,569.31 181.06,541.97 184.80,521.77 188.53,509.86 192.26,504.20 196.00,501.85 199.73,500.95 203.46,500.61 207.20,500.49 210.93,500.44 214.66,500.42 218.40,500.42 222.13,500.42 225.86,500.42 229.60,500.42 233.33,500.42 237.06,500.42 240.80,500.42 244.53,500.42 248.26,500.42 252.00,500.42 255.73,500.72 259.46,495.27 263.20,504.82 266.93,497.50 270.66,497.40 271.04,497.70 274.40,498.50 278.13,499.72 281.86,500.16 285.60,500.32 289.33,500.38 293.06,500.40 296.80,500.41 300.53,500.41 304.26,498.71 308.00,499.80 311.73,500.19 315.46,500.33 319.20,500.38 322.93,500.40 326.66,500.41 330.40,500.41 334.13,500.41 337.86,500.41 341.60,500.41 345.33,500.41 349.06,500.41 352.80,500.41 356.53,500.41 360.26,500.41 364.00,500.41 367.73,500.41 371.46,500.41 375.20,500.41 378.93,500.41 382.66,500.41 386.40,500.41 390.13,500.41 393.86,500.41 397.60,500.41 401.33,500.41 405.06,500.41 406.18,906.00 408.80,906.00 412.53,906.00 416.26,906.00 420.00,906.00 423.73,906.00 427.46,906.00 431.20,906.00 434.93,906.00 438.66,906.00 442.40,906.00 446.13,906.00 449.86,906.00 453.60,906.00 457.33,906.00 461.06,906.00 464.80,906.00 468.53,906.00 472.26,906.00 476.00,906.00 479.73,906.00 483.46,906.00 487.20,906.00 490.93,906.00 494.66,906.00 498.40,906.00 502.13,906.00 505.86,906.00 509.60,906.00 513.33,906.00 517.06,906.00 520.80,906.00 524.53,906.00 528.26,906.00 532.00,906.00 535.73,906.00 539.46,906.00 543.20,906.00 546.93,906.00 550.66,906.00 554.40,906.00 558.13,906.00 561.86,906.00 565.60,906.00 569.33,906.00 573.06,906.00 576.80,906.00 580.53,906.00 584.26,906.00 588.00,906.00 591.73,906.00 595.46,906.00 599.20,906.00 602.93,906.00 606.66,906.00 610.40,906.00 614.13,906.00 616.74,906.00 617.86,906.00 621.60,906.00 625.33,906.00 629.06,906.00 632.80,906.00 636.53,906.00 640.26,906.00 644.00,906.00 647.73,906.00 651.46,906.00 655.20,906.00 658.93,906.00 662.66,906.00 666.40,906.00 670.13,906.00 673.86,906.00 677.60,906.00 681.33,906.00 685.06,906.00 688.80,906.00 692.53,906.00 696.26,906.00 700.00,906.00 703.73,906.00 707.46,906.00 711.20,906.00 714.93,906.00 718.66,906.00 722.40,906.00 726.13,906.00 729.86,906.00 733.60,906.00 737.33,906.00 741.06,906.00 744.80,906.00 748.53,906.00 752.26,906.00 756.00,906.00 759.73,906.00 763.46,906.00 767.20,906.00 770.93,906.00 774.66,906.00 778.40,906.00 782.13,906.00 785.86,906.00 789.60,906.00 793.33,906.00 797.06,906.00 800.80,906.00 804.53,906.00 808.26,906.00 812.00,906.00 815.73,906.00 819.46,906.00 823.20,906.00 826.93,906.00 830.66,906.00 834.40,906.00 838.13,906.00 841.86,906.00 845.60,906.00 849.33,906.00 853.06,906.00 856.80,906.00 860.53,906.00 864.26,906.00 868.00,906.00 869.86,906.00 871.73,906.00 875.46,906.00 879.20,906.00 882.93,906.00 886.66,906.00 890.40,906.00 894.13,906.00 897.86,906.00 901.60,906.00 905.33,906.00 909.06,906.00 912.80,906.00 916.53,906.00 920.26,906.00 924.00,906.00 927.73,906.00 931.46,906.00 935.20,906.00 938.93,906.00 942.66,906.00 946.40,906.00 950.13,906.00 953.86,906.00 957.60,906.00 961.33,906.00 965.06,906.00 968.80,906.00 972.53,906.00 976.26,906.00 980.00,906.00 983.73,906.00 987.46,906.00 991.20,906.00 994.93,906.00 998.66,906.00 1002.40,906.00 1006.13,906.00 1009.86,906.00 1013.60,906.00 1017.33,906.00 1021.06,906.00 1024.80,906.00 1028.53,906.00 1032.26,906.00 1036.00,906.00 1039.73,906.00 1043.46,906.00 1047.20,906.00 1050.93,906.00 1054.66,906.00 1058.40,906.00 1062.13,906.00 1065.86,906.00 1069.60,906.00 1073.33,906.00 1077.06,906.00 1080.80,906.00 1084.53,906.00 1088.26,906.00 1092.00,906.00 1095.73,906.00 1099.46,906.00 1103.20,906.00 1106.93,906.00 1110.66,906.00 1114.40,906.00 1118.13,906.00 1121.86,906.00 1125.60,906.00 1129.33,906.00 1133.06,906.00 1136.80,906.00 1140.53,906.00 1144.26,906.00 1148.00,906.00 1151.73,906.00 1155.46,906.00 1159.20,906.00 1162.93,906.00 1166.66,906.00 1170.40,906.00 1174.13,906.00 1177.86,906.00 1181.60,906.00 1185.33,906.00 1189.06,906.00 1192.80,906.00 1196.53,906.00 1200.26,906.00 1204.00,906.00 1207.73,906.00 1211.46,906.00 1215.20,906.00 1218.93,906.00 1222.66,906.00 1226.40,906.00 1230.13,906.00 1233.86,906.00 1237.60,906.00 1241.33,906.00 1245.06,906.00 1248.80,906.00 1252.53,906.00 1256.26,906.00 1260.00,906.00" fill="none" stroke="#d55e00" stroke-width="2.00"/>
+<polyline points="140.00,906.00 143.73,906.00 147.46,906.00 151.20,906.00 154.93,906.00 158.66,906.00 162.40,906.00 166.13,906.00 169.86,906.00 173.60,906.00 177.33,906.00 181.06,906.00 184.80,906.00 188.53,906.00 192.26,906.00 196.00,906.00 199.73,906.00 203.46,906.00 207.20,906.00 210.93,906.00 214.66,906.00 218.40,906.00 222.13,906.00 225.86,906.00 229.60,906.00 233.33,906.00 237.06,906.00 240.80,906.00 244.53,906.00 248.26,906.00 252.00,906.00 255.73,906.00 259.46,906.00 263.20,906.00 266.93,906.00 270.66,906.00 271.04,906.00 274.40,906.00 278.13,906.00 281.86,906.00 285.60,906.00 289.33,906.00 293.06,906.00 296.80,906.00 300.53,906.00 304.26,906.00 308.00,906.00 311.73,906.00 315.46,906.00 319.20,906.00 322.93,906.00 326.66,906.00 330.40,906.00 334.13,906.00 337.86,906.00 341.60,906.00 345.33,906.00 349.06,906.00 352.80,906.00 356.53,906.00 360.26,906.00 364.00,906.00 367.73,906.00 371.46,906.00 375.20,906.00 378.93,906.00 382.66,906.00 386.40,906.00 390.13,906.00 393.86,906.00 397.60,906.00 401.33,906.00 405.06,906.00 406.18,906.00 408.80,906.00 412.53,906.00 416.26,906.00 420.00,906.00 423.73,906.00 427.46,906.00 431.20,906.00 434.93,906.00 438.66,906.00 442.40,906.00 446.13,906.00 449.86,906.00 453.60,906.00 457.33,906.00 461.06,906.00 464.80,906.00 468.53,906.00 472.26,906.00 476.00,906.00 479.73,906.00 483.46,906.00 487.20,906.00 490.93,906.00 494.66,545.25 498.40,523.97 502.13,511.02 505.86,504.70 509.60,502.05 513.33,501.03 517.06,500.64 520.80,500.50 524.53,500.45 528.26,500.43 532.00,500.42 535.73,500.42 539.46,500.42 543.20,500.42 546.93,500.42 550.66,500.42 554.40,500.42 558.13,500.42 561.86,500.42 565.60,500.42 569.33,500.42 573.06,500.42 576.80,500.42 580.53,500.42 584.26,500.42 588.00,500.42 591.73,500.42 595.46,500.42 599.20,502.52 602.93,501.20 606.66,500.71 610.40,500.52 614.13,498.75 616.74,906.00 617.86,906.00 621.60,906.00 625.33,906.00 629.06,906.00 632.80,906.00 636.53,906.00 640.26,906.00 644.00,906.00 647.73,906.00 651.46,906.00 655.20,906.00 658.93,906.00 662.66,906.00 666.40,906.00 670.13,906.00 673.86,906.00 677.60,906.00 681.33,906.00 685.06,906.00 688.80,906.00 692.53,906.00 696.26,906.00 700.00,906.00 703.73,906.00 707.46,906.00 711.20,906.00 714.93,906.00 718.66,906.00 722.40,906.00 726.13,906.00 729.86,906.00 733.60,906.00 737.33,906.00 741.06,906.00 744.80,906.00 748.53,906.00 752.26,906.00 756.00,906.00 759.73,906.00 763.46,906.00 767.20,906.00 770.93,906.00 774.66,906.00 778.40,906.00 782.13,906.00 785.86,906.00 789.60,906.00 793.33,906.00 797.06,906.00 800.80,906.00 804.53,906.00 808.26,906.00 812.00,906.00 815.73,906.00 819.46,906.00 823.20,906.00 826.93,906.00 830.66,906.00 834.40,906.00 838.13,906.00 841.86,906.00 845.60,906.00 849.33,906.00 853.06,906.00 856.80,906.00 860.53,906.00 864.26,906.00 868.00,906.00 869.86,906.00 871.73,906.00 875.46,906.00 879.20,906.00 882.93,906.00 886.66,906.00 890.40,906.00 894.13,906.00 897.86,906.00 901.60,906.00 905.33,906.00 909.06,906.00 912.80,906.00 916.53,906.00 920.26,906.00 924.00,906.00 927.73,906.00 931.46,906.00 935.20,906.00 938.93,906.00 942.66,906.00 946.40,906.00 950.13,906.00 953.86,906.00 957.60,906.00 961.33,906.00 965.06,906.00 968.80,906.00 972.53,906.00 976.26,906.00 980.00,906.00 983.73,906.00 987.46,906.00 991.20,906.00 994.93,906.00 998.66,906.00 1002.40,906.00 1006.13,906.00 1009.86,906.00 1013.60,906.00 1017.33,906.00 1021.06,906.00 1024.80,906.00 1028.53,906.00 1032.26,906.00 1036.00,906.00 1039.73,906.00 1043.46,906.00 1047.20,906.00 1050.93,906.00 1054.66,906.00 1058.40,906.00 1062.13,906.00 1065.86,906.00 1069.60,906.00 1073.33,906.00 1077.06,906.00 1080.80,906.00 1084.53,906.00 1088.26,906.00 1092.00,906.00 1095.73,906.00 1099.46,906.00 1103.20,906.00 1106.93,906.00 1110.66,906.00 1114.40,906.00 1118.13,906.00 1121.86,906.00 1125.60,906.00 1129.33,906.00 1133.06,906.00 1136.80,906.00 1140.53,906.00 1144.26,906.00 1148.00,906.00 1151.73,906.00 1155.46,906.00 1159.20,906.00 1162.93,906.00 1166.66,906.00 1170.40,906.00 1174.13,906.00 1177.86,906.00 1181.60,906.00 1185.33,906.00 1189.06,906.00 1192.80,906.00 1196.53,906.00 1200.26,906.00 1204.00,906.00 1207.73,906.00 1211.46,906.00 1215.20,906.00 1218.93,906.00 1222.66,906.00 1226.40,906.00 1230.13,906.00 1233.86,906.00 1237.60,906.00 1241.33,906.00 1245.06,906.00 1248.80,906.00 1252.53,906.00 1256.26,906.00 1260.00,906.00" fill="none" stroke="#d55e00" stroke-width="2.00"/>
+<polyline points="140.00,906.00 143.73,906.00 147.46,906.00 151.20,906.00 154.93,906.00 158.66,906.00 162.40,906.00 166.13,906.00 169.86,906.00 173.60,906.00 177.33,906.00 181.06,906.00 184.80,906.00 188.53,906.00 192.26,906.00 196.00,906.00 199.73,906.00 203.46,906.00 207.20,906.00 210.93,906.00 214.66,906.00 218.40,906.00 222.13,906.00 225.86,906.00 229.60,906.00 233.33,906.00 237.06,906.00 240.80,906.00 244.53,906.00 248.26,906.00 252.00,906.00 255.73,906.00 259.46,906.00 263.20,906.00 266.93,906.00 270.66,906.00 271.04,906.00 274.40,906.00 278.13,906.00 281.86,906.00 285.60,906.00 289.33,906.00 293.06,906.00 296.80,906.00 300.53,906.00 304.26,906.00 308.00,906.00 311.73,906.00 315.46,906.00 319.20,906.00 322.93,906.00 326.66,906.00 330.40,906.00 334.13,906.00 337.86,906.00 341.60,906.00 345.33,906.00 349.06,906.00 352.80,906.00 356.53,906.00 360.26,906.00 364.00,906.00 367.73,906.00 371.46,906.00 375.20,906.00 378.93,906.00 382.66,906.00 386.40,906.00 390.13,906.00 393.86,906.00 397.60,906.00 401.33,906.00 405.06,906.00 406.18,906.00 408.80,906.00 412.53,906.00 416.26,906.00 420.00,906.00 423.73,906.00 427.46,906.00 431.20,906.00 434.93,906.00 438.66,906.00 442.40,906.00 446.13,906.00 449.86,906.00 453.60,906.00 457.33,906.00 461.06,906.00 464.80,906.00 468.53,906.00 472.26,906.00 476.00,906.00 479.73,906.00 483.46,906.00 487.20,906.00 490.93,906.00 494.66,906.00 498.40,906.00 502.13,906.00 505.86,906.00 509.60,906.00 513.33,906.00 517.06,906.00 520.80,906.00 524.53,906.00 528.26,906.00 532.00,906.00 535.73,906.00 539.46,906.00 543.20,906.00 546.93,906.00 550.66,906.00 554.40,906.00 558.13,906.00 561.86,906.00 565.60,906.00 569.33,906.00 573.06,906.00 576.80,906.00 580.53,906.00 584.26,906.00 588.00,906.00 591.73,906.00 595.46,906.00 599.20,906.00 602.93,906.00 606.66,906.00 610.40,906.00 614.13,906.00 616.74,906.00 617.86,906.00 621.60,906.00 625.33,906.00 629.06,906.00 632.80,906.00 636.53,906.00 640.26,553.67 644.00,529.91 647.73,514.32 651.46,506.20 655.20,502.65 658.93,501.26 662.66,500.73 666.40,500.53 670.13,500.46 673.86,500.43 677.60,500.42 681.33,500.42 685.06,500.42 688.80,500.42 692.53,500.42 696.26,500.42 700.00,500.42 703.73,500.42 707.46,500.42 711.20,500.42 714.93,500.42 718.66,504.17 722.40,501.84 726.13,500.95 729.86,500.61 733.60,500.49 737.33,500.44 741.06,500.42 744.80,500.42 748.53,500.42 752.26,500.42 756.00,500.42 759.73,500.42 763.46,500.42 767.20,500.42 770.93,500.42 774.66,500.42 778.40,500.42 782.13,500.42 785.86,500.42 789.60,500.42 793.33,500.42 797.06,500.42 800.80,500.42 804.53,500.42 808.26,500.42 812.00,500.42 815.73,500.42 819.46,511.90 823.20,518.59 826.93,511.66 830.66,504.99 834.40,502.17 838.13,501.07 841.86,500.66 845.60,500.50 849.33,500.45 853.06,500.43 856.80,500.42 860.53,500.42 864.26,500.42 868.00,500.42 869.86,906.00 871.73,906.00 875.46,906.00 879.20,906.00 882.93,906.00 886.66,906.00 890.40,906.00 894.13,906.00 897.86,906.00 901.60,906.00 905.33,906.00 909.06,906.00 912.80,906.00 916.53,906.00 920.26,906.00 924.00,906.00 927.73,906.00 931.46,906.00 935.20,906.00 938.93,906.00 942.66,906.00 946.40,906.00 950.13,906.00 953.86,906.00 957.60,906.00 961.33,906.00 965.06,906.00 968.80,906.00 972.53,906.00 976.26,906.00 980.00,906.00 983.73,906.00 987.46,906.00 991.20,906.00 994.93,906.00 998.66,906.00 1002.40,906.00 1006.13,906.00 1009.86,906.00 1013.60,906.00 1017.33,906.00 1021.06,906.00 1024.80,906.00 1028.53,906.00 1032.26,906.00 1036.00,906.00 1039.73,906.00 1043.46,906.00 1047.20,906.00 1050.93,906.00 1054.66,906.00 1058.40,906.00 1062.13,906.00 1065.86,906.00 1069.60,906.00 1073.33,906.00 1077.06,906.00 1080.80,906.00 1084.53,906.00 1088.26,906.00 1092.00,906.00 1095.73,906.00 1099.46,906.00 1103.20,906.00 1106.93,906.00 1110.66,906.00 1114.40,906.00 1118.13,906.00 1121.86,906.00 1125.60,906.00 1129.33,906.00 1133.06,906.00 1136.80,906.00 1140.53,906.00 1144.26,906.00 1148.00,906.00 1151.73,906.00 1155.46,906.00 1159.20,906.00 1162.93,906.00 1166.66,906.00 1170.40,906.00 1174.13,906.00 1177.86,906.00 1181.60,906.00 1185.33,906.00 1189.06,906.00 1192.80,906.00 1196.53,906.00 1200.26,906.00 1204.00,906.00 1207.73,906.00 1211.46,906.00 1215.20,906.00 1218.93,906.00 1222.66,906.00 1226.40,906.00 1230.13,906.00 1233.86,906.00 1237.60,906.00 1241.33,906.00 1245.06,906.00 1248.80,906.00 1252.53,906.00 1256.26,906.00 1260.00,906.00" fill="none" stroke="#d55e00" stroke-width="2.00"/>
+<polyline points="140.00,906.00 143.73,906.00 147.46,906.00 151.20,906.00 154.93,906.00 158.66,906.00 162.40,906.00 166.13,906.00 169.86,906.00 173.60,906.00 177.33,906.00 181.06,906.00 184.80,906.00 188.53,906.00 192.26,906.00 196.00,906.00 199.73,906.00 203.46,906.00 207.20,906.00 210.93,906.00 214.66,906.00 218.40,906.00 222.13,906.00 225.86,906.00 229.60,906.00 233.33,906.00 237.06,906.00 240.80,906.00 244.53,906.00 248.26,906.00 252.00,906.00 255.73,503.13 259.46,494.02 263.20,498.09 266.93,500.91 270.66,496.95 271.04,497.29 274.40,499.18 278.13,499.96 281.86,500.25 285.60,500.35 289.33,502.49 293.06,501.19 296.80,500.70 300.53,500.52 304.26,507.96 308.00,503.38 311.73,501.54 315.46,500.83 319.20,500.57 322.93,500.47 326.66,500.44 330.40,500.42 334.13,500.42 337.86,500.42 341.60,500.42 345.33,500.42 349.06,500.42 352.80,500.42 356.53,500.42 360.26,500.42 364.00,500.42 367.73,500.42 371.46,500.42 375.20,500.42 378.93,500.42 382.66,500.42 386.40,500.42 390.13,500.42 393.86,500.42 397.60,500.42 401.33,500.42 405.06,500.42 406.18,500.42 408.80,500.42 412.53,502.52 416.26,501.20 420.00,500.71 423.73,500.52 427.46,500.45 431.20,500.43 434.93,502.53 438.66,501.21 442.40,500.71 446.13,500.52 449.86,500.45 453.60,500.43 457.33,500.42 461.06,500.42 464.80,500.42 468.53,502.52 472.26,501.20 476.00,500.71 479.73,500.52 483.46,503.82 487.20,501.70 490.93,500.89 494.66,502.74 498.40,501.29 502.13,500.74 505.86,500.53 509.60,500.46 513.33,502.54 517.06,501.21 520.80,500.71 524.53,500.52 528.26,500.45 532.00,500.43 535.73,500.42 539.46,500.42 543.20,500.42 546.93,501.95 550.66,500.99 554.40,500.63 558.13,500.49 561.86,500.44 565.60,500.42 569.33,500.42 573.06,500.42 576.80,500.42 580.53,500.42 584.26,500.42 588.00,500.42 591.73,501.95 595.46,500.99 599.20,500.63 602.93,500.49 606.66,500.44 610.40,504.13 614.13,504.31 616.74,502.40 617.86,501.90 621.60,500.97 625.33,500.62 629.06,500.49 632.80,500.44 636.53,500.42 640.26,501.96 644.00,500.99 647.73,502.79 651.46,501.31 655.20,500.75 658.93,502.67 662.66,501.26 666.40,500.73 670.13,502.66 673.86,501.26 677.60,500.73 681.33,500.53 685.06,500.46 688.80,500.43 692.53,500.42 696.26,501.96 700.00,507.66 703.73,503.26 707.46,501.49 711.20,500.81 714.93,500.56 718.66,500.47 722.40,500.43 726.13,500.42 729.86,500.42 733.60,500.42 737.33,500.42 741.06,500.42 744.80,500.42 748.53,500.42 752.26,500.42 756.00,501.95 759.73,500.99 763.46,500.63 767.20,500.49 770.93,500.44 774.66,500.42 778.40,500.42 782.13,501.95 785.86,500.99 789.60,502.79 793.33,501.31 797.06,500.75 800.80,500.54 804.53,502.58 808.26,501.23 812.00,500.71 815.73,500.52 819.46,500.45 823.20,500.43 826.93,500.42 830.66,500.42 834.40,500.42 838.13,500.42 841.86,500.42 845.60,500.42 849.33,500.42 853.06,500.42 856.80,501.95 860.53,500.99 864.26,500.63 868.00,502.62 869.86,501.77 871.73,501.24 875.46,500.72 879.20,500.53 882.93,500.46 886.66,500.43 890.40,500.42 894.13,500.42 897.86,500.42 901.60,500.42 905.33,500.42 909.06,500.42 912.80,500.42 916.53,500.42 920.26,500.42 924.00,500.42 927.73,500.42 931.46,500.42 935.20,500.42 938.93,500.42 942.66,500.42 946.40,502.52 950.13,501.20 953.86,502.89 957.60,501.34 961.33,500.76 965.06,500.54 968.80,500.46 972.53,500.43 976.26,500.42 980.00,500.42 983.73,500.42 987.46,500.42 991.20,500.42 994.93,500.42 998.66,500.42 1002.40,500.42 1006.13,500.42 1009.86,500.42 1013.60,500.42 1017.33,500.42 1021.06,500.42 1024.80,500.42 1028.53,500.42 1032.26,500.42 1036.00,500.42 1039.73,500.42 1043.46,502.52 1047.20,501.20 1050.93,500.71 1054.66,500.52 1058.40,502.57 1062.13,501.22 1065.86,500.71 1069.60,502.66 1073.33,501.26 1077.06,500.73 1080.80,500.53 1084.53,500.46 1088.26,500.43 1092.00,500.42 1095.73,500.42 1099.46,500.42 1103.20,500.42 1106.93,500.42 1110.66,500.42 1114.40,500.42 1118.13,500.42 1121.86,500.42 1125.60,500.42 1129.33,500.42 1133.06,500.42 1136.80,504.95 1140.53,502.15 1144.26,501.06 1148.00,500.65 1151.73,500.50 1155.46,500.45 1159.20,500.43 1162.93,500.42 1166.66,502.52 1170.40,501.20 1174.13,500.71 1177.86,502.65 1181.60,501.25 1185.33,500.73 1189.06,500.53 1192.80,500.46 1196.53,502.54 1200.26,501.21 1204.00,500.71 1207.73,500.52 1211.46,500.45 1215.20,500.43 1218.93,500.42 1222.66,502.52 1226.40,501.20 1230.13,500.71 1233.86,500.52 1237.60,500.45 1241.33,500.43 1245.06,500.42 1248.80,500.42 1252.53,500.42 1256.26,500.42 1260.00,500.42" fill="none" stroke="#009e73" stroke-width="2.00"/>
+<polyline points="140.00,906.00 143.73,906.00 147.46,906.00 151.20,906.00 154.93,906.00 158.66,906.00 162.40,906.00 166.13,906.00 169.86,906.00 173.60,906.00 177.33,906.00 181.06,906.00 184.80,906.00 188.53,906.00 192.26,906.00 196.00,906.00 199.73,906.00 203.46,906.00 207.20,540.40 210.93,524.89 214.66,495.65 218.40,469.93 222.13,456.16 225.86,449.94 229.60,446.66 233.33,445.37 237.06,444.89 240.80,444.70 244.53,444.64 248.26,444.61 252.00,444.60 255.73,444.60 259.46,444.60 263.20,444.98 266.93,444.74 270.66,440.85 271.04,441.23 274.40,440.24 278.13,439.51 281.86,440.83 285.60,442.21 289.33,444.09 293.06,444.41 296.80,444.53 300.53,444.57 304.26,444.59 308.00,444.98 311.73,444.74 315.46,444.65 319.20,444.62 322.93,444.61 326.66,444.60 330.40,444.60 334.13,444.60 337.86,444.60 341.60,444.60 345.33,444.60 349.06,444.60 352.80,444.60 356.53,444.60 360.26,444.60 364.00,444.98 367.73,444.74 371.46,445.04 375.20,444.76 378.93,444.66 382.66,444.62 386.40,444.61 390.13,444.60 393.86,444.60 397.60,444.60 401.33,444.60 405.06,444.60 406.18,444.60 408.80,444.60 412.53,444.60 416.26,444.60 420.00,444.60 423.73,444.60 427.46,448.53 431.20,446.10 434.93,445.16 438.66,444.81 442.40,444.68 446.13,446.33 449.86,444.86 453.60,444.26 457.33,443.97 461.06,443.40 464.80,442.70 468.53,442.22 472.26,440.87 476.00,439.16 479.73,438.26 483.46,438.09 487.20,437.31 490.93,428.83 494.66,423.09 498.40,421.18 502.13,420.70 505.86,420.59 509.60,420.57 513.33,420.56 517.06,420.56 520.80,420.56 524.53,420.56 528.26,420.56 532.00,420.56 535.73,424.54 539.46,421.80 543.20,422.34 546.93,421.55 550.66,423.47 554.40,421.49 558.13,420.87 561.86,420.67 565.60,420.79 569.33,420.65 573.06,420.59 576.80,420.57 580.53,420.57 584.26,420.56 588.00,420.56 591.73,420.56 595.46,420.56 599.20,420.75 602.93,420.63 606.66,420.59 610.40,420.76 614.13,420.64 616.74,420.60 617.86,420.59 621.60,420.57 625.33,420.56 629.06,420.75 632.80,420.82 636.53,420.66 640.26,420.60 644.00,420.57 647.73,424.72 651.46,422.15 655.20,422.41 658.93,421.25 662.66,424.92 666.40,422.23 670.13,421.18 673.86,420.79 677.60,422.47 681.33,421.28 685.06,422.83 688.80,421.41 692.53,421.07 696.26,420.75 700.00,422.23 703.73,421.39 707.46,420.87 711.20,424.26 714.93,425.77 718.66,425.18 722.40,424.63 726.13,421.86 729.86,420.79 733.60,420.58 737.33,422.85 741.06,421.18 744.80,420.51 748.53,422.96 752.26,422.62 756.00,418.84 759.73,415.44 763.46,416.61 767.20,412.19 770.93,408.24 774.66,407.68 778.40,407.80 782.13,406.98 785.86,408.47 789.60,407.59 793.33,408.67 797.06,415.34 800.80,410.93 804.53,408.41 808.26,412.36 812.00,408.58 815.73,407.23 819.46,414.60 823.20,411.70 826.93,408.65 830.66,410.07 834.40,407.52 838.13,408.21 841.86,408.63 845.60,408.93 849.33,407.87 853.06,407.34 856.80,409.73 860.53,407.56 864.26,407.71 868.00,403.31 869.86,402.38 871.73,401.76 875.46,404.60 879.20,402.65 882.93,404.82 886.66,404.30 890.40,404.79 894.13,400.13 897.86,398.93 901.60,400.49 905.33,397.35 909.06,403.67 912.80,398.78 916.53,399.57 920.26,397.53 924.00,401.15 927.73,397.51 931.46,397.69 935.20,404.69 938.93,397.96 942.66,394.61 946.40,394.69 950.13,393.35 953.86,392.49 957.60,389.61 961.33,390.31 965.06,390.13 968.80,388.11 972.53,386.74 976.26,386.17 980.00,387.10 983.73,384.41 987.46,383.88 991.20,385.20 994.93,383.19 998.66,385.31 1002.40,384.77 1006.13,384.90 1009.86,384.05 1013.60,383.92 1017.33,383.31 1021.06,384.44 1024.80,385.07 1028.53,384.53 1032.26,384.70 1036.00,386.15 1039.73,384.01 1043.46,385.92 1047.20,383.53 1050.93,384.22 1054.66,384.55 1058.40,384.77 1062.13,384.68 1065.86,385.46 1069.60,384.25 1073.33,388.28 1077.06,384.59 1080.80,385.66 1084.53,383.48 1088.26,385.96 1092.00,383.44 1095.73,383.68 1099.46,387.96 1103.20,384.39 1106.93,385.24 1110.66,383.32 1114.40,384.29 1118.13,382.98 1121.86,382.64 1125.60,385.63 1129.33,383.60 1133.06,382.94 1136.80,384.21 1140.53,389.02 1144.26,384.87 1148.00,383.41 1151.73,384.29 1155.46,383.19 1159.20,384.36 1162.93,383.62 1166.66,382.87 1170.40,382.61 1174.13,385.54 1177.86,383.56 1181.60,386.07 1185.33,384.67 1189.06,389.30 1192.80,386.89 1196.53,384.46 1200.26,383.04 1204.00,384.39 1207.73,383.13 1211.46,386.40 1215.20,383.94 1218.93,383.06 1222.66,382.57 1226.40,382.26 1230.13,381.93 1233.86,381.58 1237.60,381.33 1241.33,388.02 1245.06,384.55 1248.80,385.81 1252.53,381.99 1256.26,379.60 1260.00,378.00" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<polyline points="140.00,906.00 143.73,906.00 147.46,906.00 151.20,906.00 154.93,906.00 158.66,906.00 162.40,906.00 166.13,906.00 169.86,906.00 173.60,906.00 177.33,906.00 181.06,906.00 184.80,906.00 188.53,906.00 192.26,906.00 196.00,906.00 199.73,906.00 203.46,906.00 207.20,906.00 210.93,906.00 214.66,906.00 218.40,906.00 222.13,906.00 225.86,906.00 229.60,906.00 233.33,906.00 237.06,906.00 240.80,906.00 244.53,906.00 248.26,906.00 252.00,906.00 255.73,906.00 259.46,906.00 263.20,906.00 266.93,906.00 270.66,906.00 271.04,906.00 274.40,906.00 278.13,906.00 281.86,906.00 285.60,906.00 289.33,906.00 293.06,906.00 296.80,906.00 300.53,906.00 304.26,906.00 308.00,906.00 311.73,906.00 315.46,906.00 319.20,906.00 322.93,540.40 326.66,509.30 330.40,482.80 334.13,463.79 337.86,452.94 341.60,447.90 345.33,445.85 349.06,445.07 352.80,444.77 356.53,444.66 360.26,444.62 364.00,444.61 367.73,444.60 371.46,444.60 375.20,444.60 378.93,444.23 382.66,444.46 386.40,444.55 390.13,444.58 393.86,444.59 397.60,444.60 401.33,444.60 405.06,444.60 406.18,444.60 408.80,444.60 412.53,444.60 416.26,444.60 420.00,444.60 423.73,444.60 427.46,444.60 431.20,444.60 434.93,444.60 438.66,444.60 442.40,444.60 446.13,444.60 449.86,444.60 453.60,444.60 457.33,444.60 461.06,444.60 464.80,444.60 468.53,444.60 472.26,444.60 476.00,444.60 479.73,444.60 483.46,444.60 487.20,444.60 490.93,444.60 494.66,444.60 498.40,444.60 502.13,444.23 505.86,444.46 509.60,444.55 513.33,444.58 517.06,444.59 520.80,444.60 524.53,444.60 528.26,447.37 532.00,444.84 535.73,443.69 539.46,443.17 543.20,442.90 546.93,442.08 550.66,440.61 554.40,438.57 558.13,436.10 561.86,431.69 565.60,430.71 569.33,430.56 573.06,430.54 576.80,428.86 580.53,423.11 584.26,421.18 588.00,420.70 591.73,420.59 595.46,420.57 599.20,424.76 602.93,422.74 606.66,420.91 610.40,423.75 614.13,421.27 616.74,420.68 617.86,420.53 621.60,420.24 625.33,419.75 629.06,419.15 632.80,418.34 636.53,416.14 640.26,413.54 644.00,412.41 647.73,409.15 651.46,407.19 655.20,406.65 658.93,410.95 662.66,407.71 666.40,418.85 670.13,412.12 673.86,410.78 677.60,407.83 681.33,406.91 685.06,407.60 688.80,406.85 692.53,408.54 696.26,407.22 700.00,406.77 703.73,406.60 707.46,406.41 711.20,407.98 714.93,413.29 718.66,408.75 722.40,408.99 726.13,407.36 729.86,406.80 733.60,406.61 737.33,408.43 741.06,409.81 744.80,407.63 748.53,406.89 752.26,406.64 756.00,409.99 759.73,410.86 763.46,409.93 767.20,412.32 770.93,408.80 774.66,407.37 778.40,406.82 782.13,407.48 785.86,406.67 789.60,406.35 793.33,406.11 797.06,405.84 800.80,405.55 804.53,404.07 808.26,403.21 812.00,404.42 815.73,402.32 819.46,401.58 823.20,397.72 826.93,403.71 830.66,402.05 834.40,401.38 838.13,401.21 841.86,401.17 845.60,401.16 849.33,401.15 853.06,406.97 856.80,407.45 860.53,408.09 864.26,406.53 868.00,399.98 869.86,398.46 871.73,397.60 875.46,397.79 879.20,401.00 882.93,398.09 886.66,401.11 890.40,398.14 894.13,397.10 897.86,396.73 901.60,396.60 905.33,398.94 909.06,397.35 912.80,399.41 916.53,403.34 920.26,398.96 924.00,397.39 927.73,400.66 931.46,398.02 935.20,397.11 938.93,402.16 942.66,398.50 946.40,397.22 950.13,405.38 953.86,399.82 957.60,401.02 961.33,398.15 965.06,398.86 968.80,398.63 972.53,397.27 976.26,399.85 980.00,397.67 983.73,396.92 987.46,396.67 991.20,396.57 994.93,399.23 998.66,401.32 1002.40,399.76 1006.13,397.66 1009.86,396.93 1013.60,396.67 1017.33,396.58 1021.06,397.55 1024.80,396.87 1028.53,398.09 1032.26,400.16 1036.00,397.80 1039.73,396.97 1043.46,399.48 1047.20,397.95 1050.93,398.51 1054.66,397.22 1058.40,396.77 1062.13,396.52 1065.86,399.70 1069.60,397.61 1073.33,399.90 1077.06,397.70 1080.80,401.41 1084.53,398.24 1088.26,399.24 1092.00,398.45 1095.73,403.92 1099.46,403.21 1103.20,399.29 1106.93,397.59 1110.66,400.05 1114.40,400.25 1118.13,397.84 1121.86,396.99 1125.60,396.70 1129.33,396.59 1133.06,396.55 1136.80,396.53 1140.53,396.53 1144.26,396.52 1148.00,396.52 1151.73,400.00 1155.46,397.88 1159.20,397.03 1162.93,396.62 1166.66,396.47 1170.40,396.41 1174.13,396.48 1177.86,396.51 1181.60,396.52 1185.33,396.52 1189.06,396.34 1192.80,396.46 1196.53,396.50 1200.26,396.42 1204.00,396.49 1207.73,398.87 1211.46,398.76 1215.20,397.36 1218.93,396.51 1222.66,396.52 1226.40,396.52 1230.13,396.43 1233.86,396.31 1237.60,396.45 1241.33,399.88 1245.06,397.82 1248.80,403.58 1252.53,400.23 1256.26,397.83 1260.00,397.01" fill="none" stroke="#a17c00" stroke-width="2.00"/>
+<line x1="1260.00" y1="378.00" x2="1280.00" y2="378.00" stroke="#c5ced7" />
+<text x="1290.00" y="383.00" fill="#cc79a7">B4/a6</text>
+<line x1="1260.00" y1="397.01" x2="1280.00" y2="402.00" stroke="#c5ced7" />
+<text x="1290.00" y="407.00" fill="#a17c00">B5/a7</text>
+<line x1="266.93" y1="412.79" x2="1280.00" y2="426.00" stroke="#c5ced7" />
+<text x="1290.00" y="431.00" fill="#0072b2">B1/a1</text>
+<line x1="614.13" y1="498.75" x2="1280.00" y2="498.75" stroke="#c5ced7" />
+<text x="1290.00" y="503.75" fill="#d55e00">B2/a3</text>
+<line x1="405.06" y1="500.41" x2="1280.00" y2="522.75" stroke="#c5ced7" />
+<text x="1290.00" y="527.75" fill="#d55e00">B2/a2</text>
+<line x1="868.00" y1="500.42" x2="1280.00" y2="546.75" stroke="#c5ced7" />
+<text x="1290.00" y="551.75" fill="#d55e00">B2/a4</text>
+<line x1="1260.00" y1="500.42" x2="1280.00" y2="570.75" stroke="#c5ced7" />
+<text x="1290.00" y="575.75" fill="#009e73">B3/a5</text>
+<text x="40.00" y="941.00" >7 arcs plotted; 0 omitted. Key: body and arc labels.</text>
+<text x="40.00" y="965.00" fill="#0072b2">B1/a1 = stub:s00:b0</text>
+<text x="800.00" y="965.00" fill="#d55e00">B2/a2 = stub:s00:b1</text>
+<text x="40.00" y="989.00" fill="#d55e00">B2/a3 = stub:s00:b1</text>
+<text x="800.00" y="989.00" fill="#d55e00">B2/a4 = stub:s00:b1</text>
+<text x="40.00" y="1013.00" fill="#009e73">B3/a5 = stub:s00:b2</text>
+<text x="800.00" y="1013.00" fill="#cc79a7">B4/a6 = stub:s01:b0</text>
+<text x="40.00" y="1037.00" fill="#a17c00">B5/a7 = stub:s02:b0</text>
+<text x="40.00" y="1096.00" >Live polities</text>
+<line x1="140.00" y1="1226.00" x2="1260.00" y2="1226.00" stroke="#c5ced7" />
+<text x="125.00" y="1231.00" text-anchor="end">0</text>
+<line x1="140.00" y1="1181.56" x2="1260.00" y2="1181.56" stroke="#c5ced7" />
+<text x="125.00" y="1186.56" text-anchor="end">4</text>
+<line x1="140.00" y1="1126.00" x2="1260.00" y2="1126.00" stroke="#c5ced7" />
+<text x="125.00" y="1131.00" text-anchor="end">9</text>
+<path d="M 140.00 1214.89 H 143.73 V 1214.89 H 147.46 V 1214.89 H 151.20 V 1214.89 H 154.93 V 1214.89 H 158.66 V 1214.89 H 162.40 V 1214.89 H 166.13 V 1214.89 H 169.86 V 1214.89 H 173.60 V 1214.89 H 177.33 V 1214.89 H 181.06 V 1214.89 H 184.80 V 1214.89 H 188.53 V 1214.89 H 192.26 V 1214.89 H 196.00 V 1203.78 H 199.73 V 1203.78 H 203.46 V 1203.78 H 207.20 V 1203.78 H 210.93 V 1203.78 H 214.66 V 1203.78 H 218.40 V 1203.78 H 222.13 V 1203.78 H 225.86 V 1203.78 H 229.60 V 1203.78 H 233.33 V 1203.78 H 237.06 V 1203.78 H 240.80 V 1203.78 H 244.53 V 1203.78 H 248.26 V 1203.78 H 252.00 V 1203.78 H 255.73 V 1203.78 H 259.46 V 1203.78 H 263.20 V 1203.78 H 266.93 V 1203.78 H 270.66 V 1214.89 H 271.04 V 1214.89 H 274.40 V 1214.89 H 278.13 V 1214.89 H 281.86 V 1214.89 H 285.60 V 1214.89 H 289.33 V 1214.89 H 293.06 V 1214.89 H 296.80 V 1203.78 H 300.53 V 1203.78 H 304.26 V 1203.78 H 308.00 V 1192.67 H 311.73 V 1192.67 H 315.46 V 1192.67 H 319.20 V 1192.67 H 322.93 V 1192.67 H 326.66 V 1192.67 H 330.40 V 1192.67 H 334.13 V 1192.67 H 337.86 V 1192.67 H 341.60 V 1192.67 H 345.33 V 1181.56 H 349.06 V 1181.56 H 352.80 V 1181.56 H 356.53 V 1181.56 H 360.26 V 1181.56 H 364.00 V 1181.56 H 367.73 V 1181.56 H 371.46 V 1181.56 H 375.20 V 1181.56 H 378.93 V 1181.56 H 382.66 V 1181.56 H 386.40 V 1181.56 H 390.13 V 1181.56 H 393.86 V 1181.56 H 397.60 V 1181.56 H 401.33 V 1181.56 H 405.06 V 1181.56 H 406.18 V 1192.67 H 408.80 V 1192.67 H 412.53 V 1192.67 H 416.26 V 1192.67 H 420.00 V 1192.67 H 423.73 V 1192.67 H 427.46 V 1192.67 H 431.20 V 1192.67 H 434.93 V 1192.67 H 438.66 V 1192.67 H 442.40 V 1192.67 H 446.13 V 1192.67 H 449.86 V 1192.67 H 453.60 V 1192.67 H 457.33 V 1192.67 H 461.06 V 1192.67 H 464.80 V 1192.67 H 468.53 V 1192.67 H 472.26 V 1192.67 H 476.00 V 1192.67 H 479.73 V 1192.67 H 483.46 V 1192.67 H 487.20 V 1192.67 H 490.93 V 1192.67 H 494.66 V 1192.67 H 498.40 V 1192.67 H 502.13 V 1192.67 H 505.86 V 1192.67 H 509.60 V 1192.67 H 513.33 V 1192.67 H 517.06 V 1192.67 H 520.80 V 1192.67 H 524.53 V 1181.56 H 528.26 V 1181.56 H 532.00 V 1181.56 H 535.73 V 1181.56 H 539.46 V 1181.56 H 543.20 V 1181.56 H 546.93 V 1181.56 H 550.66 V 1192.67 H 554.40 V 1192.67 H 558.13 V 1192.67 H 561.86 V 1192.67 H 565.60 V 1181.56 H 569.33 V 1181.56 H 573.06 V 1181.56 H 576.80 V 1181.56 H 580.53 V 1181.56 H 584.26 V 1181.56 H 588.00 V 1181.56 H 591.73 V 1181.56 H 595.46 V 1181.56 H 599.20 V 1181.56 H 602.93 V 1181.56 H 606.66 V 1181.56 H 610.40 V 1181.56 H 614.13 V 1181.56 H 616.74 V 1192.67 H 617.86 V 1192.67 H 621.60 V 1192.67 H 625.33 V 1192.67 H 629.06 V 1192.67 H 632.80 V 1192.67 H 636.53 V 1181.56 H 640.26 V 1181.56 H 644.00 V 1170.45 H 647.73 V 1170.45 H 651.46 V 1170.45 H 655.20 V 1159.34 H 658.93 V 1159.34 H 662.66 V 1159.34 H 666.40 V 1159.34 H 670.13 V 1148.23 H 673.86 V 1148.23 H 677.60 V 1148.23 H 681.33 V 1148.23 H 685.06 V 1148.23 H 688.80 V 1148.23 H 692.53 V 1159.34 H 696.26 V 1159.34 H 700.00 V 1159.34 H 703.73 V 1159.34 H 707.46 V 1159.34 H 711.20 V 1159.34 H 714.93 V 1159.34 H 718.66 V 1159.34 H 722.40 V 1159.34 H 726.13 V 1159.34 H 729.86 V 1159.34 H 733.60 V 1159.34 H 737.33 V 1159.34 H 741.06 V 1159.34 H 744.80 V 1159.34 H 748.53 V 1159.34 H 752.26 V 1159.34 H 756.00 V 1159.34 H 759.73 V 1159.34 H 763.46 V 1170.45 H 767.20 V 1170.45 H 770.93 V 1170.45 H 774.66 V 1170.45 H 778.40 V 1170.45 H 782.13 V 1170.45 H 785.86 V 1170.45 H 789.60 V 1170.45 H 793.33 V 1170.45 H 797.06 V 1181.56 H 800.80 V 1181.56 H 804.53 V 1181.56 H 808.26 V 1181.56 H 812.00 V 1181.56 H 815.73 V 1181.56 H 819.46 V 1170.45 H 823.20 V 1170.45 H 826.93 V 1159.34 H 830.66 V 1159.34 H 834.40 V 1159.34 H 838.13 V 1159.34 H 841.86 V 1159.34 H 845.60 V 1159.34 H 849.33 V 1159.34 H 853.06 V 1159.34 H 856.80 V 1148.23 H 860.53 V 1148.23 H 864.26 V 1148.23 H 868.00 V 1148.23 H 869.86 V 1159.34 H 871.73 V 1159.34 H 875.46 V 1159.34 H 879.20 V 1159.34 H 882.93 V 1159.34 H 886.66 V 1159.34 H 890.40 V 1159.34 H 894.13 V 1148.23 H 897.86 V 1148.23 H 901.60 V 1148.23 H 905.33 V 1148.23 H 909.06 V 1148.23 H 912.80 V 1148.23 H 916.53 V 1148.23 H 920.26 V 1148.23 H 924.00 V 1148.23 H 927.73 V 1148.23 H 931.46 V 1148.23 H 935.20 V 1148.23 H 938.93 V 1148.23 H 942.66 V 1137.12 H 946.40 V 1137.12 H 950.13 V 1137.12 H 953.86 V 1137.12 H 957.60 V 1137.12 H 961.33 V 1137.12 H 965.06 V 1137.12 H 968.80 V 1137.12 H 972.53 V 1137.12 H 976.26 V 1137.12 H 980.00 V 1137.12 H 983.73 V 1137.12 H 987.46 V 1137.12 H 991.20 V 1137.12 H 994.93 V 1126.00 H 998.66 V 1126.00 H 1002.40 V 1126.00 H 1006.13 V 1126.00 H 1009.86 V 1126.00 H 1013.60 V 1137.12 H 1017.33 V 1137.12 H 1021.06 V 1137.12 H 1024.80 V 1137.12 H 1028.53 V 1137.12 H 1032.26 V 1137.12 H 1036.00 V 1137.12 H 1039.73 V 1137.12 H 1043.46 V 1137.12 H 1047.20 V 1137.12 H 1050.93 V 1137.12 H 1054.66 V 1137.12 H 1058.40 V 1137.12 H 1062.13 V 1137.12 H 1065.86 V 1137.12 H 1069.60 V 1137.12 H 1073.33 V 1148.23 H 1077.06 V 1148.23 H 1080.80 V 1148.23 H 1084.53 V 1148.23 H 1088.26 V 1148.23 H 1092.00 V 1148.23 H 1095.73 V 1148.23 H 1099.46 V 1159.34 H 1103.20 V 1159.34 H 1106.93 V 1159.34 H 1110.66 V 1159.34 H 1114.40 V 1170.45 H 1118.13 V 1181.56 H 1121.86 V 1181.56 H 1125.60 V 1181.56 H 1129.33 V 1181.56 H 1133.06 V 1181.56 H 1136.80 V 1181.56 H 1140.53 V 1181.56 H 1144.26 V 1181.56 H 1148.00 V 1181.56 H 1151.73 V 1181.56 H 1155.46 V 1181.56 H 1159.20 V 1181.56 H 1162.93 V 1181.56 H 1166.66 V 1181.56 H 1170.40 V 1181.56 H 1174.13 V 1181.56 H 1177.86 V 1181.56 H 1181.60 V 1181.56 H 1185.33 V 1181.56 H 1189.06 V 1181.56 H 1192.80 V 1181.56 H 1196.53 V 1181.56 H 1200.26 V 1181.56 H 1204.00 V 1181.56 H 1207.73 V 1181.56 H 1211.46 V 1192.67 H 1215.20 V 1192.67 H 1218.93 V 1192.67 H 1222.66 V 1192.67 H 1226.40 V 1192.67 H 1230.13 V 1192.67 H 1233.86 V 1192.67 H 1237.60 V 1192.67 H 1241.33 V 1181.56 H 1245.06 V 1181.56 H 1248.80 V 1170.45 H 1252.53 V 1170.45 H 1256.26 V 1170.45 H 1260.00 V 1170.45" fill="none" stroke="#26384c" stroke-width="2.00"/>
+<text x="40.00" y="1271.00" >Body lanes / voyages</text>
+<text x="40.00" y="1295.00" >12/193 voyages: first per 12 equal-year bins, then chronological fill (plotted bodies only).</text>
+<line x1="140.00" y1="1331.00" x2="1260.00" y2="1331.00" stroke="#c5ced7" />
+<text x="125.00" y="1336.00" text-anchor="end">B1</text>
+<line x1="140.00" y1="1357.00" x2="1260.00" y2="1357.00" stroke="#c5ced7" />
+<text x="125.00" y="1362.00" text-anchor="end">B2</text>
+<line x1="140.00" y1="1383.00" x2="1260.00" y2="1383.00" stroke="#c5ced7" />
+<text x="125.00" y="1388.00" text-anchor="end">B3</text>
+<line x1="140.00" y1="1409.00" x2="1260.00" y2="1409.00" stroke="#c5ced7" />
+<text x="125.00" y="1414.00" text-anchor="end">B4</text>
+<line x1="140.00" y1="1435.00" x2="1260.00" y2="1435.00" stroke="#c5ced7" />
+<text x="125.00" y="1440.00" text-anchor="end">B5</text>
+<path data-event-id="arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|90|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:0" d="M 173.93 1331 Q 174.02 1316 174.12 1357" fill="none" stroke="#0072b2" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|300|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0" d="M 252.03 1331 Q 252.05 1316 252.07 1357" fill="none" stroke="#0072b2" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r00|LAUNCH|590|h:c961bedc029bf1dabc7908fe2f31d253221675c249ada8bf629e47f43e8b7ecb:5" d="M 360.30 1409 Q 367.76 1394 375.23 1435" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s00:b2:lin:stub:s00:b0:0#r00|LAUNCH|780|h:7a7100568135d110a033a18f506c2a76fbe27d7018cbcd12ddb497db5dd0e6ad:3" d="M 431.27 1383 Q 431.29 1316 431.31 1331" fill="none" stroke="#009e73" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s00:b2:lin:stub:s00:b0:0#r00|LAUNCH|1080|h:7a7100568135d110a033a18f506c2a76fbe27d7018cbcd12ddb497db5dd0e6ad:7" d="M 543.49 1383 Q 543.51 1316 543.53 1331" fill="none" stroke="#009e73" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r00|LAUNCH|1250|h:c961bedc029bf1dabc7908fe2f31d253221675c249ada8bf629e47f43e8b7ecb:10" d="M 606.96 1409 Q 614.42 1394 621.89 1435" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r11|LAUNCH|1500|h:beede745b34eaabce6b044759cf104de33701ab02c01577dc419472e32a03593:2" d="M 700.07 1409 Q 707.53 1394 715.00 1435" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s00:b2:lin:stub:s00:b0:0#r00|LAUNCH|1770|h:7a7100568135d110a033a18f506c2a76fbe27d7018cbcd12ddb497db5dd0e6ad:19" d="M 801.13 1383 Q 801.15 1316 801.17 1331" fill="none" stroke="#009e73" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r00|LAUNCH|2060|h:c961bedc029bf1dabc7908fe2f31d253221675c249ada8bf629e47f43e8b7ecb:14" d="M 909.25 1409 Q 916.71 1394 924.18 1435" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r11|LAUNCH|2310|h:beede745b34eaabce6b044759cf104de33701ab02c01577dc419472e32a03593:7" d="M 1002.62 1409 Q 1010.08 1394 1017.55 1435" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r00|LAUNCH|2560|h:c961bedc029bf1dabc7908fe2f31d253221675c249ada8bf629e47f43e8b7ecb:17" d="M 1095.84 1409 Q 1103.30 1316 1110.77 1331" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<path data-event-id="arc:stub:s01:b0:lin:stub:s00:b0:0#r00|LAUNCH|2760|h:c961bedc029bf1dabc7908fe2f31d253221675c249ada8bf629e47f43e8b7ecb:20" d="M 1170.43 1409 Q 1177.90 1394 1185.37 1435" fill="none" stroke="#cc79a7" stroke-width="2.00"/>
+<text x="40.00" y="1496.00" >All launches per equal-year bin (bar height = count; total 193)</text>
+<rect data-launch-count="5" x="140.00" y="1560.00" width="93.33" height="1.00" fill="#53727f"><title>0–2500: 5 launches</title></rect>
+<rect data-launch-count="109" x="233.33" y="1521.00" width="93.33" height="40.00" fill="#53727f"><title>2500–5000: 109 launches</title></rect>
+<rect data-launch-count="3" x="326.66" y="1560.00" width="93.34" height="1.00" fill="#53727f"><title>5000–7500: 3 launches</title></rect>
+<rect data-launch-count="5" x="420.00" y="1560.00" width="93.33" height="1.00" fill="#53727f"><title>7500–10000: 5 launches</title></rect>
+<rect data-launch-count="5" x="513.33" y="1560.00" width="93.33" height="1.00" fill="#53727f"><title>10000–12500: 5 launches</title></rect>
+<rect data-launch-count="11" x="606.66" y="1557.00" width="93.34" height="4.00" fill="#53727f"><title>12500–15000: 11 launches</title></rect>
+<rect data-launch-count="5" x="700.00" y="1560.00" width="93.33" height="1.00" fill="#53727f"><title>15000–17500: 5 launches</title></rect>
+<rect data-launch-count="6" x="793.33" y="1559.00" width="93.33" height="2.00" fill="#53727f"><title>17500–20000: 6 launches</title></rect>
+<rect data-launch-count="5" x="886.66" y="1560.00" width="93.34" height="1.00" fill="#53727f"><title>20000–22500: 5 launches</title></rect>
+<rect data-launch-count="7" x="980.00" y="1559.00" width="93.33" height="2.00" fill="#53727f"><title>22500–25000: 7 launches</title></rect>
+<rect data-launch-count="7" x="1073.33" y="1559.00" width="93.33" height="2.00" fill="#53727f"><title>25000–27500: 7 launches</title></rect>
+<rect data-launch-count="25" x="1166.66" y="1552.00" width="93.34" height="9.00" fill="#53727f"><title>27500–30000: 25 launches</title></rect>
+<line x1="140.00" y1="1591.00" x2="1260.00" y2="1591.00" stroke="#c5ced7" />
+<line x1="140.00" y1="1585.00" x2="140.00" y2="1597.00" stroke="#c5ced7" />
+<text x="140.00" y="1617.00" text-anchor="middle">0</text>
+<line x1="364.00" y1="1585.00" x2="364.00" y2="1597.00" stroke="#c5ced7" />
+<text x="364.00" y="1617.00" text-anchor="middle">6000</text>
+<line x1="588.00" y1="1585.00" x2="588.00" y2="1597.00" stroke="#c5ced7" />
+<text x="588.00" y="1617.00" text-anchor="middle">12000</text>
+<line x1="812.00" y1="1585.00" x2="812.00" y2="1597.00" stroke="#c5ced7" />
+<text x="812.00" y="1617.00" text-anchor="middle">18000</text>
+<line x1="1036.00" y1="1585.00" x2="1036.00" y2="1597.00" stroke="#c5ced7" />
+<text x="1036.00" y="1617.00" text-anchor="middle">24000</text>
+<line x1="1260.00" y1="1585.00" x2="1260.00" y2="1597.00" stroke="#c5ced7" />
+<text x="1260.00" y="1617.00" text-anchor="middle">30000</text>
+<text x="1320.00" y="1617.00" >Year</text>
+<text x="40.00" y="1671.00" fill="#53727f">demographic</text>
+<text x="295.00" y="1671.00" fill="#205bb5">technology</text>
+<text x="550.00" y="1671.00" fill="#9055a2">political</text>
+<text x="805.00" y="1671.00" fill="#bd3434">catastrophe/peril</text>
+<text x="1060.00" y="1671.00" fill="#25864e">expansion</text>
+<text x="1315.00" y="1671.00" fill="#9a6300">contact</text>
+<text x="40.00" y="1701.00" data-list-number="1" data-event-id="stub:s00:b1|COLONY_FOUNDED|92|m:m3b-doomed-star#msg:90~arc:stub:s00:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b1~0" fill="#25864e">1. COLONY_FOUNDED@920</text>
+<text x="800.00" y="1701.00" data-list-number="2" data-event-id="stub:s00:b0|COLONY_FOUNDED|261|m:m3b-doomed-star#msg:220~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" fill="#25864e">2. COLONY_FOUNDED@2610</text>
+<text x="40.00" y="1727.00" data-list-number="3" data-event-id="stub:s02:b0|COLONY_FOUNDED|631|m:m3b-doomed-star#msg:590~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" fill="#25864e">3. COLONY_FOUNDED@6310</text>
+<text x="800.00" y="1727.00" data-list-number="4" data-event-id="stub:s00:b0|COLONY_FOUNDED|781|m:m3b-doomed-star#msg:780~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" fill="#25864e">4. COLONY_FOUNDED@7810</text>
+<text x="40.00" y="1753.00" data-list-number="5" data-event-id="stub:s00:b0|COLONY_FOUNDED|1081|m:m3b-doomed-star#msg:1080~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" fill="#25864e">5. COLONY_FOUNDED@10810</text>
+<text x="800.00" y="1753.00" data-list-number="6" data-event-id="stub:s02:b0|COLONY_FOUNDED|1260|m:m3b-doomed-star#msg:1220~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" fill="#25864e">6. COLONY_FOUNDED@12600</text>
+<text x="40.00" y="1779.00" data-list-number="7" data-event-id="stub:s02:b0|COLONY_FOUNDED|1511|m:m3b-doomed-star#msg:1470~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" fill="#25864e">7. COLONY_FOUNDED@15110</text>
+<text x="800.00" y="1779.00" data-list-number="8" data-event-id="stub:s00:b0|COLONY_FOUNDED|1771|m:m3b-doomed-star#msg:1770~arc:stub:s00:b2:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" fill="#25864e">8. COLONY_FOUNDED@17710</text>
+<text x="40.00" y="1805.00" data-list-number="9" data-event-id="stub:s00:b0|COLONY_FOUNDED|2011|m:m3b-doomed-star#msg:1970~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" fill="#25864e">9. COLONY_FOUNDED@20110</text>
+<text x="800.00" y="1805.00" data-list-number="10" data-event-id="stub:s02:b0|COLONY_FOUNDED|2351|m:m3b-doomed-star#msg:2310~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" fill="#25864e">10. COLONY_FOUNDED@23510</text>
+<text x="40.00" y="1831.00" data-list-number="11" data-event-id="stub:s00:b0|COLONY_FOUNDED|2601|m:m3b-doomed-star#msg:2560~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s00:b0~0" fill="#25864e">11. COLONY_FOUNDED@26010</text>
+<text x="800.00" y="1831.00" data-list-number="12" data-event-id="stub:s02:b0|COLONY_FOUNDED|2751|m:m3b-doomed-star#msg:2710~arc:stub:s01:b0:lin:stub:s00:b0:0~ARRIVAL~stub:s02:b0~0" fill="#25864e">12. COLONY_FOUNDED@27510</text>
+<text x="40.00" y="1897.00" >Model attribution; seeded scenario. Event dates are not in-tick stock jumps. No empirical prediction.</text>
+<text x="40.00" y="1923.00" >Result digest: 4296d73801ef004e495ddd566167c58128e2e7969690977215eb32179587b56d</text>
+</g></svg>

@@ -1,0 +1,1 @@
+PASS: report.md and all 6 selected SVGs byte-identical across full 64-seed jobs=4 and jobs=1 runs.

@@ -1,0 +1,17 @@
+$ node --test tests/report.test.mjs
+✔ report and SVG repeat byte-for-byte across runs and jobs, with valid event IDs and XML (399.7345ms)
+✔ observation and sampled inspection leave all causal result bytes unchanged (72.2289ms)
+✔ timeline text does not collide, including log endpoints, crowded markers and empty panels (5.6349ms)
+✔ representative seeds favour salient inhabited histories and retain a no-lineage example (0.3648ms)
+✔ voyage sampling spans the history and density counts every launch (2.0018ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 553.7986
+
+Exit: 0
+Wall ms: 601.52

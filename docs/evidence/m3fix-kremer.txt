@@ -1,0 +1,89 @@
+$ node tools/m3fix-kremer.mjs
+temperate/signature-0: E2 4843; digest b55c823895b57f9fa3a7f331865ea503ce633052558f7de633760cdbe81910a2
+temperate/signature-1: E2 censored; digest d108640a34b15ffd253b494da3e99f23082cf6216b8aae3d43d0707522f3165a
+temperate/signature-2: E2 3751; digest d740986a821152571bfcf377a4f9015ac2806cc4e2b81843b43ab053a33c7fcc
+temperate/signature-3: E2 8314; digest 5729db3d9e2636cc32838ced8652cc3ceb87e56a61dc2b78fde9f01b2e276b45
+temperate/signature-4: E2 censored; digest 48f7b5c016b06b3ac38dd206acabfbd9bd30afd5e0160e4d421efd409c7f59f1
+temperate/signature-5: E2 4866; digest e3907dabba991f0a69936066b348caa4e2dd577894ca2c29e81330d67d23fbb0
+temperate/signature-6: E2 1703; digest b6a917efb7ac15fc8db277ccb15e966eab8e4ad398b746b28b3a21649ac25b6d
+temperate/signature-7: E2 4721; digest 49e0ce0f8b24f231b84677f449bc7fb9851167bcf55c800c8eaf4dd179823086
+temperate/signature-8: E2 902; digest 560767c7e1912b375c391a27a2417bd854a557162ad894dde003846be4b18b06
+temperate/signature-9: E2 censored; digest 4e6cf03c5e29aac88f1d50e9c2d568dee0495d4c4e77dc1ac15eddc70afebbff
+temperate/signature-10: E2 censored; digest 5bb8c59ef0f5cefecfe5911a55ad5f3d7798c202b1e85aaaedfbb970967f59b9
+temperate/signature-11: E2 3114; digest 530d914d0dd1ca893cbb14180dad536c7c17a7ec53a9fc5e1bddb014b31e158e
+temperate/signature-12: E2 3153; digest 0f1ea394de6e5b97550a2905d6b52e99e97f9cb4e554ddce9274fc70206c16a2
+temperate/signature-13: E2 6355; digest 1f534ec912eda8528ee708df1b36c9cb2611b272326c75ffcd205c00bc12f60f
+temperate/signature-14: E2 censored; digest 92db584bed91d9b65364e4d7cb1b7147d314abf2fc257fb961c31ab7de09e28e
+temperate/signature-15: E2 censored; digest fd03f714360ed67f3ec75d2aa603006737ede999f1b35546c2c4be2095a55466
+cold-archipelago/signature-0: E2 3981; digest a11698e5b1f8d83db0e3cbb2d84fd231fbb6719544e22ea3a41db7f6eea4d543
+cold-archipelago/signature-1: E2 5990; digest 627ad9f9a0dc2f87c1e6c5cd84c69af1a97872aac2e7542b440d3a8833c5ed11
+cold-archipelago/signature-2: E2 1537; digest 74b8dbdc6ad9a293fecf79c8729f8f6a782e8192a24602b34e4b3b576112a8af
+cold-archipelago/signature-3: E2 censored; digest 132567c022f7aa272ffb01bdf9a3b10063164c17f05be62e2a1a41bfd4c8fa9c
+cold-archipelago/signature-4: E2 censored; digest e96548a0ba5671b156f965255c49d2999adeb0335721c533fe66517c993d7dc0
+cold-archipelago/signature-5: E2 6292; digest ffb0469e5c8ee3b0c5dff73bdf2529c64070bf9c2b9ff3338735d8d2ad6b90df
+cold-archipelago/signature-6: E2 5166; digest e7b7c367d35b30262a52392e4eb687652a7c4b668380a6c0947250457ce58aa1
+cold-archipelago/signature-7: E2 censored; digest 9cd6d98e21a9d9bb5a7a5979f72fb43b269cee2d44d924cedfc563f23f53e3f3
+cold-archipelago/signature-8: E2 9554; digest 3a73c6b849e58a11a0de01a426f91b01318bd58888ed521682996716b5f98464
+cold-archipelago/signature-9: E2 4584; digest 8236292fe50621a7bdc6598c402b8a129fe72d481282b54c66e2bd4df15f47be
+cold-archipelago/signature-10: E2 censored; digest c13dde8a3718a49a7e5249bcfbedd246a219d16aa44f3d994e4740297573c096
+cold-archipelago/signature-11: E2 censored; digest 25266a9445be1d3b8b925324b1bbcb4fbfaedeaa30f820418c19cd70fe9901a5
+cold-archipelago/signature-12: E2 censored; digest dc3be7ad8bbb01390773d00afd12ffeba00bf7b3de5cfbfc756cfc4591ed7a40
+cold-archipelago/signature-13: E2 censored; digest 942bde3f27c27ba7ef8a97d6f8fd44b38957e6a933d521c7d613e073c358381c
+cold-archipelago/signature-14: E2 6159; digest a9677d0b0775f3bd8f85939c577e864d89ad1df8bb9cffe4e0dae138b102d89c
+cold-archipelago/signature-15: E2 9264; digest bc4c6156df767535f79bb5828670b756d91d3440714eb03355e2a22c908fa845
+{
+  "temperate": {
+    "times": [
+      4843,
+      10001,
+      3751,
+      8314,
+      10001,
+      4866,
+      1703,
+      4721,
+      902,
+      10001,
+      10001,
+      3114,
+      3153,
+      6355,
+      10001,
+      10001
+    ],
+    "median": 4866,
+    "attainedMedian": 3751,
+    "censored": 6,
+    "diffusionOpportunityTicks": 23251,
+    "tierStepCount": 697
+  },
+  "cold-archipelago": {
+    "times": [
+      3981,
+      5990,
+      1537,
+      10001,
+      10001,
+      6292,
+      5166,
+      10001,
+      9554,
+      4584,
+      10001,
+      10001,
+      10001,
+      10001,
+      6159,
+      9264
+    ],
+    "median": 9264,
+    "attainedMedian": 5990,
+    "censored": 7,
+    "diffusionOpportunityTicks": 0,
+    "tierStepCount": 109
+  }
+}
+16-seed direction MET; four-seed regression still reported separately
+
+Exit: 0
+Wall ms: 16384.41

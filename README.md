@@ -1,16 +1,18 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
-**M3b implemented for runner review:** exact annual cell/region/arc sums,
-finite stellar evacuation grace, five domain scenarios, deterministic parallel
-ensembles, causal explanations, Markdown reports and timeline SVGs. The
-64-seed ensemble meets all six observed variety bands (29913.38 ms).
-Observed `npm test`: **116 pass, 0 fail, 1 skipped**. **Kremer signature
-NOT MET:** cold median E2 is 3,981 years versus temperate 4,843; its assertion
-is explicitly skipped pending the runner's decision. **Visual check NOT done**
-(the runner owns rasterisation and Luna). See [the M3 handoff](docs/m3-implementation.md)
-and [the observed report](docs/evidence/m3b-report.md). M1 and the M3a short P/D
-goldens remain unchanged.
+**M3 fix round:** revised timelines, representative and empty-history SVGs,
+time-stratified event/voyage samples, launch density and explicit era censoring.
+Final `npm test`: **122 pass, 0 fail, 1 skipped**; all seven changed test
+files finish below two seconds alone. Fresh commands and timing evidence are in
+[the M3 handoff](docs/m3-implementation.md). The M1 digest is unchanged.
+The full 64-seed report and six SVGs are byte-identical at jobs=4 and jobs=1.
+The fixed 16-seed-per-planet Kremer panel has cold median **9,264** versus
+**4,866** temperate; the original four-seed test remains **NOT MET** and
+skipped (3,981 versus 4,843). No model, fixture, prior or golden changed.
+E3-start lower median times to E5/E6/E7 are **480/540/580 years**, an open
+calibration item. **Visual check NOT done** for revised SVGs: structural
+collision/XML checks passed; rasterisation and Luna remain runner work.
 **M1 implemented:** deterministic core, one-region toy, chapter replay and exact
 annual projection, with independent RNG/Merkle vectors and negative controls.
 **M2b implemented for runner review:** all 31 kinds, hard-step origins,
@@ -126,9 +128,21 @@ then name the seed <scenario>-<i>. With --scenario, use that scenario at every i
 Default horizons are 120,000 years for lonely-earthlike and 30,000 for the
 other four. Default jobs = min(4, CPU count). Results are sorted by scenario
 and seed before aggregation; errored seeds stay in N. Output is out/report.md
-and at least one timeline per scenario. Repeated --timeline flags add requested
+and a representative timeline per scenario: the inhabited non-error seed with
+the most accepted salient events, ties by seed. The first NO_LINEAGE seed per
+scenario also gets a timeline when present; it is the fallback if no active
+history exists. All-error scenarios have no automatic timeline. Repeated --timeline flags add requested
 seeds; additional seeds outside the ensemble get timelines but do not change N.
 An extra seed needs a scenario prefix or --scenario. Percentages truncate to
 one decimal using integer arithmetic. Wall times print separately to stderr,
 never into the byte-reproducible report or SVG. These are **seeded scenarios,
 model attribution, not predictions**.
+
+Era counts E3–E6 distinguish starts at/above, attainment during the run from
+below, and never reached, with errors separately unknown; every fraction keeps
+all runs in N. Lower time-to-era medians include only runs starting below and
+reaching the threshold, with left/right censor counts alongside. Legacy metric
+names remain and explicitly include advanced starts. Calibration rows report
+E3-to-E5/E6/E7 times for runs starting exactly at E3. Timeline curves use short
+body/arc labels with the full body key retained. SVG height adapts to avoid
+text collisions.

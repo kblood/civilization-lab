@@ -16,7 +16,7 @@ test('Kremer signature: cold median first E2 lags temperate (observed panel, not
     panel[planet]={times,median:lowerMedian(times)};assert.ok(times.filter(y=>y<=10000).length>=2,'median must be observed, not pre-sapience or censored');
   }
   console.log('Observed Kremer panel (10001 = no attainment by 10000): '+JSON.stringify(panel));
-  if(panel['cold-archipelago'].median<=panel.temperate.median){t.skip('Observed failure: cold median 3981 <= temperate 4843. Priors unchanged; runner decision required.');return;}
+  if(panel['cold-archipelago'].median<=panel.temperate.median){t.skip(`NOT MET: cold median ${panel['cold-archipelago'].median} <= temperate ${panel.temperate.median} (fixed four-seed regression panel). Priors unchanged; see M3 fix investigation.`);return;}
   assert.ok(panel['cold-archipelago'].median>panel.temperate.median);
 });
 test('Henrich signature: forced population cut triggers maintained-tech loss; uncut control retains it',()=>{
