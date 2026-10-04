@@ -7,7 +7,7 @@ import {weightedPick} from './rng.mjs';
 import {population,members,regionById,splitRecords} from './polities.mjs';
 import {min,max} from './tech.mjs';
 export const PERILS=['NUCLEAR_WAR','ENGINEERED_PANDEMIC','RUNAWAY_TECH'];
-export const payload=(patch={})=>({voyageId:null,kind:null,outcome:null,lossPermille:0,infraLossPermille:0,tierDrop:0,damagePermille:0,damageTicks:0,caps:null,launch:null,signal:null,failure:null,...patch});
+export const payload=(patch={})=>({voyageId:null,kind:null,outcome:null,lossPermille:0,infraLossPermille:0,tierDrop:0,damagePermille:0,damageTicks:0,caps:null,launch:null,signal:null,failure:null,status:null,...patch});
 export function message(domain,tick,source,type,target,causeEventId,data,ordinal=0,deliveryTick=tick+1n) {
   return {id:`${domain}#msg:${tick}~${source}~${type}~${target}~${ordinal}`,type,causeEventId,targetId:target,deliveryTick,payload:payload(data)};
 }

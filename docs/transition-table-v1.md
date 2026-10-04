@@ -2953,6 +2953,30 @@ Supersedes the corresponding M4a rules. All choices below are authored
   30000-year horizon; T7 evacuation is not guaranteed. Old m3b 3000-year
   system/domain remains an unregistered early control. No hazard is tuned.
 
+## Revision log (M4d, 2026-10-04)
+
+STATUS carries payload.status (default null): {source,lineageId,population,
+tiers,reportYear,routeDelayYears}. At the post-P barrier each living arc sends
+its total population and occupied-region maximum tiers at founding and
+end-year multiples of 100 to every other living own-lineage arc with a declared
+route. report() uses either route direction, ceil(distanceMicroLy/1000000)
+years and the next-tick minimum; no route means no message. No RNG is used.
+P0 stores only newer delivered reports per source in arc.lineageReports,
+initially [], sorted by source. Wrong-lineage/self reports are ignored.
+
+Natural lowTicks maintenance and TECH_LOSS read this committed local state,
+never another arc. For each domain/tier add floor(sum(population)*100/1000)
+for own-lineage reports with reported tier >= maintained tier and
+reportYear <= currentYear < reportYear+300+routeDelayYears. Sort sources
+explicitly. Silence/death is learned only by expiry; in-flight reports can
+still arrive. These are knowledge contacts, not people, invention or supplies.
+100 years, 300 years and 100 permille are **[scenario]**: weaker contact than
+ordinary in-planet links to represent remote instruction without local labour.
+The 1000-year founding reserve remains a bridge; it does not extend freshness.
+Delta/state arc registers include lineageReports; witness version is
+m4d-delta-witness-1. Framework P0 reads/writes the field; TECH_LOSS declares
+its reads. This supersedes M4c's ordinary post-reserve maintenance rule.
+
 ## Machine-readable table
 
 This is the sole fenced `json` block in this document. `phase` and `trigger`
@@ -3437,6 +3461,7 @@ Atomic records do not grant permission to create undeclared record members.
     "arc.lastDeath",
     "arc.latches",
     "arc.lineageId",
+    "arc.lineageReports",
     "arc.outbox",
     "arc.polities",
     "arc.provenance",
@@ -3477,6 +3502,7 @@ Atomic records do not grant permission to create undeclared record members.
     "arc.hazardLedger",
     "arc.lastDeath",
     "arc.latches",
+    "arc.lineageReports",
     "arc.provenance",
     "arc.targetFailures",
     "arc.tick",
@@ -3762,6 +3788,9 @@ Atomic records do not grant permission to create undeclared record members.
         "arc.foundedYear",
         "arc.foundingTiers",
         "arc.isColony",
+        "arc.lineageId",
+        "arc.lineageReports",
+        "arc.tick",
         "region.id",
         "region.lowTicks",
         "region.tiers"
@@ -4708,6 +4737,15 @@ Atomic records do not grant permission to create undeclared record members.
         "COLONY_FOUNDED",
         "INIT",
         "SAPIENCE"
+      ]
+    },
+    {
+      "path": "arc.lineageReports",
+      "type": "Array",
+      "unit": "delivered_status_records",
+      "writtenBy": [
+        "INIT",
+        "P0"
       ]
     },
     {
@@ -6121,6 +6159,27 @@ Atomic records do not grant permission to create undeclared record members.
       "earlyControlDomain": "fixtures/domains/m3b-doomed-star.json",
       "earlyControlRegistered": false
     }
+  },
+  "lineageSupport": {
+    "messageType": "STATUS",
+    "payloadMember": "status",
+    "payloadDefault": null,
+    "periodYears": 100,
+    "staleYears": 300,
+    "linkPermille": 100,
+    "record": [
+      "source",
+      "lineageId",
+      "population",
+      "tiers",
+      "reportYear",
+      "routeDelayYears"
+    ],
+    "maintenance": "N_eff + floor(sum(fresh qualifying reported populations)*100/1000); founding reserve then takes max with limit",
+    "fresh": "reportYear <= currentYear < reportYear+300+routeDelayYears",
+    "delivery": "report() declared route, ceil(distanceMicroLy/1000000) years; no earlier than next tick",
+    "emission": "living arcs at founding and end-year multiples of 100, own lineage other living arcs only; post-P barrier",
+    "rngPurposes": []
   }
 }
 ```
@@ -6161,7 +6220,7 @@ inside string values. Omitted fields/entries retain their previous values.
 
 ```json
 {
-  "version": "m4a-delta-witness-1",
+  "version": "m4d-delta-witness-1",
   "arcFields": [
     "body",
     "chains",
@@ -6179,6 +6238,7 @@ inside string values. Omitted fields/entries retain their previous values.
     "lastDeath",
     "latches",
     "lineageId",
+    "lineageReports",
     "nonviable",
     "outbox",
     "outcome",

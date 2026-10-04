@@ -1,19 +1,16 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
-**M4:** tier-dependent invention, colony maintenance reserves, causal target
-memory, recovery learning and post-perils political renewal. M4b preserves
-P/D horizon independence; M4c distinguishes pending origins, removes collapse
-immunity, permits reinforcement, expires foreign occupancy knowledge and gives
-the versioned doomed-star fixture a 25 kyr industrial window. The 1 kyr colony
-reserve cliff remains explicitly diagnosed. Six authored ensemble scenarios;
-see the [implementation handoff](docs/m4-implementation.md) and
-[30-seed-per-scenario audit](docs/m4-plausibility.md). M1 is unchanged.
-Final M4c `npm test`: **146 pass, 0 fail, 1 skipped; exit 0** (147 tests).
-The skip is the unchanged Kremer NOT MET check. All 180 ensemble runs completed
-without simulation errors; eight exceeded the compile budget. Refinement-order
-and signatures exceed the individual two-second target. Full receipts and
-remaining calibration limitations are in the handoff.
+**M4d:** delivered own-lineage STATUS reports now support tier maintenance
+across declared interplanetary routes, with light-speed delay and expiry after
+silence. The 1 kyr founding reserve remains a bridge. Lonely near-expiry colony
+deaths fall from 47 to 0 in the 30-seed audit, but repeat failed-target launches
+rise from 4,054 to 4,376; sustainability is not established. All 180 ensemble
+runs completed without simulation errors; 13 exceeded the 30-second compile
+budget. The seven colony tests pass in 533 ms alone; the signatures file exceeds
+two seconds. Final `npm test`: **151/151 pass, 0 skipped; exit 0**.
+M1 is unchanged. See the [M4d handoff](docs/m4-implementation.md#m4d--lineage-support-network)
+and [plausibility audit](docs/m4-plausibility.md) for comparisons and limitations.
 
 **M3 legibility round 2:** exact-year event guides, 16-pixel minimum text,
 compact empty histories, explicit scale breaks and directed voyage connectors.

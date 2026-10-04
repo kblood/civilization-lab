@@ -11,7 +11,7 @@ import {below,expQ32,chance} from './rng.mjs';
 import {hazardKey,compactHazardKey,advanceHazard} from './hazard.mjs';
 import {messageIntent,thresholdIntent,hazardIntent,compareEvents,sortEvents} from './events.mjs';
 import {population} from './polities.mjs';
-import {GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
+import {STATUS_PERIOD_YEARS,GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
 import {payload,message,PERILS} from './m2b.mjs';
 const byId=(a,b)=>compare(a.id,b.id),routeOrder=(a,b)=>compare(a.from,b.from)||compare(a.to,b.to);
 const archiveOrder=(a,b)=>compare(a.scope,b.scope)||compare(a.kind,b.kind)||compare(a.id,b.id);
@@ -236,14 +236,22 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       // Failed voyages are conservatively reported no earlier than planned arrival.
       function report(sourceBody,lineageId,type,causeEventId,data,earliestYear=Number((t+1n)*10n)) {
         for(const target of [...state.arcs].filter(a=>a.lineageId===lineageId&&!a.outcome.terminal).sort(byId)) {
+          if(type==='STATUS'&&target.id===data.status.source)continue;
           const route=def.routes.find(r=>r.from===sourceBody&&r.to===target.body)??def.routes.find(r=>r.to===sourceBody&&r.from===target.body);
-          if(sourceBody!==target.body&&!route)continue;
+          if((type==='STATUS'||sourceBody!==target.body)&&!route)continue;
           const delay=route?Number(C(BigInt(route.distanceMicroLy),1000000n)):0;
           const delivery=max(t+1n,C(BigInt(earliestYear+delay),10n));
           const ordinal=state.messages.filter(m=>m.type===type&&m.targetId===target.id).length;
-          const deliveredData=data.signal?{...data,signal:{...data.signal,arrivalYear:earliestYear+delay}}:data;
+          const deliveredData=data.signal?{...data,signal:{...data.signal,arrivalYear:earliestYear+delay}}:data.status?{...data,status:{...data.status,routeDelayYears:delay}}:data;
           state.messages.push(message(state.id,t,sourceBody,type,target.id,causeEventId,deliveredData,ordinal,delivery));
         }
+      }
+      const reportYear=Number((t+1n)*10n);
+      for(const a of [...state.arcs].filter(a=>!a.outcome.terminal).sort(byId)) {
+        if(Number(t*10n)!==a.foundedYear&&reportYear%STATUS_PERIOD_YEARS!==0)continue;
+        const pop=population(a.regions);if(pop===0n)continue;
+        const tiers=Array.from({length:7},(_,d)=>a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.tiers[d]):n,0));
+        report(a.body,a.lineageId,'STATUS',null,{status:{source:a.id,lineageId:a.lineageId,population:pop,tiers,reportYear,routeDelayYears:0}},reportYear);
       }
       for(const e of allTick.filter(e=>e.resolution==='accepted')) {
         if(e.kind==='COLONY_FOUNDED'||e.kind==='VOYAGE_LOST') {

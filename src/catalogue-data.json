@@ -270,6 +270,9 @@
       "arc.foundedYear",
       "arc.foundingTiers",
       "arc.isColony",
+      "arc.lineageId",
+      "arc.lineageReports",
+      "arc.tick",
       "region.id",
       "region.lowTicks",
       "region.tiers"

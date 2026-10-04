@@ -45,7 +45,7 @@ export function installEnvironment(def,a) {
 export function skeleton(def) {
   const a={id:def.arcId,lineageId:def.lineageId??'lin:'+def.planet.body,body:def.planet.body,episode:def.episode??0,foundedYear:Number(def.fromTick*10n),foundingTiers:Array(7).fill(0),
     lastDeath:null,isColony:false,colonizer:true,regions:[],polities:[],hazardLedger:[],hazardEpisodes:[],chains:[],provenance:[],latches:[],perils:'none',nonviable:false,
-    outcome:{biological:'extant',industrialEra:0,regressing:false,political:'none',terminal:false},scenarioParams:def.scenarioParams??priors(def,'lin:'+def.planet.body),inbox:[],outbox:[],tick:def.fromTick,evacuating:false,signals:[],contacts:[],diffusionEdges:[],targetFailures:[]};
+    outcome:{biological:'extant',industrialEra:0,regressing:false,political:'none',terminal:false},scenarioParams:def.scenarioParams??priors(def,'lin:'+def.planet.body),inbox:[],outbox:[],tick:def.fromTick,evacuating:false,signals:[],contacts:[],diffusionEdges:[],targetFailures:[],lineageReports:[]};
   a.regions=def.planet.partition.value.regions.map(r=>({id:a.id+'#'+r.id,localId:r.id,pop:0n,Kbase:0n,K:0n,renewable:1000,infra:0n,fuel:0n,forcing:0n,immunityTicks:20,
     damage:[],polityId:null,cultureId:a.id+'#cul:founder',culture:[500,500,500],tiers:Array(7).fill(0),caps:[...MAX_TIERS],era:0,energy:0n,resources:[0,0,0,0],collapse:null,lowTicks:Array(7).fill(0),ceilings:[],spaceflight:false,berthsUsed:0,recoveries:0}));
   const initial=def.forced.initial;
@@ -565,6 +565,10 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
   let phase0Sequence=0;
   if(hasInbox)for(const m of boundary.inbox) {
     const e={id:m.causeEventId??m.id,kind:m.payload.kind,dateYear:year,effects:[],data:{sets:[]},refs:[]},op=recorder(pre,m.causeEventId?scores:[],{sequenceStart:phase0Sequence,stage:1});
+    if(m.type==='STATUS'&&m.payload.status) {
+      const status=m.payload.status,old=pre.lineageReports.find(r=>r.source===status.source);
+      if(status.source!==pre.id&&status.lineageId===pre.lineageId&&(!old||status.reportYear>old.reportYear))op.set(e,pre,'arc','lineageReports',[...pre.lineageReports.filter(r=>r.source!==status.source),status].sort((a,b)=>compare(a.source,b.source)));
+    }
     if(m.type==='TARGET_FAILURE'){const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);if(old?.eventId!==f.eventId){const count=Math.min(4,(old?.count??0)+1);op.set(e,pre,'arc','signals',pre.signals.filter(s=>s.body!==f.body));op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,untilYear:year+1000*2**(count-1)}].sort((a,b)=>compare(a.body,b.body)));}}
     if(m.type==='SHARED')catastrophe(boundary,pre,e,op,m.payload);
     if(m.type==='PERILS_EXIT')op.set(e,pre,'arc','perils','exited');

@@ -10,8 +10,17 @@ export const NSTAR = deepFreeze([[0,100,500,2000,10000,40000,100000],[0,50,100,5
 export const DISCOVERY_COST = deepFreeze([[0,2,5,10,20,100,3000],[0,2,5,10,20,100],[0,2,5,10,20,100],[0,2,5,10,20,100,500,2000],[0,2,5,10,20,100],[0,2,5,10,20],[0,2,5,10,20,100]]);
 export const discoveryRate=(d,target,neff,ppm)=>F(400n*neff*BigInt(ppm),1000000n*BigInt(DISCOVERY_COST[d][target]));
 export const COLONY_ARCHIVE_YEARS=1000;
+export const STATUS_PERIOD_YEARS=100;
+export const STATUS_STALE_YEARS=300;
+export const INTERPLANETARY_LINK_PERMILLE=100;
 export const MAX_RECOVERIES=4;
 export function maintenancePopulation(a,r,d,neff,limit) {
+  const year=Number(a.tick*10n);
+  let reported=0n;
+  for(const report of [...(a.lineageReports??[])].sort((a,b)=>compare(a.source,b.source))) {
+    if(report.source!==a.id&&report.lineageId===a.lineageId&&year>=report.reportYear&&year<report.reportYear+STATUS_STALE_YEARS+report.routeDelayYears&&report.tiers[d]>=r.tiers[d])reported+=BigInt(report.population);
+  }
+  neff+=F(reported*BigInt(INTERPLANETARY_LINK_PERMILLE),1000n);
   return a.isColony&&r.pop>0n&&Number(a.tick*10n)<a.foundedYear+COLONY_ARCHIVE_YEARS&&r.tiers[d]<=a.foundingTiers[d]?max(neff,limit):neff;
 }
 export const GROWTH = Object.freeze([10050,20201,105171,221403,161834,105171,105171,105171]);

@@ -22,8 +22,11 @@ test('Kremer signature: cold median first E2 lags temperate (observed panel, not
   assert.ok(panel['cold-archipelago'].median>panel.temperate.median);
 });
 test('Henrich signature: forced population cut triggers maintained-tech loss; uncut control retains it',()=>{
-  for(const cut of [false,true]){const f=forced('TECH_LOSS');f.ticks=4;f.initial.regions=[region('r00',{pop:cut?'1':'100000',tiers:[0,0,0,0,4,0,0]})];
+  // S2 gives K=50,000: the uncut control is below capacity but above even I4's largest learning threshold.
+  for(const cut of [false,true]){const f=forced('TECH_LOSS');f.ticks=4;f.initial.regions=[region('r00',{pop:cut?'1':'45000',tiers:[0,2,0,0,4,0,0]})];
     setOverride(f,'parameters.g',Array(8).fill(0));const result=runForced(f);
     assert.equal(result.events.some(e=>e.kind==='TECH_LOSS'&&e.resolution==='accepted'),cut);
+    assert.equal(result.events.some(e=>e.kind==='TECH_LOSS'&&e.params.domainIndex==='4'&&e.resolution==='accepted'),cut);
+    if(!cut){assert.equal(result.state.regions[0].pop,45000n);assert.ok(!result.events.some(e=>e.kind==='FAMINE'));}
   }
 });

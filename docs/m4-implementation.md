@@ -632,3 +632,191 @@ signatures. The colony reserve cliff is deliberately retained under B5's
 permitted minimal option and still causes deaths. Far future remains only
 political churn with static within-era energy capture; N=30 has weak tails.
 No universal plausibility, sustainability or calibrated prediction is claimed.
+
+
+## M4d — lineage support network
+
+2026-10-04. Workspace edits only; no git writes, network, preview, perf:panel,
+or edits to Universe Atlas / `.agent-scratch/before`. The runner owns commits.
+
+### Causal maintenance
+
+Living arcs publish STATUS at the post-P barrier at founding and every 100
+calendar years. Each report describes that source's population and occupied
+regions' maximum tiers. Reports go only to other living own-lineage arcs along
+a declared route, using report()'s bidirectional lookup, light-speed delay and
+next-tick minimum. No route means no delivery. P steps read only their own
+latest delivered, source-sorted `lineageReports`, never other arcs' live state.
+
+Maintenance adds floor(sum(qualifying reported populations) × 100 / 1000).
+A report qualifies per domain if its tier is at least the maintained tier and
+currentYear < reportYear + 300 + routeDelayYears. It cannot qualify before its
+report year. Silence and parent extinction therefore remove support by expiry;
+in-flight reports can still arrive. Newer reports replace older reports, so a
+source that loses technology can cease supporting that domain before expiry.
+No RNG purpose is added. State/delta witnesses, catalogue TECH_LOSS reads,
+framework P0 reads/writes and the binding prose/JSON declare the new state.
+
+The period, staleness and 100-permille link are **[scenario]**, not calibrated
+research claims. The link is below the fixtures' ordinary 500-permille regional
+contact: remote teaching helps preserve knowledge but supplies neither local
+labour nor physical resources. Invention keeps its old local N_eff. Total
+reported population plus per-domain maximum tier is deliberately a coarse
+knowledge-network proxy, not a count of qualified specialists.
+
+The **1,000-year reserve remains** as a commissioning/communication bridge.
+It does not refresh itself or extend reports. An adequately supported connected
+colony can now survive its expiry, while an isolated undersized colony still
+fails. Long routes exceeding the bridge and small/low-tier parents are not
+promised sustainable colonies. Expired records remain witnessed but contribute
+zero; old source identities cannot count as living merely because they persist.
+
+### Goldens
+
+| Check | M4c old | M4d new |
+|---|---|---|
+| P, temperate / civ-m2a-golden / 100 years | `c54edd6106c8367b0380ecb65fd6c1304e390a86e04d2a082893f69ea9cf9f1f` | `85eec2f03f993bac6a345376938e594d9ca04742ead142600287b9f627bc0cb3` |
+| D, toy-12 / toy-1 / 100 years | `38c4b80bb32d3dd4a7dcce8d0bb8086c0c06f65c28d6e10147d4229283570cd1` | `f8b65a5eba8b60faaf256d3d2a0a6f17663a8c27af517944a252981a089f0a35` |
+| M1 | `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc` | unchanged; `npm run digest`, exit 0 |
+
+The binding contract changes the manifest/RNG namespace, so matching seed names
+across revisions do not keep all random draws fixed. These are stability pins,
+not correctness or isolated causal-effect estimates. Initial golden assertions
+failed with exactly the new roots above before the expected values were repinned.
+
+### Exposure and focused receipts
+
+All original m4-colony assertions remain. Added checks isolate zero-growth
+support past founding+1000, continue that same colony without further reports
+through staleness/TECH_LOSS/extinction, check undelivered reports and a genuinely
+route-disconnected fixture destination, compare forward/reverse arc digests,
+and verify source sorting, domain qualification, own-lineage filtering,
+duplicate receipt handling and structural commitment of delivered knowledge.
+
+Two existing workload seeds lost exposure after the manifest revision:
+
+- perf-budget: civ-m2a-2 emitted only **7 events**, below the unchanged >=100
+  assertion. civ-m2a-5 emits **244**, with four populated regions and advanced
+  tiers. Only the workload seed changes; 20 kyr, exposure and timing checks stay.
+- refinement-order-child: lonely m3-1 had two mandatory anchors and zero local
+  annotations. Replace with m3-2: two anchors, one local annotation. Crowded
+  m3-2 retains two local annotations. Every warm/cold/query-order assertion and
+  the 1500 ms child timeout remains.
+
+Early focused failures are retained here: the first witness check used the old
+annex version (9 pass / 1 fail); updating the annex fixed it. The first support
+fixture put one million people in one region, triggered deterministic famine,
+and left only 334,000 reporters, insufficient at 100 permille (18 pass / 1
+fail). The final fixture distributes 600,000 people over six regions and
+preserves zero growth and disabled hazards. The initial golden/exposure batch
+returned 3 pass / 4 fail before the documented repins.
+
+Observed commands:
+
+| Command | Result |
+|---|---|
+| `node --test tests/catalogue.test.mjs tests/domain-order.test.mjs tests/contact-horizon.test.mjs tests/m4-target-memory.test.mjs tests/m4-plausibility.test.mjs` | 14 pass, 0 fail, exit 0; 883.972 ms; out/m4d-focused.txt |
+| `node --test tests/m4-colony.test.mjs tests/determinism-lint.test.mjs tests/m4b-horizon-prefix.test.mjs tests/m2a-fix.test.mjs` | 23 pass, 0 fail, exit 0; 5077.9372 ms under concurrent ensemble load; out/m4d-focused-2.txt |
+
+The preliminary six-test colony file passed alone during the loaded ensemble
+in 2168.1955 ms, exceeding the two-second target in that measurement. Final
+individual timings, ensemble statistics and sole full-suite receipt follow.
+
+
+### Final ensemble and individual checks
+
+`node tools/m4-plausibility.mjs --n 30 --jobs 4 --out docs/evidence/m4-plausibility-after.json`
+completed **180/180, zero simulation errors, exit 1**. **13/180** compiles
+exceeded 30 seconds: forager-future-{1,3,7,8,15,17},
+lonely-earthlike-{2,3,4,5,11,28,29}. Slowest lonely-earthlike-11:
+**108,894.91 ms compile**, **109,426.03 ms diagnostic**. Full receipt:
+out/m4d-ensemble.txt. M4c incoming JSON/TXT were copied before overwrite to
+[evidence/m4c-plausibility-after.json](evidence/m4c-plausibility-after.json) and
+[evidence/m4c-plausibility-after.txt](evidence/m4c-plausibility-after.txt).
+
+| Colony measure | M4c | M4d |
+|---|---:|---:|
+| Lonely deaths | 94 | 59 |
+| Lonely death age p10 / median / p90, years | 1040 / 1070 / 16990 | 3120 / 9560 / 26250 |
+| Lonely deaths ages 1000–1200 | 47 | 0 |
+| Lonely repeat launches to failed targets | 4054 | 4376 |
+| Forager deaths | 74 | 89 |
+| Forager death age p10 / median / p90, years | 1040 / 7810 / 22320 | 1610 / 8560 / 23590 |
+| Forager deaths ages 1000–1200 | 6 | 2 |
+| Forager repeat launches to failed targets | 4390 | 3207 |
+| Doomed deaths | 15 | 12 |
+| Doomed death age p10 / median / p90, years | 1510 / 4190 / 8130 | 1760 / 5650 / 9110 |
+| Doomed deaths ages 1000–1200 | 0 | 1 |
+| Doomed repeat launches to failed targets | 406 | 223 |
+| All colony deaths / near expiry | 201 / 61 | 175 / 5 |
+
+The support mechanism passes its isolated test. Ensemble improvement is not
+uniform: lonely repeat launches increase and forager deaths increase. Matching
+seed names do not keep random variates fixed. No universal sustainability or
+elimination of failed-target relaunching is claimed. E5+/multi-body, outcomes,
+collapse and pre-M4 comparisons are in the refreshed plausibility report.
+
+Each command below is `node --test <file>`, run sequentially after ensemble
+completion; all listed final checks exit 0. Full output: out/m4d-individual.txt,
+with the final signatures correction in out/m4d-signatures-final.txt.
+
+| File | Pass | Node duration ms |
+|---|---:|---:|
+| tests/m4-colony.test.mjs | 7 | 532.8933 |
+| tests/catalogue.test.mjs | 2 | 69.4261 |
+| tests/m2a-perf.test.mjs | 5 | 931.2061 |
+| tests/civ-determinism.test.mjs | 4 | 1547.4983 |
+| tests/refinement-query-order.test.mjs | 1 | 1362.5278 |
+| tests/perf-budget.test.mjs | 2 | 1089.679 |
+| tests/signatures.test.mjs | 2 | 7158.5673 |
+
+The final colony file had also passed all seven checks during concurrent load
+in 4374.0542 ms (out/m4d-colony-preflight.txt). The isolated final measurement
+meets the two-second target; loaded receipts remain visible.
+
+The first signatures run returned **1 pass / 1 fail, exit 1**, 2276.5825 ms.
+Its Henrich uncut control began at 100,000 people with S0 capacity 5,000;
+famine removed 70%, leaving 30,000 below I4's realized threshold 40,960
+(learningBias=4096). It was no longer an uncut control. Both cut/control now
+start with S2 (capacity 50,000); uncut population 45,000 stays below capacity
+and above the maximum I4 threshold. Cut remains one person; zero growth and
+the original loss/no-loss assertion remain. Added assertions specifically
+check I4 loss and no control famine/population reduction. No production value,
+seed panel or timeout changes. This fixture correction changes neither golden
+nor ensemble bytes.
+
+The unchanged Kremer four-seed panel now observes temperate times
+[27598,36050,50044,1416], lower median **27598**; cold
+[50142,36373,90001,21946], lower median **36373**. 90001 is right censoring at
+90 kyr. Both have observed medians; the original comparison passes without a
+skip. The **two-second signatures file target remains NOT MET**.
+
+
+### Sole final full-suite execution
+
+`npm test` ran **exactly once** for M4d, after source, tests, ensemble and report
+updates. Observed **exit 0**, full log out/m4d-full-tests.txt:
+
+```text
+ℹ tests 151
+ℹ suites 0
+ℹ pass 151
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26582.8859
+```
+
+Neither civ-determinism nor refinement-query-order timed out, so no conditional
+post-suite rerun was needed. Only documentation receipts and inventory followed.
+`git --no-optional-locks diff --check` returned exit 0 (line-ending notices
+only). Changed files: [m4d-files.txt](evidence/m4d-files.txt).
+
+**NOT MET:** 30-second compile budget (13/180); two-second individual file
+budget for signatures (7158.5673 ms); all authored plausibility/calibration
+bands; elimination of failed-target relaunching (lonely increases to 4,376).
+Isolated colonies can still die at reserve expiry. Far-future energy capture,
+material supply networks and specialist maintenance remain unmodelled. The
+Kremer panel and final full suite pass in this revision; prior failures above
+remain historical receipts. No perf:panel or visual review was performed.
