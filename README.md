@@ -1,6 +1,8 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**M1 implemented:** deterministic core, one-region toy, chapter replay and exact
+annual projection, with independent RNG/Merkle vectors and negative controls.
 This repository exists to work out — on paper first, then in small deterministic
 Node simulations — how civilisations can be generated so that they cohere with
 a deterministic 4D universe.
@@ -61,6 +63,11 @@ npm run digest      # node src/cli.mjs --digest
 
 - `docs/` — design notes; `docs/research/` holds sourced web research.
 - `src/` — generator code (`src/cli.mjs` is the entry point).
+  Core modules: `time.mjs`, `fixed.mjs`, `rng.mjs`, `canonical.mjs`,
+  `digest.mjs`, `events.mjs`, `hazard.mjs`, `manifest.mjs`, `levels.mjs`;
+  `toy.mjs` supplies the M1 solver and annual refinement.
 - `tests/` — `node --test` files, each well under two seconds.
 
 See [AGENTS.md](AGENTS.md) for the rules that agents working here follow.
+M1's API choices, toy parameters and acceptance map are in
+[docs/m1-implementation.md](docs/m1-implementation.md).

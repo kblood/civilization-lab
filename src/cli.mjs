@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-// Civilization Lab CLI — placeholder until the first scenario engine lands.
-// Deterministic by construction: no clock, no Math.random, no I/O beyond stdout.
-
-const args = process.argv.slice(2);
-
-if (args.includes('--digest')) {
-  process.stdout.write('civilization-lab: no scenarios implemented yet; nothing to digest\n');
-} else {
-  process.stdout.write('civilization-lab: theoretical lab, no scenarios implemented yet\n');
+import { createToy } from './toy.mjs';
+const toy = createToy();
+const root = toy.resultDigest();
+if (process.argv.includes('--digest')) console.log(root);
+else {
+  const chapters = [toy.chapter(0), toy.chapter(1)];
+  console.log(`Toy civ-toy-1: 12,800 years, 1 region, ${chapters.reduce((n, c) => n + c.events.length, 0)} events; final population ${chapters[1].ledgers.at(-1).endState.pop}.`);
+  console.log(`Result digest: ${root}`);
 }
