@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "civ-domain-stub-1",
+  "id": "m4c-doomed-star",
+  "systems": [
+    {
+      "id": "s00",
+      "fixture": "fixtures/planets/m4c-doomed-star-system.json",
+      "bodyPrefix": "stub:s00"
+    },
+    {
+      "id": "s01",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s01"
+    },
+    {
+      "id": "s02",
+      "fixture": "fixtures/planets/temperate.json",
+      "bodyPrefix": "stub:s02"
+    }
+  ],
+  "routes": [
+    {
+      "from": "stub:s00:b0",
+      "to": "stub:s01:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s01:b0",
+      "to": "stub:s00:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s01:b0",
+      "to": "stub:s02:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    },
+    {
+      "from": "stub:s02:b0",
+      "to": "stub:s01:b0",
+      "kind": "interstellar",
+      "distanceMicroLy": "4000000",
+      "travelYearsByTransportTier": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        400
+      ],
+      "destinationHosting": "habitable"
+    }
+  ],
+  "origins": [
+    "stub:s00:b0"
+  ],
+  "fromYear": 0,
+  "untilYear": 2000000
+}

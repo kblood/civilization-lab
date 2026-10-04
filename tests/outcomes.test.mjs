@@ -24,16 +24,16 @@ test('O5 sends EXIT at the barrier and delivers it only on the next tick',()=>{
 test('shared catastrophe uses one resolved payload at t+1 with no recipient resampling',()=>{
   const f=forced('COLONY_FOUNDED');f.ticks=3;f.initial.regions=[region('r00',{tiers:[0,0,0,0,5,0,0]})];f.initial.arc.perils='active';
   setOverride(f,'hazard.RUNAWAY_TECH.q32','171798691840');setOverride(f,'outcome.RUNAWAY_TECH','existential-cap');setOverride(f,'magnitude.evt.perils.shared','1');
-  const r=runForced(f),shared=r.ledgers[1].planets.find(p=>p.state.isColony).ledger.phase0.inboxEffects;
+  const r=runForced(f),shared=r.ledgers[1].planets.find(p=>p.state.isColony).ledger.phase0.inboxEffects.filter(m=>m.messageId.includes('~SHARED~'));
   assert.ok(shared.length>0);assert.ok(shared.every(m=>m.causeEventId.includes('|RUNAWAY_TECH|')));
   assert.ok(r.ledgers[1].planets.find(p=>p.state.isColony).state.regions.every(r=>r.caps[4]===3));
 });
-test('loss of two self-sustaining colonies queues REENTER and delivers it one tick later',()=>{
-  const f=forced('COLONY_FOUNDED');f.seed='perils-reenter-1';f.ticks=6;
+test('loss after the colony reserve expires queues REENTER and delivers it one tick later',()=>{
+  const f=forced('COLONY_FOUNDED');f.seed='perils-reenter-1';f.ticks=106;
   f.initial.regions=[region('r00',{pop:'100000',infra:'10000000',tiers:[5,5,4,6,4,3,4]})];
   f.initial.voyages.push({...f.initial.voyages[0],label:'b',destination:'stub:s00:b2'});setOverride(f,'parameters.g',Array(8).fill(0));
   const r=runForced(f),lost=r.ledgers.find(l=>l.state.messages.some(m=>m.type==='PERILS_REENTER'));
-  assert.ok(lost);assert.equal(lost.state.arcs[0].perils,'exited');assert.equal(lost.state.lineages[0].perilsSafe,false);
+  assert.ok(lost);assert.ok(BigInt(lost.ledger.tick)>=101n,'founding reserve prevents early habitat maintenance failure');assert.equal(lost.state.arcs[0].perils,'exited');assert.equal(lost.state.lineages[0].perilsSafe,false);
   const next=r.ledgers.find(l=>BigInt(l.ledger.tick)===BigInt(lost.ledger.tick)+1n);assert.equal(next.state.arcs[0].perils,'active');
   assert.equal(r.state.arcs.length,1);assert.equal(r.state.lineages[0].foundedArcs,3);
 });

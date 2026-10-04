@@ -1,0 +1,334 @@
+[
+  {
+    "label": "P forced.ticks",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "7454d1a335dfda8c034f56b94ffa598a426f31b2b7bba16cb26639a41f72674a",
+      "fae979d5a0e302997ab1dcb2a2e74b6d844780b5613add26929cc51192d48d6c"
+    ],
+    "recipe": [
+      "862ceedc5816e58d0d2b971f0152355de56fa0f995ea0b75c182b3dbceb99326",
+      "794aa4bdd0ba7cf08777880cb2c9539482b6917c233686b47158f6e7f962d63e"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": false,
+    "prefix": [
+      "c5fdcd24474186dc2f38e0da19f002d7c4818b994f92fa92dd333fb7564f5490",
+      "ecdb1332a1404769ea7c063dd4f7e30d48f5ef9eec400527e8ac7357d69d670d"
+    ]
+  },
+  {
+    "label": "P untilYear",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "7454d1a335dfda8c034f56b94ffa598a426f31b2b7bba16cb26639a41f72674a",
+      "7454d1a335dfda8c034f56b94ffa598a426f31b2b7bba16cb26639a41f72674a"
+    ],
+    "recipe": [
+      "862ceedc5816e58d0d2b971f0152355de56fa0f995ea0b75c182b3dbceb99326",
+      "862ceedc5816e58d0d2b971f0152355de56fa0f995ea0b75c182b3dbceb99326"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "c5fdcd24474186dc2f38e0da19f002d7c4818b994f92fa92dd333fb7564f5490",
+      "c5fdcd24474186dc2f38e0da19f002d7c4818b994f92fa92dd333fb7564f5490"
+    ]
+  },
+  {
+    "label": "P forced.ticks with initial.atTick=638",
+    "fromTick": "638",
+    "endpoints": [
+      "641",
+      "645"
+    ],
+    "manifest": [
+      "50ba011d5d015e706c805650981e7d5bb2c75688250b0ca4c47d5ca07103f51c",
+      "7cc8ccd7b917538d0c4ac4b5e4ce100c74e00790889d3c205ced64f045bb393c"
+    ],
+    "recipe": [
+      "a56483980168d4e39d88e4b7d782417afab04c8e52f0e55a961e622492baf86f",
+      "05a12de38d5fef8bdcc4b22cfa5f174773a3958dfa76d5be6d1259c20c8c9f3e"
+    ],
+    "eventIdsEqual": false,
+    "eventsEqual": false,
+    "ledgersAndWitnessesEqual": false,
+    "prefix": [
+      "08858bfc7d6a983b2398571b8e4281bd540826e8c0239c3dc274b699b55d29fe",
+      "efc9d2acf03b109f8a1855a60b204da05239ec5b0b38c8b410e40dd320ac4f0b"
+    ]
+  },
+  {
+    "label": "P untilYear with initial.atTick=638",
+    "fromTick": "638",
+    "endpoints": [
+      "641",
+      "645"
+    ],
+    "manifest": [
+      "50ba011d5d015e706c805650981e7d5bb2c75688250b0ca4c47d5ca07103f51c",
+      "50ba011d5d015e706c805650981e7d5bb2c75688250b0ca4c47d5ca07103f51c"
+    ],
+    "recipe": [
+      "a56483980168d4e39d88e4b7d782417afab04c8e52f0e55a961e622492baf86f",
+      "a56483980168d4e39d88e4b7d782417afab04c8e52f0e55a961e622492baf86f"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "08858bfc7d6a983b2398571b8e4281bd540826e8c0239c3dc274b699b55d29fe",
+      "08858bfc7d6a983b2398571b8e4281bd540826e8c0239c3dc274b699b55d29fe"
+    ]
+  },
+  {
+    "label": "P years (CLI backing API)",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "5bc6ef7c5a4f827f031dbd31861624744f87247199056a4e27d1d601adc07781",
+      "5bc6ef7c5a4f827f031dbd31861624744f87247199056a4e27d1d601adc07781"
+    ],
+    "recipe": [
+      "5a792a37890a522e5cb3db89e844b113c8849c0688d0c922ad2c7135ad6a1b44",
+      "5a792a37890a522e5cb3db89e844b113c8849c0688d0c922ad2c7135ad6a1b44"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "47a39aeeb01257a87abfede35677cb10e65ef6e368153a58aee4dc9e1b9c73cb",
+      "47a39aeeb01257a87abfede35677cb10e65ef6e368153a58aee4dc9e1b9c73cb"
+    ]
+  },
+  {
+    "label": "D forced.ticks",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "01848a6310a8140086193a5a62a0eabf7f90ffddf4e095cc488c46a835c7bf1f",
+      "c6c759df94c1a38a51f1ebd6c2e83b2e71c679343d458af43d3b94c8fa43ca31"
+    ],
+    "recipe": [
+      "47ae52afdde06285e43eb12c0069de55701be89fe625fc3ab1a4a6f746441535",
+      "642bb9289bb06193cd03a366768194f821bcdec2f0012da88063225d38458253"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": false,
+    "ledgersAndWitnessesEqual": false,
+    "prefix": [
+      "b028c624d9c86113029f222faf517633afa8e69130a6116d529f85ceecc7715e",
+      "db35c91eb1961e28cb1dfe3b90080a7d715ff7a5bbb1e27434ef78d339319ac4"
+    ]
+  },
+  {
+    "label": "D untilYear",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "01848a6310a8140086193a5a62a0eabf7f90ffddf4e095cc488c46a835c7bf1f",
+      "01848a6310a8140086193a5a62a0eabf7f90ffddf4e095cc488c46a835c7bf1f"
+    ],
+    "recipe": [
+      "47ae52afdde06285e43eb12c0069de55701be89fe625fc3ab1a4a6f746441535",
+      "47ae52afdde06285e43eb12c0069de55701be89fe625fc3ab1a4a6f746441535"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "b028c624d9c86113029f222faf517633afa8e69130a6116d529f85ceecc7715e",
+      "b028c624d9c86113029f222faf517633afa8e69130a6116d529f85ceecc7715e"
+    ]
+  },
+  {
+    "label": "D forced.ticks with initial.atTick=638",
+    "fromTick": "638",
+    "endpoints": [
+      "641",
+      "645"
+    ],
+    "manifest": [
+      "8485ca466a222f026d255e876462da5479576e49549792b66403f2bbed54d942",
+      "32e2f618486275c46aab54bdf1d2537f737fac68c1e8b3f0e4108a5815cd4471"
+    ],
+    "recipe": [
+      "b8e79a1e766a83c1c8850903769f29e7c174a667b50ac4a37cea74c991494670",
+      "ae8be2dc31a244bb32d513c81952c993664822960b8c61cbf3f30c74c16250a3"
+    ],
+    "eventIdsEqual": false,
+    "eventsEqual": false,
+    "ledgersAndWitnessesEqual": false,
+    "prefix": [
+      "3a95b5ba31bf27d45cf1ecf43e93537b90b503895116988e793a1dd38ab4529c",
+      "b3e8b96a96672eb1b3a2db7ebb5cad4195a8f629678679e53e41cbe2996b8dfe"
+    ]
+  },
+  {
+    "label": "D untilYear with initial.atTick=638",
+    "fromTick": "638",
+    "endpoints": [
+      "641",
+      "645"
+    ],
+    "manifest": [
+      "8485ca466a222f026d255e876462da5479576e49549792b66403f2bbed54d942",
+      "8485ca466a222f026d255e876462da5479576e49549792b66403f2bbed54d942"
+    ],
+    "recipe": [
+      "b8e79a1e766a83c1c8850903769f29e7c174a667b50ac4a37cea74c991494670",
+      "b8e79a1e766a83c1c8850903769f29e7c174a667b50ac4a37cea74c991494670"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "3a95b5ba31bf27d45cf1ecf43e93537b90b503895116988e793a1dd38ab4529c",
+      "3a95b5ba31bf27d45cf1ecf43e93537b90b503895116988e793a1dd38ab4529c"
+    ]
+  },
+  {
+    "label": "D years (CLI backing API)",
+    "fromTick": "0",
+    "endpoints": [
+      "61782",
+      "61794"
+    ],
+    "manifest": [
+      "3f33cf5d95dd2f5f84173db2d4de95ac49731515370a88cde9d37675281ac74e",
+      "3f33cf5d95dd2f5f84173db2d4de95ac49731515370a88cde9d37675281ac74e"
+    ],
+    "recipe": [
+      "1c73e56a3ff0ce9cb0bd0b2572c598080a00b1bf4562595c00b3b2ece8b4084d",
+      "1c73e56a3ff0ce9cb0bd0b2572c598080a00b1bf4562595c00b3b2ece8b4084d"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "3c39ee9e23535761994b83bc24887ce32e3bf561251755e1b30bd51bb890b9b0",
+      "3c39ee9e23535761994b83bc24887ce32e3bf561251755e1b30bd51bb890b9b0"
+    ]
+  },
+  {
+    "label": "scenario fixtures/scenarios/lonely-bounded.json untilYear",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "34c0ab5b5f19c36b25219bd74736faa4c5f0ec7d5b00071cfeda7c271c116cf8",
+      "34c0ab5b5f19c36b25219bd74736faa4c5f0ec7d5b00071cfeda7c271c116cf8"
+    ],
+    "recipe": [
+      "baa762551208b9dd91b7e3fcdd559e20389c8b2debe3b754dfab7c71ebd7b52e",
+      "baa762551208b9dd91b7e3fcdd559e20389c8b2debe3b754dfab7c71ebd7b52e"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "9bab63994c5f4e4cbcc8f60cbc1107b0954357effbbd6dee2c53c7aa2c535621",
+      "9bab63994c5f4e4cbcc8f60cbc1107b0954357effbbd6dee2c53c7aa2c535621"
+    ]
+  },
+  {
+    "label": "scenario crowded-domain untilYear",
+    "fromTick": "0",
+    "endpoints": [
+      "11",
+      "23"
+    ],
+    "manifest": [
+      "57d9689ff50fc91e805108837735307878e50580cf6e108f2e2bdba932b106a8",
+      "57d9689ff50fc91e805108837735307878e50580cf6e108f2e2bdba932b106a8"
+    ],
+    "recipe": [
+      "b9b69f33a1b10e5621d7cfe6b6d0f05300599bb2b0d60cec60e893f111a52cdc",
+      "b9b69f33a1b10e5621d7cfe6b6d0f05300599bb2b0d60cec60e893f111a52cdc"
+    ],
+    "eventIdsEqual": true,
+    "eventsEqual": true,
+    "ledgersAndWitnessesEqual": true,
+    "prefix": [
+      "e7d9a0dc66cb60a9710fbd59adc8497612fce297825b6e852fe07bd067b35c0a",
+      "e7d9a0dc66cb60a9710fbd59adc8497612fce297825b6e852fe07bd067b35c0a"
+    ]
+  },
+  {
+    "label": "--civ temperate --years",
+    "outputs": [
+      {
+        "manifest": "5bc6ef7c5a4f827f031dbd31861624744f87247199056a4e27d1d601adc07781",
+        "recipe": "5a792a37890a522e5cb3db89e844b113c8849c0688d0c922ad2c7135ad6a1b44"
+      },
+      {
+        "manifest": "5bc6ef7c5a4f827f031dbd31861624744f87247199056a4e27d1d601adc07781",
+        "recipe": "5a792a37890a522e5cb3db89e844b113c8849c0688d0c922ad2c7135ad6a1b44"
+      }
+    ],
+    "manifestAndRecipeEqual": true
+  },
+  {
+    "label": "--domain fixtures/domains/toy-12.json --years",
+    "outputs": [
+      {
+        "manifest": "3f33cf5d95dd2f5f84173db2d4de95ac49731515370a88cde9d37675281ac74e",
+        "recipe": "1c73e56a3ff0ce9cb0bd0b2572c598080a00b1bf4562595c00b3b2ece8b4084d"
+      },
+      {
+        "manifest": "3f33cf5d95dd2f5f84173db2d4de95ac49731515370a88cde9d37675281ac74e",
+        "recipe": "1c73e56a3ff0ce9cb0bd0b2572c598080a00b1bf4562595c00b3b2ece8b4084d"
+      }
+    ],
+    "manifestAndRecipeEqual": true
+  },
+  {
+    "label": "--scenario fixtures/scenarios/lonely-bounded.json --until-year",
+    "outputs": [
+      {
+        "manifest": "34c0ab5b5f19c36b25219bd74736faa4c5f0ec7d5b00071cfeda7c271c116cf8",
+        "recipe": "baa762551208b9dd91b7e3fcdd559e20389c8b2debe3b754dfab7c71ebd7b52e"
+      },
+      {
+        "manifest": "34c0ab5b5f19c36b25219bd74736faa4c5f0ec7d5b00071cfeda7c271c116cf8",
+        "recipe": "baa762551208b9dd91b7e3fcdd559e20389c8b2debe3b754dfab7c71ebd7b52e"
+      }
+    ],
+    "manifestAndRecipeEqual": true
+  },
+  {
+    "label": "--scenario crowded-domain --until-year",
+    "outputs": [
+      {
+        "manifest": "57d9689ff50fc91e805108837735307878e50580cf6e108f2e2bdba932b106a8",
+        "recipe": "b9b69f33a1b10e5621d7cfe6b6d0f05300599bb2b0d60cec60e893f111a52cdc"
+      },
+      {
+        "manifest": "57d9689ff50fc91e805108837735307878e50580cf6e108f2e2bdba932b106a8",
+        "recipe": "b9b69f33a1b10e5621d7cfe6b6d0f05300599bb2b0d60cec60e893f111a52cdc"
+      }
+    ],
+    "manifestAndRecipeEqual": true
+  }
+]

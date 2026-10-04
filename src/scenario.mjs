@@ -2,7 +2,7 @@ import {readFixture,exact} from './environment.mjs';
 import {createPlanet} from './planet.mjs';
 import {createDomain} from './domain.mjs';
 import {compare} from './canonical.mjs';
-export const SCENARIOS=['lonely-earthlike','crowded-domain','harsh-anoxic','doomed-star','high-perils'];
+export const SCENARIOS=['lonely-earthlike','crowded-domain','harsh-anoxic','doomed-star','high-perils','forager-future'];
 export function loadScenario(name){
   const path=SCENARIOS.includes(name)?'fixtures/scenarios/'+name+'.json':name,raw=readFixture(path);
   if(raw.schemaVersion!=='civ-scenario-1'){

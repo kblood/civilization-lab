@@ -3,9 +3,26 @@ import { compare } from './canonical.mjs';
 import { deepFreeze } from './manifest.mjs';
 export const DOMAINS = Object.freeze(['Energy','Subsistence','Materials','Transport','Information','Medicine','Organisation']);
 export const MAX_TIERS = Object.freeze([6,5,5,7,5,4,5]);
-export const NSTAR = deepFreeze([[0,100,500,2000,5000,10000,20000],[0,50,100,500,2000,5000],
-  [0,100,500,1000,3000,8000],[0,100,300,1000,3000,5000,8000,12000],[0,50,200,1000,3000,8000],
-  [0,50,200,1000,3000],[0,100,300,1000,3000,5000]]);
+// M4a authored scenario values, in persons; these are not historical estimates.
+export const NSTAR = deepFreeze([[0,100,500,2000,10000,40000,100000],[0,50,100,500,5000,30000],
+  [0,100,500,1000,10000,50000],[0,100,300,1000,5000,15000,40000,80000],[0,50,200,1000,10000,40000],
+  [0,50,200,1000,10000],[0,100,300,1000,10000,40000]]);
+export const DISCOVERY_COST = deepFreeze([[0,2,5,10,20,100,3000],[0,2,5,10,20,100],[0,2,5,10,20,100],[0,2,5,10,20,100,500,2000],[0,2,5,10,20,100],[0,2,5,10,20],[0,2,5,10,20,100]]);
+export const discoveryRate=(d,target,neff,ppm)=>F(400n*neff*BigInt(ppm),1000000n*BigInt(DISCOVERY_COST[d][target]));
+export const COLONY_ARCHIVE_YEARS=1000;
+export const STATUS_PERIOD_YEARS=100;
+export const STATUS_STALE_YEARS=300;
+export const INTERPLANETARY_LINK_PERMILLE=100;
+export const MAX_RECOVERIES=4;
+export function maintenancePopulation(a,r,d,neff,limit) {
+  const year=Number(a.tick*10n);
+  let reported=0n;
+  for(const report of [...(a.lineageReports??[])].sort((a,b)=>compare(a.source,b.source))) {
+    if(report.source!==a.id&&report.lineageId===a.lineageId&&year>=report.reportYear&&year<report.reportYear+STATUS_STALE_YEARS+report.routeDelayYears&&report.tiers[d]>=r.tiers[d])reported+=BigInt(report.population);
+  }
+  neff+=F(reported*BigInt(INTERPLANETARY_LINK_PERMILLE),1000n);
+  return a.isColony&&r.pop>0n&&Number(a.tick*10n)<a.foundedYear+COLONY_ARCHIVE_YEARS&&r.tiers[d]<=a.foundingTiers[d]?max(neff,limit):neff;
+}
 export const GROWTH = Object.freeze([10050,20201,105171,221403,161834,105171,105171,105171]);
 export const CAPTURE = Object.freeze([4500n,8000n,26000n,77000n,230000n,1000000n,5000000n,10000000n]);
 export const BUILD = Object.freeze([1,2,4,8,16,32,64,128]);

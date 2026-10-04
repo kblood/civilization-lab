@@ -11,7 +11,7 @@ test('hand-built summaries have exact counts, lower medians, explanations and ob
   assert.deepEqual(a.bands.map(b=>b.verdict),Array(6).fill('PASS'));assert.deepEqual(a.explanations,['fixture/0: EXTINCT_SELF: fixture','fixture/1: EXTANT_MULTI_BODY: fixture','fixture/2: NO_LINEAGE: fixture','fixture/3: EXISTENTIAL_CAP: fixture']);
   assert.deepEqual(aggregate(rows.slice(0,1)).bands.map(b=>b.verdict),['FAIL','FAIL','FAIL','FAIL','FAIL','FAIL']);
   assert.equal(fraction(1,3),'1/3 (33.3%)');assert.equal(fraction(2,3),'2/3 (66.6%)');
-  assert.deepEqual(ensemblePlan(6).map(r=>r.seed),['lonely-earthlike-0','crowded-domain-1','harsh-anoxic-2','doomed-star-3','high-perils-4','lonely-earthlike-5']);
+  assert.deepEqual(ensemblePlan(6).map(r=>r.seed),['lonely-earthlike-0','crowded-domain-1','harsh-anoxic-2','doomed-star-3','high-perils-4','forager-future-5']);
   assert.deepEqual(ensemblePlan(2,{scenario:'doomed-star'}).map(r=>r.seed),['doomed-star-0','doomed-star-1']);
 });
 test('errored seeds remain in the denominator and completion order cannot drop them',async()=>{

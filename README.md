@@ -1,6 +1,17 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**M4d:** delivered own-lineage STATUS reports now support tier maintenance
+across declared interplanetary routes, with light-speed delay and expiry after
+silence. The 1 kyr founding reserve remains a bridge. Lonely near-expiry colony
+deaths fall from 47 to 0 in the 30-seed audit, but repeat failed-target launches
+rise from 4,054 to 4,376; sustainability is not established. All 180 ensemble
+runs completed without simulation errors; 13 exceeded the 30-second compile
+budget. The seven colony tests pass in 533 ms alone; the signatures file exceeds
+two seconds. Final `npm test`: **151/151 pass, 0 skipped; exit 0**.
+M1 is unchanged. See the [M4d handoff](docs/m4-implementation.md#m4d--lineage-support-network)
+and [plausibility audit](docs/m4-plausibility.md) for comparisons and limitations.
+
 **M3 legibility round 2:** exact-year event guides, 16-pixel minimum text,
 compact empty histories, explicit scale breaks and directed voyage connectors.
 `npm test`: **123 pass, 0 fail, 1 skipped**; the changed report test file took
@@ -131,13 +142,13 @@ unit suite). It writes counts, maximum eras, first attainment years and roots to
 `docs/evidence/m2a-fix-survey.json`. No survey outcome is a unit-test assertion.
 
 Ensemble seeds use global indices i=0..N-1: without --scenario, choose
-[lonely-earthlike, crowded-domain, harsh-anoxic, doomed-star, high-perils][i % 5],
+[lonely-earthlike, crowded-domain, harsh-anoxic, doomed-star, high-perils, forager-future][i % 6],
 then name the seed <scenario>-<i>. With --scenario, use that scenario at every i.
-Default horizons are 120,000 years for lonely-earthlike and 30,000 for the
-other four. Default jobs = min(4, CPU count). Results are sorted by scenario
+Default horizons are 320,000 years for lonely-earthlike, 120,000 for
+forager-future and 30,000 for the other four. Default jobs = min(4, CPU count). Results are sorted by scenario
 and seed before aggregation; errored seeds stay in N. Output is out/report.md
 and a representative timeline per scenario: the inhabited non-error seed with
-the most accepted salient events, ties by seed. The first NO_LINEAGE seed per
+the most accepted salient events, ties by seed. The first empty-history (NO_LINEAGE or PENDING_ORIGIN) seed per
 scenario also gets a timeline when present; it is the fallback if no active
 history exists. All-error scenarios have no automatic timeline. Repeated --timeline flags add requested
 seeds; additional seeds outside the ensemble get timelines but do not change N.
@@ -145,6 +156,9 @@ An extra seed needs a scenario prefix or --scenario. Percentages truncate to
 one decimal using integer arithmetic. Wall times print separately to stderr,
 never into the byte-reproducible report or SVG. These are **seeded scenarios,
 model attribution, not predictions**.
+
+PENDING_ORIGIN means an origin scheduled beyond the horizon (right-censored);
+NO_LINEAGE means its window was exhausted or it was preempted. Both stay in N.
 
 Era counts E3–E6 distinguish starts at/above, attainment during the run from
 below, and never reached, with errors separately unknown; every fraction keeps

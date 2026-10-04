@@ -97,3 +97,8 @@ test('event years stay on the shared axis through collisions and scale changes',
     if(axis.split!==null){assert.match(svg,/data-scale-break-glyph/);assert.match(svg,/left = log2\(year \+ 1\); right = linear years/);}
   }
 });
+
+test('pending origin timelines retain the censored outcome label',()=>{
+  const run={scenario:'lonely-earthlike',seed:'pending',outcome:'PENDING_ORIGIN',untilYear:320000,firstEras:Array(8).fill(null),timeline:{arcs:[],observations:[],events:[]}};
+  assert.match(timelineSVG(run),/PENDING_ORIGIN/);
+});

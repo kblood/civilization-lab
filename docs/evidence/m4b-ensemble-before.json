@@ -1,0 +1,40 @@
+[
+  {
+    "name": "runSeed",
+    "manifest": [
+      "26af2d2959d0c2865c5efb1aa92d5ecfdd3425db0e4d997e43594da5d7097a98",
+      "26af2d2959d0c2865c5efb1aa92d5ecfdd3425db0e4d997e43594da5d7097a98"
+    ],
+    "recipe": [
+      "d2595997f55ac83314da17c14d58ac5ff1c4028d3f833ad8b377b1dced68549c",
+      "d2595997f55ac83314da17c14d58ac5ff1c4028d3f833ad8b377b1dced68549c"
+    ],
+    "eventsEqual": true
+  },
+  {
+    "name": "runEnsemble jobs=2",
+    "manifest": [
+      "26af2d2959d0c2865c5efb1aa92d5ecfdd3425db0e4d997e43594da5d7097a98",
+      "26af2d2959d0c2865c5efb1aa92d5ecfdd3425db0e4d997e43594da5d7097a98"
+    ],
+    "recipe": [
+      "d2595997f55ac83314da17c14d58ac5ff1c4028d3f833ad8b377b1dced68549c",
+      "d2595997f55ac83314da17c14d58ac5ff1c4028d3f833ad8b377b1dced68549c"
+    ],
+    "eventsEqual": true
+  },
+  {
+    "name": "--ensemble --until-year",
+    "reports": [
+      {
+        "manifest": "26af2d2959d0c2865c5efb1aa92d5ecfdd3425db0e4d997e43594da5d7097a98",
+        "recipe": "d2595997f55ac83314da17c14d58ac5ff1c4028d3f833ad8b377b1dced68549c"
+      },
+      {
+        "manifest": "26af2d2959d0c2865c5efb1aa92d5ecfdd3425db0e4d997e43594da5d7097a98",
+        "recipe": "d2595997f55ac83314da17c14d58ac5ff1c4028d3f833ad8b377b1dced68549c"
+      }
+    ],
+    "manifestAndRecipeEqual": true
+  }
+]

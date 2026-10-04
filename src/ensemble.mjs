@@ -6,7 +6,7 @@ import {compare} from './canonical.mjs';
 import {compareEvents} from './events.mjs';
 
 export const LABEL='seeded scenarios, model attribution, not predictions';
-export const METRICS=['industrialE3','atomicE4','interplanetary','eraE5','interstellar','eraE6','extinct','extinctSelf','extinctNatural','extinctStellar','extinctNaturalStellar','colonyOnlyLoss','noLineage','collapseRecovery','firstContact','existentialCap','error'];
+export const METRICS=['industrialE3','atomicE4','interplanetary','eraE5','interstellar','eraE6','extinct','extinctSelf','extinctNatural','extinctStellar','extinctNaturalStellar','colonyOnlyLoss','noLineage','pendingOrigin','collapseRecovery','firstContact','existentialCap','error'];
 export const DEFAULT_JOBS=Math.min(4,cpus().length);
 const order=(a,b)=>compare(a.scenario,b.scenario)||compare(a.seed,b.seed);
 export function ensemblePlan(n,{scenario,untilYear}={}){
@@ -35,7 +35,7 @@ export function causalExplanation(events,outcome,select=()=>true){
 export function summarizeRun(task,world,result){
   const events=result.events.filter(e=>e.resolution==='accepted').sort(compareEvents),arcs=result.seenArcs;
   const lineageClasses=result.outcomes.map(l=>l.outcome).sort(compare);
-  if(!lineageClasses.length)lineageClasses.push('NO_LINEAGE');
+  if(!lineageClasses.length)lineageClasses.push(result.state.origins.some(o=>o.status==='pending'&&o.deliveryTick!==null&&o.deliveryTick>=world.def.untilTick)?'PENDING_ORIGIN':'NO_LINEAGE');
   const classes=[...new Set(lineageClasses)].sort(compare),outcome=classes.join('+');
   const multi=(key)=>[...new Set(arcs.map(a=>a.lineageId))].some(id=>new Set(arcs.filter(a=>a.lineageId===id).map(key)).size>=2);
   const extinct=classes.some(c=>c.startsWith('EXTINCT_'));
@@ -46,7 +46,7 @@ export function summarizeRun(task,world,result){
     interstellar:multi(a=>world.def.planets.find(p=>p.body===a.body).system),eraE6:first[6]!==null,extinct,
     extinctSelf:classes.includes('EXTINCT_SELF'),extinctNatural:classes.includes('EXTINCT_NATURAL'),extinctStellar:classes.includes('EXTINCT_STELLAR'),extinctNaturalStellar:classes.some(c=>['EXTINCT_NATURAL','EXTINCT_STELLAR'].includes(c)),
     colonyOnlyLoss:events.some(e=>e.kind==='EXTINCTION'&&arcs.some(a=>a.id===e.ownerId&&a.isColony&&result.outcomes.some(l=>l.id===a.lineageId&&!l.outcome.startsWith('EXTINCT_')))),
-    noLineage:classes.includes('NO_LINEAGE'),collapseRecovery:recovery,firstContact:events.some(e=>e.kind==='FIRST_CONTACT'),existentialCap:classes.includes('EXISTENTIAL_CAP')||events.some(e=>e.data.outcome==='existential-cap'),error:false};
+    noLineage:classes.includes('NO_LINEAGE'),pendingOrigin:classes.includes('PENDING_ORIGIN'),collapseRecovery:recovery,firstContact:events.some(e=>e.kind==='FIRST_CONTACT'),existentialCap:classes.includes('EXISTENTIAL_CAP')||events.some(e=>e.data.outcome==='existential-cap'),error:false};
   const byId=new Map(events.map(e=>[e.id,e])),classCauses={};
   const belongs=l=>e=>e.ownerId===l.id||arcs.some(a=>a.lineageId===l.id&&(e.ownerId===a.id||e.ownerId.startsWith(a.id+'#')||e.data.launch?.lineageId===l.id||e.refs?.some(ref=>ref.entityId===a.id)));
   for(const l of result.state.lineages){const own=events.filter(belongs(l));
@@ -66,7 +66,7 @@ export function summarizeRun(task,world,result){
       const home=arcs.find(a=>a.lineageId===l.id&&!a.isColony),system=world.def.planets.find(p=>p.body===home?.body)?.system;
       const interstellar=events.find(e=>e.kind==='COLONY_FOUNDED'&&e.data.stage==='FOUNDED'&&belongs(l)(e)&&world.def.planets.find(p=>p.body===e.ownerId)?.system!==system);
       return `${l.id}: ${causalExplanation(events,l.outcomeClass,belongs(l))}${interstellar?`; first interstellar colony: ${eventLabel(interstellar)}`:''}`;
-    }).join(' | '):'NO_LINEAGE: hard-step origin not attained within the observation window',manifestDigest:result.manifestDigest,recipeDigest:result.recipeDigest,resultDigest:result.resultDigest,
+    }).join(' | '):(outcome==='PENDING_ORIGIN'?'PENDING_ORIGIN: origin beyond observation horizon (right-censored)':'NO_LINEAGE: origin window exhausted or origin preempted'),manifestDigest:result.manifestDigest,recipeDigest:result.recipeDigest,resultDigest:result.resultDigest,
     timeline:{observations:result.observations,arcs,events:events.map(e=>({id:e.id,kind:e.kind,dateYear:e.dateYear,ownerId:e.ownerId,salience:e.salience??0,causes:e.causes,data:{outcome:e.data.outcome,launch:e.data.launch}}))}};
 }
 export function runSeed(task){

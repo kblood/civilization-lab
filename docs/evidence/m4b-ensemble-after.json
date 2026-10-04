@@ -1,0 +1,40 @@
+[
+  {
+    "name": "runSeed",
+    "manifest": [
+      "4d9d56701d242586b30b9c58379f7460a4060f50a8e4679e79621e09580a1b12",
+      "4d9d56701d242586b30b9c58379f7460a4060f50a8e4679e79621e09580a1b12"
+    ],
+    "recipe": [
+      "41645b844e6885102c440e1a21aa1ab272bcf53731f17f18190ed9bc443a4009",
+      "41645b844e6885102c440e1a21aa1ab272bcf53731f17f18190ed9bc443a4009"
+    ],
+    "eventsEqual": true
+  },
+  {
+    "name": "runEnsemble jobs=2",
+    "manifest": [
+      "4d9d56701d242586b30b9c58379f7460a4060f50a8e4679e79621e09580a1b12",
+      "4d9d56701d242586b30b9c58379f7460a4060f50a8e4679e79621e09580a1b12"
+    ],
+    "recipe": [
+      "41645b844e6885102c440e1a21aa1ab272bcf53731f17f18190ed9bc443a4009",
+      "41645b844e6885102c440e1a21aa1ab272bcf53731f17f18190ed9bc443a4009"
+    ],
+    "eventsEqual": true
+  },
+  {
+    "name": "--ensemble --until-year",
+    "reports": [
+      {
+        "manifest": "4d9d56701d242586b30b9c58379f7460a4060f50a8e4679e79621e09580a1b12",
+        "recipe": "41645b844e6885102c440e1a21aa1ab272bcf53731f17f18190ed9bc443a4009"
+      },
+      {
+        "manifest": "4d9d56701d242586b30b9c58379f7460a4060f50a8e4679e79621e09580a1b12",
+        "recipe": "41645b844e6885102c440e1a21aa1ab272bcf53731f17f18190ed9bc443a4009"
+      }
+    ],
+    "manifestAndRecipeEqual": true
+  }
+]

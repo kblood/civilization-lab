@@ -1,7 +1,7 @@
 {
   "schemaVersion": "civ-scenario-1",
   "id": "doomed-star",
-  "description": "fixtures/domains/m3b-doomed-star.json",
+  "description": "fixtures/domains/m4c-doomed-star.json",
   "startingFixture": "fixtures/regimes/industrial.json",
   "overrides": [
     {
