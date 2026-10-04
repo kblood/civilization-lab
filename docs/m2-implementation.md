@@ -4,6 +4,73 @@ M2b implements all 31 catalogue kinds, including the 16 remaining recipes.
 Opus owns review and commits. No git writes, network, installs, deployment,
 preview, or Atlas edits were performed. The M2a notes below are historical.
 
+## Correction — 2026-10-04: seed-panel performance target NOT MET
+
+The earlier 400 kyr budget-pass statements apply only to the default seed
+`civ-m2a-1` (8.8–9.2 s), not to a representative seed panel. The runner's
+independent review at `d09153f`, using `node tools/perf-civ.mjs`, observed:
+
+| Seed | 400 kyr elapsed | Events |
+|---|---:|---:|
+| civ-m2a-1 | 9161 ms and 9194 ms | 14367 |
+| civ-m2a-2 | 12828 ms | 28749 |
+| civ-m2a-6 | 12292 ms | 28412 |
+
+The busy seeds take 12.3–12.8 s. The **400 kyr / 10 s target is NOT MET on
+the seed panel** and remains open for a future performance round. No simulation
+or performance refactor is part of this correction. Historical transcripts
+below are retained; their single-seed timing and RSS observations do not
+establish panel acceptance.
+
+Reproduce with `npm run perf:panel`, or
+`node tools/perf-civ.mjs 400000 --panel civ-m2a-1,civ-m2a-2,civ-m2a-6`.
+Seeds run sequentially in separate child processes, timing compilation only.
+The final verdict uses the worst unrounded time against 10000 ms; FAIL exits 1.
+The existing positional `years [seed]` usage remains available.
+
+The 20 kyr budget test now uses `civ-m2a-2`, retaining its 2000 ms cap and
+requiring at least 100 events plus multiple populated regions or an advanced
+tier at the end. The runner observed 124 events / 253 ms for this seed;
+the former `civ-m2a-1` case emitted only two events. Table-reading tests now
+share an LF/CRLF-tolerant extractor, with in-memory CRLF regression coverage
+and a repository LF checkout policy. Simulation sources and digests are unchanged.
+
+**Astra-observed in this correction round:** `npm test` returned 82 tests,
+82 pass, 0 fail, 0 cancelled, 0 skipped, 0 todo (5019.223 ms). The first run
+returned 81 pass / 1 fail because the old test required exactly 2000 ticks;
+`civ-m2a-2` reaches terminal extinction at tick 1859. The corrected assertion
+allows early termination only for terminal histories. It still requires the
+event floor and end-state work guard (this seed retains advanced tiers).
+`npm run -s digest` returned the unchanged M1 digest printed below.
+`node tools/perf-civ.mjs 20000 civ-m2a-2` returned 253.36 ms, 124 events and
+result digest `40b360ab5be669b76efc8fb1bffb7c30af20dbdfba0c5c83290e50a7ca58e48d`.
+
+`npm run perf:panel` returned exit 1, with these Astra-observed values:
+
+| Seed | 400 kyr elapsed | Events | Result digest |
+|---|---:|---:|---|
+| civ-m2a-1 | 9465.91 ms | 14367 | `4108c3cbd1f7df88b42c6ed166988758122cfc54883abbe42950ec306cad3f4e` |
+| civ-m2a-2 | 13873.20 ms | 28749 | `3d441033a9ebd1e10f22b630b964d0414322e68c81f069eb83d39851315aad0d` |
+| civ-m2a-6 | 12393.33 ms | 28412 | `8c12c820a28f143f352d690e1a6d1bc219748c4d052d8319070fcc9e4f9b2689` |
+
+Worst: **13873.20 ms**, civ-m2a-2; target 10000 ms; **FAIL**. These observations
+are separate from the runner's measurements above.
+
+**Runner re-run of `npm run perf:panel` after the fix (Opus):** civ-m2a-1
+9082.01 ms, civ-m2a-2 12429.60 ms, civ-m2a-6 11617.11 ms; worst 12429.60 ms;
+FAIL, exit 1. Same event counts and result digests as above.
+
+**Open item found by the runner during this round (not fixed here):** the
+standalone P path's history depends on the requested horizon. `createDefinition`
+puts `forced.ticks = years/10` into `inputBundleDigest`, the manifest digest
+feeds every RNG address, so `--years 20000` and `--years 40000` for the same
+seed diverge right after SAPIENCE (civ-m2a-2: 124 events and extinction at tick
+1859 at 20 kyr, but extant at 40 kyr; the same holds for civ-m2a-1 and -6). The
+domain path does not have this problem (toy-14 at 20 kyr is an exact prefix of
+40 kyr, same manifest digest). This breaks the rule that the same seed gives
+the same history whichever slice is realised; fixing it changes every P-path
+golden, so it belongs to its own round.
+
 ## Execution and interfaces
 
 `createDomain(pathOrDomainStub, seed, {years, forced})` expands and validates
@@ -78,7 +145,8 @@ was separately observed with `npm run digest`.
 | Exact hard-step schedule, no horizon redraw, lifecycle censoring | `origins.test.mjs` |
 | Anoxic E1/E3 alternatives and missing fissiles | `dynamics.test.mjs` |
 | Two runs, fresh process and self-generated goldens | `civ-determinism.test.mjs`; M1 tests remain intact |
-| Cheap standalone and reported short-domain compilation | `perf-budget.test.mjs`; long CLI evidence is outside the unit suite |
+| Representative 20 kyr standalone and reported short-domain compilation | `perf-budget.test.mjs`, civ-m2a-2 with work guards; 2000 ms cap |
+| 400 kyr / 10 s seed-panel target | **NOT MET**: runner measured civ-m2a-1 at 8.8–9.2 s, civ-m2a-2/-6 at 12.3–12.8 s; future performance round open |
 
 ## Exact final CLI and standalone performance output
 
@@ -95,8 +163,9 @@ Heap: 185.18 MiB used; 283.20 MiB reserved
 CPU: 12671.00 ms
 ```
 
-The 400 kyr result passes 10000 ms and 450 MiB RSS. Margin is about 0.81 s;
-Opus should remeasure on the runner. No calibration was adjusted to meet it.
+This historical civ-m2a-1 result passes 10000 ms and 450 MiB RSS for that seed
+only, with about 0.81 s time margin. The seed-panel time target is NOT MET;
+see the dated correction above. No calibration was adjusted to meet it.
 
 `node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-14`:
 
@@ -304,7 +373,8 @@ Docs: README, this handoff, the transition table and `docs/evidence/m2b-*`.
 
 ## Historical M2a performance round 2 — runner handoff
 
-**Observed budget pass:** `node tools/perf-civ.mjs 400000` completes in
+**Historical single-seed budget pass (not panel acceptance):**
+`node tools/perf-civ.mjs 400000` completes in
 **9380.25 ms**, with **374.24 MiB end RSS**, 16797 events and a largest P+D
 chapter of 1.81 MiB. Another final-implementation run measured 9338.46 ms /
 367.50 MiB. The desired 7 s margin is not achieved; Opus should remeasure.

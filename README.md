@@ -6,10 +6,13 @@ annual projection, with independent RNG/Merkle vectors and negative controls.
 **M2b implemented for runner review:** all 31 kinds, hard-step origins,
 the lockstep domain ledger, voyages, colonies, shared catastrophes, perils
 messages and lineage outcomes. The anoxic, home-system and toy-12 fixtures
-are included. `npm test`: **80/80 pass**; all 25 test files individually
-finish below two seconds. The standalone 400 kyr performance check passes
-the 10 s / 450 MiB gates; exact measurements and the 16-seed domain survey
-are in [the M2 handoff](docs/m2-implementation.md). M1's golden is unchanged.
+are included. `npm test`: **82/82 pass** (M2 fix round, 2026-10-04; 26 test
+files, each below two seconds). The standalone 400 kyr / 10 s
+target is met only for civ-m2a-1 (8.8–9.2 s); busy seeds civ-m2a-2 and
+civ-m2a-6 take 12.3–12.8 s in the runner's measurements. The target is
+**NOT MET on the seed panel**, an open item for a future performance round.
+Exact measurements and the 16-seed domain survey are in
+[the M2 handoff](docs/m2-implementation.md). M1's golden is unchanged.
 These remain authored scenarios, not calibrated historical predictions.
 This repository exists to work out — on paper first, then in small deterministic
 Node simulations — how civilisations can be generated so that they cohere with
@@ -69,6 +72,7 @@ node src/cli.mjs --civ temperate --seed civ-m2a-1 --years 20000
 node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1
 node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-14 --years 100000
 npm run perf        # tools/perf-civ.mjs: 400 kyr, measured outside src/
+npm run perf:panel  # 400 kyr, seeds civ-m2a-1, -2, -6; worst-seed verdict
 ```
 
 ## Layout

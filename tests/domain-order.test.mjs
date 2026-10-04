@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createDomain,DOMAIN_FIELDS,VOYAGE_FIELDS,domainStateDigest} from '../src/domain.mjs';
 import {forced} from './civ-helpers.mjs';
 import {readFileSync} from 'node:fs';
+import {extractTable} from './table-helpers.mjs';
 test('arc step permutations and colony/home/cold queries produce identical composed roots',()=>{
   const f=forced('COLONY_FOUNDED');f.ticks=4;
   const w=createDomain(f.base,f.seed,{forced:f}),a=w.compileSummary(),b=w.compileSummary({arcOrder:'reverse'});
@@ -13,7 +14,7 @@ test('arc step permutations and colony/home/cold queries produce identical compo
   assert.notEqual(a.arcRoots[0].root,a.arcRoots[1].root);
 });
 test('D delta table covers every field, including archived voyages; structural mutation changes root',()=>{
-  const doc=readFileSync('docs/transition-table-v1.md','utf8'),table=JSON.parse(doc.slice(doc.indexOf('## Machine-readable table')).match(/```json\n([\s\S]*?)\n```/)[1]);
+  const table=extractTable(readFileSync('docs/transition-table-v1.md','utf8'));
   const f=forced('VOYAGE_LOST'),r=createDomain(f.base,f.seed,{forced:f}).run();
   assert.deepEqual(table.rules.domainWitness.fields,DOMAIN_FIELDS);
   assert.deepEqual(Object.keys(r.state).sort(),DOMAIN_FIELDS);

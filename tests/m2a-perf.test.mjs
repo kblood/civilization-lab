@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {extractTable} from './table-helpers.mjs';
 import {createPlanet,stepPlanet,stateDigest} from '../src/planet.mjs';
 import {transitionText,transitionDigest,WITNESS_VERSION,ARC_FIELDS,REGION_FIELDS} from '../src/delta-witness.mjs';
 import {canonicalBytes,validateCanonical} from '../src/canonical.mjs';
@@ -9,7 +10,7 @@ import {merkleLeafHash,merkleLeafParts,sha256Hex} from '../src/digest.mjs';
 import {forced,region} from './civ-helpers.mjs';
 
 const doc=readFileSync('docs/transition-table-v1.md','utf8');
-const schema=JSON.parse(doc.split('<!-- M2A-WITNESS-ANNEX -->')[1].match(/```json\r?\n([\s\S]*?)\n```/)[1]);
+const schema=extractTable(doc,'<!-- M2A-WITNESS-ANNEX -->');
 const json=v=>JSON.parse(canonicalBytes(v));
 
 // Independent decoder of the table's grammar; deliberately does not import

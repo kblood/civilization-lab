@@ -4,6 +4,7 @@ import {createPlanet,stepPlanet,stateDigest,salientEvents} from '../src/planet.m
 import {canonicalBytes} from '../src/canonical.mjs';
 import {generatedString} from '../src/witness.mjs';
 import {readFileSync} from 'node:fs';
+import {extractTable} from './table-helpers.mjs';
 import {advanceHazard} from '../src/hazard.mjs';
 import {merkleLeafHash,sha256Hex} from '../src/digest.mjs';
 import {forced,region,polity,setOverride,runForced} from './civ-helpers.mjs';
@@ -68,7 +69,7 @@ test('damage expires at its exact tick between environment epochs',()=>{
 
 test('every region field and structural witness matches the independently parsed table',()=>{
   const text=readFileSync('docs/transition-table-v1.md','utf8');
-  const table=JSON.parse(text.slice(text.indexOf('## Machine-readable table')).match(/```json\r?\n([\s\S]*?)\n```/)[1]);
+  const table=extractTable(text);
   const schema=table.rules.tickWitness,r=runForced(forced('COLLAPSE')).state;
   const tuples=r.regions.map(region=>{
     assert.deepEqual(Object.keys(region).sort(),[...schema.regionTuple].sort());
