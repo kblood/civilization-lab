@@ -112,7 +112,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
   const def=createDomainDefinition(input,seed,options);
   if(def.status)return def;
   let cached=null;
-  function compile({inspect=false,observe=false,inspectSampleTicks=[],arcOrder='forward',suppressLineages=[],prefixUntil=null}={}) {
+  function compile({inspect=false,observe=false,inspectSampleTicks=[],arcOrder='forward',suppressLineages=[],prefixUntil=null,onPerilsTick=null}={}) {
     let state={id:def.domain.id,tick:def.fromTick,lineages:[],arcs:[],voyages:[],transit:[],messages:[],origins:structuredClone(def.origins),bodyEpisodes:def.planets.map(p=>({body:p.body,nextEpisode:0})),latches:[],coverage:'complete-domain'};
     const definitions=new Map(),roots=new Map(),arcRecords=[],archives=[],events=[],snapshots=[],checkpoints=[],dHashes=[];
     const observations=[],firstEras=Array(8).fill(null),firstEnergy=Array(7).fill(null),seenArcs=new Map();
@@ -167,7 +167,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       const due=state.messages.filter(m=>m.deliveryTick===t).sort(messageOrder);state.messages=state.messages.filter(m=>m.deliveryTick!==t);
       for(const m of due) {
         if(m.type==='SIGNAL'){
-          const a=state.arcs.find(a=>a.body===m.targetId||a.id===m.targetId);if(!a||a.lineageId===m.payload.signal.lineageId)continue;
+          const a=state.arcs.find(a=>a.body===m.targetId||a.id===m.targetId);if(!a)continue;
           const e=dEvent(def,state,'SIGNAL_ARRIVAL',a.id,messageIntent(m.id),{mode:'scheduled'},Number(t*10n),0);
           e.params={arrivalYear:String(m.payload.signal.arrivalYear),deliveryYear:String(t*10n)};
           const {arrivalYear,...signal}=m.payload.signal;
@@ -226,10 +226,40 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       const stepArcs=[...state.arcs].sort(byId);if(arcOrder==='reverse')stepArcs.reverse();
       const sample=inspect||inspectSampleTicks.includes(String(t));
       const results=stepArcs.filter(a=>!suppressLineages.includes(a.lineageId)).map(a=>({id:a.id,out:stepPlanet(definitions.get(a.id),a,{founding:founding.includes(a.id),collectUpdates:sample,startBoundary:starts.get(a.id)??a,arrivalIds:arrivals.get(a.id)??[],arrivalEvents:tickEvents.filter(e=>e.kind==='COLONY_FOUNDED'&&e.data.target===a.id)})})).sort(byId);
+      if(onPerilsTick)onPerilsTick(Object.freeze({tick:String(t),exitedArcs:Object.freeze(results.filter(r=>r.out.pre.perils==='exited').map(r=>r.id))}));
       if(observe){observation(results.map(r=>r.out.pre),Number(t*10n),t===def.fromTick||t%10n===0n);observation(results.map(r=>r.out.state),Number((t+1n)*10n),t+1n===def.untilTick||results.some(r=>r.out.state.outcome.terminal));}
       for(const {id,out} of results){state.arcs[state.arcs.findIndex(a=>a.id===id)]=out.state;roots.set(id,out.ledger.structural??out.ledger.endState);const record=arcRecords.find(r=>r.id===id);record.ledgers.push(out.ledger);record.events.push(...out.events);pEvents.push(...out.events);retired.push(...out.ledger.archived);}
       // No P step can see any other step's output. Only this barrier expands it.
       const allTick=[...tickEvents,...pEvents].sort(compareEvents);
+      // Reports travel from the observed body, along a declared link, at light speed.
+      // Failed voyages are conservatively reported no earlier than planned arrival.
+      function report(sourceBody,lineageId,type,causeEventId,data,earliestYear=Number((t+1n)*10n)) {
+        for(const target of [...state.arcs].filter(a=>a.lineageId===lineageId&&!a.outcome.terminal).sort(byId)) {
+          const route=def.routes.find(r=>r.from===sourceBody&&r.to===target.body)??def.routes.find(r=>r.to===sourceBody&&r.from===target.body);
+          if(sourceBody!==target.body&&!route)continue;
+          const delay=route?Number(C(BigInt(route.distanceMicroLy),1000000n)):0;
+          const delivery=max(t+1n,C(BigInt(earliestYear+delay),10n));
+          const ordinal=state.messages.filter(m=>m.type===type&&m.targetId===target.id).length;
+          const deliveredData=data.signal?{...data,signal:{...data.signal,arrivalYear:earliestYear+delay}}:data;
+          state.messages.push(message(state.id,t,sourceBody,type,target.id,causeEventId,deliveredData,ordinal,delivery));
+        }
+      }
+      for(const e of allTick.filter(e=>e.resolution==='accepted')) {
+        if(e.kind==='COLONY_FOUNDED'||e.kind==='VOYAGE_LOST') {
+          const v=state.voyages.find(v=>v.id===(e.kind==='VOYAGE_LOST'?e.ownerId:e.data.source));
+          if(!v)continue;
+          if(e.kind==='VOYAGE_LOST'||e.data.outcome==='rejected')report(v.destination,v.lineageId,'TARGET_FAILURE',e.id,{failure:{body:v.destination,eventId:e.id}},Math.max(Number((t+1n)*10n),v.arrivalYear));
+          if(e.kind==='COLONY_FOUNDED'&&e.data.outcome!=='rejected') {
+            const a=state.arcs.find(a=>a.id===e.data.target);
+            report(a.body,a.lineageId,'SIGNAL',e.id,{signal:{source:a.id,lineageId:a.lineageId,body:a.body,tiers:v.tiers,strength:1000,physical:true,arrivalYear:Number((t+1n)*10n)}});
+          }
+        }
+        if(e.kind==='COLONY_LOST'||e.kind==='EXTINCTION') {
+          const a=state.arcs.find(a=>a.id===e.ownerId);
+          if(a?.isColony)report(a.body,a.lineageId,'TARGET_FAILURE',e.id,{failure:{body:a.body,eventId:e.id}});
+        }
+      }
+
       for(const a of [...state.arcs].sort(byId))if(a.regions.some(r=>r.pop>0n&&r.tiers[4]>=3)&&!state.latches.some(l=>l.kind==='SIGNAL_EMITTED'&&l.subject===a.id)){
         state.latches.push({kind:'SIGNAL_EMITTED',subject:a.id,active:true});
         const tiers=Array.from({length:7},(_,d)=>a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.tiers[d]):n,0));

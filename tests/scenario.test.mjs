@@ -2,8 +2,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createScenario,loadScenario,SCENARIOS} from '../src/scenario.mjs';
 import {spawnSync} from 'node:child_process';
-test('five closed scenarios load, bounded execution overrides preserve prefixes, direct descriptions work',()=>{
-  assert.equal(SCENARIOS.length,5);
+test('six closed scenarios load, bounded execution overrides preserve prefixes, direct descriptions work',()=>{
+  assert.equal(SCENARIOS.length,6);
   for(const name of SCENARIOS){const a=createScenario(name,'scenario-prefix',{untilYear:100}),b=createScenario(name,'scenario-prefix',{untilYear:200}),x=a.world.run(),y=b.world.run();
     assert.equal(a.world.def.manifestDigest,b.world.def.manifestDigest);assert.equal(a.world.def.recipeDigest,b.world.def.recipeDigest);assert.deepEqual(x.events,y.events.filter(e=>BigInt(e.tick)<10n));
     assert.equal(loadScenario(name).schemaVersion,'civ-scenario-1');}

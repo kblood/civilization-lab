@@ -1,6 +1,18 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**M4a:** tier-dependent invention costs, bounded colony knowledge reserves,
+causal target memory, recovery learning and post-perils political renewal.
+Six ensemble scenarios now include an E0-to-future run. See the
+[M4 implementation handoff](docs/m4-implementation.md) and
+[30-seed-per-scenario plausibility audit](docs/m4-plausibility.md).
+M1 is unchanged; the separate P-path horizon issue remains open.
+Astra's sole full test run returned **134 pass / 3 fail**; those legacy fixture
+expectations were updated and focused reruns passed **9/9**. Runner rerun of
+`npm test` on the committed M4a tree: **135 pass / 2 fail, exit 1**; both
+failures were 1500 ms child-process timeouts on a heavily loaded machine
+(`civ-determinism`, `refinement-query-order`), and both files pass alone (exit 0).
+
 **M3 legibility round 2:** exact-year event guides, 16-pixel minimum text,
 compact empty histories, explicit scale breaks and directed voyage connectors.
 `npm test`: **123 pass, 0 fail, 1 skipped**; the changed report test file took
@@ -131,10 +143,10 @@ unit suite). It writes counts, maximum eras, first attainment years and roots to
 `docs/evidence/m2a-fix-survey.json`. No survey outcome is a unit-test assertion.
 
 Ensemble seeds use global indices i=0..N-1: without --scenario, choose
-[lonely-earthlike, crowded-domain, harsh-anoxic, doomed-star, high-perils][i % 5],
+[lonely-earthlike, crowded-domain, harsh-anoxic, doomed-star, high-perils, forager-future][i % 6],
 then name the seed <scenario>-<i>. With --scenario, use that scenario at every i.
-Default horizons are 120,000 years for lonely-earthlike and 30,000 for the
-other four. Default jobs = min(4, CPU count). Results are sorted by scenario
+Default horizons are 320,000 years for lonely-earthlike, 120,000 for
+forager-future and 30,000 for the other four. Default jobs = min(4, CPU count). Results are sorted by scenario
 and seed before aggregation; errored seeds stay in N. Output is out/report.md
 and a representative timeline per scenario: the inhabited non-error seed with
 the most accepted salient events, ties by seed. The first NO_LINEAGE seed per

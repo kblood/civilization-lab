@@ -9,7 +9,7 @@ export function regionTuple(r) {
   return [r.id,r.localId,String(r.pop),String(r.Kbase),String(r.K),r.renewable,String(r.infra),String(r.fuel),String(r.forcing),r.immunityTicks,
     r.damage.map(d=>[d.eventId,d.permille,String(d.untilTick)]),r.polityId,r.cultureId,r.culture,r.tiers,r.caps,r.era,String(r.energy),r.resources,
     r.collapse&&[r.collapse.active,String(r.collapse.recoverPop),String(r.collapse.recoverInfra)],r.lowTicks,
-    r.ceilings.map(c=>[c.domain,c.targetTier,c.reason]),r.spaceflight,r.berthsUsed];
+    r.ceilings.map(c=>[c.domain,c.targetTier,c.reason]),r.spaceflight,r.berthsUsed,r.recoveries];
 }
 // Same canonical keyed bytes as generatedString, but the closed hazard schema
 // needs no recursive traversal, sorting or intermediate string cache.

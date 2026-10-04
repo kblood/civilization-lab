@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "civ-scenario-1",
+  "id": "forager-future",
+  "description": "fixtures/domains/m4a-lonely-earthlike.json",
+  "startingFixture": "fixtures/regimes/post-sapience.json",
+  "overrides": [],
+  "untilYear": 120000
+}

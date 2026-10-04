@@ -531,7 +531,8 @@ to implement the full World3 frozen-investment integral.
    effectiveContact=edge.contactPermille if !barrier, otherwise
    F(edge.contactPermille,4); both directions use the same static contact.
    A low maintenance predicate is tier>0 and
-   N_eff<F(Nstar[domain,tier]*learningBias,1000).
+   maintenanceN_eff<F(Nstar[domain,tier]*learningBias,1000).
+   M4a founding knowledge reserve defines maintenanceN_eff below; invention retains N_eff.
    lowTicks'=min(2,lowTicks+1) if low, otherwise 0. TECH_LOSS tests
    pre-state lowTicks>=2, so two completed low ticks precede loss.
 7. Culture natural drift moves each coordinate one unit toward the polity
@@ -590,21 +591,24 @@ DIFFUSION. Anoxic rows replace, rather than add to, the named normal rows.
 
 Nstar rows list tier 0 through maximum, in persons:
 
-| Domain | Nstar | a_d: Q32 per effective person per decade |
-|---|---|---:|
-| E | 0,100,500,2000,5000,10000,20000 | 400 |
-| S | 0,50,100,500,2000,5000 | 400 |
-| M | 0,100,500,1000,3000,8000 | 400 |
-| T | 0,100,300,1000,3000,5000,8000,12000 | 400 |
-| I | 0,50,200,1000,3000,8000 | 400 |
-| V | 0,50,200,1000,3000 | 400 |
-| O | 0,100,300,1000,3000,5000 | 400 |
+| Domain | Nstar (persons, tier 0 onward) | discovery cost (tier 0 unused) |
+|---|---|---|
+| E | 0,100,500,2000,10000,40000,100000 | 0,2,5,10,20,100,3000 |
+| S | 0,50,100,500,5000,30000 | 0,2,5,10,20,100 |
+| M | 0,100,500,1000,10000,50000 | 0,2,5,10,20,100 |
+| T | 0,100,300,1000,5000,15000,40000,80000 | 0,2,5,10,20,100,500,2000 |
+| I | 0,50,200,1000,10000,40000 | 0,2,5,10,20,100 |
+| V | 0,50,200,1000,10000 | 0,2,5,10,20 |
+| O | 0,100,300,1000,10000,40000 | 0,2,5,10,20,100 |
 
-`kremer(d,r)=F(a_d*N_eff(r)*innovationPpm,1000000)`.
-For S targets>=2 use a_d=400 instead of 40. AGRICULTURE owns S0→S1 only;
-DISCOVERY excludes that transition. No technology draw picks a domain: each
-eligible domain/target has its own hazard. DIFFUSION is the sole knowledge
-transmission; N_eff changes invention rate but never copies a neighbour's tier.
+All costs and thresholds are authored **[scenario]**, with no research backing
+claimed. kremer(d,r)=F(400*N_eff(r)*innovationPpm,1000000*cost[d][target]).
+AGRICULTURE additionally multiplies by domesticable resources / 1000, floored.
+AGRICULTURE owns S0->S1 only; DISCOVERY excludes it. Each eligible domain/target
+has its own hazard. DIFFUSION keeps its contact rate and copies one gated tier;
+N_eff never copies knowledge. Later capacities are typically 300,000--600,000
+persons per region (Kbase 5,000 times S4/S5); maintenance thresholds up to
+100,000 times learningBias/1000 are expressed in those same person units.
 
 ## Priors, origin and purposes [scenario]
 
@@ -971,14 +975,14 @@ only to the owner region. Its pre-state multi-region polity may split once,
 using the existing territory locks and flat IDs. Other regions retain their
 stocks and tiers even if their political owner splits. Params splitCount
 records accepted splits. One accepted COLLAPSE per region per tick; subsequent
-firings are pre-empted target-conflict. No repeat exposure while recovery remains active.
+firings are pre-empted target-conflict. No repeat exposure while recovery remains active or region.recoveries>=4 (M4a).
 RECOVERY still restores demographic/infrastructure viability, not lost tiers;
 rediscovery and diffusion restore knowledge. Losses never impose a permanent cap.
 
 ### 20 RECOVERY — P; threshold; phase 1; salience 700; M2a
 
 Owner/subject=region. Predicate collapse!=null && active &&
-pop*2>=recoverPop && infra*4>=recoverInfra*3. Clear collapse. No tier gift.
+pop*2>=recoverPop && infra*4>=recoverInfra*3. Clear collapse; increment region.recoveries capped at four. No tier gift.
 crossed.var=region.infra, value=infra*4, threshold=recoverInfra*3. Reset when
 predicate false; see collapse-episode conflict rule. Infrastructure decay can
 prevent recovery unless population/build capacity supports the target.
@@ -1058,7 +1062,7 @@ no-stock with no debit; otherwise infra-=10*accepted, fuel-=5*accepted,
 berthsUsed+=Number(accepted), transfer accepted source.pop→transit account.
 The reserve and minimum avoid launching single people as viable colonies.
 
-Reachability reads immutable routes, never other arcs' occupancy. T5/T6/T7
+Reachability reads immutable routes and locally delivered signals/targetFailures (M4a), never other arcs' live occupancy. T5/T6/T7
 in-system travel years=20/5/1 respectively. Interstellar requires T7;
 speed=10000 microLy/year, max distance=10000000 microLy; travelYears=
 C(distanceMicroLy,10000). Only explicit directed graph edges are routes;
@@ -2832,6 +2836,69 @@ site ID plus that founding tick, including on abandonment and later re-founding.
 When no earlier history is supplied, the left boundary declares the settlement
 view genesis. Every annotation retains zero stock effects.
 
+## Revision log (M4a, 2026-10-04)
+
+This is a dynamics revision, not research calibration. All new numbers below
+are **[scenario]**. Only the existing Morris energy figures retain their prior
+research attribution; none of these new costs, durations or mechanisms does.
+The intended rough spans, before measuring the ensemble, are E0->E1 1--20 kyr,
+E1->E3 2--30 kyr, E3->E4 0.3--5 kyr, E4->E5 1--15 kyr,
+E5->E6 2--30 kyr and E6->E7 2--50 kyr. These are diagnostic targets, not
+assertions, guarantees or a claim that historical futures are known.
+
+* Natural dynamics / recipes 3,8,10,11: replace the flat discovery rate and
+  Nstar with the per-domain/target rows above. Era gates and capture figures
+  are unchanged. No new RNG purpose: existing addressed acquisition hazards.
+* Recipes 25--30: colonies carry a finite founding knowledge archive/automation
+  reserve for 1,000 years from foundedYear. For an occupied region maintaining
+  a tier no greater than foundingTiers[d], maintenanceN_eff=max(local N_eff,
+  floor(Nstar[d][tier]*learningBias/1000)) until that deadline; otherwise it
+  equals local N_eff. This represents manuals, tools and automated instruction,
+  not extra people or live omniscient parent support. It neither increases
+  invention nor gifts/reacquires a tier. After expiry ordinary maintenance
+  applies. Founder count, costs, habitat gates and casualty rules are unchanged.
+* Recipe 26: exclude destinations in delivered arc.signals (including own
+  observed settlements) or unexpired arc.targetFailures. Unknown occupants
+  remain targetable. FIRST_CONTACT ignores same-lineage signals. Stale occupied
+  observations remain conservative until a failure notice; P never reads live
+  D occupancy. Existing alien broadcasts remain one-shot.
+* D2 after recipes 27--30: lost voyages, rejected arrivals, COLONY_LOST and
+  colony EXTINCTION publish TARGET_FAILURE to surviving same-lineage arcs
+  connected by a declared route in either direction (or on the same body).
+  Assume an automated failure beacon at the destination; lost voyages report
+  no earlier than planned arrival. Delivery=max(t+1,ceil((max(tickEnd,
+  plannedArrivalIfLost)+ceil(distanceMicroLy/1000000))/10)). Successful arrivals
+  send SIGNAL observations of the colony on those links. Payload adds failure
+  (null by default, otherwise {body,eventId}); other defaults are unchanged.
+* P0 TARGET_FAILURE deduplicates the last eventId per target and removes that
+  body's delivered occupancy signals. Store {body,count,eventId,untilYear}
+  sorted by body in arc.targetFailures, initially []. count=min(4,oldCount+1);
+  untilYear=deliveryYear+1000*2^(count-1). Separate loss/extinction notices each
+  increase backoff. This is local lineage knowledge carried by dated messages
+  and committed in structural and delta witnesses, not a query-order cache.
+* Recipes 19/20: region.recoveries initially 0 increments to a maximum 4 on
+  accepted RECOVERY, including recovery from perils. Generic COLLAPSE requires
+  recoveries<4. Four learned safeguards exhaust this model's generic complexity
+  failure modes per region/arc; catastrophes and perils remain possible. This
+  coarse finite bound is not universal immunity and does not reset on tier loss.
+* Recipe 17: with perils exited and polity max Information>=4, REVOLUTION gets
+  a renewal term of 4294967 Q32/decade (roughly a 10 kyr standalone mean),
+  representing generational constitutional replacement even at zero stress.
+  Reuse haz.REVOLUTION and evt.revolution.regime; no new purposes. Existing
+  natural risks and expansion continue after perils exit.
+* Append recoveries to the structural region tuple. Add sorted recoveries and
+  targetFailures delta slots; witness version becomes m4a-delta-witness-1.
+* lonely-earthlike uses a 2 Myr stable habitability window and 320 kyr horizon,
+  retaining the hard-step lottery. The prior 100 kyr cutoff imposed closure
+  on a temperate world without a stellar/ecological reason. forager-future
+  starts with the existing E0 post-sapience fixture in that domain for 120 kyr.
+  NO_LINEAGE remains possible in lonely-earthlike.
+
+M1 is unchanged. M2/M3 roots change because these rules change the contract
+and RNG namespace. Exact old/new receipts appear in the append-only M4a receipt
+below and docs/m4-implementation.md, outside the hash to avoid self-reference.
+P-path inputBundleDigest and forced.ticks horizon handling are unchanged.
+
 ## Machine-readable table
 
 This is the sole fenced `json` block in this document. `phase` and `trigger`
@@ -3023,7 +3090,8 @@ Atomic records do not grant permission to create undeclared record members.
         "lowTicks",
         "ceilings",
         "spaceflight",
-        "berthsUsed"
+        "berthsUsed",
+        "recoveries"
       ],
       "regionNestedTuples": {
         "damage": [
@@ -3146,6 +3214,160 @@ Atomic records do not grant permission to create undeclared record members.
       "narrative": "N consumes sorted event log and IDs; grammar and N result are separately digested; no solver imports N",
       "witnessVersion": "m3a-delta-witness-1",
       "townIdentity": "(siteId, foundingTick) from region-only canonical boundary history; omitted history declares left-boundary view genesis"
+    },
+    "m4a": {
+      "label": "scenario",
+      "discoveryBaseQ32": 400,
+      "discoveryCost": [
+        [
+          0,
+          2,
+          5,
+          10,
+          20,
+          100,
+          3000
+        ],
+        [
+          0,
+          2,
+          5,
+          10,
+          20,
+          100
+        ],
+        [
+          0,
+          2,
+          5,
+          10,
+          20,
+          100
+        ],
+        [
+          0,
+          2,
+          5,
+          10,
+          20,
+          100,
+          500,
+          2000
+        ],
+        [
+          0,
+          2,
+          5,
+          10,
+          20,
+          100
+        ],
+        [
+          0,
+          2,
+          5,
+          10,
+          20
+        ],
+        [
+          0,
+          2,
+          5,
+          10,
+          20,
+          100
+        ]
+      ],
+      "Nstar": [
+        [
+          0,
+          100,
+          500,
+          2000,
+          10000,
+          40000,
+          100000
+        ],
+        [
+          0,
+          50,
+          100,
+          500,
+          5000,
+          30000
+        ],
+        [
+          0,
+          100,
+          500,
+          1000,
+          10000,
+          50000
+        ],
+        [
+          0,
+          100,
+          300,
+          1000,
+          5000,
+          15000,
+          40000,
+          80000
+        ],
+        [
+          0,
+          50,
+          200,
+          1000,
+          10000,
+          40000
+        ],
+        [
+          0,
+          50,
+          200,
+          1000,
+          10000
+        ],
+        [
+          0,
+          100,
+          300,
+          1000,
+          10000,
+          40000
+        ]
+      ],
+      "colonyArchiveYears": 1000,
+      "maintenance": "max(N_eff,floor(Nstar*learningBias/1000)) for occupied colony region with tier<=foundingTiers before foundedYear+1000; ordinary N_eff otherwise",
+      "maxRecoveries": 4,
+      "renewalQ32": 4294967,
+      "cooldownYears": 1000,
+      "backoffCountCap": 4,
+      "targetFailuresRecord": [
+        "body",
+        "count",
+        "eventId",
+        "untilYear"
+      ],
+      "failurePayload": [
+        "body",
+        "eventId"
+      ],
+      "failureMessage": "TARGET_FAILURE",
+      "failureDelivery": "declared link either direction; light speed, at least next tick; lost voyage waits at least planned arrival",
+      "targetFilter": "exclude delivered signal body or targetFailures.untilYear > currentYear",
+      "newPurposes": [],
+      "scenarios": {
+        "lonely-earthlike": {
+          "habitabilityYears": 2000000,
+          "untilYear": 320000
+        },
+        "forager-future": {
+          "startEra": 0,
+          "untilYear": 120000
+        }
+      }
     }
   },
   "frameworkReads": [
@@ -3163,6 +3385,7 @@ Atomic records do not grant permission to create undeclared record members.
     "arc.polities",
     "arc.provenance",
     "arc.regions",
+    "arc.targetFailures",
     "arc.tick",
     "domain.arcs",
     "domain.bodyEpisodes",
@@ -3189,6 +3412,7 @@ Atomic records do not grant permission to create undeclared record members.
     "provenance.entries",
     "provenance.field",
     "provenance.target",
+    "region.recoveries",
     "voyage.hazard",
     "voyage.lastDeath"
   ],
@@ -3198,6 +3422,7 @@ Atomic records do not grant permission to create undeclared record members.
     "arc.lastDeath",
     "arc.latches",
     "arc.provenance",
+    "arc.targetFailures",
     "arc.tick",
     "domain.latches",
     "domain.tick",
@@ -3214,6 +3439,7 @@ Atomic records do not grant permission to create undeclared record members.
     "provenance.entries",
     "provenance.field",
     "provenance.target",
+    "region.recoveries",
     "voyage.hazard",
     "voyage.lastDeath"
   ],
@@ -3454,6 +3680,7 @@ Atomic records do not grant permission to create undeclared record members.
       "phase": 2,
       "milestone": "M2a",
       "reads": [
+        "arc.diffusionEdges",
         "input.environment",
         "polity.hegemony",
         "polity.id",
@@ -3462,8 +3689,7 @@ Atomic records do not grant permission to create undeclared record members.
         "region.polityId",
         "region.pop",
         "region.resources",
-        "region.tiers",
-        "arc.diffusionEdges"
+        "region.tiers"
       ],
       "writes": [
         "region.tiers"
@@ -3477,6 +3703,9 @@ Atomic records do not grant permission to create undeclared record members.
       "phase": 1,
       "milestone": "M2a",
       "reads": [
+        "arc.foundedYear",
+        "arc.foundingTiers",
+        "arc.isColony",
         "region.id",
         "region.lowTicks",
         "region.tiers"
@@ -3680,6 +3909,7 @@ Atomic records do not grant permission to create undeclared record members.
       "phase": 2,
       "milestone": "M2b",
       "reads": [
+        "arc.perils",
         "polity.eliteShare",
         "polity.endedYear",
         "polity.id",
@@ -3743,6 +3973,7 @@ Atomic records do not grant permission to create undeclared record members.
         "region.localId",
         "region.polityId",
         "region.pop",
+        "region.recoveries",
         "region.tiers"
       ],
       "writes": [
@@ -3778,10 +4009,12 @@ Atomic records do not grant permission to create undeclared record members.
         "region.collapse",
         "region.id",
         "region.infra",
-        "region.pop"
+        "region.pop",
+        "region.recoveries"
       ],
       "writes": [
-        "region.collapse"
+        "region.collapse",
+        "region.recoveries"
       ]
     },
     {
@@ -3930,6 +4163,9 @@ Atomic records do not grant permission to create undeclared record members.
       "milestone": "M2b",
       "reads": [
         "arc.colonizer",
+        "arc.evacuating",
+        "arc.signals",
+        "arc.targetFailures",
         "input.routes",
         "region.berthsUsed",
         "region.culture",
@@ -3940,8 +4176,7 @@ Atomic records do not grant permission to create undeclared record members.
         "region.localId",
         "region.pop",
         "region.spaceflight",
-        "region.tiers",
-        "arc.evacuating"
+        "region.tiers"
       ],
       "writes": [
         "arc.outbox",
@@ -4131,9 +4366,9 @@ Atomic records do not grant permission to create undeclared record members.
       "milestone": "M3a",
       "reads": [
         "arc.evacuating",
+        "input.environment",
         "region.pop",
-        "region.tiers",
-        "input.environment"
+        "region.tiers"
       ],
       "writes": [
         "arc.evacuating",
@@ -4149,10 +4384,10 @@ Atomic records do not grant permission to create undeclared record members.
       "phase": 0,
       "milestone": "M3a",
       "reads": [
-        "message.payload",
-        "message.targetId",
+        "arc.signals",
         "message.deliveryTick",
-        "arc.signals"
+        "message.payload",
+        "message.targetId"
       ],
       "writes": [
         "arc.signals"
@@ -4167,8 +4402,9 @@ Atomic records do not grant permission to create undeclared record members.
       "phase": 2,
       "milestone": "M3a",
       "reads": [
-        "arc.signals",
         "arc.contacts",
+        "arc.lineageId",
+        "arc.signals",
         "region.tiers"
       ],
       "writes": [
@@ -4523,6 +4759,15 @@ Atomic records do not grant permission to create undeclared record members.
         "INIT",
         "P0",
         "SIGNAL_ARRIVAL"
+      ]
+    },
+    {
+      "path": "arc.targetFailures",
+      "type": "Array",
+      "unit": "failure_memory_records",
+      "writtenBy": [
+        "INIT",
+        "P0"
       ]
     },
     {
@@ -5548,6 +5793,17 @@ Atomic records do not grant permission to create undeclared record members.
       ]
     },
     {
+      "path": "region.recoveries",
+      "type": "Number",
+      "unit": "completed_recoveries",
+      "writtenBy": [
+        "COLONY_FOUNDED",
+        "INIT",
+        "RECOVERY",
+        "SAPIENCE"
+      ]
+    },
+    {
       "path": "region.renewable",
       "type": "Number",
       "unit": "permille",
@@ -5810,7 +6066,7 @@ inside string values. Omitted fields/entries retain their previous values.
 
 ```json
 {
-  "version": "m3a-delta-witness-1",
+  "version": "m4a-delta-witness-1",
   "arcFields": [
     "body",
     "chains",
@@ -5836,6 +6092,7 @@ inside string values. Omitted fields/entries retain their previous values.
     "provenance",
     "scenarioParams",
     "signals",
+    "targetFailures",
     "tick"
   ],
   "regionFields": [
@@ -5859,6 +6116,7 @@ inside string values. Omitted fields/entries retain their previous values.
     "lowTicks",
     "polityId",
     "pop",
+    "recoveries",
     "renewable",
     "resources",
     "spaceflight",
@@ -5905,3 +6163,35 @@ survives, otherwise its stellar death witness yields EXTINCT_STELLAR.
 This appended policy is committed in manifests with non-null stellar doom.
 Worlds without stellar doom retain their prior RNG manifest. The original
 M3a machine block is historical for these two superseded rules.
+
+
+## M4a observational API table (non-causal annex)
+
+This append-only observation contract is outside the RNG manifest text because
+it changes no dynamics, state field, recipe, purpose, or witness. The public
+D compileSummary/run option onPerilsTick defaults to null. When supplied it is
+called once per executed tick after P steps, with a frozen fresh projection
+{tick,exitedArcs}: tick is a decimal tick string and exitedArcs is a frozen,
+sorted list of arc IDs whose phase-0 pre-state perils is exited. It exposes no
+mutable solver object; its return value is ignored. It permits exact streaming
+statistics without retaining all snapshots or simulating the history twice.
+Older roots lacking this option can produce the same observations through
+inspectSampleTicks. Observer presence must not change any result digest.
+
+```json
+{"version":"m4a-observation-1","scope":"non-causal D inspection","option":"onPerilsTick","default":null,"projection":{"tick":"decimal tick string","exitedArcs":"sorted frozen arc ID array; pre-state perils=exited"},"delivery":"once per executed tick after P steps","mutability":"frozen fresh projection, no live solver references","return":"ignored","digestEffect":"none"}
+```
+
+
+### M4a final golden receipt (2026-10-04)
+
+The M4a dynamics revision replaces the P temperate/civ-m2a-golden/100-year root
+`71ec3bb7c8f3b406a8f8b2f5c10891cc6126b9dfb8a85bacd145785986803521` with
+`cfe5fb1723eb574aaf24af031359ffdfd837c9e8f21c2c0281d74df5987e2acd`, and the
+D toy-12/toy-1/100-year root
+`9357a58823cecb9e5e4431f5388e973edb5c5fcf2f53fe9585528fedd330a117` with
+`adbb432ab45d9fa9e4d0ae7e670066f0832df76574a87348bd714c76ed6f9b0d`.
+Reason: changed authored dynamics, hashed transition contract/RNG namespace,
+and committed recovery/target memory state. This receipt is outside the
+hashed contract to avoid self-reference. The observer annex changes no root.
+M1 remains `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc`.

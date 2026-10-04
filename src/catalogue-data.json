@@ -243,6 +243,7 @@
     "phase": 2,
     "milestone": "M2a",
     "reads": [
+      "arc.diffusionEdges",
       "input.environment",
       "polity.hegemony",
       "polity.id",
@@ -251,8 +252,7 @@
       "region.polityId",
       "region.pop",
       "region.resources",
-      "region.tiers",
-      "arc.diffusionEdges"
+      "region.tiers"
     ],
     "writes": [
       "region.tiers"
@@ -267,6 +267,9 @@
     "phase": 1,
     "milestone": "M2a",
     "reads": [
+      "arc.foundedYear",
+      "arc.foundingTiers",
+      "arc.isColony",
       "region.id",
       "region.lowTicks",
       "region.tiers"
@@ -477,6 +480,7 @@
     "phase": 2,
     "milestone": "M2b",
     "reads": [
+      "arc.perils",
       "polity.eliteShare",
       "polity.endedYear",
       "polity.id",
@@ -542,6 +546,7 @@
       "region.localId",
       "region.polityId",
       "region.pop",
+      "region.recoveries",
       "region.tiers"
     ],
     "writes": [
@@ -578,10 +583,12 @@
       "region.collapse",
       "region.id",
       "region.infra",
-      "region.pop"
+      "region.pop",
+      "region.recoveries"
     ],
     "writes": [
-      "region.collapse"
+      "region.collapse",
+      "region.recoveries"
     ],
     "salience": 700
   },
@@ -736,6 +743,9 @@
     "milestone": "M2b",
     "reads": [
       "arc.colonizer",
+      "arc.evacuating",
+      "arc.signals",
+      "arc.targetFailures",
       "input.routes",
       "region.berthsUsed",
       "region.culture",
@@ -746,8 +756,7 @@
       "region.localId",
       "region.pop",
       "region.spaceflight",
-      "region.tiers",
-      "arc.evacuating"
+      "region.tiers"
     ],
     "writes": [
       "arc.outbox",
@@ -943,9 +952,9 @@
     "milestone": "M3a",
     "reads": [
       "arc.evacuating",
+      "input.environment",
       "region.pop",
-      "region.tiers",
-      "input.environment"
+      "region.tiers"
     ],
     "writes": [
       "arc.evacuating",
@@ -961,10 +970,10 @@
     "phase": 0,
     "milestone": "M3a",
     "reads": [
-      "message.payload",
-      "message.targetId",
+      "arc.signals",
       "message.deliveryTick",
-      "arc.signals"
+      "message.payload",
+      "message.targetId"
     ],
     "writes": [
       "arc.signals"
@@ -979,8 +988,9 @@
     "phase": 2,
     "milestone": "M3a",
     "reads": [
-      "arc.signals",
       "arc.contacts",
+      "arc.lineageId",
+      "arc.signals",
       "region.tiers"
     ],
     "writes": [

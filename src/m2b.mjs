@@ -7,13 +7,14 @@ import {weightedPick} from './rng.mjs';
 import {population,members,regionById,splitRecords} from './polities.mjs';
 import {min,max} from './tech.mjs';
 export const PERILS=['NUCLEAR_WAR','ENGINEERED_PANDEMIC','RUNAWAY_TECH'];
-export const payload=(patch={})=>({voyageId:null,kind:null,outcome:null,lossPermille:0,infraLossPermille:0,tierDrop:0,damagePermille:0,damageTicks:0,caps:null,launch:null,signal:null,...patch});
+export const payload=(patch={})=>({voyageId:null,kind:null,outcome:null,lossPermille:0,infraLossPermille:0,tierDrop:0,damagePermille:0,damageTicks:0,caps:null,launch:null,signal:null,failure:null,...patch});
 export function message(domain,tick,source,type,target,causeEventId,data,ordinal=0,deliveryTick=tick+1n) {
   return {id:`${domain}#msg:${tick}~${source}~${type}~${target}~${ordinal}`,type,causeEventId,targetId:target,deliveryTick,payload:payload(data)};
 }
 export const berths=r=>[4000n,8000n,16000n][r.tiers[3]-5]??0n;
-export function routesFor(def,r) {
+export function routesFor(def,r,pre=null) {
   return (def.routes??[]).filter(e=>e.from===def.planet.body&&e.travelYearsByTransportTier[r.tiers[3]]!==null&&
+    (!pre||!pre.signals.some(s=>s.body===e.to)&&!pre.targetFailures.some(f=>f.body===e.to&&Number(pre.tick*10n)<f.untilYear))&&
     (e.destinationHosting==='habitable'||e.destinationHosting==='habitat-buildable'&&r.tiers[0]>=5&&r.tiers[1]>=5));
 }
 export function extraOpportunities(def,pre,add) {
@@ -21,7 +22,7 @@ export function extraOpportunities(def,pre,add) {
   const term=(name,value)=>({name,value});
   add('NATURAL_CATASTROPHE',pre.id,[term('impact',214748n),term('volcano',214748n)]);
   const information=pre.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.tiers[4]):n,0);
-  for(const signal of pre.signals)if(!pre.contacts.some(c=>c.source===signal.source)&&(information>0||signal.physical))add('FIRST_CONTACT',pre.id,[term('signal',F(42949673n*BigInt(Math.max(signal.physical?1:0,information))*BigInt(signal.strength),1000n))],{source:signal.source},{edgeId:signal.source});
+  for(const signal of pre.signals)if(signal.lineageId!==pre.lineageId&&!pre.contacts.some(c=>c.source===signal.source)&&(information>0||signal.physical))add('FIRST_CONTACT',pre.id,[term('signal',F(42949673n*BigInt(Math.max(signal.physical?1:0,information))*BigInt(signal.strength),1000n))],{source:signal.source},{edgeId:signal.source});
   for(const p of pre.polities) {
     const rs=members(pre,p),maxI=rs.reduce((n,r)=>Math.max(n,r.tiers[4]),0);
     if(rs.length>=2) {
@@ -29,7 +30,7 @@ export function extraOpportunities(def,pre,add) {
       const capital=regionById(pre,p.capital),dist=rs.reduce((n,r)=>Math.max(n,F(r.culture.reduce((s,v,j)=>s+Math.abs(v-capital.culture[j]),0),3)),0);
       if(dist>=100||p.stress>=500)add('SCHISM',p.id,[term('distance',F(4294967n*BigInt(Math.max(dist,F(p.stress,2))),1000n))]);
     }
-    if(maxI>=1&&population(rs)>0n)add('REVOLUTION',p.id,[term('stress',F(4294967n*BigInt(p.stress)*BigInt(maxI),5000n))]);
+    if(maxI>=1&&population(rs)>0n)add('REVOLUTION',p.id,[term('stress',F(4294967n*BigInt(p.stress)*BigInt(maxI),5000n)),term('renewal',pre.perils==='exited'&&maxI>=4?4294967n:0n)]);
   }
   if(pre.perils==='active') {
     if(pre.regions.some(r=>r.pop>0n&&r.tiers[5]>=4&&r.tiers[4]>=4))add('ENGINEERED_PANDEMIC',pre.id,[term('prior',pre.scenarioParams.pandemicQ32)]);
@@ -40,7 +41,7 @@ export function extraOpportunities(def,pre,add) {
       if(armed.length>=2&&wars)add('NUCLEAR_WAR',pre.id,[term('prior',pre.scenarioParams.nuclearQ32*BigInt(Math.min(4,wars)))]);
     }
   }
-  if(override(def,'oracle.launchPeriodYears')===undefined&&(pre.colonizer||pre.evacuating)&&(pre.tick%10n===0n||pre.evacuating)&&def.routes?.length)for(const r of pre.regions)if(r.spaceflight&&r.tiers[3]>=5&&r.pop>4000n&&min(min(F(r.infra,10n),F(r.fuel,5n)),berths(r))>=2000n&&routesFor(def,r).length)
+  if(override(def,'oracle.launchPeriodYears')===undefined&&(pre.colonizer||pre.evacuating)&&(pre.tick%10n===0n||pre.evacuating)&&def.routes?.length)for(const r of pre.regions)if(r.spaceflight&&r.tiers[3]>=5&&r.pop>4000n&&min(min(F(r.infra,10n),F(r.fuel,5n)),berths(r))>=2000n&&routesFor(def,r,pre).length)
     add('LAUNCH',r.id,[term('window',pre.evacuating?4294967300n:429496730n)],{r:r.id},{edgeId:r.id+'~window'});
 }
 export function extraMagnitudes(def,pre,e,o) {
@@ -61,7 +62,7 @@ export function extraMagnitudes(def,pre,e,o) {
   if(e.kind==='REVOLUTION'){o.regime=magnitude(def,e.id,'evt.revolution.regime',0,5);e.params={regimeIndex:String(o.regime)};}
   if(e.kind==='SCHISM'){o.coordinate=magnitude(def,e.id,'evt.schism.coordinate',0,2);e.params={coordinate:String(o.coordinate)};}
   if(e.kind==='LAUNCH') {
-    const r=regionById(pre,o.r),route=weightedPick(address(def,e.id,'evt.launch.destination'),routesFor(def,r).map(route=>({id:route.to,weight:route.destinationHosting==='habitable'?1000n:200n,route}))).route;
+    const r=regionById(pre,o.r),route=weightedPick(address(def,e.id,'evt.launch.destination'),routesFor(def,r,pre).map(route=>({id:route.to,weight:route.destinationHosting==='habitable'?1000n:200n,route}))).route;
     o.route=route;e.params={persons:String(min(min(F(r.infra,10n),F(r.fuel,5n)),min(berths(r),max(0n,r.pop-2000n)))),travelYears:String(route.travelYearsByTransportTier[r.tiers[3]])};
   }
 }

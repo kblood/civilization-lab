@@ -6,7 +6,7 @@ import { threshold, advanceHazard, compactHazardKey as hazardKey } from './hazar
 import { eventId, hazardIntent, thresholdIntent, messageIntent, chainIntent, compareEvents, sortEvents } from './events.mjs';
 import { kindOf, IMPLEMENTED } from './catalogue.mjs';
 import { createDefinition, magnitude, chanceMagnitude, priors, override, originId } from './civ-input.mjs';
-import { DOMAINS, MAX_TIERS, NSTAR, CAPTURE, FUEL, gate, era, capacity, damage, pressure, bevertonHolt, min, max } from './tech.mjs';
+import { DOMAINS, MAX_TIERS, NSTAR, discoveryRate, maintenancePopulation, MAX_RECOVERIES, CAPTURE, FUEL, gate, era, capacity, damage, pressure, bevertonHolt, min, max } from './tech.mjs';
 import { prepareArc, regionById, polityById, population, members, fighting, clamp, polityRecord, splitRecords, naturalPolity, powerAt, rebuildOwnership } from './polities.mjs';
 import { refsUnique, newChain, advanceChain, chainWitness, participant } from './chains.mjs';
 import { addScore, distance, deriveScores, mergeProvenance, causes } from './provenance.mjs';
@@ -14,7 +14,7 @@ export { createDefinition } from './civ-input.mjs';
 export { bevertonHolt } from './tech.mjs';
 import { stateDigest } from './state-witness.mjs';
 import { transitionDigest, WITNESS_VERSION } from './delta-witness.mjs';
-import {extraOpportunities,extraMagnitudes,applyExtra,catastrophe,PERILS} from './m2b.mjs';
+import {extraOpportunities,extraMagnitudes,applyExtra,catastrophe,PERILS,routesFor} from './m2b.mjs';
 export { stateDigest } from './state-witness.mjs';
 const boundaryDigests=new WeakMap();
 const byId=(a,b)=>compare(a.id,b.id);
@@ -45,9 +45,9 @@ export function installEnvironment(def,a) {
 export function skeleton(def) {
   const a={id:def.arcId,lineageId:def.lineageId??'lin:'+def.planet.body,body:def.planet.body,episode:def.episode??0,foundedYear:Number(def.fromTick*10n),foundingTiers:Array(7).fill(0),
     lastDeath:null,isColony:false,colonizer:true,regions:[],polities:[],hazardLedger:[],hazardEpisodes:[],chains:[],provenance:[],latches:[],perils:'none',nonviable:false,
-    outcome:{biological:'extant',industrialEra:0,regressing:false,political:'none',terminal:false},scenarioParams:def.scenarioParams??priors(def,'lin:'+def.planet.body),inbox:[],outbox:[],tick:def.fromTick,evacuating:false,signals:[],contacts:[],diffusionEdges:[]};
+    outcome:{biological:'extant',industrialEra:0,regressing:false,political:'none',terminal:false},scenarioParams:def.scenarioParams??priors(def,'lin:'+def.planet.body),inbox:[],outbox:[],tick:def.fromTick,evacuating:false,signals:[],contacts:[],diffusionEdges:[],targetFailures:[]};
   a.regions=def.planet.partition.value.regions.map(r=>({id:a.id+'#'+r.id,localId:r.id,pop:0n,Kbase:0n,K:0n,renewable:1000,infra:0n,fuel:0n,forcing:0n,immunityTicks:20,
-    damage:[],polityId:null,cultureId:a.id+'#cul:founder',culture:[500,500,500],tiers:Array(7).fill(0),caps:[...MAX_TIERS],era:0,energy:0n,resources:[0,0,0,0],collapse:null,lowTicks:Array(7).fill(0),ceilings:[],spaceflight:false,berthsUsed:0}));
+    damage:[],polityId:null,cultureId:a.id+'#cul:founder',culture:[500,500,500],tiers:Array(7).fill(0),caps:[...MAX_TIERS],era:0,energy:0n,resources:[0,0,0,0],collapse:null,lowTicks:Array(7).fill(0),ceilings:[],spaceflight:false,berthsUsed:0,recoveries:0}));
   const initial=def.forced.initial;
   if(initial) {
     for(const r of a.regions) {
@@ -101,7 +101,7 @@ function natural(def,pre,next,scores,collectUpdates) {
       r.forcing=F(p.forcing*990n,1000n)+(p.tiers[0]===3?F(p.energy,1000n):p.tiers[0]===4?F(p.energy,2000n):0n);
       r.renewable=clamp(p.renewable+20-F(pressure(p),50));r.immunityTicks=Math.min(20,p.immunityTicks+1);
       r.lowTicks=p.lowTicks;
-      for(let d=0;d<7;d++){const v=p.tiers[d]>0&&neff<limits[d][p.tiers[d]]?Math.min(2,p.lowTicks[d]+1):0;
+      for(let d=0;d<7;d++){const v=p.tiers[d]>0&&maintenancePopulation(pre,p,d,neff,limits[d][p.tiers[d]])<limits[d][p.tiers[d]]?Math.min(2,p.lowTicks[d]+1):0;
         if(v!==p.lowTicks[d]){if(r.lowTicks===p.lowTicks)r.lowTicks=[...p.lowTicks];r.lowTicks[d]=v;}}
       const capital=owner&&regionById(pre,owner.capital);
       r.culture=capital&&p.culture.some((n,j)=>capital.culture[j]!==n)?p.culture.map((n,j)=>n+compare(capital.culture[j],n)):p.culture;
@@ -131,7 +131,7 @@ function thresholdIntents(def,pre,next) {
   const oraclePeriod=override(def,'oracle.launchPeriodYears');
   if(oraclePeriod!==undefined&&Number(pre.tick*10n)-pre.foundedYear===Number(oraclePeriod)){
     const r=pre.regions.find(r=>r.pop>4000n&&r.tiers[3]>=5);
-    if(r&&(def.routes??[]).some(route=>route.from===pre.body)){
+    if(r&&routesFor(def,r,pre).length){
       const e=event(def,pre,'LAUNCH',r.id,messageIntent(pre.id+'#front-oracle'),{mode:'scheduled'}),intent={e,r:r.id};
       extraMagnitudes(def,pre,e,intent);out.push(intent);
     }
@@ -200,12 +200,11 @@ function opportunities(def,pre) {
     const old=cache.get(r.id);
     if(old&&inputs.every((v,i)=>v===old.inputs[i])){out.push(...old.entries);continue;}
     const first=out.length,neff=effectivePopulation(def,pre,r);
-    const innovation=F(400n*neff*BigInt(pre.scenarioParams.innovationPpm),1000000n);
     const push=clamp(pressure(r)-700+damage(r)+(fighting(pre,r.polityId)?200:0)+(1000-r.renewable),0,2000);
     for(let d=0;d<7;d++) {
       const g=gate(r,d,def.planet.profile,owner);if(!g.eligible)continue;
       const kind=d===1&&r.tiers[d]===0?'AGRICULTURE':'DISCOVERY';
-      let rate=innovation;
+      let rate=discoveryRate(d,r.tiers[d]+1,neff,pre.scenarioParams.innovationPpm);
       if(kind==='AGRICULTURE')rate=F(rate*BigInt(r.resources[3]),1000n);
       add(kind,r.id,[term('kremer',rate)],{r:r.id,d,target:r.tiers[d]+1},{domain:DOMAINS[d],targetTier:r.tiers[d]+1});
     }
@@ -236,7 +235,7 @@ function opportunities(def,pre) {
       term('culture',F(2147483n*BigInt(dist),1000n))],{attacker:attacker.id,defender:defender.id,to:target.id});
   }
   let collapseCache=collapseOpportunities.get(def);if(!collapseCache){collapseCache=new Map();collapseOpportunities.set(def,collapseCache);}
-  for(const r of pre.regions.filter(r=>r.pop>0n&&r.era>=1&&!r.collapse?.active)) {
+  for(const r of pre.regions.filter(r=>r.pop>0n&&r.era>=1&&!r.collapse?.active&&r.recoveries<MAX_RECOVERIES)) {
     const owner=polityById(pre,r.polityId),stress=owner?.stress??100,complexity=r.tiers.reduce((a,b)=>a+b,0);
     const old=collapseCache.get(r.id);
     if(old&&old.stress===stress&&old.complexity===complexity){out.push(old.entry);continue;}
@@ -477,7 +476,7 @@ function applyIntents(def,pre,next,intents,scores) {
         }
         e.params.splitCount=String(count);if(count)splitEvents.push(e.id);break;
       }
-      case 'RECOVERY':if(canonicalString(r.collapse)!==canonicalString(p.collapse))preempt(e,'new-collapse');else op.set(e,r,'region','collapse',null);break;
+      case 'RECOVERY':if(canonicalString(r.collapse)!==canonicalString(p.collapse))preempt(e,'new-collapse');else {op.set(e,r,'region','collapse',null);op.set(e,r,'region','recoveries',Math.min(MAX_RECOVERIES,r.recoveries+1));}break;
       case 'EXTINCTION': {
         op.set(e,next,'arc','outcome',{...next.outcome,terminal:true,biological:'extinct'});
         for(const polity of next.polities)if(polity.endedYear===null)op.set(e,polity,'polity','endedYear',e.dateYear);
@@ -566,6 +565,7 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
   let phase0Sequence=0;
   if(hasInbox)for(const m of boundary.inbox) {
     const e={id:m.causeEventId??m.id,kind:m.payload.kind,dateYear:year,effects:[],data:{sets:[]},refs:[]},op=recorder(pre,m.causeEventId?scores:[],{sequenceStart:phase0Sequence,stage:1});
+    if(m.type==='TARGET_FAILURE'){const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);if(old?.eventId!==f.eventId){const count=Math.min(4,(old?.count??0)+1);op.set(e,pre,'arc','signals',pre.signals.filter(s=>s.body!==f.body));op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,untilYear:year+1000*2**(count-1)}].sort((a,b)=>compare(a.body,b.body)));}}
     if(m.type==='SHARED')catastrophe(boundary,pre,e,op,m.payload);
     if(m.type==='PERILS_EXIT')op.set(e,pre,'arc','perils','exited');
     if(m.type==='PERILS_REENTER')op.set(e,pre,'arc','perils',pre.outcome.industrialEra>=3||pre.perils!=='none'?'active':'none');

@@ -6,10 +6,10 @@ import {createDomain} from '../src/domain.mjs';
 import { canonicalBytes,freezeCanonical } from '../src/canonical.mjs';
 import { forced } from './civ-helpers.mjs';
 // Self-generated golden: stability only, not an independent correctness oracle.
-const GOLDEN='71ec3bb7c8f3b406a8f8b2f5c10891cc6126b9dfb8a85bacd145785986803521';
+const GOLDEN='cfe5fb1723eb574aaf24af031359ffdfd837c9e8f21c2c0281d74df5987e2acd';
 test('domain runs and child process match the self-generated short toy-12 golden',()=>{
   const make=()=>createDomain('fixtures/domains/toy-12.json','toy-1',{years:100});
-  const root=make().resultDigest();assert.equal(root,'9357a58823cecb9e5e4431f5388e973edb5c5fcf2f53fe9585528fedd330a117');assert.equal(make().resultDigest(),root);
+  const root=make().resultDigest();assert.equal(root,'adbb432ab45d9fa9e4d0ae7e670066f0832df76574a87348bd714c76ed6f9b0d');assert.equal(make().resultDigest(),root);
   const child=spawnSync(process.execPath,['src/cli.mjs','--domain','fixtures/domains/toy-12.json','--seed','toy-1','--years','100','--digest'],{encoding:'utf8',timeout:1500});
   assert.equal(child.status,0,child.stderr);assert.equal(child.stdout.trim(),root);
 });
