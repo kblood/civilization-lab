@@ -820,3 +820,18 @@ Isolated colonies can still die at reserve expiry. Far-future energy capture,
 material supply networks and specialist maintenance remain unmodelled. The
 Kremer panel and final full suite pass in this revision; prior failures above
 remain historical receipts. No perf:panel or visual review was performed.
+
+## Runner verification (Opus, 2026-10-04, commit 267254b)
+
+Run sequentially on a shared, heavily loaded machine (other agents' test suites
+were running), Node v24.7.0:
+
+- `npm test`: exit **0**; `tests 151, pass 151, fail 0, skipped 0`,
+  duration 24,487 ms.
+- `npm run perf:panel`: exit **1**. civ-m2a-1 8,445 ms; civ-m2a-2 13,699 ms;
+  civ-m2a-6 11,726 ms; worst 13,699 ms vs the 10,000 ms target: **NOT MET**
+  (it was already NOT MET before M4 at 12.3–12.8 s; this run is on a loaded
+  machine and is not an isolated regression measurement).
+- `npm run digest`: M1 `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc`, unchanged.
+- An earlier runner `npm test` on M4a (2efec1e) had 2 failures, both
+  1500 ms child-process ETIMEDOUTs under load; both files passed alone.
