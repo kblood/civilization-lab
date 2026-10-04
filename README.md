@@ -1,13 +1,16 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
-**M3a implemented for runner review:** horizon-independent P/D execution,
-stellar doom, signals/contact, cell and annual refinement, views, seeded
-narrative and five single-run scenarios. Final observed `npm test`: **101/101
-pass**; all eight new test files below two seconds, all five scenario examples
-below 0.3 seconds. See [the M3a handoff](docs/m3-implementation.md) for exact
-commands, changed goldens and the interior annual rounding limitation. M3b is
-not implemented. M1's golden remains unchanged.
+**M3b implemented for runner review:** exact annual cell/region/arc sums,
+finite stellar evacuation grace, five domain scenarios, deterministic parallel
+ensembles, causal explanations, Markdown reports and timeline SVGs. The
+64-seed ensemble meets all six observed variety bands (29913.38 ms).
+Observed `npm test`: **116 pass, 0 fail, 1 skipped**. **Kremer signature
+NOT MET:** cold median E2 is 3,981 years versus temperate 4,843; its assertion
+is explicitly skipped pending the runner's decision. **Visual check NOT done**
+(the runner owns rasterisation and Luna). See [the M3 handoff](docs/m3-implementation.md)
+and [the observed report](docs/evidence/m3b-report.md). M1 and the M3a short P/D
+goldens remain unchanged.
 **M1 implemented:** deterministic core, one-region toy, chapter replay and exact
 annual projection, with independent RNG/Merkle vectors and negative controls.
 **M2b implemented for runner review:** all 31 kinds, hard-step origins,
@@ -80,6 +83,10 @@ node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1
 node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-14 --years 100000
 npm run scenario -- --scenario lonely-earthlike --seed s1
 node src/cli.mjs --scenario crowded-domain --seed m3-1 --until-year 1000
+npm run scenario -- --ensemble 64
+node src/cli.mjs --ensemble 8 --scenario doomed-star --jobs 2 --out out/doom
+node src/cli.mjs --ensemble 8 --until-year 1000 --timeline crowded-domain-1
+node src/cli.mjs --ensemble 2 --scenario high-perils --timeline custom-seed
 npm run perf        # tools/perf-civ.mjs: 400 kyr, measured outside src/
 npm run perf:panel  # 400 kyr, seeds civ-m2a-1, -2, -6; worst-seed verdict
 ```
@@ -112,3 +119,16 @@ M2a fix-round evidence and remaining performance work are recorded in
 400 kyr survey with `node tools/survey-civ.mjs` (long-running, outside the lean
 unit suite). It writes counts, maximum eras, first attainment years and roots to
 `docs/evidence/m2a-fix-survey.json`. No survey outcome is a unit-test assertion.
+
+Ensemble seeds use global indices i=0..N-1: without --scenario, choose
+[lonely-earthlike, crowded-domain, harsh-anoxic, doomed-star, high-perils][i % 5],
+then name the seed <scenario>-<i>. With --scenario, use that scenario at every i.
+Default horizons are 120,000 years for lonely-earthlike and 30,000 for the
+other four. Default jobs = min(4, CPU count). Results are sorted by scenario
+and seed before aggregation; errored seeds stay in N. Output is out/report.md
+and at least one timeline per scenario. Repeated --timeline flags add requested
+seeds; additional seeds outside the ensemble get timelines but do not change N.
+An extra seed needs a scenario prefix or --scenario. Percentages truncate to
+one decimal using integer arithmetic. Wall times print separately to stderr,
+never into the byte-reproducible report or SVG. These are **seeded scenarios,
+model attribution, not predictions**.

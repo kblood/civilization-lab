@@ -1,0 +1,14 @@
+$ node --test tests/projection-year.test.mjs
+✔ arc, region and every cell: exact end boundaries, nonnegative values, rational error less than one (1064.5206ms)
+✔ hierarchical largest remainders preserve every annual sum and strict rational error (668.7548ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1806.8739
+
+Exit: 0
+Wall ms: 1840.00

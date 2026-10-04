@@ -1,0 +1,15 @@
+$ node --test tests/projection-cell.test.mjs
+✔ four active scenarios: every region/tick preserves populations, phase budgets, events and categorical state (1692.5213ms)
+✔ zero subtree, all-zero fallback, canonical epoch reweighting and independent-growth negative control (46.642ms)
+✔ town abandonment retains its founding identity across independent tick queries (0.9279ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1820.9353
+
+Exit: 0
+Wall ms: 1861.84

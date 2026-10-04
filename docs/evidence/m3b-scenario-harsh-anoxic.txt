@@ -1,0 +1,50 @@
+$ node src/cli.mjs --scenario harsh-anoxic --seed m3b-1
+Scenario harsh-anoxic; seed m3b-1; through year 30000; 1711 events.
+Outcome: EXTANT_MULTI_SYSTEM; maximum era E7.
+E0 first reached: 0
+E1 first reached: 510
+E2 first reached: 5510
+E3 first reached: 5940
+E4 first reached: 6030
+E5 first reached: 6210
+E6 first reached: 6260
+E7 first reached: 6290
+Most salient events (model attribution):
+COLONY_FOUNDED@7110 (stub:s00:b2); causes EXOGENOUS: LAUNCH@7106 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@7710 (stub:s01:b0); causes EXOGENOUS: LAUNCH@7309 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@8100 (stub:s01:b0); causes EXOGENOUS: LAUNCH@7700 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@8110 (stub:s01:b0); causes EXOGENOUS: LAUNCH@7708 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@8410 (stub:s01:b0); causes EXOGENOUS: LAUNCH@8001 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@9600 (stub:s01:b0); causes EXOGENOUS: LAUNCH@9200 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@9710 (stub:s00:b1); causes EXOGENOUS: LAUNCH@9700 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@10500 (stub:s01:b0); causes EXOGENOUS: LAUNCH@10100 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@10710 (stub:s01:b0); causes EXOGENOUS: LAUNCH@10309 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@11510 (stub:s01:b0); causes EXOGENOUS: LAUNCH@11101 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@12010 (stub:s01:b0); causes EXOGENOUS: LAUNCH@11602 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@13210 (stub:s01:b0); causes EXOGENOUS: LAUNCH@12807 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@13910 (stub:s01:b0); causes EXOGENOUS: LAUNCH@13504 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@14010 (stub:s00:b2); causes EXOGENOUS: LAUNCH@14008 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@15200 (stub:s01:b0); causes EXOGENOUS: LAUNCH@14800 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@15310 (stub:s01:b0); causes EXOGENOUS: LAUNCH@14908 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@15410 (stub:s01:b0); causes EXOGENOUS: LAUNCH@15004 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@16310 (stub:s01:b0); causes EXOGENOUS: LAUNCH@15909 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@16330 (stub:s00:b1); causes EXOGENOUS: LAUNCH@16309 (arc:stub:s00:b0:lin:stub:s00:b0:0#r03)
+COLONY_FOUNDED@16510 (stub:s00:b2); causes EXOGENOUS: LAUNCH@16506 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@17210 (stub:s00:b2); causes EXOGENOUS: LAUNCH@17201 (arc:stub:s00:b0:lin:stub:s00:b0:0#r02)
+COLONY_FOUNDED@17610 (stub:s01:b0); causes EXOGENOUS: LAUNCH@17207 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@17910 (stub:s01:b0); causes EXOGENOUS: LAUNCH@17502 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@18010 (stub:s01:b0); causes EXOGENOUS: LAUNCH@17608 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@18110 (stub:s00:b2); causes EXOGENOUS: LAUNCH@18109 (arc:stub:s00:b0:lin:stub:s00:b0:0#r02)
+COLONY_FOUNDED@18310 (stub:s01:b0); causes EXOGENOUS: LAUNCH@17902 (arc:stub:s00:b0:lin:stub:s00:b0:0#r03)
+COLONY_FOUNDED@18410 (stub:s01:b0); causes EXOGENOUS: LAUNCH@18002 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@18410 (stub:s01:b0); causes EXOGENOUS: LAUNCH@18005 (arc:stub:s00:b0:lin:stub:s00:b0:0#r03)
+COLONY_FOUNDED@19010 (stub:s01:b0); causes EXOGENOUS: LAUNCH@18609 (arc:stub:s00:b0:lin:stub:s00:b0:0#r02)
+COLONY_FOUNDED@19110 (stub:s01:b0); causes EXOGENOUS: LAUNCH@18709 (arc:stub:s00:b0:lin:stub:s00:b0:0#r03)
+Level consistency: PASS (36 sampled region-ticks; exact C/region/arc sums at every annual sample of sampled ticks).
+Manifest digest: 3d94765bded38ad056c3abc06254cdd393b6ab394f2ba49f5f2f6e29dc301262
+Recipe digest: 105c27d816815a4a7c053e8790b8773670b27eb76c1e07119e941a08903cb403
+Result digest: 5bf11f3c65964781f5ac256267b868cb8ad9ad40b69852fa308e7cca85876ce6
+Narrative digest: 78a9a704f85a60aab44e6ee4be761c81be89b06bf1d70567162263f22c7dcf93
+
+Exit: 0
+Wall ms: 1539.48

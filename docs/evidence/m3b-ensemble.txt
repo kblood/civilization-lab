@@ -1,0 +1,115 @@
+$ npm run scenario -- --ensemble 64
+
+> civilization-lab@0.0.0 scenario
+> node tools/scenario.mjs --ensemble 64
+
+Aggregate (seeded scenarios, model attribution, not predictions)
+industrialE3: 48/64 (75.0%)
+atomicE4: 40/64 (62.5%)
+interplanetary: 31/64 (48.4%)
+eraE5: 33/64 (51.5%)
+interstellar: 30/64 (46.8%)
+eraE6: 30/64 (46.8%)
+extinct: 10/64 (15.6%)
+extinctSelf: 5/64 (7.8%)
+extinctNatural: 1/64 (1.5%)
+extinctStellar: 4/64 (6.2%)
+extinctNaturalStellar: 5/64 (7.8%)
+colonyOnlyLoss: 27/64 (42.1%)
+noLineage: 10/64 (15.6%)
+collapseRecovery: 43/64 (67.1%)
+firstContact: 13/64 (20.3%)
+existentialCap: 9/64 (14.0%)
+error: 0/64 (0.0%)
+COLLAPSED_RECOVERING: 16/64 (25.0%); proximate causes: 14 COLLAPSE, 2 RUNAWAY_TECH, 1 ENGINEERED_PANDEMIC
+EXISTENTIAL_CAP: 8/64 (12.5%); proximate causes: 5 RUNAWAY_TECH, 3 ENGINEERED_PANDEMIC, 1 NUCLEAR_WAR
+EXTANT_MULTI_BODY: 7/64 (10.9%); proximate causes: 4 COLONY_FOUNDED, 3 ENERGY_TRANSITION
+EXTANT_MULTI_SYSTEM: 23/64 (35.9%); proximate causes: 13 COLONY_FOUNDED, 12 ENERGY_TRANSITION
+EXTANT_PLANETARY: 17/64 (26.5%); proximate causes: 21 ENERGY_TRANSITION, 2 INITIAL_STATE
+EXTINCT_NATURAL: 1/64 (1.5%); proximate causes: 1 NATURAL_UPDATE
+EXTINCT_SELF: 5/64 (7.8%); proximate causes: 3 ENGINEERED_PANDEMIC, 2 RUNAWAY_TECH
+EXTINCT_STELLAR: 4/64 (6.2%); proximate causes: 4 STELLAR_DOOM
+NO_LINEAGE: 10/64 (15.6%); proximate causes: none / not extinct
+REGRESSED_STABLE: 2/64 (3.1%); proximate causes: 2 ENERGY_TRANSITION
+Lower median time to E2: 0
+Lower median time to E3: 0
+PASS: outcome classes >= 4; observed 10
+PASS: collapse then recovery >= 1; observed 43
+PASS: E3 >= 1; observed 48
+PASS: self-extinction >= 1; observed 5
+PASS: multi-body lineage >= 1; observed 31
+PASS: NO_LINEAGE >= 1; observed 10
+SVG files:
+timeline-crowded-domain-crowded-domain-1.svg
+timeline-doomed-star-doomed-star-13.svg
+timeline-harsh-anoxic-harsh-anoxic-12.svg
+timeline-high-perils-high-perils-14.svg
+timeline-lonely-earthlike-lonely-earthlike-0.svg
+Seed wall ms: doomed-star/doomed-star-3 91.37
+Seed wall ms: lonely-earthlike/lonely-earthlike-0 142.52
+Seed wall ms: lonely-earthlike/lonely-earthlike-5 182.70
+Seed wall ms: harsh-anoxic/harsh-anoxic-2 477.80
+Seed wall ms: high-perils/high-perils-4 772.47
+Seed wall ms: doomed-star/doomed-star-8 157.66
+Seed wall ms: harsh-anoxic/harsh-anoxic-7 1311.70
+Seed wall ms: high-perils/high-perils-9 996.95
+Seed wall ms: crowded-domain/crowded-domain-6 3486.22
+Seed wall ms: lonely-earthlike/lonely-earthlike-10 1883.15
+Seed wall ms: harsh-anoxic/harsh-anoxic-12 611.47
+Seed wall ms: high-perils/high-perils-14 737.41
+Seed wall ms: lonely-earthlike/lonely-earthlike-15 185.64
+Seed wall ms: doomed-star/doomed-star-13 1867.60
+Seed wall ms: harsh-anoxic/harsh-anoxic-17 607.53
+Seed wall ms: crowded-domain/crowded-domain-1 7050.27
+Seed wall ms: crowded-domain/crowded-domain-11 5139.75
+Seed wall ms: lonely-earthlike/lonely-earthlike-20 189.60
+Seed wall ms: doomed-star/doomed-star-18 935.35
+Seed wall ms: high-perils/high-perils-19 895.30
+Seed wall ms: doomed-star/doomed-star-23 1194.04
+Seed wall ms: crowded-domain/crowded-domain-16 4441.55
+Seed wall ms: harsh-anoxic/harsh-anoxic-22 2333.39
+Seed wall ms: high-perils/high-perils-24 902.51
+Seed wall ms: lonely-earthlike/lonely-earthlike-25 153.54
+Seed wall ms: crowded-domain/crowded-domain-21 4025.54
+Seed wall ms: harsh-anoxic/harsh-anoxic-27 1981.16
+Seed wall ms: doomed-star/doomed-star-28 2078.24
+Seed wall ms: lonely-earthlike/lonely-earthlike-30 182.66
+Seed wall ms: high-perils/high-perils-29 759.76
+Seed wall ms: doomed-star/doomed-star-33 117.53
+Seed wall ms: harsh-anoxic/harsh-anoxic-32 884.11
+Seed wall ms: high-perils/high-perils-34 916.32
+Seed wall ms: crowded-domain/crowded-domain-26 3882.29
+Seed wall ms: harsh-anoxic/harsh-anoxic-37 548.40
+Seed wall ms: doomed-star/doomed-star-38 124.14
+Seed wall ms: high-perils/high-perils-39 891.98
+Seed wall ms: lonely-earthlike/lonely-earthlike-40 175.10
+Seed wall ms: crowded-domain/crowded-domain-31 4929.46
+Seed wall ms: lonely-earthlike/lonely-earthlike-35 4109.24
+Seed wall ms: harsh-anoxic/harsh-anoxic-42 381.24
+Seed wall ms: crowded-domain/crowded-domain-36 4541.77
+Seed wall ms: lonely-earthlike/lonely-earthlike-45 180.79
+Seed wall ms: doomed-star/doomed-star-43 1565.01
+Seed wall ms: high-perils/high-perils-44 1308.65
+Seed wall ms: doomed-star/doomed-star-48 1498.54
+Seed wall ms: crowded-domain/crowded-domain-41 4971.61
+Seed wall ms: harsh-anoxic/harsh-anoxic-47 1807.66
+Seed wall ms: lonely-earthlike/lonely-earthlike-50 582.07
+Seed wall ms: high-perils/high-perils-49 944.53
+Seed wall ms: crowded-domain/crowded-domain-46 3727.79
+Seed wall ms: doomed-star/doomed-star-53 963.10
+Seed wall ms: high-perils/high-perils-54 726.54
+Seed wall ms: lonely-earthlike/lonely-earthlike-55 180.56
+Seed wall ms: harsh-anoxic/harsh-anoxic-52 1738.14
+Seed wall ms: doomed-star/doomed-star-58 77.97
+Seed wall ms: harsh-anoxic/harsh-anoxic-57 800.20
+Seed wall ms: lonely-earthlike/lonely-earthlike-60 163.98
+Seed wall ms: high-perils/high-perils-59 1251.02
+Seed wall ms: crowded-domain/crowded-domain-51 5317.59
+Seed wall ms: harsh-anoxic/harsh-anoxic-62 1777.97
+Seed wall ms: crowded-domain/crowded-domain-56 4115.65
+Seed wall ms: doomed-star/doomed-star-63 1115.15
+Seed wall ms: crowded-domain/crowded-domain-61 4158.28
+Ensemble wall ms: 29913.38
+
+Exit: 0
+Wall ms: 30161.30

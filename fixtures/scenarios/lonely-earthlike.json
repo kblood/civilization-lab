@@ -1,8 +1,8 @@
 {
   "schemaVersion": "civ-scenario-1",
   "id": "lonely-earthlike",
-  "description": "fixtures/planets/temperate.json",
-  "startingFixture": "fixtures/regimes/agrarian.json",
+  "description": "fixtures/domains/m3b-lonely-earthlike.json",
+  "startingFixture": null,
   "overrides": [],
-  "untilYear": 1000
+  "untilYear": 120000
 }

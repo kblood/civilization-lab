@@ -5,8 +5,20 @@ import { IMPLEMENTED } from './catalogue.mjs';
 import { compareEvents } from './events.mjs';
 import {createDomain} from './domain.mjs';
 import {scenarioCLI} from './scenario-cli.mjs';
+import {ensemblePlan,runEnsemble,aggregate,DEFAULT_JOBS} from './ensemble.mjs';
+import {writeReport,aggregateText} from './report.mjs';
+import {SCENARIOS} from './scenario.mjs';
 const args=process.argv.slice(2), value=key=>args[args.indexOf(key)+1];
-if(args.includes('--scenario')) {
+if(args.includes('--ensemble')) {
+  const tasks=ensemblePlan(Number(value('--ensemble')),{scenario:args.includes('--scenario')?value('--scenario'):undefined,untilYear:args.includes('--until-year')?Number(value('--until-year')):undefined});
+  const runs=await runEnsemble(tasks,{jobs:args.includes('--jobs')?Number(value('--jobs')):DEFAULT_JOBS,timings:true});
+  const timelines=[...new Set(args.flatMap((a,i)=>a==='--timeline'?[args[i+1]]:[]))].sort();
+  const extras=timelines.filter(seed=>!runs.some(r=>r.seed===seed)).map(seed=>{const scenario=args.includes('--scenario')?value('--scenario'):SCENARIOS.find(s=>seed.startsWith(s+'-'));if(!scenario)throw new Error('Timeline seed needs a scenario prefix or --scenario');return {scenario,seed,untilYear:args.includes('--until-year')?Number(value('--until-year')):undefined};});
+  const extraRuns=extras.length?await runEnsemble(extras,{jobs:args.includes('--jobs')?Number(value('--jobs')):DEFAULT_JOBS}):[];
+  const files=writeReport(runs,{out:args.includes('--out')?value('--out'):'out',timelines,extraRuns});
+  console.log(aggregateText(aggregate(runs)));console.log('SVG files:\n'+files.join('\n'));
+  if([...runs,...extraRuns].some(r=>r.flags.error))process.exitCode=1;
+} else if(args.includes('--scenario')) {
   scenarioCLI(value('--scenario'),args.includes('--seed')?value('--seed'):'s1',args.includes('--until-year')?Number(value('--until-year')):undefined);
 } else if(args.includes('--domain')) {
   const fixture=value('--domain'),seed=args.includes('--seed')?value('--seed'):'toy-1';

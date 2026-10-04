@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "node --test --test-concurrency=1 \"tests/**/*.test.mjs\"",
-    "scenario": "node src/cli.mjs",
+    "scenario": "node tools/scenario.mjs",
     "digest": "node src/cli.mjs --digest",
     "perf": "node tools/perf-civ.mjs",
     "perf:panel": "node tools/perf-civ.mjs 400000 --panel civ-m2a-1,civ-m2a-2,civ-m2a-6"

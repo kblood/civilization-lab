@@ -1,0 +1,47 @@
+$ node src/cli.mjs --scenario doomed-star --seed m3b-1
+Scenario doomed-star; seed m3b-1; through year 3010; 74 events.
+Outcome: EXTINCT_STELLAR; maximum era E4.
+E0 first reached: 0
+E1 first reached: 0
+E2 first reached: 0
+E3 first reached: 0
+E4 first reached: 2910
+Most salient events (model attribution):
+EXTINCTION@3000 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes TRIGGERED: FAMINE@2810 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), TRIGGERED: FAMINE@2940 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+STELLAR_DOOM@3000 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+LINEAGE_EXTINCTION@3009 (lin:stub:s00:b0); causes TRIGGERED: STELLAR_DOOM@3000 (arc:stub:s00:b0:lin:stub:s00:b0:0)
+CLIMATE_CATASTROPHE@1390 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes TRIGGERED: WAR@1370 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), TRIGGERED: WAR@1380 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+CLIMATE_CATASTROPHE@1560 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes TRIGGERED: WAR@1490 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), TRIGGERED: WAR@1500 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+CLIMATE_CATASTROPHE@2800 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+CLIMATE_CATASTROPHE@2930 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes none
+CONQUEST@290 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+CONQUEST@380 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes CHAIN: WAR@359 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0)
+CONQUEST@600 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@578 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+CONQUEST@1030 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@1009 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+CONQUEST@1390 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@1360 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+CONQUEST@1510 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@1485 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+HEGEMONY@0 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+HEGEMONY@360 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes TRIGGERED: WAR@270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), TRIGGERED: WAR@280 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), TRIGGERED: PLAGUE@357 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+HEGEMONY@390 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes TRIGGERED: WAR@360 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0), TRIGGERED: WAR@370 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0), TRIGGERED: PLAGUE@357 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01), TRIGGERED: PLAGUE@360 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+HEGEMONY@1410 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes TRIGGERED: WAR@1370 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), TRIGGERED: WAR@1380 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), TRIGGERED: FAMINE@1400 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+ENERGY_TRANSITION@2905 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes ENABLED: DISCOVERY@2905 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+FRAGMENTATION@251 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:fixture:a); causes none
+WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes none
+WAR@270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+WAR@280 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+WAR@359 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes RAISED_HAZARD: WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: WAR@270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: WAR@280 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+WAR@360 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes CHAIN: WAR@359 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0)
+WAR@370 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0); causes CHAIN: WAR@359 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0)
+WAR@578 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes RAISED_HAZARD: WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: WAR@270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: WAR@280 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+WAR@580 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@578 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+WAR@590 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@578 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+WAR@1009 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes RAISED_HAZARD: WAR@265 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: WAR@270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: WAR@280 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1), RAISED_HAZARD: PLAGUE@888 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@890 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@970 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@980 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+WAR@1010 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1); causes CHAIN: WAR@1009 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:25:16:r00:1)
+Level consistency: PASS (12 sampled region-ticks; exact C/region/arc sums at every annual sample of sampled ticks).
+Manifest digest: 7776c985ea97fcc6459247b88225237dfaf9a51a0c79783e71553b122ce43045
+Recipe digest: 7d5c89a30606d160e5dcea397691616d1979d2bb0290d06c315a75f3dc939625
+Result digest: fd6c670585196e65d22b38099e3009f53b8ad4ae31daa490fd1b06c2383231bd
+Narrative digest: 518527c5322e05e61ab6632d499fcc1e65a8bf17a945a9633a1eaa247ebe2d7d
+
+Exit: 0
+Wall ms: 229.81

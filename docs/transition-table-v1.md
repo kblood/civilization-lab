@@ -5886,3 +5886,22 @@ inside string values. Omitted fields/entries retain their previous values.
   "natural": "Compact ledgers omit redundant naturalDelta/polityNatural rows. stepPlanet still returns updates by default; run inspection ledgers expand them. EndState commits all resulting state changes; replay recomputes natural updates."
 }
 ```
+
+## Runner decision 2026-10-04 (M3b)
+
+The M3a independent annual child floors and permanent evacuation pressure
+are superseded. Annual samples use hierarchical largest-remainder apportionment
+as specified in spec 9.4; categorical fields still change only at j=10.
+The scenario field parameters.stellarGraceYears defaults to 500 years (integer
+multiple of ten, 0..2000000). At doom plus grace the body becomes permanently
+uninhabitable. STELLAR_DOOM removes all remaining people in phase 0 regardless
+of tier; D rejects later arrivals. A lineage survives if another arc or voyage
+survives, otherwise its stellar death witness yields EXTINCT_STELLAR.
+
+```json
+{"version":"m3b-stellar-1","stellarGraceYears":{"override":"parameters.stellarGraceYears","default":500,"unit":"years","range":"0..2000000, multiple of 10","label":"scenario"},"annualApportionment":"hierarchical largest positive remainders; ties by child ID"}
+```
+
+This appended policy is committed in manifests with non-null stellar doom.
+Worlds without stellar doom retain their prior RNG manifest. The original
+M3a machine block is historical for these two superseded rules.

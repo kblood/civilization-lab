@@ -1,0 +1,8 @@
+Default ensemble artifact audit: 5 SVGs parse as XML; no NaN/Infinity/undefined; all <1000000 bytes.
+| timeline-crowded-domain-crowded-domain-1.svg | 78609 |
+| timeline-doomed-star-doomed-star-13.svg | 68503 |
+| timeline-harsh-anoxic-harsh-anoxic-12.svg | 43350 |
+| timeline-high-perils-high-perils-14.svg | 42302 |
+| timeline-lonely-earthlike-lonely-earthlike-0.svg | 60062 |
+Report copy matches out/report.md byte-for-byte.
+Visual check NOT done.

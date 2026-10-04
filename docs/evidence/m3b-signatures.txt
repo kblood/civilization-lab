@@ -1,0 +1,15 @@
+$ node --test tests/signatures.test.mjs
+Observed Kremer panel (10001 = no attainment by 10000): {"temperate":{"times":[4843,10001,3751,8314],"median":4843},"cold-archipelago":{"times":[3981,5990,1537,10001],"median":3981}}
+﹣ Kremer signature: cold median first E2 lags temperate (observed panel, not truth) (659.8134ms) # Observed failure: cold median 3981 <= temperate 4843. Priors unchanged; runner decision required.
+✔ Henrich signature: forced population cut triggers maintained-tech loss; uncut control retains it (13.5125ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 747.4118
+
+Exit: 0
+Wall ms: 780.74

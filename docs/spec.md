@@ -900,6 +900,20 @@ A parent tick ledger defines, for each child unit:
 
 ### 9.4 Annual path inside a tick (D3)
 
+**Runner decision 2026-10-04 (M3b).** The independent child floor bridges
+below are superseded. Only the arc root keeps the original floor formula. At
+j=0..9 each parent apportions its exact integer sample among its children
+using largest remainders of `10*s_i + j*d_i` modulo 10: start with each exact
+rational path's floor, then add one to the k largest positive remainders,
+where k is parent minus summed floors. Ties use child ID in code-unit ascending
+order; zero remainders never receive one. Apply first to regions, then cells.
+At j=10 use the exact ledger end populations, including event effects. This
+ensures exact sums at every sample, nonnegative values and strict error below
+one person from each child's rational natural path for j<10. Parents supply
+allocations; children never query siblings. No RNG.
+
+Original text (independent child floors superseded; root and staircase rules retained):
+
 - For `j = 0..9`, `P(tickStart + j) = P_start + floorDiv(j * naturalDelta, 10)`.
   At the end boundary (`j = 10`) the natural delta and every event's resolved
   integer effect are applied, so the path equals the ledger's `endState`

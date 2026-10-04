@@ -552,7 +552,9 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
   const environmentBoundary=boundary.tick===def.fromTick||boundary.tick%100n===0n||
     [life.habitableFromYear,life.habitableUntilYear].some(y=>year>=y&&year-10<y)||
     boundary.regions.some(r=>r.berthsUsed!==0||r.damage.some(d=>d.untilTick<=boundary.tick));
-  const doom=life.stellarDoomYear===year;
+  const doomEnd=life.stellarDoomYear==null?null:life.stellarDoomYear+Number(override(def,'parameters.stellarGraceYears')??500);
+  const expired=doomEnd!==null&&year>=doomEnd;
+  const doom=life.stellarDoomYear===year||expired;
   const hasInbox=boundary.inbox.length>0||doom;
   const pre=environmentBoundary||founding||hasInbox?copyArc(boundary):{...boundary,outbox:[]},scores=[],phase0events=[],inboxEffects=[];
   for(const e of arrivalEvents)for(const x of e.effects) {
@@ -572,8 +574,8 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
     inboxEffects.push({messageId:m.id,causeEventId:m.causeEventId,effects:e.effects,sets:e.data.sets.sort((a,b)=>compare(a.target,b.target)||compare(a.field,b.field))});
   }
   pre.inbox=[];
-  if(doom){const e=event(def,pre,'STELLAR_DOOM',pre.id,messageIntent(pre.id+'#doom'),{mode:'exogenous'},year,0),op=recorder(pre,scores,{stage:1});
-    if(pre.regions.some(r=>r.pop>0n&&r.tiers[0]>=5))op.set(e,pre,'arc','evacuating',true);else for(const r of pre.regions)op.loss(e,r,1000);
+  if(doom){const e=event(def,pre,'STELLAR_DOOM',pre.id,messageIntent(pre.id+(expired?'#doom-end':'#doom')),{mode:'exogenous'},year,0),op=recorder(pre,scores,{stage:1});
+    if(!expired&&pre.regions.some(r=>r.pop>0n&&r.tiers[0]>=5))op.set(e,pre,'arc','evacuating',true);else for(const r of pre.regions)op.loss(e,r,1000);
     phase0events.push(e);}
   if(environmentBoundary||founding||hasInbox) {
     const old=pre.regions.map(r=>({Kbase:r.Kbase,resources:r.resources}));installEnvironment(def,pre);

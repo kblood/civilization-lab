@@ -1,0 +1,68 @@
+ M README.md
+ M docs/m3-implementation.md
+ M docs/spec.md
+ M docs/transition-table-v1.md
+ M fixtures/scenarios/crowded-domain.json
+ M fixtures/scenarios/doomed-star.json
+ M fixtures/scenarios/harsh-anoxic.json
+ M fixtures/scenarios/high-perils.json
+ M fixtures/scenarios/lonely-earthlike.json
+ M package.json
+ M src/civ-input.mjs
+ M src/cli.mjs
+ M src/domain.mjs
+ M src/events.mjs
+ M src/inspection.mjs
+ M src/planet.mjs
+ M src/refine-year.mjs
+ M src/scenario-cli.mjs
+ M tests/contact-horizon.test.mjs
+ M tests/m3-helpers.mjs
+ M tests/projection-year.test.mjs
+?? docs/evidence/m3b-artifacts.txt
+?? docs/evidence/m3b-digest.txt
+?? docs/evidence/m3b-ensemble-test.txt
+?? docs/evidence/m3b-ensemble.txt
+?? docs/evidence/m3b-files.txt
+?? docs/evidence/m3b-plausibility-01.txt
+?? docs/evidence/m3b-plausibility-02.txt
+?? docs/evidence/m3b-plausibility-03.txt
+?? docs/evidence/m3b-plausibility-04.txt
+?? docs/evidence/m3b-projection-cell.txt
+?? docs/evidence/m3b-projection-year.txt
+?? docs/evidence/m3b-report.md
+?? docs/evidence/m3b-report.txt
+?? docs/evidence/m3b-scenario-crowded-domain.txt
+?? docs/evidence/m3b-scenario-doomed-star.txt
+?? docs/evidence/m3b-scenario-harsh-anoxic.txt
+?? docs/evidence/m3b-scenario-high-perils.txt
+?? docs/evidence/m3b-scenario-lonely-earthlike.txt
+?? docs/evidence/m3b-signatures.txt
+?? docs/evidence/m3b-stellar-grace.txt
+?? docs/evidence/m3b-tests.txt
+?? fixtures/domains/m3b-doomed-star.json
+?? fixtures/domains/m3b-harsh-anoxic.json
+?? fixtures/domains/m3b-high-perils.json
+?? fixtures/domains/m3b-lonely-earthlike.json
+?? fixtures/planets/m3b-doomed-star-system.json
+?? fixtures/planets/m3b-harsh-anoxic-system.json
+?? fixtures/planets/m3b-high-perils-system.json
+?? fixtures/planets/m3b-lonely-earthlike-system.json
+?? fixtures/scenarios/lonely-bounded.json
+?? src/annual-inspection.mjs
+?? src/ensemble.mjs
+?? src/report.mjs
+?? tests/ensemble.test.mjs
+?? tests/plausibility-01.test.mjs
+?? tests/plausibility-02.test.mjs
+?? tests/plausibility-03.test.mjs
+?? tests/plausibility-04.test.mjs
+?? tests/plausibility-helpers.mjs
+?? tests/report.test.mjs
+?? tests/signatures.test.mjs
+?? tests/stellar-grace.test.mjs
+?? tests/xml-helpers.mjs
+?? tools/build-m3b-fixtures.mjs
+?? tools/ensemble-worker.mjs
+?? tools/scenario.mjs
+?? tools/verify-m3b.mjs

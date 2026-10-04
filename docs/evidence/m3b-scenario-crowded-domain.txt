@@ -1,0 +1,50 @@
+$ node src/cli.mjs --scenario crowded-domain --seed m3b-1
+Scenario crowded-domain; seed m3b-1; through year 30000; 5815 events.
+Outcome: COLLAPSED_RECOVERING; maximum era E7.
+E0 first reached: 0
+E1 first reached: 0
+E2 first reached: 0
+E3 first reached: 0
+E4 first reached: 480
+E5 first reached: 710
+E6 first reached: 890
+E7 first reached: 1030
+Most salient events (model attribution):
+RUNAWAY_TECH@1394 (arc:stub:s01:b0:lin:stub:s01:b0:0); causes none
+COLONY_FOUNDED@2510 (stub:s01:b0); causes EXOGENOUS: LAUNCH@2103 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@2910 (stub:s01:b0); causes EXOGENOUS: LAUNCH@2502 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+COLONY_FOUNDED@3010 (stub:s03:b0); causes EXOGENOUS: LAUNCH@2603 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+COLONY_FOUNDED@3310 (stub:s01:b0); causes EXOGENOUS: LAUNCH@2908 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+COLONY_FOUNDED@3410 (stub:s00:b1); causes EXOGENOUS: LAUNCH@3403 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+EXTINCTION@3450 (arc:stub:s00:b1:lin:stub:s00:b0:0); causes TRIGGERED: COLONY_FOUNDED@3410 (stub:s00:b1)
+COLONY_FOUNDED@3510 (stub:s04:b0); causes EXOGENOUS: LAUNCH@3107 (arc:stub:s03:b0:lin:stub:s03:b0:0#r00)
+COLONY_FOUNDED@3610 (stub:s01:b0); causes EXOGENOUS: LAUNCH@3209 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@4110 (stub:s01:b0); causes EXOGENOUS: LAUNCH@3709 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@5110 (stub:s01:b0); causes EXOGENOUS: LAUNCH@4704 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+COLONY_FOUNDED@5110 (stub:s01:b0); causes EXOGENOUS: LAUNCH@4704 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+COLONY_FOUNDED@5210 (stub:s00:b1); causes EXOGENOUS: LAUNCH@5205 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+EXTINCTION@5250 (arc:stub:s00:b1:lin:stub:s00:b0:1); causes TRIGGERED: COLONY_FOUNDED@5210 (stub:s00:b1)
+COLONY_FOUNDED@5310 (stub:s02:b0); causes EXOGENOUS: LAUNCH@4901 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00)
+COLONY_FOUNDED@5410 (stub:s03:b0); causes EXOGENOUS: LAUNCH@5005 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+COLONY_FOUNDED@5510 (stub:s01:b0); causes EXOGENOUS: LAUNCH@5103 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+COLONY_FOUNDED@6010 (stub:s01:b0); causes EXOGENOUS: LAUNCH@5604 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@6100 (stub:s03:b0); causes EXOGENOUS: LAUNCH@5700 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+COLONY_FOUNDED@6110 (stub:s02:b0); causes EXOGENOUS: LAUNCH@5704 (arc:stub:s03:b0:lin:stub:s03:b0:0#r00)
+COLONY_FOUNDED@6110 (stub:s03:b0); causes EXOGENOUS: LAUNCH@5702 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+COLONY_FOUNDED@6210 (stub:s01:b0); causes EXOGENOUS: LAUNCH@5804 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLONY_FOUNDED@6310 (stub:s02:b0); causes EXOGENOUS: LAUNCH@5909 (arc:stub:s03:b0:lin:stub:s03:b0:0#r00)
+COLONY_FOUNDED@6710 (stub:s01:b0); causes EXOGENOUS: LAUNCH@6301 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLONY_FOUNDED@6710 (stub:s01:b0); causes EXOGENOUS: LAUNCH@6308 (arc:stub:s02:b0:lin:stub:s02:b0:0#r00)
+COLONY_FOUNDED@6810 (stub:s02:b0); causes EXOGENOUS: LAUNCH@6401 (arc:stub:s03:b0:lin:stub:s03:b0:0#r02)
+COLONY_FOUNDED@6910 (stub:s04:b0); causes EXOGENOUS: LAUNCH@6503 (arc:stub:s03:b0:lin:stub:s03:b0:0#r02)
+COLONY_FOUNDED@7100 (stub:s00:b0); causes EXOGENOUS: LAUNCH@6700 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00)
+COLONY_FOUNDED@7210 (stub:s02:b0); causes EXOGENOUS: LAUNCH@6806 (arc:stub:s01:b0:lin:stub:s01:b0:0#r00)
+COLONY_FOUNDED@7210 (stub:s03:b0); causes EXOGENOUS: LAUNCH@6804 (arc:stub:s02:b0:lin:stub:s02:b0:0#r01)
+Level consistency: PASS (36 sampled region-ticks; exact C/region/arc sums at every annual sample of sampled ticks).
+Manifest digest: 3304820ba59b451d31fc1e8b81c8863a72651e11adbdb450cd73e47c4d587dde
+Recipe digest: e4be8e4fe82a2f9ee1fdab2ca91447fc46c79c9124c459932d88344d99ec3355
+Result digest: 4571667c9ee3a460a15170f44a51b1d17ccac81fc67d845d7bfaa5126ba61419
+Narrative digest: ca4d02a71f8fea35a7a59dc4e08e03197739767bbebd42129f5db727b0b2dd0c
+
+Exit: 0
+Wall ms: 3579.27

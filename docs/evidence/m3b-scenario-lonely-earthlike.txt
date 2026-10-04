@@ -1,0 +1,13 @@
+$ node src/cli.mjs --scenario lonely-earthlike --seed m3b-1
+Scenario lonely-earthlike; seed m3b-1; through year 120000; 0 events.
+Outcome: NO_LINEAGE; maximum era E0.
+Era first reached: none (no lineage in this interval).
+Most salient events (model attribution):
+Level consistency: PASS (0 sampled region-ticks; exact C/region/arc sums at every annual sample of sampled ticks).
+Manifest digest: 67ecaaabe09e6ec5c551763ccbd28491f1add8079c6a6d2c8048613825de4dcd
+Recipe digest: 43c925d7b7bb3ef8f9f2a1f3038e41149ef5b6b3ddcba4510a19d5a2dc476142
+Result digest: 23be8702569982dd70b46776b53e33a540459e9c1c80d1a1bfa39311c44f3c04
+Narrative digest: e551208198e863baf9a26f24132d9fca633fb77708b52188acea9d8b1b125275
+
+Exit: 0
+Wall ms: 198.53

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "civ-scenario-1",
   "id": "harsh-anoxic",
-  "description": "fixtures/planets/anoxic.json",
+  "description": "fixtures/domains/m3b-harsh-anoxic.json",
   "startingFixture": "fixtures/regimes/post-sapience.json",
   "overrides": [],
-  "untilYear": 1000
+  "untilYear": 30000
 }

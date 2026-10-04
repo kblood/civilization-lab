@@ -4,6 +4,16 @@ import {createDomain} from '../src/domain.mjs';
 import {graph} from './domain-helpers.mjs';
 import {forced} from './civ-helpers.mjs';
 import {contactFixture} from './m3-kind-helpers.mjs';
+
+test('simultaneous physical encounters keep distinct signal IDs and the source body',()=>{
+  const input=graph(3);input.origins.push('stub:s01:b0');
+  const f=forced('COLONY_FOUNDED');f.initial.atTick='0';f.ticks=4;
+  Object.assign(f.initial.voyages[0],{destination:'stub:s01:b0',arrivalYear:5,deliveryTick:'1'});
+  f.initial.voyages.push({...f.initial.voyages[0],label:'b'});
+  const r=createDomain(input,f.seed,{forced:f}).run(),signals=r.events.filter(e=>e.kind==='SIGNAL_ARRIVAL');
+  assert.equal(signals.length,2);assert.equal(new Set(signals.map(e=>e.id)).size,2);
+  const receiver=r.state.arcs.find(a=>a.body==='stub:s01:b0');assert.equal(receiver.signals[0].body,'stub:s00:b0');
+});
 test('one immutable manifest: other lineage execution cannot change pre-contact prefix',()=>{
   const input=graph(3);input.origins.push('stub:s01:b0');
   const f=forced('COLONY_FOUNDED');f.initial.atTick='0';f.ticks=4;

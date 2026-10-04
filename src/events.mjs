@@ -98,7 +98,8 @@ export function sortEvents(events) {
   const sorted = events.map(validateEvent).sort(compareEvents);
   const groups = new Map();
   const ids = sorted.map(e => e.id).sort(compare);
-  if (ids.some((id, i) => i && id === ids[i - 1])) throw new TypeError('Duplicate event ID');
+  const duplicate=ids.find((id,i)=>i&&id===ids[i-1]);
+  if (duplicate) throw new TypeError('Duplicate event ID: '+duplicate);
   for (let i=0;i<sorted.length;i++) {
     let e=sorted[i];
     const key = JSON.stringify([e.ownerId, e.kind, e.tick]);

@@ -1,0 +1,16 @@
+$ node --test tests/ensemble.test.mjs
+✔ hand-built summaries have exact counts, lower medians, explanations and observed bands (1.117ms)
+✔ errored seeds remain in the denominator and completion order cannot drop them (93.3158ms)
+✔ explanations follow actual DAG edges, with explicit chronological expansion milestones (0.4054ms)
+✔ past colony extinction is a colony-only loss; nonviability alone is not extinction (0.539ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 156.9675
+
+Exit: 0
+Wall ms: 194.22

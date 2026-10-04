@@ -1,0 +1,47 @@
+$ node src/cli.mjs --scenario high-perils --seed m3b-1
+Scenario high-perils; seed m3b-1; through year 30000; 6511 events.
+Outcome: EXISTENTIAL_CAP; maximum era E4.
+E0 first reached: 0
+E1 first reached: 0
+E2 first reached: 0
+E3 first reached: 0
+E4 first reached: 680
+Most salient events (model attribution):
+RUNAWAY_TECH@791 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes ENABLED: DISCOVERY@783 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+RUNAWAY_TECH@796 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes ENABLED: DISCOVERY@783 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@187 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: PLAGUE@135 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@224 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01); causes RAISED_HAZARD: PLAGUE@140 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@2415 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@324 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:1), RAISED_HAZARD: WAR@330 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:1), RAISED_HAZARD: WAR@340 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:1)
+COLLAPSE@2415 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@324 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:1), RAISED_HAZARD: WAR@330 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:1), RAISED_HAZARD: WAR@340 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:18:19:r00:1)
+COLLAPSE@2721 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@2430 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:241:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:241:19:r00:0), RAISED_HAZARD: WAR@2440 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:241:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:241:19:r00:0), RAISED_HAZARD: WAR@2450 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:241:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:241:19:r00:0)
+COLLAPSE@2876 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@2895 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+COLLAPSE@3002 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@3077 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+COLLAPSE@3153 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: COLLAPSE@3077 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: FAMINE@3080 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@3247 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@3359 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: REVOLUTION@3181 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3172 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3180 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3310 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3320 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: DISCOVERY@3341 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: DISCOVERY@3340 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@3628 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: PLAGUE@3610 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLLAPSE@3752 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: COLLAPSE@3628 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: FAMINE@3630 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: PLAGUE@3610 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01)
+COLLAPSE@4045 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@4075 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@3773 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3780 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3790 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0)
+COLLAPSE@4211 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@3773 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3780 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3790 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: COLLAPSE@4075 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00), RAISED_HAZARD: FAMINE@4080 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+COLLAPSE@4391 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@3773 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3780 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3790 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0)
+COLLAPSE@4476 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@4647 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes RAISED_HAZARD: WAR@3773 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3780 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0), RAISED_HAZARD: WAR@3790 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:0)
+COLLAPSE@4850 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes RAISED_HAZARD: WAR@4759 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1), RAISED_HAZARD: WAR@4760 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1)
+COLLAPSE@5012 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@4914 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1), RAISED_HAZARD: WAR@4759 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1), RAISED_HAZARD: WAR@4760 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1)
+COLLAPSE@5017 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes RAISED_HAZARD: WAR@4759 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1), RAISED_HAZARD: WAR@4760 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1)
+COLLAPSE@5322 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@4914 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1), RAISED_HAZARD: WAR@4759 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1), RAISED_HAZARD: WAR@4760 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:464:19:r00:1)
+COLLAPSE@5381 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@5530 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+COLLAPSE@5579 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes RAISED_HAZARD: WAR@5369 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:532:19:r00:0), RAISED_HAZARD: WAR@5370 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:532:19:r00:0), RAISED_HAZARD: WAR@5380 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:307:19:r00:1>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:532:19:r00:0)
+COLLAPSE@5729 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+Level consistency: PASS (36 sampled region-ticks; exact C/region/arc sums at every annual sample of sampled ticks).
+Manifest digest: 311190f80d8ff7a673d1f209e57fd991b20eff1e480bb4b572e6486dcc28ac09
+Recipe digest: 5609e580697a94414e22a67f64b23687036b2fce87b3bf18737c08fb623684ef
+Result digest: 613a8e02523aeddca341f04e1e68e95bf72ad7aa82071ee11411a536ad579063
+Narrative digest: 9220cf2a0ebfaafb0a85c0c21fc929042ec48d23628f0cd3ad46010696b53e01
+
+Exit: 0
+Wall ms: 1803.44
