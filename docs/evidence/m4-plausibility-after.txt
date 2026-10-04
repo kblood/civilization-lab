@@ -5,103 +5,103 @@ Late events = accepted P events in last half of configured horizon with owning p
 Counts retain all N; outcome classes may overlap in multi-lineage domains.
 
 crowded-domain: N=30; errors=0
-Outcomes {"COLLAPSED_RECOVERING":18,"EXISTENTIAL_CAP":20,"EXTANT_MULTI_BODY":1,"EXTANT_MULTI_SYSTEM":2,"EXTANT_PLANETARY":26,"EXTINCT_NATURAL":6,"EXTINCT_SELF":11}
-Lineage outcomes {"COLLAPSED_RECOVERING":27,"EXISTENTIAL_CAP":27,"EXTANT_MULTI_BODY":1,"EXTANT_MULTI_SYSTEM":2,"EXTANT_PLANETARY":45,"EXTINCT_NATURAL":7,"EXTINCT_SELF":11}
-Reach {"E3":{"count":30,"N":30,"permille":1000},"E4":{"count":30,"N":30,"permille":1000},"E5plus":{"count":13,"N":30,"permille":433},"multiBody":{"count":7,"N":30,"permille":233}}
+Outcomes {"COLLAPSED_RECOVERING":24,"EXISTENTIAL_CAP":17,"EXTANT_MULTI_BODY":3,"EXTANT_PLANETARY":26,"EXTINCT_NATURAL":3,"EXTINCT_SELF":12}
+Lineage outcomes {"COLLAPSED_RECOVERING":33,"EXISTENTIAL_CAP":23,"EXTANT_MULTI_BODY":3,"EXTANT_PLANETARY":43,"EXTINCT_NATURAL":3,"EXTINCT_SELF":15}
+Reach {"E3":{"count":30,"N":30,"permille":1000},"E4":{"count":30,"N":30,"permille":1000},"E5plus":{"count":18,"N":30,"permille":600},"multiBody":{"count":11,"N":30,"permille":366}}
 Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)
 E0->E1 0 null/null/null 30/0/0/0 (0)
 E1->E3 0 null/null/null 30/0/0/0 (0)
-E3->E4 30 1130/2820/7650 0/0/0/0 (0)
-E4->E5 13 8280/10690/13900 0/17/0/0 (0)
-E5->E6 6 3930/10010/16330 0/24/0/0 (17)
-E6->E7 4 2970/3040/3440 0/26/0/0 (24)
-E3->E7 4 25290/27120/28890 0/26/0/0 (0)
-Extinctions {"EXTINCT_NATURAL":7,"EXTINCT_SELF":11}
-Colonisation {"LAUNCH":30,"COLONY_FOUNDED":30,"newColonies":19,"reinforcements":11,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":10,"rejected":{}}
-Collapse per seed {"median":13,"max":22}; perils collapses {"median":1,"max":4}
-Late post-exit {"acceptedPEvents":3742,"seedsWithEvents":{"count":12,"N":30,"permille":400},"kinds":{"AGRICULTURE":12,"CLIMATE_CATASTROPHE":44,"COLLAPSE":28,"CONQUEST":472,"DIFFUSION":511,"DISCOVERY":345,"ENERGY_TRANSITION":170,"EXTINCTION":3,"FAMINE":76,"FRAGMENTATION":11,"HEGEMONY":31,"LAUNCH":10,"MIGRATION":27,"PLAGUE":454,"POLITY_FOUNDING":25,"RECOVERY":21,"REVOLUTION":32,"SCHISM":4,"SPACEFLIGHT":27,"TECH_LOSS":1,"WAR":1438}}
+E3->E4 30 1160/3190/6510 0/0/0/0 (0)
+E4->E5 18 2700/8520/18630 0/12/0/0 (0)
+E5->E6 6 6050/9560/11190 0/24/0/0 (12)
+E6->E7 3 1110/4670/4670 0/27/0/0 (24)
+E3->E7 3 20150/21860/21860 0/27/0/0 (0)
+Extinctions {"EXTINCT_NATURAL":3,"EXTINCT_SELF":15}
+Colonisation {"LAUNCH":59,"COLONY_FOUNDED":59,"newColonies":45,"reinforcements":14,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":22,"rejected":{}}
+Collapse per seed {"median":14,"max":21}; perils collapses {"median":1,"max":5}
+Late post-exit {"acceptedPEvents":5275,"seedsWithEvents":{"count":15,"N":30,"permille":500},"kinds":{"AGRICULTURE":19,"CLIMATE_CATASTROPHE":65,"COLLAPSE":57,"CONQUEST":557,"DIFFUSION":665,"DISCOVERY":742,"ENERGY_TRANSITION":278,"EXTINCTION":6,"FAMINE":144,"FRAGMENTATION":9,"HEGEMONY":79,"LAUNCH":15,"MIGRATION":52,"NATURAL_CATASTROPHE":3,"PLAGUE":711,"POLITY_FOUNDING":44,"RECOVERY":43,"REVOLUTION":64,"SCHISM":3,"SPACEFLIGHT":39,"TECH_LOSS":8,"WAR":1672}}
 
 doomed-star: N=30; errors=0
 Outcomes {"EXTINCT_STELLAR":30}
 Lineage outcomes {"EXTINCT_STELLAR":30}
-Reach {"E3":{"count":30,"N":30,"permille":1000},"E4":{"count":8,"N":30,"permille":266},"E5plus":{"count":0,"N":30,"permille":0},"multiBody":{"count":0,"N":30,"permille":0}}
+Reach {"E3":{"count":30,"N":30,"permille":1000},"E4":{"count":5,"N":30,"permille":166},"E5plus":{"count":0,"N":30,"permille":0},"multiBody":{"count":0,"N":30,"permille":0}}
 Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)
 E0->E1 0 null/null/null 30/0/0/0 (0)
 E1->E3 0 null/null/null 30/0/0/0 (0)
-E3->E4 8 1410/2050/2600 0/22/0/0 (0)
-E4->E5 0 null/null/null 0/30/0/0 (22)
+E3->E4 5 1440/1660/2470 0/25/0/0 (0)
+E4->E5 0 null/null/null 0/30/0/0 (25)
 E5->E6 0 null/null/null 0/30/0/0 (30)
 E6->E7 0 null/null/null 0/30/0/0 (30)
 E3->E7 0 null/null/null 0/30/0/0 (0)
 Extinctions {"EXTINCT_STELLAR":30}
 Colonisation {"LAUNCH":0,"COLONY_FOUNDED":0,"newColonies":0,"reinforcements":0,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":0,"rejected":{}}
-Collapse per seed {"median":0,"max":2}; perils collapses {"median":0,"max":0}
+Collapse per seed {"median":0,"max":1}; perils collapses {"median":0,"max":0}
 Late post-exit {"acceptedPEvents":0,"seedsWithEvents":{"count":0,"N":30,"permille":0},"kinds":{}}
 
 forager-future: N=30; errors=0
-Outcomes {"COLLAPSED_RECOVERING":10,"EXISTENTIAL_CAP":9,"EXTANT_MULTI_SYSTEM":1,"EXTANT_PLANETARY":4,"EXTINCT_NATURAL":1,"EXTINCT_SELF":5}
-Lineage outcomes {"COLLAPSED_RECOVERING":10,"EXISTENTIAL_CAP":9,"EXTANT_MULTI_SYSTEM":1,"EXTANT_PLANETARY":4,"EXTINCT_NATURAL":1,"EXTINCT_SELF":5}
-Reach {"E3":{"count":26,"N":30,"permille":866},"E4":{"count":25,"N":30,"permille":833},"E5plus":{"count":5,"N":30,"permille":166},"multiBody":{"count":10,"N":30,"permille":333}}
+Outcomes {"COLLAPSED_RECOVERING":8,"EXISTENTIAL_CAP":6,"EXTANT_MULTI_BODY":1,"EXTANT_MULTI_SYSTEM":2,"EXTANT_PLANETARY":5,"EXTINCT_NATURAL":1,"EXTINCT_SELF":7}
+Lineage outcomes {"COLLAPSED_RECOVERING":8,"EXISTENTIAL_CAP":6,"EXTANT_MULTI_BODY":1,"EXTANT_MULTI_SYSTEM":2,"EXTANT_PLANETARY":5,"EXTINCT_NATURAL":1,"EXTINCT_SELF":7}
+Reach {"E3":{"count":26,"N":30,"permille":866},"E4":{"count":24,"N":30,"permille":800},"E5plus":{"count":7,"N":30,"permille":233},"multiBody":{"count":10,"N":30,"permille":333}}
 Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)
-E0->E1 30 330/4840/53430 0/0/0/0 (0)
-E1->E3 26 9170/23250/71670 0/4/0/0 (0)
-E3->E4 25 1620/5530/17000 0/5/0/0 (4)
-E4->E5 5 3560/21260/21320 0/25/0/0 (5)
-E5->E6 4 2500/16650/23890 0/26/0/0 (25)
-E6->E7 3 8350/30150/30150 0/27/0/0 (26)
-E3->E7 3 37830/63250/63250 0/27/0/0 (4)
-Extinctions {"EXTINCT_NATURAL":1,"EXTINCT_SELF":5}
-Colonisation {"LAUNCH":120,"COLONY_FOUNDED":118,"newColonies":78,"reinforcements":40,"COLONY_LOST":0,"VOYAGE_LOST":2,"repeatLaunchesToFailedTarget":73,"rejected":{}}
-Collapse per seed {"median":12,"max":77}; perils collapses {"median":0,"max":4}
-Late post-exit {"acceptedPEvents":17478,"seedsWithEvents":{"count":9,"N":30,"permille":300},"kinds":{"AGRICULTURE":15,"CLIMATE_CATASTROPHE":95,"COLLAPSE":145,"CONQUEST":2775,"DIFFUSION":1117,"DISCOVERY":896,"ENERGY_TRANSITION":471,"EXTINCTION":26,"FAMINE":243,"FRAGMENTATION":72,"HEGEMONY":106,"LAUNCH":40,"MIGRATION":70,"NATURAL_CATASTROPHE":6,"PLAGUE":2398,"POLITY_FOUNDING":60,"RECOVERY":123,"REVOLUTION":274,"SCHISM":21,"SPACEFLIGHT":79,"TECH_LOSS":27,"WAR":8419}}
+E0->E1 30 960/6830/67790 0/0/0/0 (0)
+E1->E3 26 10530/26530/74400 0/4/0/0 (0)
+E3->E4 24 1340/4720/20320 0/6/0/0 (4)
+E4->E5 7 2670/14080/28860 0/23/0/0 (6)
+E5->E6 5 890/16820/44630 0/25/0/0 (23)
+E6->E7 4 5410/11270/12100 0/26/0/0 (25)
+E3->E7 4 29750/34550/69940 0/26/0/0 (4)
+Extinctions {"EXTINCT_NATURAL":1,"EXTINCT_SELF":7}
+Colonisation {"LAUNCH":129,"COLONY_FOUNDED":128,"newColonies":83,"reinforcements":45,"COLONY_LOST":0,"VOYAGE_LOST":1,"repeatLaunchesToFailedTarget":79,"rejected":{}}
+Collapse per seed {"median":10,"max":65}; perils collapses {"median":0,"max":8}
+Late post-exit {"acceptedPEvents":22356,"seedsWithEvents":{"count":8,"N":30,"permille":266},"kinds":{"AGRICULTURE":23,"CLIMATE_CATASTROPHE":190,"COLLAPSE":193,"CONQUEST":3178,"DIFFUSION":2075,"DISCOVERY":1221,"ENERGY_TRANSITION":752,"EXTINCTION":29,"FAMINE":433,"FRAGMENTATION":71,"HEGEMONY":169,"LAUNCH":59,"MIGRATION":111,"NATURAL_CATASTROPHE":15,"PLAGUE":3458,"POLITY_FOUNDING":97,"RECOVERY":160,"REVOLUTION":336,"SCHISM":34,"SPACEFLIGHT":96,"TECH_LOSS":2,"WAR":9654}}
 
 harsh-anoxic: N=30; errors=0
-Outcomes {"COLLAPSED_RECOVERING":7,"EXTANT_MULTI_BODY":1,"EXTANT_PLANETARY":21,"EXTINCT_SELF":1}
-Lineage outcomes {"COLLAPSED_RECOVERING":7,"EXTANT_MULTI_BODY":1,"EXTANT_PLANETARY":21,"EXTINCT_SELF":1}
-Reach {"E3":{"count":8,"N":30,"permille":266},"E4":{"count":7,"N":30,"permille":233},"E5plus":{"count":1,"N":30,"permille":33},"multiBody":{"count":1,"N":30,"permille":33}}
+Outcomes {"COLLAPSED_RECOVERING":4,"EXISTENTIAL_CAP":1,"EXTANT_MULTI_BODY":3,"EXTANT_PLANETARY":21,"EXTINCT_SELF":1}
+Lineage outcomes {"COLLAPSED_RECOVERING":4,"EXISTENTIAL_CAP":1,"EXTANT_MULTI_BODY":3,"EXTANT_PLANETARY":21,"EXTINCT_SELF":1}
+Reach {"E3":{"count":10,"N":30,"permille":333},"E4":{"count":7,"N":30,"permille":233},"E5plus":{"count":2,"N":30,"permille":66},"multiBody":{"count":4,"N":30,"permille":133}}
 Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)
-E0->E1 21 2730/7230/17530 0/9/0/0 (0)
-E1->E3 8 11740/17140/19410 0/22/0/0 (9)
-E3->E4 7 750/1800/2330 0/23/0/0 (22)
-E4->E5 1 8880/8880/8880 0/29/0/0 (23)
-E5->E6 0 null/null/null 0/30/0/0 (29)
+E0->E1 18 370/2220/6510 0/12/0/0 (0)
+E1->E3 10 10190/14820/21150 0/20/0/0 (12)
+E3->E4 7 2380/3130/5220 0/23/0/0 (20)
+E4->E5 2 3090/3090/3090 0/28/0/0 (23)
+E5->E6 0 null/null/null 0/30/0/0 (28)
 E6->E7 0 null/null/null 0/30/0/0 (30)
-E3->E7 0 null/null/null 0/30/0/0 (22)
+E3->E7 0 null/null/null 0/30/0/0 (20)
 Extinctions {"EXTINCT_SELF":1}
-Colonisation {"LAUNCH":4,"COLONY_FOUNDED":4,"newColonies":4,"reinforcements":0,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":2,"rejected":{}}
-Collapse per seed {"median":0,"max":4}; perils collapses {"median":0,"max":1}
-Late post-exit {"acceptedPEvents":24,"seedsWithEvents":{"count":1,"N":30,"permille":33},"kinds":{"CONQUEST":1,"DIFFUSION":1,"DISCOVERY":2,"ENERGY_TRANSITION":1,"HEGEMONY":1,"PLAGUE":8,"RECOVERY":1,"REVOLUTION":1,"TECH_LOSS":5,"WAR":3}}
+Colonisation {"LAUNCH":10,"COLONY_FOUNDED":10,"newColonies":10,"reinforcements":0,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":2,"rejected":{}}
+Collapse per seed {"median":0,"max":5}; perils collapses {"median":0,"max":1}
+Late post-exit {"acceptedPEvents":247,"seedsWithEvents":{"count":3,"N":30,"permille":100},"kinds":{"AGRICULTURE":1,"CLIMATE_CATASTROPHE":1,"COLLAPSE":2,"CONQUEST":21,"DIFFUSION":33,"DISCOVERY":52,"ENERGY_TRANSITION":14,"EXTINCTION":1,"FAMINE":7,"FRAGMENTATION":2,"HEGEMONY":6,"LAUNCH":2,"MIGRATION":2,"NATURAL_CATASTROPHE":2,"PLAGUE":25,"POLITY_FOUNDING":6,"RECOVERY":2,"REVOLUTION":2,"SPACEFLIGHT":3,"WAR":63}}
 
 high-perils: N=30; errors=0
-Outcomes {"COLLAPSED_RECOVERING":21,"EXISTENTIAL_CAP":5,"EXTANT_PLANETARY":2,"EXTINCT_SELF":2}
-Lineage outcomes {"COLLAPSED_RECOVERING":21,"EXISTENTIAL_CAP":5,"EXTANT_PLANETARY":2,"EXTINCT_SELF":2}
-Reach {"E3":{"count":30,"N":30,"permille":1000},"E4":{"count":12,"N":30,"permille":400},"E5plus":{"count":0,"N":30,"permille":0},"multiBody":{"count":0,"N":30,"permille":0}}
+Outcomes {"COLLAPSED_RECOVERING":19,"EXISTENTIAL_CAP":5,"EXTANT_PLANETARY":5,"EXTINCT_SELF":1}
+Lineage outcomes {"COLLAPSED_RECOVERING":19,"EXISTENTIAL_CAP":5,"EXTANT_PLANETARY":5,"EXTINCT_SELF":1}
+Reach {"E3":{"count":30,"N":30,"permille":1000},"E4":{"count":11,"N":30,"permille":366},"E5plus":{"count":0,"N":30,"permille":0},"multiBody":{"count":0,"N":30,"permille":0}}
 Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)
 E0->E1 0 null/null/null 30/0/0/0 (0)
 E1->E3 0 null/null/null 30/0/0/0 (0)
-E3->E4 12 8510/13270/17200 0/18/0/0 (0)
-E4->E5 0 null/null/null 0/30/0/0 (18)
+E3->E4 11 9600/16900/25580 0/19/0/0 (0)
+E4->E5 0 null/null/null 0/30/0/0 (19)
 E5->E6 0 null/null/null 0/30/0/0 (30)
 E6->E7 0 null/null/null 0/30/0/0 (30)
 E3->E7 0 null/null/null 0/30/0/0 (0)
-Extinctions {"EXTINCT_SELF":2}
+Extinctions {"EXTINCT_SELF":1}
 Colonisation {"LAUNCH":0,"COLONY_FOUNDED":0,"newColonies":0,"reinforcements":0,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":0,"rejected":{}}
-Collapse per seed {"median":15,"max":29}; perils collapses {"median":0,"max":3}
+Collapse per seed {"median":15,"max":26}; perils collapses {"median":0,"max":5}
 Late post-exit {"acceptedPEvents":0,"seedsWithEvents":{"count":0,"N":30,"permille":0},"kinds":{}}
 
 lonely-earthlike: N=30; errors=0
-Outcomes {"COLLAPSED_RECOVERING":3,"EXISTENTIAL_CAP":10,"EXTANT_MULTI_SYSTEM":1,"EXTANT_PLANETARY":2,"EXTINCT_SELF":3,"NO_LINEAGE":11}
-Lineage outcomes {"COLLAPSED_RECOVERING":3,"EXISTENTIAL_CAP":10,"EXTANT_MULTI_SYSTEM":1,"EXTANT_PLANETARY":2,"EXTINCT_SELF":3}
-Reach {"E3":{"count":18,"N":30,"permille":600},"E4":{"count":18,"N":30,"permille":600},"E5plus":{"count":4,"N":30,"permille":133},"multiBody":{"count":9,"N":30,"permille":300}}
+Outcomes {"COLLAPSED_RECOVERING":4,"EXISTENTIAL_CAP":4,"EXTANT_MULTI_SYSTEM":4,"EXTANT_PLANETARY":5,"EXTINCT_SELF":2,"NO_LINEAGE":11}
+Lineage outcomes {"COLLAPSED_RECOVERING":4,"EXISTENTIAL_CAP":4,"EXTANT_MULTI_SYSTEM":4,"EXTANT_PLANETARY":5,"EXTINCT_SELF":2}
+Reach {"E3":{"count":15,"N":30,"permille":500},"E4":{"count":13,"N":30,"permille":433},"E5plus":{"count":5,"N":30,"permille":166},"multiBody":{"count":7,"N":30,"permille":233}}
 Era duration: from->to observed p10/p50/p90 left/right/no-lineage/errors (source not reached)
-E0->E1 19 660/6490/43720 0/0/11/0 (0)
-E1->E3 18 12490/19550/60250 0/1/11/0 (0)
-E3->E4 18 1140/6550/26230 0/1/11/0 (1)
-E4->E5 4 9340/11840/13620 0/15/11/0 (1)
-E5->E6 2 4660/4660/4660 0/17/11/0 (15)
-E6->E7 1 22620/22620/22620 0/18/11/0 (17)
-E3->E7 1 63100/63100/63100 0/18/11/0 (1)
-Extinctions {"EXTINCT_SELF":3}
-Colonisation {"LAUNCH":116,"COLONY_FOUNDED":115,"newColonies":71,"reinforcements":44,"COLONY_LOST":0,"VOYAGE_LOST":1,"repeatLaunchesToFailedTarget":73,"rejected":{}}
-Collapse per seed {"median":4,"max":78}; perils collapses {"median":0,"max":5}
-Late post-exit {"acceptedPEvents":13279,"seedsWithEvents":{"count":4,"N":30,"permille":133},"kinds":{"AGRICULTURE":4,"CLIMATE_CATASTROPHE":14,"COLLAPSE":44,"CONQUEST":2337,"DIFFUSION":258,"DISCOVERY":215,"ENERGY_TRANSITION":161,"EXTINCTION":18,"FAMINE":99,"FRAGMENTATION":71,"HEGEMONY":72,"LAUNCH":36,"MIGRATION":39,"NATURAL_CATASTROPHE":7,"PLAGUE":2493,"POLITY_FOUNDING":24,"RECOVERY":32,"REVOLUTION":203,"SCHISM":30,"SPACEFLIGHT":7,"TECH_LOSS":35,"WAR":7080}}
+E0->E1 16 5810/10970/26680 0/3/11/0 (0)
+E1->E3 15 11910/28760/52760 0/4/11/0 (3)
+E3->E4 13 1840/7920/21920 0/6/11/0 (4)
+E4->E5 5 4550/8330/42650 0/14/11/0 (6)
+E5->E6 4 5660/9550/47400 0/15/11/0 (14)
+E6->E7 4 3850/8520/10370 0/15/11/0 (15)
+E3->E7 4 18170/25110/80290 0/15/11/0 (4)
+Extinctions {"EXTINCT_SELF":2}
+Colonisation {"LAUNCH":221,"COLONY_FOUNDED":221,"newColonies":112,"reinforcements":109,"COLONY_LOST":0,"VOYAGE_LOST":0,"repeatLaunchesToFailedTarget":167,"rejected":{}}
+Collapse per seed {"median":0,"max":117}; perils collapses {"median":0,"max":5}
+Late post-exit {"acceptedPEvents":54851,"seedsWithEvents":{"count":5,"N":30,"permille":166},"kinds":{"AGRICULTURE":15,"CLIMATE_CATASTROPHE":117,"COLLAPSE":300,"CONQUEST":9651,"DIFFUSION":1994,"DISCOVERY":1140,"ENERGY_TRANSITION":1016,"EXTINCTION":65,"FAMINE":459,"FRAGMENTATION":211,"HEGEMONY":327,"LAUNCH":135,"MIGRATION":149,"NATURAL_CATASTROPHE":22,"PLAGUE":8619,"POLITY_FOUNDING":103,"RECOVERY":245,"REVOLUTION":841,"SCHISM":97,"SPACEFLIGHT":68,"TECH_LOSS":77,"WAR":29200}}

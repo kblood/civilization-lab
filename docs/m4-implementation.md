@@ -286,3 +286,200 @@ represented as a newly observed full-suite pass. The runner should run its
 normal final checks before committing. No assertion was removed or weakened.
 
 The complete changed/new file inventory is [m4-files.txt](evidence/m4-files.txt).
+
+
+## M4b — horizon independence
+
+Item 6 only, 2026-10-04. No git writes, commits, network, dependencies,
+preview, or edits to Universe Atlas / .agent-scratch/before. Earlier M4a
+receipts above remain historical; this section supersedes the deferred
+horizon issue and records the M4b tree.
+
+### Before/after experiment
+
+Run before any production edits:
+`node tools/m4b-horizon-probe.mjs docs/evidence/m4b-horizon-before.json`
+(exit 0). Repeat after the fix:
+`node tools/m4b-horizon-probe.mjs docs/evidence/m4b-horizon-after.json`
+(exit 0). Full hashes and equality observations are in those two JSON files.
+These are local experimental observations, not external research claims.
+
+| Public path / selector | Before | After |
+|---|---|---|
+| createPlanet, forced.ticks 11 vs 23, from tick 0 | Dependent manifest, recipe and ledger/witness prefix; event IDs and full events happened to agree | All equal |
+| createDomain, forced.ticks 11 vs 23, from tick 0 | Dependent manifest, recipe, full events and ledger/witness prefix; event IDs happened to agree | All equal |
+| P and D, forced.ticks 3 vs 7, initial.atTick=638 | Dependent manifest, recipe, event IDs, full events and ledgers/witnesses | All equal |
+| P and D, untilYear 110 vs 230 with unchanged fixture | Already independent | All equal |
+| P and D, untilYear 6410 vs 6450, initial.atTick=638 | Already independent | All equal |
+| P and D, years 110 vs 230, no forced fixture | Already independent | All equal |
+| P scenario lonely-bounded and D scenario crowded-domain, untilYear 110 vs 230 | Already independent | All equal |
+| Actual --civ --years, --domain --years, --scenario --until-year (P and D) processes | Already equal manifest/recipe digests; corresponding API runs above verify full prefixes | Still equal |
+
+All 16 probe rows pass after the change. The seed is m4b-probe except for
+the explicit PLAGUE start (m2-reach:PLAGUE). Domain years measures duration
+after first sapience, so its absolute endpoints differ from standalone P.
+No claim is made that the CLI prints complete ledgers: the experiment checks
+those through the same public APIs the CLI calls.
+
+### Root fix and validation
+
+Both constructors use forcedModelInput: null stays null; otherwise remove
+only ticks and add the fixed JSON integer modelTickMaximum=40000. Preserve
+schemaVersion, id, base, seed, initial (including atTick), overrides and expect.
+The input fixture remains immutable and retains its requested ticks for
+execution. The recipe remains digest({seed,manifest,fromTick}); neither endpoint
+nor requested duration reaches a manifest or RNG address.
+
+Validate supplied ticks even when untilYear overrides it, and independently
+validate the effective duration (1..40000), the two-million-year fixture
+endpoint, and D's declared domain upper bound. P resolves the supported
+initial override alias before endpoint arithmetic. Domain bounds, lifecycle
+bounds and initial state remain genuine declared data, not normalized away.
+No dynamics, prior, hazard, witness encoding, or timeout was changed.
+
+The binding contract's exact manifest construction, fixture schema prose,
+M3a exception and machine-readable forcedManifestProjection /
+forcedExecutionBounds / horizon rules are updated. The dated M4b rule revision
+is hashed; golden receipts are in an annex outside the hashed contract.
+
+### Golden receipts
+
+| Check | M4a old | M4b new | Reason |
+|---|---|---|---|
+| P: temperate / civ-m2a-golden / 100 years | `cfe5fb1723eb574aaf24af031359ffdfd837c9e8f21c2c0281d74df5987e2acd` | `1567cb59f6fcb4243e8b492ef3243ea6631711335ea0ba048027e2db795213f8` | Forced model projection replaces ticks with fixed modelTickMaximum; revised contract/table also changes RNG namespace. |
+| D: toy-12 / toy-1 / 100 years | `adbb432ab45d9fa9e4d0ae7e670066f0832df76574a87348bd714c76ed6f9b0d` | `c998e6fff27bc9394f24e9882959f8ef08409c9871eb28a334c796ade079dbed` | This non-forced bundle is unchanged, but the revised shared contract/table changes RNG namespace. |
+| M1 | `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc` | unchanged, observed | M1 does not use this contract or projection. |
+
+Observed commands (each exit 0):
+`npm run digest`;
+`node src/cli.mjs --civ temperate --seed civ-m2a-golden --years 100 --digest`;
+`node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1 --years 100 --digest`.
+
+### Regression coverage and retained failures
+
+The existing horizon-prefix file is unchanged. The new m4b-horizon-prefix
+file checks P and D forced durations across tick 640 (638..641 vs 638..645),
+absolute endpoint precedence and rounding, P via scenario, full events and
+event IDs, complete inspection ledgers, P chapter prefixes and D per-arc
+prefix roots. The negative control reconstructs the old actual
+digest({domain,systems,forced}) rule and independently detects unequal
+manifest, recipe and ledger witnesses. Boundary checks retain non-horizon
+data, reject invalid input/effective bounds, and cover nonzero initial alias
+arithmetic and input immutability.
+
+Initial focused command:
+`node --test tests/horizon-prefix.test.mjs tests/fixtures-reach.test.mjs tests/catalogue.test.mjs tests/refinement-query-order.test.mjs tests/perf-budget.test.mjs tests/signatures.test.mjs`
+returned **11 pass / 2 fail, exit 1**. Both failures were seed exposure checks
+after the RNG namespace revision, not prefix or timeout failures:
+
+- perf-budget's civ-m2a-2 no longer emitted >=100 events. Change only the
+  workload seed to civ-m2a-9, observed 122 events and three populated regions.
+  Keep the 20 kyr horizon, >=100 events, advanced/populated-state checks,
+  result digest validation and <2000 ms timing assertion.
+- crowded-domain refinement m3-1 had no local annotation in two ticks.
+  Change only that workload to m3-2 (three local annotations observed).
+  Keep mandatory/local exposure, every warm/cold/reordered byte comparison
+  and the 1500 ms child timeout. Lonely m3-4 is unchanged.
+
+Repeat:
+`node --test tests/civ-determinism.test.mjs tests/refinement-query-order.test.mjs tests/perf-budget.test.mjs`
+returned **7 pass / 0 fail, exit 0**.
+
+Additional affected checks:
+`node --test tests/outcomes.test.mjs tests/expansion.test.mjs tests/m2a-fix.test.mjs tests/contact-horizon.test.mjs tests/domain-order.test.mjs tests/conservation.test.mjs tests/scenario.test.mjs tests/stellar-grace.test.mjs tests/projection-year.test.mjs tests/projection-cell-domain.test.mjs tests/report.test.mjs`
+returned **39 pass / 0 fail, exit 0**. Parallel focused durations are not
+presented as individual-file timing evidence.
+
+### Supplemental ensemble-wrapper experiment
+
+The initial before probe exercised all requested P/D/scenario paths before
+editing production. A supplemental wrapper probe also exercises ensemblePlan,
+runSeed, runEnsemble with jobs=2, and actual --ensemble --until-year CLI
+processes at 110/230 years. For the before observation only, source, fixtures,
+the contract and the ensemble worker were exported from commit 2efec1e with
+read-only git ls-tree / git show into out/m4b-baseline. No git index/worktree
+operation or edit to .agent-scratch/before was used.
+
+Commands:
+`node tools/m4b-ensemble-probe.mjs out/m4b-baseline docs/evidence/m4b-ensemble-before.json`;
+`node tools/m4b-ensemble-probe.mjs . docs/evidence/m4b-ensemble-after.json`.
+Both completed with exit 0. All three wrapper rows were already independent
+and remain independent: manifest/recipe agree; runSeed and worker outputs
+also have identical accepted event prefixes. CLI reports expose digests,
+not full ledgers. The earlier D/scenario probe supplies ledger evidence.
+The first supplemental before attempt failed because the exported tree omitted
+tools/ensemble-worker.mjs; after exporting that file it passed. That failed
+probe is an export setup error, not evidence of horizon dependence.
+
+### Refreshed ensemble
+
+`node tools/m4-plausibility.mjs --n 30 --jobs 1 --out docs/evidence/m4-plausibility-after.json`
+uses the same final-M4a arguments and all 180 seeds. Observed exit **1**:
+zero simulation errors, but lonely-earthlike-6 compiled in **35,868.78 ms**
+and completed diagnostics in **36,179.71 ms**, exceeding the tool's 30-second
+compile budget. Timings are in out/m4b-after-timings.txt. No performance
+parameter was changed to hide this failure.
+
+Both docs/evidence/m4-plausibility-after.json and .txt are regenerated.
+**Numbers changed:** all six summaries and all 180 per-seed result digests
+differ from M4a. docs/m4-plausibility.md now uses the fresh data throughout,
+including outcomes, colonisation, collapse, late events and all era-duration
+censoring rows. The pre-M4 baseline was not changed. E5+ counts M4a → M4b:
+crowded 13→18, doomed 0→0, forager 5→7, harsh 1→2, high-perils 0→0,
+lonely 4→5. No new calibration or fixed-random-variates causal claim is made.
+
+### Individual-file timings
+
+Each row ran sequentially as `node --test <file>`, with PowerShell Stopwatch
+measuring the complete process. Every row exited 0. During the ensemble,
+civ-determinism and refinement-query-order initially took 2772.87 and
+2771.85 ms; they were remeasured after the ensemble stopped. The unchanged
+signatures file took 5408.30 ms during the ensemble, then 2560.39 ms alone.
+
+| File | Passed | Node duration ms | Process wall ms |
+|---|---:|---:|---:|
+| tests/m4b-horizon-prefix.test.mjs | 5 | 1834.8106 | 1931.38 |
+| tests/horizon-prefix.test.mjs (unchanged) | 3 | 712.1833 | 789.37 |
+| tests/civ-determinism.test.mjs (after ensemble) | 4 | 1303.7169 | 1359.13 |
+| tests/perf-budget.test.mjs | 2 | 1278.0457 | 1350.71 |
+| tests/refinement-query-order.test.mjs (after ensemble) | 1 | 1386.6702 | 1426.84 |
+| tests/signatures.test.mjs (unchanged, after ensemble) | 2 | 2520.9526 | 2560.39 |
+
+New/changed test files meet the two-second individual target in these
+measurements. **NOT MET:** the unchanged legacy signatures file exceeds two
+seconds on the revised RNG history. Its horizon, seed panel and assertions
+are untouched. Its observed cold median remains 26,697 > temperate 11,538;
+each has at least two attainments, so neither assertion was skipped.
+The ensemble's 30-second compile target is also **NOT MET** as recorded above.
+
+### Sole final full-suite execution
+
+`npm test` was run **exactly once**, after the final code, fixtures, test
+repins and ensemble/report updates. Full output is out/m4b-full-tests.txt.
+Observed exit **0**, exact summary:
+
+```text
+ℹ tests 142
+ℹ suites 0
+ℹ pass 142
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19830.0413
+```
+
+Neither civ-determinism nor refinement-query-order timed out, so the
+conditional post-full-run timeout reruns were not needed. No test, source or
+hashed contract edits followed the full invocation; only documentation
+receipts and file inventory were appended. All original assertions remain;
+the existing horizon-prefix file and both 1500 ms child timeouts are unchanged.
+
+`git --no-optional-locks diff --check` returned exit 0 (only Windows
+line-ending notices). Final inventory: [m4b-files.txt](evidence/m4b-files.txt).
+
+**M4b correctness items are met.** Remaining NOT MET measurements are the
+ensemble tool's 30-second compilation target for lonely-earthlike-6 and the
+unchanged signatures test's two-second file target, detailed above. Neither
+was hidden by changing a timeout, assertion, model parameter or seed panel.
+No visual review was requested or performed.

@@ -5,7 +5,7 @@ import {refineCell} from '../src/refine-cell.mjs';
 import {annualHierarchy} from '../src/annual-inspection.mjs';
 import {canonicalBytes,compare} from '../src/canonical.mjs';
 
-export const scenarios=[['lonely-earthlike','m3-4'],['crowded-domain','m3-1']];
+export const scenarios=[['lonely-earthlike','m3-4'],['crowded-domain','m3-2']];
 export function queries(name,seed){
   const {ticks}=scenarioRun(name,seed,20);
   return {

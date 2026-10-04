@@ -1,4 +1,4 @@
-# M4a plausibility audit — 2026-10-04
+# M4a/M4b plausibility audit — 2026-10-04
 
 These are authored scenarios and model attribution, not predictions. No new
 research claim supports the cost schedule, colony reserve, cooldowns, learning
@@ -79,120 +79,163 @@ keeping costs increasing within each domain and retaining expensive final
 tiers. Targets were declared before that trial and were not relabelled to fit
 the observations. The final receipts below use the final schedule only.
 
-## Final before/after results
+## Final before/after results (M4b refresh)
 
-N=30 for each available scenario; zero errored seeds in both ensembles. Complete receipts:
+The after ensemble was regenerated after the horizon manifest revision with
+`node tools/m4-plausibility.mjs --n 30 --jobs 1 --out docs/evidence/m4-plausibility-after.json`.
+All 180 seeds completed with zero simulation errors. Exit was **1** because
+lonely-earthlike-6 compiled in **35,868.78 ms** (diagnostic **36,179.71 ms**),
+exceeding the tool's 30-second compile budget on this shared machine. This
+is a complete ensemble receipt, not a passing performance receipt.
+
+**The numbers changed.** All six scenario summaries and all 180 result digests
+differ from M4a after the shared contract/manifest RNG namespace revision.
+No dynamics or calibration constants were changed in M4b; equal seed names
+across revisions do not imply equal variates. The pre-M4 baseline is unchanged.
 
 - [Before JSON](evidence/m4-plausibility-before.json) / [before text](evidence/m4-plausibility-before.txt).
-- [After JSON](evidence/m4-plausibility-after.json) / [after text](evidence/m4-plausibility-after.txt).
+- [M4b after JSON](evidence/m4-plausibility-after.json) / [after text](evidence/m4-plausibility-after.txt).
 
-Values separated by → are before → after. A dash means the new scenario did not exist before.
+Values separated by → below are **pre-M4 → M4b**, except the explicitly labelled M4a comparison. All denominators are 30; a dash marks the new forager scenario.
 
-### Attainment counts (all denominators 30)
+### Attainment counts
 
 | Scenario | E3 | E4 | E5+ | Multi-body | NO_LINEAGE |
-|---|---:|---:|---:|---:|---:|
-| crowded-domain | 30 → 30 | 30 → 30 | 30 → 13 | 30 → 7 | 0 → 0 |
-| doomed-star | 30 → 30 | 24 → 8 | 19 → 0 | 19 → 0 | 0 → 0 |
-| forager-future | — → 26 | — → 25 | — → 5 | — → 10 | — → 0 |
-| harsh-anoxic | 16 → 8 | 15 → 7 | 12 → 1 | 12 → 1 | 0 → 0 |
-| high-perils | 30 → 30 | 15 → 12 | 3 → 0 | 1 → 0 | 0 → 0 |
-| lonely-earthlike | 7 → 18 | 7 → 18 | 4 → 4 | 4 → 9 | 23 → 11 |
+| --- | --- | --- | --- | --- | --- |
+| crowded-domain | 30 → 30 | 30 → 30 | 30 → 18 | 30 → 11 | 0 → 0 |
+| doomed-star | 30 → 30 | 24 → 5 | 19 → 0 | 19 → 0 | 0 → 0 |
+| forager-future | — → 26 | — → 24 | — → 7 | — → 10 | — → 0 |
+| harsh-anoxic | 16 → 10 | 15 → 7 | 12 → 2 | 12 → 4 | 0 → 0 |
+| high-perils | 30 → 30 | 15 → 11 | 3 → 0 | 1 → 0 | 0 → 0 |
+| lonely-earthlike | 7 → 15 | 7 → 13 | 4 → 5 | 4 → 7 | 23 → 11 |
 
-E3 starts in crowded-domain, doomed-star and high-perils are left-censored advanced starts, not stone-age advances. Exact per-mille shares and all first-era witnesses are in the receipts. Lonely produces a lineage in 19/30 seeds versus 7/30 before, with 11/30 still NO_LINEAGE. The longer declared window and horizon are part of that comparison.
+E3 starts in crowded-domain, doomed-star and high-perils are left-censored advanced starts. Lonely produces a lineage in 19/30 seeds versus 7/30 before; the longer declared scenario window remains part of that comparison.
+
+### Change from the M4a after ensemble
+
+| Scenario | E4 M4a → M4b | E5+ M4a → M4b | Multi-body M4a → M4b |
+| --- | --- | --- | --- |
+| crowded-domain | 30 → 30 | 13 → 18 | 7 → 11 |
+| doomed-star | 8 → 5 | 0 → 0 | 0 → 0 |
+| forager-future | 25 → 24 | 5 → 7 | 10 → 10 |
+| harsh-anoxic | 7 → 7 | 1 → 2 | 1 → 4 |
+| high-perils | 12 → 11 | 0 → 0 | 0 → 0 |
+| lonely-earthlike | 18 → 13 | 4 → 5 | 9 → 7 |
+
 
 ### Outcome classes (seeds containing each class)
 
 | Scenario | Before | After |
-|---|---|---|
-| crowded-domain | COLLAPSED_RECOVERING=10, EXISTENTIAL_CAP=16, EXTANT_MULTI_BODY=17, EXTANT_MULTI_SYSTEM=21, EXTANT_PLANETARY=24, EXTINCT_NATURAL=4, EXTINCT_SELF=11 | COLLAPSED_RECOVERING=18, EXISTENTIAL_CAP=20, EXTANT_MULTI_BODY=1, EXTANT_MULTI_SYSTEM=2, EXTANT_PLANETARY=26, EXTINCT_NATURAL=6, EXTINCT_SELF=11 |
+| --- | --- | --- |
+| crowded-domain | COLLAPSED_RECOVERING=10, EXISTENTIAL_CAP=16, EXTANT_MULTI_BODY=17, EXTANT_MULTI_SYSTEM=21, EXTANT_PLANETARY=24, EXTINCT_NATURAL=4, EXTINCT_SELF=11 | COLLAPSED_RECOVERING=24, EXISTENTIAL_CAP=17, EXTANT_MULTI_BODY=3, EXTANT_PLANETARY=26, EXTINCT_NATURAL=3, EXTINCT_SELF=12 |
 | doomed-star | COLLAPSED_RECOVERING=2, EXTANT_MULTI_SYSTEM=5, EXTANT_PLANETARY=6, EXTINCT_NATURAL=3, EXTINCT_STELLAR=11, REGRESSED_STABLE=3 | EXTINCT_STELLAR=30 |
-| forager-future | — | COLLAPSED_RECOVERING=10, EXISTENTIAL_CAP=9, EXTANT_MULTI_SYSTEM=1, EXTANT_PLANETARY=4, EXTINCT_NATURAL=1, EXTINCT_SELF=5 |
-| harsh-anoxic | COLLAPSED_RECOVERING=3, EXISTENTIAL_CAP=3, EXTANT_MULTI_SYSTEM=10, EXTANT_PLANETARY=14 | COLLAPSED_RECOVERING=7, EXTANT_MULTI_BODY=1, EXTANT_PLANETARY=21, EXTINCT_SELF=1 |
-| high-perils | COLLAPSED_RECOVERING=17, EXISTENTIAL_CAP=6, EXTINCT_SELF=7 | COLLAPSED_RECOVERING=21, EXISTENTIAL_CAP=5, EXTANT_PLANETARY=2, EXTINCT_SELF=2 |
-| lonely-earthlike | COLLAPSED_RECOVERING=1, EXTANT_MULTI_SYSTEM=1, EXTINCT_NATURAL=1, EXTINCT_SELF=2, NO_LINEAGE=23, REGRESSED_STABLE=2 | COLLAPSED_RECOVERING=3, EXISTENTIAL_CAP=10, EXTANT_MULTI_SYSTEM=1, EXTANT_PLANETARY=2, EXTINCT_SELF=3, NO_LINEAGE=11 |
+| forager-future | — | COLLAPSED_RECOVERING=8, EXISTENTIAL_CAP=6, EXTANT_MULTI_BODY=1, EXTANT_MULTI_SYSTEM=2, EXTANT_PLANETARY=5, EXTINCT_NATURAL=1, EXTINCT_SELF=7 |
+| harsh-anoxic | COLLAPSED_RECOVERING=3, EXISTENTIAL_CAP=3, EXTANT_MULTI_SYSTEM=10, EXTANT_PLANETARY=14 | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=1, EXTANT_MULTI_BODY=3, EXTANT_PLANETARY=21, EXTINCT_SELF=1 |
+| high-perils | COLLAPSED_RECOVERING=17, EXISTENTIAL_CAP=6, EXTINCT_SELF=7 | COLLAPSED_RECOVERING=19, EXISTENTIAL_CAP=5, EXTANT_PLANETARY=5, EXTINCT_SELF=1 |
+| lonely-earthlike | COLLAPSED_RECOVERING=1, EXTANT_MULTI_SYSTEM=1, EXTINCT_NATURAL=1, EXTINCT_SELF=2, NO_LINEAGE=23, REGRESSED_STABLE=2 | COLLAPSED_RECOVERING=4, EXISTENTIAL_CAP=4, EXTANT_MULTI_SYSTEM=4, EXTANT_PLANETARY=5, EXTINCT_SELF=2, NO_LINEAGE=11 |
+
 
 ### Lineage extinction events by class
 
 | Scenario | Before | After |
-|---|---|---|
-| crowded-domain | EXTINCT_NATURAL=4, EXTINCT_SELF=12 | EXTINCT_NATURAL=7, EXTINCT_SELF=11 |
+| --- | --- | --- |
+| crowded-domain | EXTINCT_NATURAL=4, EXTINCT_SELF=12 | EXTINCT_NATURAL=3, EXTINCT_SELF=15 |
 | doomed-star | EXTINCT_NATURAL=3, EXTINCT_STELLAR=11 | EXTINCT_STELLAR=30 |
-| forager-future | — | EXTINCT_NATURAL=1, EXTINCT_SELF=5 |
+| forager-future | — | EXTINCT_NATURAL=1, EXTINCT_SELF=7 |
 | harsh-anoxic | none | EXTINCT_SELF=1 |
-| high-perils | EXTINCT_SELF=7 | EXTINCT_SELF=2 |
-| lonely-earthlike | EXTINCT_NATURAL=1, EXTINCT_SELF=2 | EXTINCT_SELF=3 |
+| high-perils | EXTINCT_SELF=7 | EXTINCT_SELF=1 |
+| lonely-earthlike | EXTINCT_NATURAL=1, EXTINCT_SELF=2 | EXTINCT_SELF=2 |
+
 
 ### Colonisation
 
-Accepted includes founding and reinforcement; new-colony and reinforcement counts are separate in the receipts. All COLONY_LOST counts are zero in both ensembles; abrupt zero-population deaths instead emit EXTINCTION.
+Accepted includes founding and reinforcement. Their separate counts are in the receipts. All COLONY_LOST counts remain zero in both ensembles; abrupt zero-population deaths instead emit EXTINCTION.
 
 | Scenario | LAUNCH | Accepted COLONY_FOUNDED | Rejected by reason | VOYAGE_LOST | Repeat failed target launches |
-|---|---:|---:|---|---:|---:|
-| crowded-domain | 7975 → 30 | 3215 → 30 | occupied-by-other-lineage=4571 → none | 28 → 0 | 5597 → 10 |
+| --- | --- | --- | --- | --- | --- |
+| crowded-domain | 7975 → 59 | 3215 → 59 | occupied-by-other-lineage=4571 → none | 28 → 0 | 5597 → 22 |
 | doomed-star | 1373 → 0 | 1233 → 0 | destination-uninhabitable=131 → none | 4 → 0 | 349 → 0 |
-| forager-future | — → 120 | — → 118 | — → none | — → 2 | — → 73 |
-| harsh-anoxic | 684 → 4 | 670 → 4 | none → none | 2 → 0 | 209 → 2 |
+| forager-future | — → 129 | — → 128 | — → none | — → 1 | — → 79 |
+| harsh-anoxic | 684 → 10 | 670 → 10 | none → none | 2 → 0 | 209 → 2 |
 | high-perils | 1 → 0 | 1 → 0 | none → none | 0 → 0 | 0 → 0 |
-| lonely-earthlike | 1007 → 116 | 909 → 115 | destination-uninhabitable=94 → none | 2 → 1 | 409 → 73 |
+| lonely-earthlike | 1007 → 221 | 909 → 221 | destination-uninhabitable=94 → none | 2 → 0 | 409 → 167 |
 
-Crowded-domain-1 specifically changes from **269 occupied rejections / 514 arrivals** (245 accepted) to **0 / 0**. It does not launch in the final revision, so that seed alone provides no targeting-effect estimate. Across crowded-domain, occupied rejections fall **4,571 → 0**, but launches also fall **7,975 → 30**. The unit test independently establishes that unknown occupancy remains targetable and delivered occupancy is avoided. This is not an isolated causal estimate from the ensemble.
-
-The small-founder test preserves habitat-critical tiers and growth through 500 years with other hazards disabled. That verifies removal of the immediate maintenance death mechanism. It does not establish universal colony survival: the long runs still contain colony deaths and repeat attempts, now governed by delayed knowledge and cooldowns.
+The small-founder test verifies removal of immediate maintenance death; it does not establish universal colony survival. Later deaths and repeat attempts remain.
 
 ### Generic collapse and late history
 
 | Scenario | Collapse median/max before | Collapse median/max after | Late post-exit accepted P events before → after | After seeds with late activity |
-|---|---:|---:|---:|---:|
-| crowded-domain | 26/48 | 13/22 | 62647 → 3742 | 12/30 |
-| doomed-star | 3/13 | 0/2 | 6916 → 0 | 0/30 |
-| forager-future | — | 12/77 | — → 17478 | 9/30 |
-| harsh-anoxic | 1/13 | 0/4 | 6975 → 24 | 1/30 |
-| high-perils | 35/301 | 15/29 | 0 → 0 | 0/30 |
-| lonely-earthlike | 0/47 | 4/78 | 14975 → 13279 | 4/30 |
+| --- | --- | --- | --- | --- |
+| crowded-domain | 26/48 | 14/21 | 62647 → 5275 | 15/30 |
+| doomed-star | 3/13 | 0/1 | 6916 → 0 | 0/30 |
+| forager-future | — | 10/65 | — → 22356 | 8/30 |
+| harsh-anoxic | 1/13 | 0/5 | 6975 → 247 | 3/30 |
+| high-perils | 35/301 | 15/26 | 0 → 0 | 0/30 |
+| lonely-earthlike | 0/47 | 0/117 | 14975 → 54851 | 5/30 |
 
-High-perils-4 falls from **59 to 4** generic collapses. High-perils across seeds falls from **35/301 to 15/29 median/max**. The bound is regional and per arc, not a universal per-seed event cap. Longer horizons and new colony episodes can increase a seed’s total; lonely-earthlike’s max increases from 47 to 78. Perils-caused collapse counts are separate in the receipts.
+High-perils-4 has 59 → 23 generic collapses. The bound remains per region and per arc; it is not a seed-wide cap. New colony episodes can increase totals. Perils collapses are reported separately.
 
-The baseline already had substantial late activity. Therefore this audit does **not** substantiate a blanket claim that all pre-M4 post-perils histories were static. The added positive renewal term guarantees exposure for eligible low-stress polities; it does not guarantee a firing in every finite run. Fewer M4 lineages leave perils, so total post-exit events can decline despite that new driver. High-perils has no sampled post-exit late activity in either revision.
+The baseline already had substantial late activity, so this audit does not establish a blanket pre-M4 static-history claim. Renewal guarantees exposure, not a firing in every finite interval. High-perils has no sampled post-exit late activity in either revision.
 
 ### Era durations versus the authored targets
 
-Durations below are years, conditional on observed attainment. L/R/N are left-censored / right-censored / no-lineage counts. Errors are zero. R includes failure to reach the source, itemised in the complete receipts.
+Durations are years conditional on observed attainment. L/R/N are left/right/no-lineage censor counts; errors are zero. R includes source-not-reached (separately listed in JSON/text). All M4b intervals are included, even empty cohorts.
 
 | Scenario/version | Interval | Observed | p10 / p50 / p90 | L/R/N |
-|---|---|---:|---:|---:|
+| --- | --- | --- | --- | --- |
 | crowded-domain before | E3→E4 | 30 | 190 / 290 / 470 | 0/0/0 |
 | crowded-domain before | E4→E5 | 30 | 50 / 160 / 380 | 0/0/0 |
 | crowded-domain before | E5→E6 | 30 | 30 / 70 / 210 | 0/0/0 |
 | crowded-domain before | E6→E7 | 30 | 10 / 20 / 90 | 0/0/0 |
 | crowded-domain before | E3→E7 | 30 | 420 / 540 / 1290 | 0/0/0 |
-| crowded-domain after | E3→E4 | 30 | 1130 / 2820 / 7650 | 0/0/0 |
-| crowded-domain after | E4→E5 | 13 | 8280 / 10690 / 13900 | 0/17/0 |
-| crowded-domain after | E5→E6 | 6 | 3930 / 10010 / 16330 | 0/24/0 |
-| crowded-domain after | E6→E7 | 4 | 2970 / 3040 / 3440 | 0/26/0 |
-| crowded-domain after | E3→E7 | 4 | 25290 / 27120 / 28890 | 0/26/0 |
-| forager-future after | E0→E1 | 30 | 330 / 4840 / 53430 | 0/0/0 |
-| forager-future after | E1→E3 | 26 | 9170 / 23250 / 71670 | 0/4/0 |
-| forager-future after | E3→E4 | 25 | 1620 / 5530 / 17000 | 0/5/0 |
-| forager-future after | E4→E5 | 5 | 3560 / 21260 / 21320 | 0/25/0 |
-| forager-future after | E5→E6 | 4 | 2500 / 16650 / 23890 | 0/26/0 |
-| forager-future after | E6→E7 | 3 | 8350 / 30150 / 30150 | 0/27/0 |
-| forager-future after | E3→E7 | 3 | 37830 / 63250 / 63250 | 0/27/0 |
-| lonely-earthlike after | E0→E1 | 19 | 660 / 6490 / 43720 | 0/0/11 |
-| lonely-earthlike after | E1→E3 | 18 | 12490 / 19550 / 60250 | 0/1/11 |
-| lonely-earthlike after | E3→E4 | 18 | 1140 / 6550 / 26230 | 0/1/11 |
-| lonely-earthlike after | E4→E5 | 4 | 9340 / 11840 / 13620 | 0/15/11 |
-| lonely-earthlike after | E5→E6 | 2 | 4660 / 4660 / 4660 | 0/17/11 |
-| lonely-earthlike after | E6→E7 | 1 | 22620 / 22620 / 22620 | 0/18/11 |
-| lonely-earthlike after | E3→E7 | 1 | 63100 / 63100 / 63100 | 0/18/11 |
+| crowded-domain after | E0→E1 | 0 | — / — / — | 30/0/0 |
+| crowded-domain after | E1→E3 | 0 | — / — / — | 30/0/0 |
+| crowded-domain after | E3→E4 | 30 | 1160 / 3190 / 6510 | 0/0/0 |
+| crowded-domain after | E4→E5 | 18 | 2700 / 8520 / 18630 | 0/12/0 |
+| crowded-domain after | E5→E6 | 6 | 6050 / 9560 / 11190 | 0/24/0 |
+| crowded-domain after | E6→E7 | 3 | 1110 / 4670 / 4670 | 0/27/0 |
+| crowded-domain after | E3→E7 | 3 | 20150 / 21860 / 21860 | 0/27/0 |
+| doomed-star after | E0→E1 | 0 | — / — / — | 30/0/0 |
+| doomed-star after | E1→E3 | 0 | — / — / — | 30/0/0 |
+| doomed-star after | E3→E4 | 5 | 1440 / 1660 / 2470 | 0/25/0 |
+| doomed-star after | E4→E5 | 0 | — / — / — | 0/30/0 |
+| doomed-star after | E5→E6 | 0 | — / — / — | 0/30/0 |
+| doomed-star after | E6→E7 | 0 | — / — / — | 0/30/0 |
+| doomed-star after | E3→E7 | 0 | — / — / — | 0/30/0 |
+| forager-future after | E0→E1 | 30 | 960 / 6830 / 67790 | 0/0/0 |
+| forager-future after | E1→E3 | 26 | 10530 / 26530 / 74400 | 0/4/0 |
+| forager-future after | E3→E4 | 24 | 1340 / 4720 / 20320 | 0/6/0 |
+| forager-future after | E4→E5 | 7 | 2670 / 14080 / 28860 | 0/23/0 |
+| forager-future after | E5→E6 | 5 | 890 / 16820 / 44630 | 0/25/0 |
+| forager-future after | E6→E7 | 4 | 5410 / 11270 / 12100 | 0/26/0 |
+| forager-future after | E3→E7 | 4 | 29750 / 34550 / 69940 | 0/26/0 |
+| harsh-anoxic after | E0→E1 | 18 | 370 / 2220 / 6510 | 0/12/0 |
+| harsh-anoxic after | E1→E3 | 10 | 10190 / 14820 / 21150 | 0/20/0 |
+| harsh-anoxic after | E3→E4 | 7 | 2380 / 3130 / 5220 | 0/23/0 |
+| harsh-anoxic after | E4→E5 | 2 | 3090 / 3090 / 3090 | 0/28/0 |
+| harsh-anoxic after | E5→E6 | 0 | — / — / — | 0/30/0 |
+| harsh-anoxic after | E6→E7 | 0 | — / — / — | 0/30/0 |
+| harsh-anoxic after | E3→E7 | 0 | — / — / — | 0/30/0 |
+| high-perils after | E0→E1 | 0 | — / — / — | 30/0/0 |
+| high-perils after | E1→E3 | 0 | — / — / — | 30/0/0 |
+| high-perils after | E3→E4 | 11 | 9600 / 16900 / 25580 | 0/19/0 |
+| high-perils after | E4→E5 | 0 | — / — / — | 0/30/0 |
+| high-perils after | E5→E6 | 0 | — / — / — | 0/30/0 |
+| high-perils after | E6→E7 | 0 | — / — / — | 0/30/0 |
+| high-perils after | E3→E7 | 0 | — / — / — | 0/30/0 |
+| lonely-earthlike after | E0→E1 | 16 | 5810 / 10970 / 26680 | 0/3/11 |
+| lonely-earthlike after | E1→E3 | 15 | 11910 / 28760 / 52760 | 0/4/11 |
+| lonely-earthlike after | E3→E4 | 13 | 1840 / 7920 / 21920 | 0/6/11 |
+| lonely-earthlike after | E4→E5 | 5 | 4550 / 8330 / 42650 | 0/14/11 |
+| lonely-earthlike after | E5→E6 | 4 | 5660 / 9550 / 47400 | 0/15/11 |
+| lonely-earthlike after | E6→E7 | 4 | 3850 / 8520 / 10370 | 0/15/11 |
+| lonely-earthlike after | E3→E7 | 4 | 18170 / 25110 / 80290 | 0/15/11 |
 
-The crowded-domain E3→E7 observed median grows **540 → 27,120 years**; E6→E7 grows **20 → 3,040 years**. All four crowded-domain middle/late interval medians lie in the authored bands, but only 4/30 seeds reach E7. That censoring prevents claiming a typical whole-ensemble E7 time.
+Crowded-domain E3→E7 observed median grows **540 → 21,860 years** and E6→E7 **20 → 4,670 years**; only 3/30 seeds reach E7, so these are not whole-ensemble typical times.
 
-**Calibration targets are not all met.** Forager-future E3→E4 median **5,530** exceeds the 5 kyr target ceiling; E4→E5 median **21,260** exceeds 15 kyr (only five observed runs). Lonely E3→E4 median **6,550** also exceeds 5 kyr. High-perils E3→E4 median is **13,270**, with 18 right-censored runs. Forager E0→E1 p10/p90 are **330/53,430**, outside the intended 1–20 kyr span; a central median inside a band does not calibrate the tails. These are remaining model limitations, not passed plausibility assertions.
+**Calibration targets remain unmet overall.** Forager E3→E4 and E4→E5 medians are now **4,720** and **14,080** years, inside their bands, but only 7/30 reach E5. Its E0→E1 p10/p90 remain outside the 1–20 kyr span at **960/67,790** years. Lonely E3→E4 median **7,920** and high-perils **16,900** still exceed 5 kyr, with 6 and 19 right-censored runs respectively (lonely also has 11 no-lineage runs). No new calibration is claimed.
 
-Forager-future reaches E3 in 26/30 seeds, E4 in 25/30, E5+ in 5/30, multi-body history in 10/30, and E7 in 3/30 by 120 kyr. Thus the new E0 experiment actually reaches the far future in some runs while retaining and reporting all nonattainment.
-
-
+Forager reaches E3 in 26/30, E4 in 24/30, E5+ in 7/30, multi-body history in 10/30 and E7 in 4/30 by 120 kyr. Nonattainment remains in the denominator.
 
 ## Still implausible / not modelled
 
@@ -223,5 +266,5 @@ the authored three-hard-step lottery in lonely-earthlike, with uncalibrated
 rates. Thirty seeds give weak tail information, especially when only one or a
 few seeds attain a late era. Censored rows cannot establish a typical future.
 
-P-path horizon dependence is deliberately untouched in M4a and remains a
-separate later round. No visual work or Luna review was required or performed.
+M4b fixes P/D forced-fixture horizon dependence; the after receipts above
+use that revised manifest. No visual work or Luna review was required or performed.

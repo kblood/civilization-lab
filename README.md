@@ -6,7 +6,12 @@ causal target memory, recovery learning and post-perils political renewal.
 Six ensemble scenarios now include an E0-to-future run. See the
 [M4 implementation handoff](docs/m4-implementation.md) and
 [30-seed-per-scenario plausibility audit](docs/m4-plausibility.md).
-M1 is unchanged; the separate P-path horizon issue remains open.
+M4b fixes forced-fixture horizon dependence in P and D; execution duration
+is excluded from hashed model data. See the M4b section of the handoff for
+before/after experiments and revised P/D goldens. M1 is unchanged.
+M4b final `npm test`: **142 pass, 0 fail, 0 skipped; exit 0**. The refreshed
+180-seed ensemble has zero simulation errors; one compile exceeds 30 seconds,
+and the unchanged signatures file exceeds the two-second lean-test target.
 Astra's sole full test run returned **134 pass / 3 fail**; those legacy fixture
 expectations were updated and focused reruns passed **9/9**. Runner rerun of
 `npm test` on the committed M4a tree: **135 pass / 2 fail, exit 1**; both

@@ -1,6 +1,6 @@
 import {compare,canonicalBytes,canonicalString} from './canonical.mjs';
 import {digest,readFixture,validateStub,validatePlanet,Availability,StubEnvironment} from './environment.mjs';
-import {createDefinition,validateForced,address,override,priors,originId,chanceMagnitude} from './civ-input.mjs';
+import {createDefinition,validateForced,forcedModelInput,FORCED_TICK_MAXIMUM,address,override,priors,originId,chanceMagnitude} from './civ-input.mjs';
 import {skeleton,installEnvironment,stepPlanet,event,recorder,maximumEra} from './planet.mjs';
 import {stateDigest} from './state-witness.mjs';
 import {valueDelta} from './delta-witness.mjs';
@@ -69,7 +69,7 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   const epochOverride=forced?.overrides.find(o=>o.key==='epoch.rows');
   if(epochOverride){home.epochs=Availability.known({rows:epochOverride.value});validatePlanet(home);}
   const template=createDefinition('temperate',seed,{years:10}).manifest;
-  const manifest={...template,inputBundleDigest:digest({domain:bundle.domain,systems:bundle.systems,forced}),scenarioPriors:{...template.scenarioPriors,parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced?.overrides??[]}}};
+  const manifest={...template,inputBundleDigest:digest({domain:bundle.domain,systems:bundle.systems,forced:forcedModelInput(forced)}),scenarioPriors:{...template.scenarioPriors,parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced?.overrides??[]}}};
   if(bundle.planets.some(p=>p.lifecycle.value.stellarDoomYear!=null))manifest.scenarioPriors.stellarPolicy={version:'m3b-stellar-1',graceYears:Number(forced?.overrides.find(o=>o.key==='parameters.stellarGraceYears')?.value??500)};
   const def={...bundle,seed,manifest,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
     g:forced?.overrides.find(o=>o.key==='parameters.g')?.value??GROWTH,build:forced?.overrides.find(o=>o.key==='parameters.build')?.value??BUILD,keep:Number(forced?.overrides.find(o=>o.key==='parameters.keepPermille')?.value??490)};
@@ -80,6 +80,7 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   def.untilTick=forced?def.fromTick+BigInt(forced.ticks):min(BigInt(F(bundle.domain.untilYear,10)),first+BigInt((years??400000)/10));
   if(untilYear!==undefined){if(!Number.isSafeInteger(untilYear))throw new RangeError('Invalid end year');def.untilTick=BigInt(F(untilYear,10));}
   if(def.fromTick>=def.untilTick||def.untilTick>BigInt(F(bundle.domain.untilYear,10)))throw new RangeError('outside-model-range');
+  if(forced&&(def.untilTick-def.fromTick>BigInt(FORCED_TICK_MAXIMUM)||def.untilTick>200000n))throw new RangeError('Invalid execution horizon');
   def.recipeDigest=digest({seed,manifest,fromTick:def.fromTick});
   return freezeGenerated(def);
 }

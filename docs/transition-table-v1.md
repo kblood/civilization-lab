@@ -1507,8 +1507,11 @@ For a run, B is exactly `{domain,systems,forced}`: domain is the fully expanded
 DomainStub with systems references retained in their declared sorted form;
 systems is the resolved SystemStub array sorted id (substitutions already
 applied, all bodies and routes expanded); forced is null for an ordinary run
-or the complete selected ForcedFixture with fully expanded InitialOverride
-and Override records, including seed/expect/ticks. Canonical input values
+or the selected ForcedFixture model projection with fully expanded InitialOverride
+and Override records, retaining schemaVersion/id/base/seed/initial/overrides/expect.
+Remove execution-only ticks and add modelTickMaximum:40000 (JSON Int).
+The caller cannot override this fixed model duration bound. DomainStub.fromYear
+and DomainStub.untilYear remain declared model data, not observation endpoints. Canonical input values
 remain JSON types (NatString/IntString stay strings). Relative fixture paths
 use `/`, are relative to repository root, and cannot contain `.` or `..` path
 segments. File order, formatting and unresolved file copies are not hashed.
@@ -1552,10 +1555,18 @@ milestone is exactly M2a or M2b. Enabled kinds are those whose milestone is
 M2a, plus all M2b kinds when selected; no redundant enabled-kind list enters
 the bytes. manifestDigest=SHA256(canonicalBytes(manifest)). Sampled prior
 values go into lineage state, never retroactively into the manifest. seed is
-an exact well-formed string and must equal forced.seed when forced is nonnull. fromTick/untilTick in recipeDigest are BigInts,
-validated inside domain bounds; they are independent of horizonYear string
-formatting. Defaults are F(domain.fromYear,10),F(domain.untilYear,10); a forced
-run uses initial.atTick (or 0n if null) and fromTick+BigInt(forced.ticks).
+an exact well-formed string and must equal forced.seed when forced is nonnull. recipeDigest is digest({seed,manifest,fromTick}), with fromTick a BigInt.
+The execution endpoint never enters B, manifest, recipe or a draw address.
+A forced run starts at initial.atTick (or 0n if null); its default endpoint is
+fromTick+BigInt(forced.ticks). untilYear overrides that endpoint with
+F(untilYear,10). Both the supplied ticks and effective execution duration must
+be in 1..40000; the endpoint must not exceed tick 200000, and D also enforces
+its declared DomainStub upper bound. P years selects duration only when forced is
+absent; D years selects post-first-sapience duration only when forced is absent.
+Non-forced D ends at min(declared bound, first sapience + years/10), with
+400000 years the default. Absolute untilYear takes precedence in either path.
+A nonzero initial.atTick remains declared initial data in B and recipe start,
+never normalized away. An initial override is resolved before computing P endpoints.
 No manifest timestamp, implementation path or optional keys are permitted.
 
 ### Fixture expansion and founding closure [scenario initialization] — must-fix 2
@@ -1706,7 +1717,7 @@ requires a new version or declared override.
 | DomainStub | schemaVersion:`civ-domain-stub-1`; id:String; systems:SystemRef[1..32] sorted id; routes:RouteStub[] sorted `(from,to)`; origins:String[0..4] sorted unique body IDs; fromYear:Int; untilYear:Int greater, both multiples of 10 |
 | SystemRef | id:String; fixture:String relative planet/system fixture path; bodyPrefix:String (canonical body IDs must be unique after substitution) |
 | RouteStub | from:body ID; to:body ID; kind:in-system/interstellar; distanceMicroLy:NatString (0 for in-system, positive for interstellar); travelYearsByTransportTier:IntOrNull[8] indexed T0..T7; destinationHosting:habitable/habitat-buildable/barren |
-| ForcedFixture | schemaVersion:`civ-forced-stub-1`; id:String; base:String; seed:String; ticks:Int 1..40000; initial:InitialOverrideOrNull; overrides:Override[] sorted key; expect:catalogue kind |
+| ForcedFixture | schemaVersion:`civ-forced-stub-1`; id:String; base:String; seed:String; ticks:Int 1..40000 (execution only; hashed projection replaces with modelTickMaximum:40000); initial:InitialOverrideOrNull; overrides:Override[] sorted key; expect:catalogue kind |
 | InitialOverride | atTick:IntString; regions:RegionOverride[] sorted localId; polities:PolityOverride[] sorted label; arc:ArcOverride; voyages:VoyageOverride[] sorted label |
 | RegionOverride | localId:String; pop:NatString; infra:NatString; fuel:NatString; forcing:NatString; tiers:Int[7]; culture:Int[3]; lowTicks:Int[7]; collapse:CollapseOrNull (BigInts as NatString); damage:damage records (tick as IntString) |
 | PolityOverride | label:String; regionIds:String[]; regime:regime enum; eliteShare,asabiya,legitimacy,stress,warWeariness:Int each 0..1000; hegemony:Boolean |
@@ -2780,7 +2791,8 @@ All changes here are authored scenario/representation choices, not research clai
 
 The execution horizon is excluded from the standalone default input bundle and
 both P/D recipes. Default standalone forced data declares a fixed 40,000-tick
-model bound. Explicit forced fixtures retain their declared bounds as data.
+model bound. At M3a, explicit forced fixtures retained ticks as declared data; the M4b
+revision below supersedes that horizon-dependent rule.
 Only canonical chapter boundaries and terminal ticks carry structural P hashes.
 Pending origins beyond an execution slice do not permit early terminal stopping.
 
@@ -2898,6 +2910,20 @@ M1 is unchanged. M2/M3 roots change because these rules change the contract
 and RNG namespace. Exact old/new receipts appear in the append-only M4a receipt
 below and docs/m4-implementation.md, outside the hash to avoid self-reference.
 P-path inputBundleDigest and forced.ticks horizon handling are unchanged.
+
+## Revision log (M4b, 2026-10-04)
+
+ForcedFixture.ticks is an execution duration, never declared model data.
+Both P and D hash the same forced model projection: remove ticks, add the
+fixed modelTickMaximum=40000, and preserve all other normalized fields.
+Explicit initial.atTick, lifecycle windows and DomainStub bounds remain data.
+Absolute untilYear and duration years/ticks affect execution only. Validate
+both input duration and effective endpoint; no caller horizon reaches an RNG
+address. The exact construction and machine rules below supersede M3a's
+explicit-fixture exception. Witness encoding and dynamics are unchanged.
+P/D stability goldens change because both bundle and contract namespaces
+change; full old/new receipts are in the M4b annex after the witness annex
+(outside the hashed contract, avoiding self-reference). M1 is unchanged.
 
 ## Machine-readable table
 
@@ -3050,6 +3076,8 @@ Atomic records do not grant permission to create undeclared record members.
       ]
     },
     "forcedTickMaximum": 40000,
+    "forcedManifestProjection": "null stays null; otherwise preserve every normalized ForcedFixture field except ticks, replacing it with modelTickMaximum:40000. ticks, years and untilYear are execution selectors only; declared DomainStub bounds and initial.atTick remain input data.",
+    "forcedExecutionBounds": "Validate supplied ticks and effective duration in 1..40000; effective endpoint <=200000 ticks, additionally within declared D upper bound. untilYear overrides ticks; years applies only without forced. Resolve initial before endpoint arithmetic.",
     "collapse": {
       "owner": "region",
       "eligible": "pop>0 && era>=1 && !collapse.active",
@@ -3200,7 +3228,7 @@ Atomic records do not grant permission to create undeclared record members.
       "checkpoint": "complete LIVE domain plus append-only archive; no RNG state"
     },
     "m3a": {
-      "horizon": "Execution horizon excluded from default forced data, manifest and recipe; structural witnesses only at canonical chapter boundaries or terminal state.",
+      "horizon": "Execution horizon excluded from all forced model projections, manifest and recipe; structural witnesses only at canonical chapter boundaries or terminal state.",
       "cellPartition": "civ-cell-binary-1",
       "cellAllocation": "fixed binary sorted IDs; floorDiv at each node; zero sum uses unit leaf weights; boundary weights use containing epoch",
       "townThreshold": 1000,
@@ -6195,3 +6223,15 @@ Reason: changed authored dynamics, hashed transition contract/RNG namespace,
 and committed recovery/target memory state. This receipt is outside the
 hashed contract to avoid self-reference. The observer annex changes no root.
 M1 remains `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc`.
+
+## Revision log (M4b, 2026-10-04) — golden receipts (non-hashed observation annex)
+
+These receipts belong to **Revision log (M4b, 2026-10-04)** above. They are
+outside CONTRACT_TEXT to avoid self-reference. No recipe rule is introduced
+here. Self-generated goldens establish stability, not an independent oracle.
+
+| Check | M4a old | M4b new | Reason |
+|---|---|---|---|
+| P: temperate / civ-m2a-golden / 100 years | `cfe5fb1723eb574aaf24af031359ffdfd837c9e8f21c2c0281d74df5987e2acd` | `1567cb59f6fcb4243e8b492ef3243ea6631711335ea0ba048027e2db795213f8` | Forced model projection replaces ticks with fixed modelTickMaximum; revised contract/table also changes RNG namespace. |
+| D: toy-12 / toy-1 / 100 years | `adbb432ab45d9fa9e4d0ae7e670066f0832df76574a87348bd714c76ed6f9b0d` | `c998e6fff27bc9394f24e9882959f8ef08409c9871eb28a334c796ade079dbed` | This non-forced bundle is unchanged, but the revised shared contract/table changes RNG namespace. |
+| M1 | `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc` | unchanged, observed | M1 does not use this contract or projection. |

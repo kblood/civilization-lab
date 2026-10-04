@@ -29,10 +29,17 @@ export function postSapience(base,seed,ticks) {
     overrides:[{key:'origin.deliveryYear',value:'0'}],expect:'SAPIENCE'};
 }
 const nat=s=>typeof s==='string'&&/^(0|[1-9][0-9]*)$/.test(s);
+export const FORCED_TICK_MAXIMUM=40000;
+// Only declared model data enters B. ticks selects an execution slice.
+export function forcedModelInput(forced) {
+  if(forced===null)return null;
+  const {ticks,...model}=forced;
+  return {...model,modelTickMaximum:FORCED_TICK_MAXIMUM};
+}
 function tuple(a,maxs){if(!Array.isArray(a)||a.length!==maxs.length||a.some((n,i)=>!Number.isSafeInteger(n)||n<0||n>maxs[i]))throw new TypeError('Invalid tuple');}
 export function validateForced(f,planet) {
   exact(f,['schemaVersion','id','base','seed','ticks','initial','overrides','expect']);
-  if(f.schemaVersion!=='civ-forced-stub-1'||!Number.isSafeInteger(f.ticks)||f.ticks<1||f.ticks>40000||!IMPLEMENTED.some(k=>k.kind===f.expect))throw new TypeError('Invalid forced fixture');
+  if(f.schemaVersion!=='civ-forced-stub-1'||!Number.isSafeInteger(f.ticks)||f.ticks<1||f.ticks>FORCED_TICK_MAXIMUM||!IMPLEMENTED.some(k=>k.kind===f.expect))throw new TypeError('Invalid forced fixture');
   sortedUnique(f.overrides,o=>o.key);
   const support={'evt.sapience.regions':[1,2],'evt.migration.fraction':[50,250],'evt.plague.loss':[100,300],'evt.collapse.drop':[1,1],'evt.war.campaign':[20,100],'evt.conquest.win':[0,1],
     'evt.natural.loss':[100,400],'evt.natural.duration':[5,20],'evt.revolution.regime':[0,5],'evt.schism.coordinate':[0,2],'evt.perils.drop':[1,3],'evt.perils.shared':[0,1],'arc.colonizer':[0,1]};
@@ -87,9 +94,8 @@ export function validateForced(f,planet) {
 export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null,untilYear}={}) {
   if(typeof seed!=='string'||!seed.isWellFormed()||!Number.isSafeInteger(years)||years<10||years%10||years>400000)throw new RangeError('Invalid run');
   const {path,planet:original}=loadPlanet(fixture);
-  const executionTicks=untilYear===undefined?(forced===null?years/10:forced.ticks):F(untilYear,10)-Number(forced?.initial?.atTick??0);
-  if(!Number.isSafeInteger(executionTicks)||executionTicks<1||executionTicks>40000)throw new RangeError('Invalid execution horizon');
-  forced=structuredClone(forced??postSapience(path,seed,40000));
+  const requestedTicks=forced===null?years/10:forced.ticks;
+  forced=structuredClone(forced??postSapience(path,seed,FORCED_TICK_MAXIMUM));
   const initialOverride=forced.overrides.find(o=>o.key==='initial');
   if(initialOverride){if(forced.initial!==null&&digest(forced.initial)!==digest(initialOverride.value))throw new TypeError('Conflicting initial overrides');forced.initial=initialOverride.value;forced.overrides=forced.overrides.filter(o=>o.key!=='initial');}
   if(forced.seed!==seed||forced.base!==path)throw new TypeError('Forced seed/base mismatch');
@@ -97,12 +103,15 @@ export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=200
   const epochs=forced.overrides.find(o=>o.key==='epoch.rows');if(epochs)planet.epochs=Availability.known({rows:epochs.value});
   for(const key of ['lifecycle','partition','epochs'])if(planet[key].status!=='known')return {status:planet[key].status==='unsupported'?'not-modelled':'uninhabited',reason:planet[key].capability??planet[key].reason};
   validateForced(forced,planet);
+  if(untilYear!==undefined&&!Number.isSafeInteger(untilYear))throw new RangeError('Invalid end year');
+  const executionTicks=untilYear===undefined?requestedTicks:F(untilYear,10)-Number(forced.initial?.atTick??0);
+  if(!Number.isSafeInteger(executionTicks)||executionTicks<1||executionTicks>FORCED_TICK_MAXIMUM||BigInt(forced.initial?.atTick??0)+BigInt(executionTicks)>200000n)throw new RangeError('Invalid execution horizon');
   if(forced.initial===null&&forced.overrides.find(o=>o.key==='origin.deliveryYear')?.value!=='0')throw new TypeError('M2a requires the recorded post-sapience origin at year 0');
   const env=new StubEnvironment([planet]),domain={schemaVersion:'civ-domain-stub-1',id:'standalone:'+planet.system,
     systems:[{id:planet.system,fixture:path,bodyPrefix:planet.body.slice(0,planet.body.lastIndexOf(':'))}],routes:[],origins:[planet.body],fromYear:0,untilYear:400000};
   const systems=[{schemaVersion:'civ-system-stub-1',id:planet.system,bodies:[planet],routes:[]}];
   const manifest={manifestVersion:'civ-manifest-1',modelVersion:'civ-m2-1',rngVersion:'civ-rng-1',samplerVersion:'civ-samplers-1',arithmeticVersion:'civ-fixed-1',catalogueVersion:'civ-catalogue-1',partitionVersion:'civ-stub-regions-1',tickYears:10,chapterTicks:640,envEpochYears:1000,atlasVersions:{},
-    inputBundleDigest:digest({domain,systems,forced}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
+    inputBundleDigest:digest({domain,systems,forced:forcedModelInput(forced)}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
       originRateLog2:[12,22],learningLog2:[8,12],innovationLog2:[17,23],nuclearLog2:[8,24],pandemicLog2:[12,28],runawayLog2:[14,29],sharedLog2:[0,19],colonizerLog2:[15,19]}};
   if(planet.lifecycle.value.stellarDoomYear!=null)manifest.scenarioPriors.stellarPolicy={version:'m3b-stellar-1',graceYears:Number(override({forced},'parameters.stellarGraceYears')??500)};
   const fromTick=BigInt(forced.initial?.atTick??'0'),untilTick=fromTick+BigInt(executionTicks),arcId=`arc:${planet.body}:lin:${planet.body}:0`;
