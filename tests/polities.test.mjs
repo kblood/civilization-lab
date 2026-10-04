@@ -1,6 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { forced,runForced,region,polity } from './civ-helpers.mjs';
+import { forced,runForced,region,polity,setOverride } from './civ-helpers.mjs';
+test('schism cannot act through a parent retired by an earlier same-tick split',()=>{
+  const f=forced('SCHISM');setOverride(f,'hazard.FRAGMENTATION.q32','171798691840');
+  const r=runForced(f);assert.ok(r.events.some(e=>e.kind==='FRAGMENTATION'&&e.resolution==='accepted'));
+  const schisms=r.events.filter(e=>e.kind==='SCHISM');assert.ok(schisms.length>0);assert.ok(schisms.every(e=>e.resolution==='pre-empted'&&e.effects.length===0));
+  assert.ok(r.state.regions.every(r=>r.cultureId.endsWith('#cul:founder')));
+});
 test('conquest conserves territory, ownership is unique, retired IDs never return',()=>{
   const result=runForced(forced('CONQUEST'));const retired=[];
   assert.ok(result.events.some(e=>e.kind==='CONQUEST'&&e.data.outcome==='CONQUEST'&&e.resolution==='accepted'));

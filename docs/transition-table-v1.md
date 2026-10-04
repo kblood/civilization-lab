@@ -1767,7 +1767,7 @@ Exact input recipes (expand these into explicit JSON arrays in M2a/M2b;
 there are no random fixture-generation parameters):
 
 * All ordinary lifecycles: from=0, until=2000000, complex=0, doom=null.
-  Domain default interval [0,400000). Every region weight=1 and 16 cell
+  Domain declared interval [0,2000000); compilation defaults to 400000 years after the first scheduled sapience boundary, capped by the declared interval. Every region weight=1 and 16 cell
   weights=1. Epoch rows cover [0,2000) with constant values unless changed
   below. IDs zero-pad to two digits. No optional property is omitted.
 * `fixtures/planets/temperate.json`: body `stub:s00:b0`, system `s00`, profile
@@ -2111,6 +2111,24 @@ All changes here are authored scenario/representation choices, not research clai
    set; other ineligible hazards remain paused. Retirement materializes their
    final accumulated H at the ending boundary. Archive IDs include the episode.
 
+## Revision log (M2b)
+
+- [scenario] Expand the toy-12 declared domain bounds to [0,2000000), matching
+  its unchanged lifecycle/epoch coverage. The CLI compiles from genesis to
+  first sapience delivery + 400000 years, or + --years N, capped by those bounds
+  and stopping when every founded lineage is terminal and no further origin
+  is due before the horizon. A pending hard step is never redrawn. The old
+  absolute 400000-year bound could truncate the requested post-sapience history.
+- Extend the representation-only delta witness to D: replace domain.arcs by
+  sorted {id,root} commitments to P (structural at a checkpoint, delta otherwise),
+  retain every other domain field, and chain the annex valueDelta encoding as
+  SHA256('m2b-domain-delta-1;'+previous+delta). Genesis commits full structural P
+  roots; complete states remain in checkpoints. This avoids serializing every
+  arc twice each tick. The machine block enumerates every D field. Voyage,
+  lineage, transit and message compounds retain all sorted keyed members.
+- No M2a calibration constants changed. M2b kinds are enabled in the milestone
+  manifest; M2 stability goldens must be regenerated. M1 bytes are unchanged.
+
 ## Machine-readable table
 
 This is the sole fenced `json` block in this document. `phase` and `trigger`
@@ -2383,6 +2401,32 @@ Atomic records do not grant permission to create undeclared record members.
       "counter": "arc.hazardEpisodes sorted {key,episode}; next episode = closed entry episode + 1",
       "reopen": "zero accumulated H and threshold at saved episode; previous pending threshold invalidated",
       "otherHazards": "retain paused entries until owner retirement or terminal arc"
+    },
+    "domainHorizon": {
+      "boundsUntilYear": 2000000,
+      "defaultYearsAfterFirstSapience": 400000,
+      "explicitYearsAfterFirstSapience": true,
+      "stopAtTerminal": true
+    },
+    "domainWitness": {
+      "version": "m2b-domain-delta-1",
+      "fields": [
+        "arcs",
+        "bodyEpisodes",
+        "coverage",
+        "id",
+        "latches",
+        "lineages",
+        "messages",
+        "origins",
+        "tick",
+        "transit",
+        "voyages"
+      ],
+      "arcReplacement": "sorted {id,root}; root is P structural at checkpoint, otherwise P delta commitment",
+      "encoding": "SHA256(version+semicolon+previous+valueDelta(before,after)); valueDelta is the M2a annex grammar",
+      "genesis": "structural SHA256 of the domain view with complete structural P roots",
+      "checkpoint": "complete LIVE domain plus append-only archive; no RNG state"
     }
   },
   "frameworkReads": [

@@ -1,7 +1,7 @@
 import rows from './catalogue-data.json' with { type: 'json' };
 import { deepFreeze } from './manifest.mjs';
 export const CATALOGUE = deepFreeze(rows);
-export const IMPLEMENTED = Object.freeze(CATALOGUE.filter(k => k.milestone === 'M2a'));
+export const IMPLEMENTED = CATALOGUE;
 export const kindOf = kind => CATALOGUE.find(k => k.kind === kind);
 export function validateCatalogue(kinds, table) {
   const ranks = [];

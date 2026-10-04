@@ -1,0 +1,127 @@
+[
+  {
+    "file": "catalogue.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 106.1516
+  },
+  {
+    "file": "causal-dag.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 160.4503
+  },
+  {
+    "file": "civ-determinism.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 443.5849
+  },
+  {
+    "file": "conservation.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 140.6061
+  },
+  {
+    "file": "contact-horizon.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 130.6796
+  },
+  {
+    "file": "determinism-lint.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 89.9749
+  },
+  {
+    "file": "determinism.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 362.964
+  },
+  {
+    "file": "digest.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 116.2724
+  },
+  {
+    "file": "domain-order.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 192.6706
+  },
+  {
+    "file": "dynamics.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 179.4851
+  },
+  {
+    "file": "events.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 90.7634
+  },
+  {
+    "file": "expansion.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 282.0018
+  },
+  {
+    "file": "fixed.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 91.5774
+  },
+  {
+    "file": "fixtures-reach.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 404.1827
+  },
+  {
+    "file": "hazard.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 100.9513
+  },
+  {
+    "file": "m2a-fix.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 205.8083
+  },
+  {
+    "file": "m2a-perf.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 968.0949
+  },
+  {
+    "file": "origins.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 152.1245
+  },
+  {
+    "file": "outcomes.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 346.2842
+  },
+  {
+    "file": "perf-budget.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 288.8853
+  },
+  {
+    "file": "polities.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 176.8635
+  },
+  {
+    "file": "projection-toy.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 123.4813
+  },
+  {
+    "file": "query-order.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 748.9962
+  },
+  {
+    "file": "rng.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 94.3084
+  },
+  {
+    "file": "time.test.mjs",
+    "exitCode": 0,
+    "elapsedMs": 92.6513
+  }
+]

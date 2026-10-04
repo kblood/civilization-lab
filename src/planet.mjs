@@ -14,6 +14,7 @@ export { createDefinition } from './civ-input.mjs';
 export { bevertonHolt } from './tech.mjs';
 import { stateDigest } from './state-witness.mjs';
 import { transitionDigest, WITNESS_VERSION } from './delta-witness.mjs';
+import {extraOpportunities,extraMagnitudes,applyExtra,catastrophe,PERILS} from './m2b.mjs';
 export { stateDigest } from './state-witness.mjs';
 const boundaryDigests=new WeakMap();
 const byId=(a,b)=>compare(a.id,b.id);
@@ -23,14 +24,14 @@ const slots=(r,...fields)=>{
   const key=r.id+'|'+fields.join('|');let value=slotCache.get(key);
   if(!value){value=fields.map(f=>[r.id,'region.'+f]);if(slotCache.size<4096)slotCache.set(key,value);}return value;
 };
-function event(def,arc,kind,owner,intent,trigger,date=Number(arc.tick*10n),phase=kindOf(kind).phase) {
+export function event(def,arc,kind,owner,intent,trigger,date=Number(arc.tick*10n),phase=kindOf(kind).phase) {
   const k=kindOf(kind),tick=String(arc.tick);
   return {id:eventId(owner,kind,tick,intent),ordinal:0,kind,kindRank:k.kindRank,level:k.owner,ownerId:owner,intentKey:intent,
     refs:[{role:'arc',entityId:arc.id}],tick,dateYear:date,precision:trigger.mode==='hazard'?'year':'decade',phase,trigger,
     causes:[],params:{},effects:[],chain:null,salience:k.salience,forced:false,modelVersion:'civ-m2-1',resolution:'accepted',reason:null,
     data:{sets:[],stage:null,outcome:null,source:null,target:null,survivor:null,launch:null}};
 }
-function installEnvironment(def,a) {
+export function installEnvironment(def,a) {
   const year=Number(a.tick*10n),life=def.planet.lifecycle.value;
   for(const r of a.regions) {
     const row=def.planet.epochs.value.rows.find(e=>e.regionId===r.localId&&BigInt(e.fromEpoch)<=F(a.tick,100n)&&F(a.tick,100n)<BigInt(e.untilEpoch));
@@ -41,10 +42,10 @@ function installEnvironment(def,a) {
     r.resources=row.resources;r.K=capacity(r);r.era=era(r.tiers);r.energy=r.pop*CAPTURE[r.era];
   }
 }
-function skeleton(def) {
-  const a={id:def.arcId,lineageId:'lin:'+def.planet.body,body:def.planet.body,episode:0,foundedYear:Number(def.fromTick*10n),foundingTiers:Array(7).fill(0),
+export function skeleton(def) {
+  const a={id:def.arcId,lineageId:def.lineageId??'lin:'+def.planet.body,body:def.planet.body,episode:def.episode??0,foundedYear:Number(def.fromTick*10n),foundingTiers:Array(7).fill(0),
     lastDeath:null,isColony:false,colonizer:true,regions:[],polities:[],hazardLedger:[],hazardEpisodes:[],chains:[],provenance:[],latches:[],perils:'none',nonviable:false,
-    outcome:{biological:'extant',industrialEra:0,regressing:false,political:'none',terminal:false},scenarioParams:priors(def,'lin:'+def.planet.body),inbox:[],outbox:[],tick:def.fromTick};
+    outcome:{biological:'extant',industrialEra:0,regressing:false,political:'none',terminal:false},scenarioParams:def.scenarioParams??priors(def,'lin:'+def.planet.body),inbox:[],outbox:[],tick:def.fromTick};
   a.regions=def.planet.partition.value.regions.map(r=>({id:a.id+'#'+r.id,localId:r.id,pop:0n,Kbase:0n,K:0n,renewable:1000,infra:0n,fuel:0n,forcing:0n,immunityTicks:20,
     damage:[],polityId:null,cultureId:a.id+'#cul:founder',culture:[500,500,500],tiers:Array(7).fill(0),caps:[...MAX_TIERS],era:0,energy:0n,resources:[0,0,0,0],collapse:null,lowTicks:Array(7).fill(0),ceilings:[],spaceflight:false,berthsUsed:0}));
   const initial=def.forced.initial;
@@ -147,7 +148,13 @@ function thresholdIntents(def,pre,next) {
     check('FAMINE',r,r.pop>0n&&(r.pop*1000n>r.K*1200n||dmg>=300),'region.pop',r.pop,F(r.K*1200n,1000n),{damage:dmg,lossPermille:clamp(pressure(r)-1000+dmg,50,700)},r.id,()=>slots(r,'pop','K','damage'));
     for(let d=0;d<7;d++)if(r.lowTicks[d]>=2||hasLosses&&latched('TECH_LOSS',r.id+'~tech:'+DOMAINS[d]))check('TECH_LOSS',r,r.tiers[d]>0&&r.lowTicks[d]>=2,'region.lowTicks',r.lowTicks[d],2,{domainIndex:d,drop:1},r.id+'~tech:'+DOMAINS[d],()=>slots(r,'tiers','lowTicks'));
     if(r.collapse?.active||latched('RECOVERY',r.id))check('RECOVERY',r,!!r.collapse?.active&&r.pop*2n>=r.collapse.recoverPop&&r.infra*4n>=r.collapse.recoverInfra*3n,'region.infra',r.infra*4n,(r.collapse?.recoverInfra??0n)*3n,{},r.id,()=>slots(r,'collapse','pop','infra'));
+    if(r.forcing>=1000000000n||latched('CLIMATE_CATASTROPHE',r.id))check('CLIMATE_CATASTROPHE',r,r.pop>0n&&r.forcing>=1000000000n,'region.forcing',r.forcing,1000000000n,{},r.id,()=>slots(r,'forcing','pop'));
+    if(r.tiers[3]>=5||latched('SPACEFLIGHT',r.id))check('SPACEFLIGHT',r,r.tiers[3]>=5,'region.tiers',r.tiers[3],5,{domainIndex:3},r.id,()=>slots(r,'tiers'));
+    if(r.tiers[3]<5&&r.spaceflight)next.regions.find(v=>v.id===r.id).spaceflight=false;
   }
+  const total=population(pre.regions);
+  for(const p of pre.polities)check('HEGEMONY',p,total>0n&&population(members(pre,p))*1000n>=total*600n,'region.pop',population(members(pre,p))*1000n,total*600n,{},p.id,()=>pre.regions.flatMap(r=>slots(r,'pop')));
+  if(pre.isColony){check('COLONY_LOST',pre,total>0n&&total<2000n,'region.pop',total,2000n,{},pre.id,()=>pre.regions.flatMap(r=>slots(r,'pop')));if(total>=2000n)next.nonviable=false;}
   if(population(pre.regions)===0n)check('EXTINCTION',pre,population(pre.regions)===0n&&!pre.outcome.terminal,'region.pop',0,0,{},pre.id,()=>pre.regions.flatMap(r=>slots(r,'pop')));
   if(next.latches!==pre.latches)next.latches.sort((a,b)=>compare(a.kind,b.kind)||compare(a.subject,b.subject));
   return out;
@@ -228,6 +235,7 @@ function opportunities(def,pre) {
     add('COLLAPSE',r.id,[term('stress',F(4294967n*BigInt(stress)*BigInt(stress),1000000n)),term('overhead',F(42949n*BigInt(complexity),7n))],{r:r.id});
     collapseCache.set(r.id,{stress,complexity,entry:out.at(-1)});
   }
+  extraOpportunities(def,pre,add);
   return out.sort((a,b)=>compare(a.key,b.key));
 }
 // Provenance has no role in rates or eligibility. Materialise its slots only
@@ -235,7 +243,8 @@ function opportunities(def,pre) {
 function opportunitySlots(def,pre,o,term) {
   const r=o.r&&regionById(pre,o.r);
   if(term==='gate')return ['AGRICULTURE','DISCOVERY','DIFFUSION'].includes(o.kind)?slots(r,'tiers','caps','resources'):
-    o.kind==='POLITY_FOUNDING'?slots(r,'tiers'):[];
+    o.kind==='POLITY_FOUNDING'?slots(r,'tiers'):o.kind==='LAUNCH'?slots(r,'tiers','spaceflight','pop','infra','fuel'):
+    PERILS.includes(o.kind)?[[pre.id,'arc.perils'],...pre.regions.flatMap(r=>slots(r,'tiers'))]:[];
   if(o.kind==='AGRICULTURE'||o.kind==='DISCOVERY')return [...slots(r,'pop'),...neighboursOf(def,r.id).flatMap(e=>slots(regionById(pre,e.to),'pop')),
     ...(o.kind==='AGRICULTURE'?slots(r,'resources'):[])];
   if(o.kind==='MIGRATION')return [...slots(r,'pop','K','damage','renewable'),...slots(regionById(pre,o.to),'pop','K')];
@@ -252,6 +261,13 @@ function opportunitySlots(def,pre,o,term) {
       [...members(pre,attacker),...members(pre,defender)].flatMap(r=>slots(r,'pop','tiers')).concat(
         [[attacker.id,'polity.asabiya'],[defender.id,'polity.asabiya'],[attacker.id,'polity.stress'],[attacker.id,'polity.warWeariness']]);
   }
+  if(['FRAGMENTATION','REVOLUTION','SCHISM'].includes(o.kind)) {
+    const p=polityById(pre,o.hazardId.ownerId);
+    if(o.kind==='FRAGMENTATION')return [[p.id,term==='overhead'?'polity.regions':'polity.stress']];
+    return [[p.id,'polity.stress'],...members(pre,p).flatMap(r=>slots(r,o.kind==='SCHISM'?'culture':'tiers'))];
+  }
+  if(o.kind==='LAUNCH')return slots(r,'tiers','spaceflight','pop','infra','fuel');
+  if(o.kind==='NATURAL_CATASTROPHE'||PERILS.includes(o.kind))return [];
   throw new Error('Unknown opportunity');
 }
 let indexedHazards=null,hazardIndex=null;
@@ -295,7 +311,7 @@ function hazardIntents(def,pre,next,exposures) {
       if(e.kind==='WAR')e.data.stage='DECLARED';
       if(e.kind==='COLLAPSE')e.params={drop:String(magnitude(def,e.id,'evt.collapse.drop',1,1)),splitCount:'0'};
       if(e.kind==='POLITY_FOUNDING')e.data.target=`${pre.id}#pol:${pre.tick}:12:${regionById(pre,o.r).localId}:0`;
-      out.push({...o,e});
+      const intent={...o,e};extraMagnitudes(def,pre,e,intent);out.push(intent);
     }
   }
   for(let i=0;i<pre.hazardLedger.length;i++) {
@@ -352,12 +368,16 @@ function resolveLocks(pre,intents) {
     if(e.kind==='CONQUEST'&&e.params.won==='1'&&!claim(['territory:'+i.to])){preempt(e,'target-conflict');i.transition=advanceChain(i.oldChain,pre.tick,'fail','stalemate');}
     if(e.kind==='COLLAPSE'&&!claim(['collapse:'+i.r])){preempt(e,'target-conflict');continue;}
     if(e.kind==='COLLAPSE')i.splits=pre.polities.filter(p=>p.id===regionById(pre,i.r)?.polityId&&p.regions.length>=2&&claim(['retire:'+p.id,...p.regions.map(id=>'territory:'+id)])).map(p=>p.id);
+    if(e.kind==='FRAGMENTATION') {const p=polityById(pre,e.ownerId);if(!claim(['retire:'+p.id,...p.regions.map(id=>'territory:'+id)]))preempt(e,'target-conflict');}
+    if(e.kind==='REVOLUTION'&&!claim(['regime:'+e.ownerId]))preempt(e,'target-conflict');
+    if(e.kind==='SCHISM'&&!claim(members(pre,polityById(pre,e.ownerId)).slice(F(members(pre,polityById(pre,e.ownerId)).length,2)).map(r=>'culture:'+r.id)))preempt(e,'target-conflict');
+    if(e.kind==='LAUNCH'&&!claim(['window:'+i.r]))preempt(e,'target-conflict');
   }
 }
 // All primitive writes go through this recorder. Intermediate changes score
 // before a later operation can cancel them; sets retain the final atomic value.
-function recorder(arc,scores) {
-  let sequence=0;
+export function recorder(arc,scores,{sequenceStart=0,stage=4}={}) {
+  let sequence=sequenceStart;
   function changed(e,target,field,before,after){addScore(scores,target,field,e.id,distance(before,after,field));}
   function set(e,obj,root,key,value) {
     const field=root+'.'+key,old=obj[key];if(!distance(old,value,field))return;
@@ -373,7 +393,7 @@ function recorder(arc,scores) {
     const amount=F(r[field]*BigInt(fraction),1000n);
     set(e,r,'region',field,r[field]-amount);
     if(field==='pop') {
-      if(amount>0n)arc.lastDeath={tick:arc.tick,stage:4,ownerId:arc.id,sequence,dateYear:e.dateYear,eventId:e.id,kind:e.kind};
+      if(amount>0n)arc.lastDeath={tick:arc.tick,stage,ownerId:arc.id,sequence,dateYear:e.dateYear,eventId:e.id,kind:e.kind};
       sequence++;
     }
     return amount;
@@ -384,7 +404,8 @@ function recorder(arc,scores) {
     changed(e,from.id,'region.pop',from.pop,from.pop-amount);changed(e,to.id,'region.pop',to.pop,to.pop+amount);
     from.pop-=amount;to.pop+=amount;e.effects.push({target:from.id,field:'region.pop',op:'transfer',amount:String(amount),to:to.id,toField:'region.pop'});return true;
   }
-  return {set,loss,transfer};
+  function launch(e,from,to,amount){changed(e,from.id,'region.pop',from.pop,from.pop-amount);from.pop-=amount;sequence++;e.effects.push({target:from.id,field:'region.pop',op:'transfer',amount:String(amount),to,toField:'transit.pop'});}
+  return {set,loss,transfer,launch,getSequence:()=>sequence};
 }
 function applyIntents(def,pre,next,intents,scores) {
   const op=recorder(next,scores),splitEvents=[];
@@ -451,7 +472,7 @@ function applyIntents(def,pre,next,intents,scores) {
         for(const polity of next.polities)if(polity.endedYear===null)op.set(e,polity,'polity','endedYear',e.dateYear);
         for(const v of next.regions)op.set(e,v,'region','polityId',null);break;
       }
-      default:throw new Error('Unimplemented M2a event '+e.kind);
+      default:applyExtra(def,pre,next,i,op,preempt,splitEvents);
     }
     if(i.oldChain) {
       if(e.resolution==='pre-empted'&&['CAMPAIGN','SPREAD'].includes(e.data.stage))i.transition=advanceChain(i.oldChain,pre.tick,'active',null,[],i.oldChain.visited);
@@ -514,14 +535,41 @@ function archive(def,next,acquisition) {
   next.chains.sort((a,b)=>compare(a.chainId,b.chainId));
   return out.sort((a,b)=>compare(a.scope,b.scope)||compare(a.kind,b.kind)||compare(a.id,b.id));
 }
-export function stepPlanet(def,boundary,{founding=false,collectUpdates=true}={}) {
+export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,startBoundary=boundary,arrivalIds=[],arrivalEvents=[]}={}) {
   if(boundary.outcome.terminal)throw new Error('Terminal arc');
   const year=Number(boundary.tick*10n),life=def.planet.lifecycle.value;
   const environmentBoundary=boundary.tick===def.fromTick||boundary.tick%100n===0n||
     [life.habitableFromYear,life.habitableUntilYear].some(y=>year>=y&&year-10<y)||
     boundary.regions.some(r=>r.berthsUsed!==0||r.damage.some(d=>d.untilTick<=boundary.tick));
-  const pre=environmentBoundary||founding?copyArc(boundary):{...boundary,outbox:[]},scores=[],phase0events=[];
-  if(environmentBoundary||founding)installEnvironment(def,pre);
+  const hasInbox=boundary.inbox.length>0;
+  const pre=environmentBoundary||founding||hasInbox?copyArc(boundary):{...boundary,outbox:[]},scores=[],phase0events=[],inboxEffects=[];
+  for(const e of arrivalEvents)for(const x of e.effects) {
+    if(x.op==='transfer'&&pre.regions.some(r=>r.id===x.to))addScore(scores,x.to,x.toField,e.id,BigInt(x.amount));
+    const r=pre.regions.find(r=>r.id===x.target),old=startBoundary.regions.find(r=>r.id===x.target);
+    if(r&&x.op==='add')addScore(scores,x.target,x.field,e.id,BigInt(x.amount)<0n?-BigInt(x.amount):BigInt(x.amount));
+    if(r&&x.op==='set'){const key=x.field.split('.')[1],value=e.data.sets.find(s=>s.target===r.id&&s.field===x.field).value;addScore(scores,r.id,x.field,e.id,distance(old[key],value,x.field));}
+  }
+  let phase0Sequence=0;
+  if(hasInbox)for(const m of boundary.inbox) {
+    const e={id:m.causeEventId??m.id,kind:m.payload.kind,dateYear:year,effects:[],data:{sets:[]},refs:[]},op=recorder(pre,m.causeEventId?scores:[],{sequenceStart:phase0Sequence,stage:1});
+    if(m.type==='SHARED')catastrophe(boundary,pre,e,op,m.payload);
+    if(m.type==='PERILS_EXIT')op.set(e,pre,'arc','perils','exited');
+    if(m.type==='PERILS_REENTER')op.set(e,pre,'arc','perils',pre.outcome.industrialEra>=3||pre.perils!=='none'?'active':'none');
+    phase0Sequence=op.getSequence();
+    inboxEffects.push({messageId:m.id,causeEventId:m.causeEventId,effects:e.effects,sets:e.data.sets.sort((a,b)=>compare(a.target,b.target)||compare(a.field,b.field))});
+  }
+  pre.inbox=[];
+  if(environmentBoundary||founding||hasInbox) {
+    const old=pre.regions.map(r=>({Kbase:r.Kbase,resources:r.resources}));installEnvironment(def,pre);
+    if(!founding&&(boundary.tick%100n===0n||year===life.habitableUntilYear)&&old.some((v,j)=>v.Kbase!==pre.regions[j].Kbase||v.resources.some((x,k)=>x!==pre.regions[j].resources[k]))) {
+      const e=event(def,pre,'CLIMATE_SHIFT',pre.id,messageIntent(pre.id+'#env:'+pre.tick),{mode:'exogenous'});
+      for(let j=0;j<pre.regions.length;j++)for(const key of ['Kbase','resources'])if(canonicalString(old[j][key])!==canonicalString(pre.regions[j][key])) {
+        const r=pre.regions[j];e.effects.push({target:r.id,field:'region.'+key,op:'set',amount:'0'});e.data.sets.push({target:r.id,field:'region.'+key,value:r[key]});
+        addScore(scores,r.id,'region.'+key,e.id,distance(old[j][key],r[key]));
+      }
+      phase0events.push(e);
+    }
+  }
   if(founding) {
     const positive=pre.regions.filter(r=>r.Kbase>0n);if(!positive.length)throw new Error('no-lineage');
     const e=event(def,pre,'SAPIENCE',pre.id,messageIntent(originId(pre.body)),{mode:'scheduled'});
@@ -529,8 +577,8 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true}={})
     const op=recorder(pre,scores);for(const r of positive.slice(0,count)){op.set(e,r,'region','pop',1000n);op.set(e,r,'region','infra',1000n);}
     installEnvironment(def,pre);phase0events.push(e);
   }
-  const startDigest=boundaryDigests.get(boundary)??stateDigest(boundary);
-  const phaseDigest=environmentBoundary||founding?transitionDigest(startDigest,boundary,pre):startDigest;
+  const startDigest=boundaryDigests.get(startBoundary)??stateDigest(startBoundary);
+  const phaseDigest=environmentBoundary||founding||hasInbox||startBoundary!==boundary||boundary.outbox.length?transitionDigest(startDigest,startBoundary,pre):startDigest;
   prepareArc(pre);
   const next=copyArc(pre);
   const exposures=IMPLEMENTED.map(k=>({kind:k.kind,opportunityTicks:0}));
@@ -548,7 +596,10 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true}={})
     e.params={fromEra:String(p.era),toEra:String(r.era)};e.causes=causes(pre,e,[],enabling.map(event=>({event,edge:'ENABLED'})));events.push(e);
   }
   deriveScores(boundary,next,scores,splitEvents);next.provenance=mergeProvenance(pre.provenance,scores,next.polities.filter(p=>p.stress>100).map(p=>p.id));
-  const archived=archive(def,next,events.some(e=>['AGRICULTURE','DISCOVERY','DIFFUSION'].includes(e.kind)&&e.resolution==='accepted'));next.tick++;
+  const archived=archive(def,next,events.some(e=>['AGRICULTURE','DISCOVERY','DIFFUSION'].includes(e.kind)&&e.resolution==='accepted'));
+  next.outbox.sort((a,b)=>compare(a.type,b.type)||compare(a.targetId,b.targetId)||compare(a.causeEventId??'',b.causeEventId??'')||compare(canonicalString(a.payload),canonicalString(b.payload)));
+  for(let j=0,ordinal=0;j<next.outbox.length;j++){const m=next.outbox[j],p=next.outbox[j-1];ordinal=p&&p.type===m.type&&p.targetId===m.targetId?ordinal+1:0;m.id=m.id.slice(0,m.id.lastIndexOf('~')+1)+ordinal;}
+  next.tick++;
   for(const e of events) {
     for(const key of ['source','target','survivor'])if(e.data[key]!==null)e.refs.push({role:key,entityId:e.data[key]});
     e.refs=refsUnique(e.refs);e.data.sets.sort((a,b)=>compare(a.target,b.target)||compare(a.field,b.field));
@@ -558,7 +609,7 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true}={})
   const structural=next.tick%640n===0n||next.tick===def.untilTick||next.outcome.terminal?stateDigest(next):null;
   const ledger=deepFreeze({witnessVersion:WITNESS_VERSION,arcId:pre.id,tick:String(pre.tick),startState:startDigest,
     eventIds:sorted.map(e=>e.id),endState:transitionDigest(phaseDigest,pre,next),structural,
-    phase0:{eventIds:phase0events.map(e=>e.id),state:phaseDigest,inboxEffects:[]},archived});
+    phase0:{eventIds:[...arrivalIds,...phase0events.map(e=>e.id)],state:phaseDigest,inboxEffects},archived});
   boundaryDigests.set(next,structural??ledger.endState);
   return {ledger,state:next,pre,updates,events:sorted,exposures};
 }
@@ -576,7 +627,7 @@ export function salientEvents(events,limit=30) {
   }).slice(0,limit);
 }
 export function outcomeClass(arc) {
-  if(arc.outcome.terminal)return 'EXTINCT_NATURAL';
+  if(arc.outcome.terminal)return PERILS.includes(arc.lastDeath?.kind)?'EXTINCT_SELF':'EXTINCT_NATURAL';
   const living=arc.regions.filter(r=>r.pop>0n);
   if(living.some(r=>r.caps.some((v,d)=>v<MAX_TIERS[d])))return 'EXISTENTIAL_CAP';
   if(living.some(r=>r.collapse?.active))return 'COLLAPSED_RECOVERING';

@@ -79,8 +79,16 @@ export function validateEvent(e) {
     if(e.resolution==='pre-empted'&&e.effects.length)fail();
     const paramsByKind={SAPIENCE:['regionCount'],MIGRATION:['fraction'],AGRICULTURE:['domainIndex','targetTier'],DISCOVERY:['domainIndex','targetTier'],DIFFUSION:['domainIndex','targetTier'],
       FAMINE:['damage','lossPermille'],PLAGUE:['OUTBREAK','SPREAD'].includes(e.data.stage)?['lossPermille']:[],WAR:e.data.stage==='CAMPAIGN'?['lossPermille']:[],TECH_LOSS:['domainIndex','drop'],
-      ENERGY_TRANSITION:['fromEra','toEra'],POLITY_FOUNDING:[],CONQUEST:['winPpm','won'],COLLAPSE:['drop','splitCount'],RECOVERY:[],EXTINCTION:[]};
-    if(row.milestone==='M2a'&&Object.keys(e.params).sort(compare).join('|')!==paramsByKind[e.kind].sort(compare).join('|'))fail();
+      ENERGY_TRANSITION:['fromEra','toEra'],POLITY_FOUNDING:[],CONQUEST:['winPpm','won'],COLLAPSE:['drop','splitCount'],RECOVERY:[],EXTINCTION:[],
+      CLIMATE_SHIFT:[],NATURAL_CATASTROPHE:['damageTicks','extinctionPpm','lossPermille'],HEGEMONY:[],FRAGMENTATION:[],REVOLUTION:['regimeIndex'],SCHISM:['coordinate'],
+      NUCLEAR_WAR:['damagePermille','damageTicks','infraLossPermille','lossPermille','outcomeIndex','shared','tierDrop'],ENGINEERED_PANDEMIC:['damagePermille','damageTicks','infraLossPermille','lossPermille','outcomeIndex','shared','tierDrop'],RUNAWAY_TECH:['damagePermille','damageTicks','infraLossPermille','lossPermille','outcomeIndex','shared','tierDrop'],
+      CLIMATE_CATASTROPHE:[],SPACEFLIGHT:['domainIndex'],LAUNCH:['persons','travelYears'],VOYAGE_LOST:[],COLONY_FOUNDED:['arrivalYear','deliveryYear','launchYear','persons'],COLONY_LOST:[],LINEAGE_EXTINCTION:['livingArcs','transitPop']};
+    if(Object.keys(e.params).sort(compare).join('|')!==paramsByKind[e.kind].sort(compare).join('|'))fail();
+    if(t.mode==='hazard'&&typeof t.saturated!=='boolean')fail();
+    if(e.data.launch!==null) {
+      const v=e.data.launch;
+      if(e.kind!=='LAUNCH'||Object.keys(v).sort(compare).join('|')!=='arrivalYear|culture|cultureId|deliveryTick|destination|id|launchEventId|launchYear|lineageId|sourceArc|sourceRegion|status|tiers'||v.status!=='transit'||!Array.isArray(v.tiers)||v.tiers.length!==7||!Array.isArray(v.culture)||v.culture.length!==3)fail();
+    }
   }
   validateCanonical(e); // Reject unsupported values even in optional fields.
   return e;

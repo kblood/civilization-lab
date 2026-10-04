@@ -1,0 +1,1234 @@
+{
+  "schemaVersion": "civ-planet-stub-1",
+  "body": "stub:anoxic:b0",
+  "system": "anoxic",
+  "profile": "anoxic",
+  "hosting": "habitable",
+  "lifecycle": {
+    "status": "known",
+    "value": {
+      "habitableFromYear": 0,
+      "habitableUntilYear": 2000000,
+      "complexLifeFromYear": 0,
+      "stellarDoomYear": null
+    },
+    "digest": "4ab6d4143950ea80e6a2559e07affa58906d9fdc477dee752d5e3e9afa5ca8fa"
+  },
+  "partition": {
+    "status": "known",
+    "value": {
+      "partitionVersion": "civ-stub-regions-1",
+      "regions": [
+        {
+          "id": "r00",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r01",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r11",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r01",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r00",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r02",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r02",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r01",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r03",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r03",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r02",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r04",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r04",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r03",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r05",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r05",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r04",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r06",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r06",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r05",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r07",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r07",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r06",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r08",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r08",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r07",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r09",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r09",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r08",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r10",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r10",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r09",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r11",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        },
+        {
+          "id": "r11",
+          "weight": "1",
+          "cells": [
+            {
+              "id": "c00",
+              "weight": "1"
+            },
+            {
+              "id": "c01",
+              "weight": "1"
+            },
+            {
+              "id": "c02",
+              "weight": "1"
+            },
+            {
+              "id": "c03",
+              "weight": "1"
+            },
+            {
+              "id": "c04",
+              "weight": "1"
+            },
+            {
+              "id": "c05",
+              "weight": "1"
+            },
+            {
+              "id": "c06",
+              "weight": "1"
+            },
+            {
+              "id": "c07",
+              "weight": "1"
+            },
+            {
+              "id": "c08",
+              "weight": "1"
+            },
+            {
+              "id": "c09",
+              "weight": "1"
+            },
+            {
+              "id": "c10",
+              "weight": "1"
+            },
+            {
+              "id": "c11",
+              "weight": "1"
+            },
+            {
+              "id": "c12",
+              "weight": "1"
+            },
+            {
+              "id": "c13",
+              "weight": "1"
+            },
+            {
+              "id": "c14",
+              "weight": "1"
+            },
+            {
+              "id": "c15",
+              "weight": "1"
+            }
+          ],
+          "adjacency": [
+            {
+              "to": "r00",
+              "contactPermille": 400,
+              "barrier": false
+            },
+            {
+              "to": "r10",
+              "contactPermille": 400,
+              "barrier": false
+            }
+          ]
+        }
+      ]
+    },
+    "digest": "de594cbe3b316b866fa97e881adaeacf63a150cd215e747768ecc004d520f2eb"
+  },
+  "epochs": {
+    "status": "known",
+    "value": {
+      "rows": [
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r00",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r01",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r02",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r03",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r04",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r05",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r06",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r07",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r08",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r09",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r10",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        },
+        {
+          "fromEpoch": "0",
+          "untilEpoch": "2000",
+          "regionId": "r11",
+          "Kbase": "4000",
+          "landPpm": 700000,
+          "tempClass": 2,
+          "aridityClass": 1,
+          "airClass": "anoxic",
+          "gravityMicroMS2": 9810000,
+          "resources": [
+            800,
+            0,
+            500,
+            800
+          ],
+          "domesticablesPpm": 800000
+        }
+      ]
+    },
+    "digest": "c3814adc3c0601a3934f77ce7dcd0b62aef4715744027358568f85a80991250d"
+  }
+}

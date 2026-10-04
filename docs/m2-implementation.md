@@ -1,4 +1,308 @@
-# M2a performance round 2 — runner handoff
+# M2b — runner handoff
+
+M2b implements all 31 catalogue kinds, including the 16 remaining recipes.
+Opus owns review and commits. No git writes, network, installs, deployment,
+preview, or Atlas edits were performed. The M2a notes below are historical.
+
+## Execution and interfaces
+
+`createDomain(pathOrDomainStub, seed, {years, forced})` expands and validates
+the immutable domain/system/planet bundle before hashing it. Hard-step rates
+and waiting times use the registered D addresses, exact BigInt ceiling and
+the actual lifecycle window. Origins retain pending/no-lineage/preempted
+statuses rather than retrying. `compileSummary()` is the bounded-history
+interface; `run()` additionally retains full tick snapshots for short tests.
+`queryArc(bodyOrArcId)` returns the arc and complete-domain roots. Cold queries
+replay from genesis; checkpoint-resume optimization is not exposed by this API.
+
+D0 reserves arrivals before origins at a body, with ID tie breaking. Transit
+people have one authoritative account. Arrivals can found, reinforce, reject,
+or fail; fixture and real voyages survive source extinction. D1 uses a D-keyed
+episode hazard callback, and delivery wins over risk. P steps have no sibling
+state access. D2 registers already-debited launches, expands shared fractions,
+queues next-tick safety messages, retires closed records, merges dated death
+witnesses and derives outcomes. A cap is permanent; collapse and nonviability
+remain recoverable. Shared payloads never redraw or halve a cap loss twice.
+
+P still uses lazy hazard clocks, bounded identity/opportunity caches, delta
+witnesses and streamed chapter hashing. The existing arc/region state schema
+already had the M2b fields; all remain covered by its exhaustive witness tables.
+D has its own delta commitment over every registered D field, with P roots
+substituted for complete arc records. Complete domain checkpoints have exactly
+`{tick,live,archiveRecords}`. Voyage/lineage/message/transit/origin compounds
+retain all registered fields. Domain roots compose sorted arc roots and D's
+root using the existing M1 Merkle construction. Inspection/materialisation
+order and the test-only lineage execution suppression flag do not change the
+manifest, recipe, or any RNG address.
+
+## Table changes
+
+The M2b revision log changes prose and the machine-readable rules together:
+
+1. [scenario] The toy-12 declared upper bound is 2 Myr, matching its existing
+   lifecycle and epoch coverage. The default run is 400 kyr after first
+   sapience delivery, capped by those bounds or an all-lineages-terminal
+   outcome. `--years N` changes that post-sapience duration. Previously an
+   absolute 400 kyr bound could hide almost all of a late-origin history.
+2. The D delta witness is specified, including its exhaustive field list,
+   P-root substitution, version, encoding and complete checkpoint envelope.
+
+No M2a calibration constant or technology gate changed. Enabling M2b and
+editing the binding contract changes M2 manifests and histories as expected.
+The 100-year standalone self-generated stability golden is now
+`d1a2ba85d1f62958a62d4b911d9f55da51d7be480f7e42f438e81b0b47b38d42`.
+The short toy-12 self-generated golden (`toy-1`, 100 years after sapience) is
+`4f1fcd8754c19ee4560cb5cef2d32ac6747c05e320c973226fe6333d7534c477`.
+Neither golden is an independent correctness oracle. M1 remains
+`c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc`.
+
+## Acceptance map and observed checks
+
+`npm test`: **80 tests, 80 pass, 0 fail, 0 cancelled, 0 skipped, 0 todo**,
+4991.8126 ms. Transcript: [m2b-tests.txt](evidence/m2b-tests.txt).
+All 25 files were also launched separately with `node --test`; all returned
+zero and all completed below two seconds. Largest wall time was
+**968.0949 ms**, `m2a-perf.test.mjs`; see
+[m2b-file-times.json](evidence/m2b-file-times.json). The unchanged M1 digest
+was separately observed with `npm run digest`.
+
+| Acceptance | Evidence |
+|---|---|
+| All 31 kinds, declared catalogue reads/writes and real guards | `catalogue.test.mjs`, `fixtures-reach.test.mjs`; event validation checks every emitted effect against the kind's writes and closed parameter schema |
+| Stocks, remaining-stock transfers, exact launch/delivery balance | `dynamics.test.mjs`, `conservation.test.mjs` |
+| Source extinction before delivery, transit deaths, same-lineage reinforcement, rejected foreign arrival | `expansion.test.mjs`, `contact-horizon.test.mjs`, `outcomes.test.mjs` |
+| Five-node arrival chain, disconnected node, ties, year 2 + 1 delivered at year 10, inherited tiers and further innovation | `expansion.test.mjs`; the authored graph seed has learningBias 256, so tier maintenance does not erase T7 between its launch windows |
+| Arc stepping/query/cold order and complete witness coverage | `domain-order.test.mjs`, existing M2a witness/checkpoint tests |
+| Contact horizon under one manifest and a real differing D history | `contact-horizon.test.mjs`; suppression is an execution-only test flag |
+| Recovery, caps, nonviable rescue, EXIT/REENTER delivery, shared consequences, extinction only without survivors | `outcomes.test.mjs` |
+| Exact hard-step schedule, no horizon redraw, lifecycle censoring | `origins.test.mjs` |
+| Anoxic E1/E3 alternatives and missing fissiles | `dynamics.test.mjs` |
+| Two runs, fresh process and self-generated goldens | `civ-determinism.test.mjs`; M1 tests remain intact |
+| Cheap standalone and reported short-domain compilation | `perf-budget.test.mjs`; long CLI evidence is outside the unit suite |
+
+## Exact final CLI and standalone performance output
+
+`npm run perf` (fresh process, no concurrent survey):
+
+```text
+> civilization-lab@0.0.0 perf
+> node tools/perf-civ.mjs
+
+400000 years: 9193.67 ms; target 10000 ms; 14367 events; 4108c3cbd1f7df88b42c6ed166988758122cfc54883abbe42950ec306cad3f4e
+RSS: 358.06 MiB; largest P+D chapter: 1.74 MiB
+Events digest (sorted IDs, JSON): 89de6c970b7bff79562c0c61840b852ce3e4b678d6707dc5494e6fbc975ecbd5
+Heap: 185.18 MiB used; 283.20 MiB reserved
+CPU: 12671.00 ms
+```
+
+The 400 kyr result passes 10000 ms and 450 MiB RSS. Margin is about 0.81 s;
+Opus should remeasure on the runner. No calibration was adjusted to meet it.
+
+`node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-14`:
+
+```text
+M2b toy-12; seed toy-14; through year 109130; 359 events.
+Outcome: EXTINCT_SELF; maximum era E4; arcs ever founded 1.
+lin:stub:s00:b0: EXTINCT_SELF
+Most salient events (model attribution; at most three per kind):
+SAPIENCE@57700 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+RUNAWAY_TECH@109110 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+EXTINCTION@109120 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes TRIGGERED: RUNAWAY_TECH@109110 (arc:stub:s00:b0:lin:stub:s00:b0:0)
+LINEAGE_EXTINCTION@109129 (lin:stub:s00:b0); causes TRIGGERED: RUNAWAY_TECH@109110 (arc:stub:s00:b0:lin:stub:s00:b0:0)
+COLLAPSE@81144 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+CLIMATE_CATASTROPHE@105040 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes none
+CLIMATE_CATASTROPHE@105260 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes TRIGGERED: PLAGUE@105120 (arc:stub:s00:b0:lin:stub:s00:b0:0#r09)
+CLIMATE_CATASTROPHE@106540 (arc:stub:s00:b0:lin:stub:s00:b0:0#r09); causes none
+CONQUEST@100720 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+CONQUEST@100780 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100755 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+CONQUEST@101270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@101240 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+ENERGY_TRANSITION@79553 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes ENABLED: AGRICULTURE@79553 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+ENERGY_TRANSITION@79611 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes ENABLED: DIFFUSION@79611 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00~r11)
+ENERGY_TRANSITION@81144 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes ENABLED: COLLAPSE@81144 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11)
+HEGEMONY@102340 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes TRIGGERED: WAR@102250 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: WAR@102310 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: WAR@102320 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0)
+HEGEMONY@102440 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes TRIGGERED: WAR@102310 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: WAR@102320 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: PLAGUE@102439 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01), TRIGGERED: PLAGUE@102413 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102420 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102430 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10)
+HEGEMONY@102940 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes TRIGGERED: WAR@102910 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10232:12:r00:0), TRIGGERED: WAR@102920 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10232:12:r00:0), TRIGGERED: PLAGUE@102893 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102900 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102910 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10)
+AGRICULTURE@79553 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+RECOVERY@81870 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes RAISED_HAZARD: PLAGUE@100603 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11), RAISED_HAZARD: PLAGUE@100610 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11)
+WAR@100700 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+WAR@100710 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+DISCOVERY@84026 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+DISCOVERY@84736 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes none
+DISCOVERY@86440 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+POLITY_FOUNDING@99941 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+POLITY_FOUNDING@100547 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes none
+REVOLUTION@101073 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes RAISED_HAZARD: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0), RAISED_HAZARD: WAR@100700 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0), RAISED_HAZARD: WAR@100710 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+POLITY_FOUNDING@102322 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@59846 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+Event counts:
+SAPIENCE: 1
+MIGRATION: 7
+AGRICULTURE: 1
+FAMINE: 5
+PLAGUE: 132
+CLIMATE_SHIFT: 0
+NATURAL_CATASTROPHE: 0
+DISCOVERY: 53
+DIFFUSION: 60
+TECH_LOSS: 0
+ENERGY_TRANSITION: 16
+POLITY_FOUNDING: 5
+WAR: 48
+CONQUEST: 16
+HEGEMONY: 4
+FRAGMENTATION: 0
+REVOLUTION: 1
+SCHISM: 0
+COLLAPSE: 1
+RECOVERY: 1
+NUCLEAR_WAR: 0
+ENGINEERED_PANDEMIC: 0
+RUNAWAY_TECH: 1
+CLIMATE_CATASTROPHE: 5
+SPACEFLIGHT: 0
+LAUNCH: 0
+VOYAGE_LOST: 0
+COLONY_FOUNDED: 0
+COLONY_LOST: 0
+EXTINCTION: 1
+LINEAGE_EXTINCTION: 1
+Manifest digest: 13c081cd7d881a67c2852d8e3c747f61b37d3d4c02e85c0bb1920896665e6d2f
+Recipe digest: 0b05ed325e5fb3e9865640edd983fee54b97189e1546681177322f146f711d80
+Result digest: 0f7708e0d9a253d7c1ef8558a9b520e7fc561f0dbc8e2c5e09e08769633a6c46
+D root: d07afb750ed66ee110fae5a86d0ee489057badc9fa229144640dacbae256f941
+arc:stub:s00:b0:lin:stub:s00:b0:0: 2da5a5503d266027d39f426ec87f17feceaea2458e3f98fed96e3f1e02904d33
+```
+
+## Final 16-seed domain survey (observed, not asserted)
+
+Command: `node tools/survey-domain.mjs`. Each seed runs in a fresh child
+process with the default post-sapience horizon. All 16 completed with exit 0.
+Full observations, per-seed kind counts, recipes and roots:
+[m2b-domain-survey.json](evidence/m2b-domain-survey.json); console transcript:
+[m2b-domain-survey.txt](evidence/m2b-domain-survey.txt).
+
+Years are absolute scenario years; — means no such event. Arcs counts all
+founding episodes. Perils counts the three self-inflicted existential kinds.
+
+| Seed | Outcome | Max era | First SPACEFLIGHT | First LAUNCH | First COLONY_FOUNDED | First interstellar launch | Arcs ever | Perils |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| toy-1 | EXTANT_MULTI_SYSTEM | E7 | 15330 | 16402 | 16430 | 16705 | 514 | 3 |
+| toy-2 | EXTANT_MULTI_SYSTEM | E7 | 62140 | 64000 | 64020 | 76108 | 135 | 0 |
+| toy-3 | EXTANT_MULTI_SYSTEM | E7 | 249140 | 250709 | 251110 | 250709 | 63 | 0 |
+| toy-4 | COLLAPSED_RECOVERING | E7 | 352030 | 352806 | 352830 | 355203 | 578 | 0 |
+| toy-5 | EXISTENTIAL_CAP | E4 | 17480 | — | — | — | 1 | 5 |
+| toy-6 | COLLAPSED_RECOVERING | E7 | 442580 | 443604 | 443610 | 445403 | 49 | 0 |
+| toy-7 | EXTINCT_SELF | E4 | 1709120 | — | — | — | 1 | 6 |
+| toy-8 | NO_LINEAGE | E0 | — | — | — | — | 0 | 0 |
+| toy-9 | EXTANT_MULTI_SYSTEM | E7 | 1747380 | 1748306 | 1748330 | 1748506 | 43 | 0 |
+| toy-10 | EXISTENTIAL_CAP | E5 | 737180 | 737303 | 737330 | — | 49 | 2 |
+| toy-11 | COLLAPSED_RECOVERING | E7 | 134150 | 134704 | 134710 | 135000 | 67 | 0 |
+| toy-12 | COLLAPSED_RECOVERING | E7 | 803110 | 803405 | 803410 | 806408 | 74 | 0 |
+| toy-13 | COLLAPSED_RECOVERING | E7 | 87510 | 88000 | 88010 | 89005 | 70 | 0 |
+| toy-14 | EXTINCT_SELF | E4 | — | — | — | — | 1 | 1 |
+| toy-15 | EXISTENTIAL_CAP | E4 | 236940 | — | — | — | 1 | 1 |
+| toy-16 | EXTANT_MULTI_SYSTEM | E7 | 1426080 | 1427405 | 1427430 | 1427600 | 66 | 0 |
+
+Five seeds end EXTANT_MULTI_SYSTEM, five COLLAPSED_RECOVERING, three
+EXISTENTIAL_CAP, two EXTINCT_SELF, and one NO_LINEAGE. Eleven seeds found
+colonies on other bodies; ten launch interstellar voyages. The diversity
+targets are observed without a calibration change. CLIMATE_SHIFT and
+COLONY_LOST have zero natural survey counts; both fire in forced tests.
+
+Peril events:
+
+- toy-1: ENGINEERED_PANDEMIC@15372 (collapse); ENGINEERED_PANDEMIC@15543 (collapse); ENGINEERED_PANDEMIC@16112 (collapse).
+- toy-5: RUNAWAY_TECH@18667 (collapse); RUNAWAY_TECH@18718 (existential-cap); NUCLEAR_WAR@66765 (collapse); NUCLEAR_WAR@95438 (collapse); NUCLEAR_WAR@120964 (existential-cap).
+- toy-7: ENGINEERED_PANDEMIC@1694175 (collapse); RUNAWAY_TECH@1709676 (collapse); ENGINEERED_PANDEMIC@1718411 (collapse); ENGINEERED_PANDEMIC@1720812 (collapse); RUNAWAY_TECH@1731212 (collapse); ENGINEERED_PANDEMIC@1744710 (extinction).
+- toy-10: ENGINEERED_PANDEMIC@741780 (existential-cap); NUCLEAR_WAR@887504 (existential-cap).
+- toy-14: RUNAWAY_TECH@109110 (extinction).
+- toy-15: RUNAWAY_TECH@237362 (existential-cap).
+
+Summed event counts:
+
+| Kind | Count |
+|---|---:|
+| SAPIENCE | 15 |
+| MIGRATION | 1253 |
+| AGRICULTURE | 113 |
+| FAMINE | 9278 |
+| PLAGUE | 81036 |
+| CLIMATE_SHIFT | 0 |
+| NATURAL_CATASTROPHE | 150 |
+| DISCOVERY | 34030 |
+| DIFFUSION | 11063 |
+| TECH_LOSS | 7682 |
+| ENERGY_TRANSITION | 15759 |
+| POLITY_FOUNDING | 822 |
+| WAR | 243734 |
+| CONQUEST | 79509 |
+| HEGEMONY | 2222 |
+| FRAGMENTATION | 1325 |
+| REVOLUTION | 2402 |
+| SCHISM | 634 |
+| COLLAPSE | 4637 |
+| RECOVERY | 4257 |
+| NUCLEAR_WAR | 4 |
+| ENGINEERED_PANDEMIC | 8 |
+| RUNAWAY_TECH | 6 |
+| CLIMATE_CATASTROPHE | 2194 |
+| SPACEFLIGHT | 2111 |
+| LAUNCH | 47919 |
+| VOYAGE_LOST | 125 |
+| COLONY_FOUNDED | 45366 |
+| COLONY_LOST | 0 |
+| EXTINCTION | 1669 |
+| LINEAGE_EXTINCTION | 2 |
+
+Toy-1 compiles 400 kyr after sapience in **36597.47 ms**, covering **125778
+populated arc-ticks**, with **885.34 MiB RSS** measured after the identity
+audit. Normalizing by populated arc time gives **11638.75 ms per 400 kyr
+of one populated arc**, 1.27 times the standalone 9193.67 ms observation.
+Across seeds with populated arcs this normalization ranges from 5712.67 to
+14859.72 ms (at most 1.62 times standalone). This includes D startup and
+empty pre-origin time and is a cost report, not a benchmark assertion.
+Domain RSS reaches **1086.68 MiB** (toy-11), substantially above standalone;
+these snapshots are not continuous peak-RSS sampling.
+
+The survey audits strings in emitted events, archived records and final
+live state. The largest observed string is **316 UTF-8 bytes**, below the
+65536-byte guard. This is not an adversarial maximum-length input proof.
+Toy-4 has 578 founding episodes, making the ordinary survey a substantial
+recolonization/identity-growth exercise.
+
+## Known limitations
+
+These are authored scenarios, not a calibrated population or risk model.
+Habitats often lose life-support tiers shortly after landing and are later
+recolonized; the survey reports all episodes instead of counting only final
+survivors. The domain retains historical events, archives and checkpoints, so
+its memory use is substantially larger than the standalone 450 MiB gate.
+`--civ` remains the standalone P convenience API with an empty-route wrapper;
+use `--domain` for full D execution and lineage events. Late origins can hit
+the declared 2 Myr limit before receiving a full 400 kyr after sapience.
+Climate shifts and colony nonviability need forced fixtures in the observed
+survey; zero ensemble counts are not claims of unreachability. Atlas, M3
+signals/contact/refinement, and empirical calibration remain outside M2b.
+
+## M2b file inventory
+
+Runtime additions: `src/domain.mjs`, `src/m2b.mjs`. Runtime extensions:
+`catalogue.mjs`, `civ-input.mjs`, `cli.mjs`, `environment.mjs`, `events.mjs`,
+`planet.mjs`. The existing structural/delta P field lists already include
+the M2b state fields and were preserved.
+
+Fixtures: `fixtures/planets/anoxic.json`, `fixtures/planets/home-system.json`,
+`fixtures/domains/toy-12.json`. Reproduce with `tools/build-m2b-fixtures.mjs`.
+The observation tool is `tools/survey-domain.mjs`.
+
+New tests/helpers: `contact-horizon.test.mjs`, `domain-order.test.mjs`,
+`expansion.test.mjs`, `origins.test.mjs`, `outcomes.test.mjs`,
+`domain-helpers.mjs`. Extended: catalogue, civ determinism, conservation,
+dynamics, reachability, performance, polities, and `civ-helpers.mjs`.
+Docs: README, this handoff, the transition table and `docs/evidence/m2b-*`.
+
+## Historical M2a performance round 2 — runner handoff
 
 **Observed budget pass:** `node tools/perf-civ.mjs 400000` completes in
 **9380.25 ms**, with **374.24 MiB end RSS**, 16797 events and a largest P+D

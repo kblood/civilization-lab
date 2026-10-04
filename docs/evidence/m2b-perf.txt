@@ -1,0 +1,9 @@
+
+> civilization-lab@0.0.0 perf
+> node tools/perf-civ.mjs
+
+400000 years: 9193.67 ms; target 10000 ms; 14367 events; 4108c3cbd1f7df88b42c6ed166988758122cfc54883abbe42950ec306cad3f4e
+RSS: 358.06 MiB; largest P+D chapter: 1.74 MiB
+Events digest (sorted IDs, JSON): 89de6c970b7bff79562c0c61840b852ce3e4b678d6707dc5494e6fbc975ecbd5
+Heap: 185.18 MiB used; 283.20 MiB reserved
+CPU: 12671.00 ms

@@ -3,15 +3,14 @@
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
 **M1 implemented:** deterministic core, one-region toy, chapter replay and exact
 annual projection, with independent RNG/Merkle vectors and negative controls.
-**M2a implemented for runner review:** the 15-kind standalone planet solver,
-three explicit environment stubs, ordered stock effects, chains, provenance,
-archives and chapter checkpoints. The M2a fix round adds regional one-tier collapse, war-to-stress provenance,
-compact digest witnesses, completed-hazard archival and readable CLI causes.
-Performance round 2 measures 400 kyr at **9380.25 ms / 374.24 MiB RSS**;
-20 kyr takes 110.99 ms. The 10 s / 400 MiB budgets pass on this machine, with
-limited time margin for the runner's remeasurement. All 59 tests pass. Delta
-witnesses preserve the audited event histories; see the current handoff below.
-M2b remains unimplemented.
+**M2b implemented for runner review:** all 31 kinds, hard-step origins,
+the lockstep domain ledger, voyages, colonies, shared catastrophes, perils
+messages and lineage outcomes. The anoxic, home-system and toy-12 fixtures
+are included. `npm test`: **80/80 pass**; all 25 test files individually
+finish below two seconds. The standalone 400 kyr performance check passes
+the 10 s / 450 MiB gates; exact measurements and the 16-seed domain survey
+are in [the M2 handoff](docs/m2-implementation.md). M1's golden is unchanged.
+These remain authored scenarios, not calibrated historical predictions.
 This repository exists to work out — on paper first, then in small deterministic
 Node simulations — how civilisations can be generated so that they cohere with
 a deterministic 4D universe.
@@ -67,6 +66,8 @@ npm test            # node --test "tests/**/*.test.mjs"  (fast, deterministic, n
 npm run scenario    # node src/cli.mjs
 npm run digest      # node src/cli.mjs --digest
 node src/cli.mjs --civ temperate --seed civ-m2a-1 --years 20000
+node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1
+node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-14 --years 100000
 npm run perf        # tools/perf-civ.mjs: 400 kyr, measured outside src/
 ```
 
@@ -80,6 +81,11 @@ npm run perf        # tools/perf-civ.mjs: 400 kyr, measured outside src/
 - M2a: `catalogue.mjs`, `planet.mjs`, `tech.mjs`, `polities.mjs`,
   `chains.mjs`, `provenance.mjs`, `environment.mjs`, `civ-input.mjs`;
   `fixtures/planets/` contains temperate, arid and cold-archipelago inputs.
+- M2b: `domain.mjs` compiles D and isolated P ticks; `m2b.mjs` supplies the
+  additional P recipes. Domain runs default to 400 kyr after first sapience,
+  stop on terminal lineage outcomes, and respect the declared 2 Myr bounds.
+  `--years N` overrides that post-sapience duration. The observation-only
+  survey is `node tools/survey-domain.mjs`.
 - `tests/` — `node --test` files, each well under two seconds.
 
 See [AGENTS.md](AGENTS.md) for the rules that agents working here follow.

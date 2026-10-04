@@ -2,10 +2,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createPlanet } from '../src/planet.mjs';
+import {createDomain} from '../src/domain.mjs';
 import { canonicalBytes,freezeCanonical } from '../src/canonical.mjs';
 import { forced } from './civ-helpers.mjs';
 // Self-generated golden: stability only, not an independent correctness oracle.
-const GOLDEN='868931e18ed59a4c11a68df399be4ce074911d44d1886176a4f07bd9011c57e5';
+const GOLDEN='d1a2ba85d1f62958a62d4b911d9f55da51d7be480f7e42f438e81b0b47b38d42';
+test('domain runs and child process match the self-generated short toy-12 golden',()=>{
+  const make=()=>createDomain('fixtures/domains/toy-12.json','toy-1',{years:100});
+  const root=make().resultDigest();assert.equal(root,'4f1fcd8754c19ee4560cb5cef2d32ac6747c05e320c973226fe6333d7534c477');assert.equal(make().resultDigest(),root);
+  const child=spawnSync(process.execPath,['src/cli.mjs','--domain','fixtures/domains/toy-12.json','--seed','toy-1','--years','100','--digest'],{encoding:'utf8',timeout:1500});
+  assert.equal(child.status,0,child.stderr);assert.equal(child.stdout.trim(),root);
+});
 test('same seed twice and fresh process; other seed differs; self-generated golden',()=>{
   const make=seed=>createPlanet('temperate',seed,{years:100});
   const a=make('civ-m2a-golden'),root=a.resultDigest();assert.equal(root,GOLDEN);

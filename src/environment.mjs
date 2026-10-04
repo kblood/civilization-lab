@@ -43,6 +43,11 @@ function validate(value,s) {
     for(const k of Object.keys(s.properties).sort(compare))validate(value[k],s.properties[k]);
   }
 }
+export const validateStub=(value,type)=>{canonicalBytes(value);validate(value,schema.$defs[type]);return value;};
+export function readFixture(path) {
+  if(typeof path!=='string'||!path.endsWith('.json')||path.includes('\\')||path.split('/').some(x=>x==='.'||x==='..')||path.startsWith('/'))throw new TypeError('Invalid fixture path');
+  return JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
+}
 export function validatePlanet(p) {
   canonicalBytes(p); validate(p,schema.$defs.PlanetStub);
   if(p.body.length>128||p.system.length>128||p.body.includes(':lin:')||/^(arc:|lin:)/.test(p.system))throw new TypeError('Invalid identity');

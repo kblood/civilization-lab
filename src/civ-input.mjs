@@ -30,18 +30,21 @@ export function postSapience(base,seed,ticks) {
 }
 const nat=s=>typeof s==='string'&&/^(0|[1-9][0-9]*)$/.test(s);
 function tuple(a,maxs){if(!Array.isArray(a)||a.length!==maxs.length||a.some((n,i)=>!Number.isSafeInteger(n)||n<0||n>maxs[i]))throw new TypeError('Invalid tuple');}
-function validateForced(f,planet) {
+export function validateForced(f,planet) {
   exact(f,['schemaVersion','id','base','seed','ticks','initial','overrides','expect']);
   if(f.schemaVersion!=='civ-forced-stub-1'||!Number.isSafeInteger(f.ticks)||f.ticks<1||f.ticks>40000||!IMPLEMENTED.some(k=>k.kind===f.expect))throw new TypeError('Invalid forced fixture');
   sortedUnique(f.overrides,o=>o.key);
-  const support={'evt.sapience.regions':[1,2],'evt.migration.fraction':[50,250],'evt.plague.loss':[100,300],'evt.collapse.drop':[1,1],'evt.war.campaign':[20,100],'evt.conquest.win':[0,1]};
+  const support={'evt.sapience.regions':[1,2],'evt.migration.fraction':[50,250],'evt.plague.loss':[100,300],'evt.collapse.drop':[1,1],'evt.war.campaign':[20,100],'evt.conquest.win':[0,1],
+    'evt.natural.loss':[100,400],'evt.natural.duration':[5,20],'evt.revolution.regime':[0,5],'evt.schism.coordinate':[0,2],'evt.perils.drop':[1,3],'evt.perils.shared':[0,1],'arc.colonizer':[0,1]};
   for(const o of f.overrides) {
     exact(o,['key','value']);
     if(o.key==='epoch.rows')continue;
+    if(o.key.startsWith('outcome.')&&(['NUCLEAR_WAR','ENGINEERED_PANDEMIC','RUNAWAY_TECH'].includes(o.key.slice(8))?['collapse','existential-cap','extinction']:o.key==='outcome.NATURAL_CATASTROPHE'?['survivable','extinction']:[]).includes(o.value))continue;
     if(['parameters.g','parameters.build'].includes(o.key)){tuple(o.value,Array(8).fill(Number.MAX_SAFE_INTEGER));continue;}
     if(!nat(o.value))throw new TypeError('Canonical nonnegative override required');
     if(o.key==='origin.deliveryYear'){if(BigInt(o.value)%10n||BigInt(o.value)>400000n)throw new TypeError('Invalid origin boundary');continue;}
     if(o.key==='parameters.keepPermille'){if(BigInt(o.value)>1000n)throw new TypeError('Invalid keep');continue;}
+    if(o.key==='parameters.naturalExtinctionPpm'){if(BigInt(o.value)>1000000n)throw new TypeError('Invalid natural extinction');continue;}
     const h=/^hazard\.([A-Z_]+)\.q32$/.exec(o.key);
     if(h&&IMPLEMENTED.some(k=>k.kind===h[1]&&k.trigger==='hazard'))continue;
     const m=/^magnitude\.(.+)$/.exec(o.key),bounds=m&&support[m[1]];
@@ -51,7 +54,7 @@ function validateForced(f,planet) {
   }
   if(f.initial!==null) {
     const i=f.initial;exact(i,['atTick','regions','polities','arc','voyages']);
-    if(!nat(i.atTick)||BigInt(i.atTick)+BigInt(f.ticks)>40000n||i.voyages.length)throw new TypeError('Invalid M2a initial');
+    if(!nat(i.atTick)||BigInt(i.atTick)+BigInt(f.ticks)>200000n)throw new TypeError('Invalid initial');
     sortedUnique(i.regions,r=>r.localId);sortedUnique(i.polities,p=>p.label);
     for(const r of i.regions) {
       exact(r,['localId','pop','infra','fuel','forcing','tiers','culture','lowTicks','collapse','damage']);
@@ -69,7 +72,14 @@ function validateForced(f,planet) {
       tuple(['eliteShare','asabiya','legitimacy','stress','warWeariness'].map(k=>p[k]),Array(5).fill(1000));
       for(const id of p.regionIds){if(owned.includes(id)||!planet.partition.value.regions.some(r=>r.id===id))throw new TypeError('Overlapping ownership');owned.push(id);}
     }
+    sortedUnique(i.voyages,v=>v.label);
+    for(const v of i.voyages) {
+      exact(v,['label','sourceBody','sourceLocalRegionId','destination','pop','tiers','launchYear','arrivalYear','deliveryTick']);tuple(v.tiers,MAX_TIERS);
+      if(!/^[A-Za-z0-9_-]{1,64}$/.test(v.label)||!nat(v.pop)||BigInt(v.pop)<=0n||!nat(v.deliveryTick)||!Number.isSafeInteger(v.launchYear)||!Number.isSafeInteger(v.arrivalYear)||v.arrivalYear<=v.launchYear)throw new TypeError('Invalid voyage override');
+    }
   }
+  const h=BigInt(f.overrides.find(o=>o.key==='hazard.NATURAL_CATASTROPHE.q32')?.value??429496),p=BigInt(f.overrides.find(o=>o.key==='parameters.naturalExtinctionPpm')?.value??(h>3067833000n?3067833000000n/h:1000n));
+  if(h*p>3067833000000n)throw new RangeError('Natural extinction rate cap');
 }
 export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null}={}) {
   if(typeof seed!=='string'||!seed.isWellFormed()||!Number.isSafeInteger(years)||years<10||years%10||years>400000)throw new RangeError('Invalid run');
@@ -87,7 +97,7 @@ export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=200
     systems:[{id:planet.system,fixture:path,bodyPrefix:planet.body.slice(0,planet.body.lastIndexOf(':'))}],routes:[],origins:[planet.body],fromYear:0,untilYear:400000};
   const systems=[{schemaVersion:'civ-system-stub-1',id:planet.system,bodies:[planet],routes:[]}];
   const manifest={manifestVersion:'civ-manifest-1',modelVersion:'civ-m2-1',rngVersion:'civ-rng-1',samplerVersion:'civ-samplers-1',arithmeticVersion:'civ-fixed-1',catalogueVersion:'civ-catalogue-1',partitionVersion:'civ-stub-regions-1',tickYears:10,chapterTicks:640,envEpochYears:1000,atlasVersions:{},
-    inputBundleDigest:digest({domain,systems,forced}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2a',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
+    inputBundleDigest:digest({domain,systems,forced}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
       originRateLog2:[12,22],learningLog2:[8,12],innovationLog2:[17,23],nuclearLog2:[8,24],pandemicLog2:[12,28],runawayLog2:[14,29],sharedLog2:[0,19],colonizerLog2:[15,19]}};
   const fromTick=BigInt(forced.initial?.atTick??'0'),untilTick=fromTick+BigInt(forced.ticks),arcId=`arc:${planet.body}:lin:${planet.body}:0`;
   const def={compactHazards:true,seed,manifest:deepFreeze(manifest),manifestDigest:digest(manifest),recipeDigest:digest({seed,manifest,fromTick,untilTick}),fromTick,untilTick,forced:deepFreeze(forced),planet:deepFreeze(planet),domain,arcId,env};

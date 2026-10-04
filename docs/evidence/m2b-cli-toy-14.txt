@@ -1,0 +1,71 @@
+M2b toy-12; seed toy-14; through year 109130; 359 events.
+Outcome: EXTINCT_SELF; maximum era E4; arcs ever founded 1.
+lin:stub:s00:b0: EXTINCT_SELF
+Most salient events (model attribution; at most three per kind):
+SAPIENCE@57700 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+RUNAWAY_TECH@109110 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes none
+EXTINCTION@109120 (arc:stub:s00:b0:lin:stub:s00:b0:0); causes TRIGGERED: RUNAWAY_TECH@109110 (arc:stub:s00:b0:lin:stub:s00:b0:0)
+LINEAGE_EXTINCTION@109129 (lin:stub:s00:b0); causes TRIGGERED: RUNAWAY_TECH@109110 (arc:stub:s00:b0:lin:stub:s00:b0:0)
+COLLAPSE@81144 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+CLIMATE_CATASTROPHE@105040 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes none
+CLIMATE_CATASTROPHE@105260 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes TRIGGERED: PLAGUE@105120 (arc:stub:s00:b0:lin:stub:s00:b0:0#r09)
+CLIMATE_CATASTROPHE@106540 (arc:stub:s00:b0:lin:stub:s00:b0:0#r09); causes none
+CONQUEST@100720 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+CONQUEST@100780 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100755 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+CONQUEST@101270 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@101240 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+ENERGY_TRANSITION@79553 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes ENABLED: AGRICULTURE@79553 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00)
+ENERGY_TRANSITION@79611 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes ENABLED: DIFFUSION@79611 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00~r11)
+ENERGY_TRANSITION@81144 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes ENABLED: COLLAPSE@81144 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11)
+HEGEMONY@102340 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes TRIGGERED: WAR@102250 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: WAR@102310 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: WAR@102320 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0)
+HEGEMONY@102440 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes TRIGGERED: WAR@102310 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: WAR@102320 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0), TRIGGERED: PLAGUE@102439 (arc:stub:s00:b0:lin:stub:s00:b0:0#r01), TRIGGERED: PLAGUE@102413 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102420 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102430 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10)
+HEGEMONY@102940 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes TRIGGERED: WAR@102910 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10232:12:r00:0), TRIGGERED: WAR@102920 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10232:12:r00:0), TRIGGERED: PLAGUE@102893 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102900 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10), TRIGGERED: PLAGUE@102910 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10)
+AGRICULTURE@79553 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+RECOVERY@81870 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes RAISED_HAZARD: PLAGUE@100603 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11), RAISED_HAZARD: PLAGUE@100610 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11)
+WAR@100700 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+WAR@100710 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes CHAIN: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+DISCOVERY@84026 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+DISCOVERY@84736 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes none
+DISCOVERY@86440 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+POLITY_FOUNDING@99941 (arc:stub:s00:b0:lin:stub:s00:b0:0#r11); causes none
+POLITY_FOUNDING@100547 (arc:stub:s00:b0:lin:stub:s00:b0:0#r10); causes none
+REVOLUTION@101073 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0); causes RAISED_HAZARD: WAR@100691 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0), RAISED_HAZARD: WAR@100700 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0), RAISED_HAZARD: WAR@100710 (arc:stub:s00:b0:lin:stub:s00:b0:0#pol:9994:12:r11:0>arc:stub:s00:b0:lin:stub:s00:b0:0#pol:10054:12:r10:0)
+POLITY_FOUNDING@102322 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+PLAGUE@59846 (arc:stub:s00:b0:lin:stub:s00:b0:0#r00); causes none
+Event counts:
+SAPIENCE: 1
+MIGRATION: 7
+AGRICULTURE: 1
+FAMINE: 5
+PLAGUE: 132
+CLIMATE_SHIFT: 0
+NATURAL_CATASTROPHE: 0
+DISCOVERY: 53
+DIFFUSION: 60
+TECH_LOSS: 0
+ENERGY_TRANSITION: 16
+POLITY_FOUNDING: 5
+WAR: 48
+CONQUEST: 16
+HEGEMONY: 4
+FRAGMENTATION: 0
+REVOLUTION: 1
+SCHISM: 0
+COLLAPSE: 1
+RECOVERY: 1
+NUCLEAR_WAR: 0
+ENGINEERED_PANDEMIC: 0
+RUNAWAY_TECH: 1
+CLIMATE_CATASTROPHE: 5
+SPACEFLIGHT: 0
+LAUNCH: 0
+VOYAGE_LOST: 0
+COLONY_FOUNDED: 0
+COLONY_LOST: 0
+EXTINCTION: 1
+LINEAGE_EXTINCTION: 1
+Manifest digest: 13c081cd7d881a67c2852d8e3c747f61b37d3d4c02e85c0bb1920896665e6d2f
+Recipe digest: 0b05ed325e5fb3e9865640edd983fee54b97189e1546681177322f146f711d80
+Result digest: 0f7708e0d9a253d7c1ef8558a9b520e7fc561f0dbc8e2c5e09e08769633a6c46
+D root: d07afb750ed66ee110fae5a86d0ee489057badc9fa229144640dacbae256f941
+arc:stub:s00:b0:lin:stub:s00:b0:0: 2da5a5503d266027d39f426ec87f17feceaea2458e3f98fed96e3f1e02904d33

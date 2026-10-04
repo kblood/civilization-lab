@@ -41,3 +41,10 @@ test('simultaneous same-domain loss and gain use pre-state gates and one remaini
   assert.ok(loss&&gain);assert.equal(gain.params.targetTier,'2');assert.equal(r.state.regions[0].tiers[0],1);
   assert.equal(r.events.filter(e=>e.kind==='DISCOVERY'&&e.params.domainIndex==='0'&&e.resolution==='accepted').length,1);
 });
+test('anoxic fixtures use the authored E1 and E3 alternatives without fuel deposits',()=>{
+  for(const [tiers,expected] of [[[0,1,0,0,0,0,0],1],[[2,3,3,2,2,2,2],3]]) {
+    const f=forced('DISCOVERY');f.base='fixtures/planets/anoxic.json';f.initial.regions=[region('r00',{tiers})];
+    const r=runForced(f);assert.equal(r.state.regions[0].resources[1],0);assert.equal(r.state.regions[0].tiers[0],expected);
+    assert.ok(r.events.some(e=>e.kind==='DISCOVERY'&&e.params.domainIndex==='0'&&e.resolution==='accepted'));
+  }
+});

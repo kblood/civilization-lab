@@ -1,0 +1,17 @@
+toy-1: EXTANT_MULTI_SYSTEM; E7; sapience 8040; spaceflight 15330; launch 16402; colony 16430; interstellar 16705; arcs 514; perils 3; 36597.47 ms; 885.34 MiB
+toy-2: EXTANT_MULTI_SYSTEM; E7; sapience 12310; spaceflight 62140; launch 64000; colony 64020; interstellar 76108; arcs 135; perils 0; 31626.28 ms; 742.06 MiB
+toy-3: EXTANT_MULTI_SYSTEM; E7; sapience 203030; spaceflight 249140; launch 250709; colony 251110; interstellar 250709; arcs 63; perils 0; 30255.85 ms; 780.62 MiB
+toy-4: COLLAPSED_RECOVERING; E7; sapience 250070; spaceflight 352030; launch 352806; colony 352830; interstellar 355203; arcs 578; perils 0; 59122.00 ms; 1079.84 MiB
+toy-5: EXISTENTIAL_CAP; E4; sapience 7670; spaceflight 17480; launch null; colony null; interstellar null; arcs 1; perils 5; 12734.37 ms; 485.39 MiB
+toy-6: COLLAPSED_RECOVERING; E7; sapience 368580; spaceflight 442580; launch 443604; colony 443610; interstellar 445403; arcs 49; perils 0; 27281.10 ms; 715.02 MiB
+toy-7: EXTINCT_SELF; E4; sapience 1648600; spaceflight 1709120; launch null; colony null; interstellar null; arcs 1; perils 6; 3436.26 ms; 288.14 MiB
+toy-8: NO_LINEAGE; E0; sapience null; spaceflight null; launch null; colony null; interstellar null; arcs 0; perils 0; 1451.87 ms; 169.51 MiB
+toy-9: EXTANT_MULTI_SYSTEM; E7; sapience 1735580; spaceflight 1747380; launch 1748306; colony 1748330; interstellar 1748506; arcs 43; perils 0; 22156.66 ms; 609.40 MiB
+toy-10: EXISTENTIAL_CAP; E5; sapience 731950; spaceflight 737180; launch 737303; colony 737330; interstellar null; arcs 49; perils 2; 13629.66 ms; 523.20 MiB
+toy-11: COLLAPSED_RECOVERING; E7; sapience 94930; spaceflight 134150; launch 134704; colony 134710; interstellar 135000; arcs 67; perils 0; 45386.36 ms; 1086.68 MiB
+toy-12: COLLAPSED_RECOVERING; E7; sapience 717820; spaceflight 803110; launch 803405; colony 803410; interstellar 806408; arcs 74; perils 0; 28835.80 ms; 701.81 MiB
+toy-13: COLLAPSED_RECOVERING; E7; sapience 41480; spaceflight 87510; launch 88000; colony 88010; interstellar 89005; arcs 70; perils 0; 31491.40 ms; 791.48 MiB
+toy-14: EXTINCT_SELF; E4; sapience 57700; spaceflight null; launch null; colony null; interstellar null; arcs 1; perils 1; 734.51 ms; 177.52 MiB
+toy-15: EXISTENTIAL_CAP; E4; sapience 145390; spaceflight 236940; launch null; colony null; interstellar null; arcs 1; perils 1; 11397.73 ms; 418.45 MiB
+toy-16: EXTANT_MULTI_SYSTEM; E7; sapience 1419120; spaceflight 1426080; launch 1427405; colony 1427430; interstellar 1427600; arcs 66; perils 0; 32895.85 ms; 851.17 MiB
+Summed kind counts: {"SAPIENCE":15,"MIGRATION":1253,"AGRICULTURE":113,"FAMINE":9278,"PLAGUE":81036,"CLIMATE_SHIFT":0,"NATURAL_CATASTROPHE":150,"DISCOVERY":34030,"DIFFUSION":11063,"TECH_LOSS":7682,"ENERGY_TRANSITION":15759,"POLITY_FOUNDING":822,"WAR":243734,"CONQUEST":79509,"HEGEMONY":2222,"FRAGMENTATION":1325,"REVOLUTION":2402,"SCHISM":634,"COLLAPSE":4637,"RECOVERY":4257,"NUCLEAR_WAR":4,"ENGINEERED_PANDEMIC":8,"RUNAWAY_TECH":6,"CLIMATE_CATASTROPHE":2194,"SPACEFLIGHT":2111,"LAUNCH":47919,"VOYAGE_LOST":125,"COLONY_FOUNDED":45366,"COLONY_LOST":0,"EXTINCTION":1669,"LINEAGE_EXTINCTION":2}
