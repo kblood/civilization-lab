@@ -30,6 +30,7 @@ are binding.
 - Seeded split RNG streams per `(seed, entity, level, time bucket)`.
 - No iteration-order dependence; sort explicitly.
 - Integer or well-defined float math; quantise before digesting.
+- The `**` operator and `Math.pow` are forbidden in `src/`; use integer shifts, BigInt shifts or literal constants (enforced by `tests/determinism-lint.test.mjs`).
 - Same seed gives the same history independent of query order and of which
   levels were realised. Every scenario emits a digest of its results.
 

@@ -11,6 +11,7 @@ test('ported logPos is within one Q32 ulp over fixed binary/mantissa grid', () =
   }
 });
 test('floor, ceil and Q32 rounding directions', () => {
+  assert.equal(ONE, 4294967296n);
   assert.equal(floorDiv(-1, 10), -1);
   assert.equal(floorDiv(-1n, 10n), -1n);
   for (const [a, b, floor, ceil] of [[-11, 10, -2, -1], [11, -10, -2, -1], [-11, -10, 1, 2], [10, 10, 1, 1]]) {

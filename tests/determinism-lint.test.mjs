@@ -1,4 +1,4 @@
-// Guard rail: source files must not use wall-clock time or unseeded randomness.
+// Guard rail: source files must not use wall-clock time, unseeded randomness or non-portable arithmetic.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'src');
 const FORBIDDEN = [/\bDate\.now\s*\(/, /\bnew\s+Date\s*\(/, /\bMath\.random\s*\(/, /\bperformance\.now\s*\(/, /\bcrypto\.getRandomValues\s*\(/, /\brandomUUID\s*\(/, /\bprocess\.hrtime\b/];
 const LOCALE = /\blocaleCompare\b/;
+const EXPONENT = /[\w$)\]]\s*\*\*/;
 const TRANSCENDENTAL = /\bMath\s*\.\s*(?:exp|expm1|log|log1p|log2|log10|pow|sin|cos|tan|asin|acos|atan|atan2|sinh|cosh|tanh|asinh|acosh|atanh|cbrt|hypot)\s*\(/;
 
 function listSources(dir) {
@@ -20,11 +21,11 @@ function listSources(dir) {
   return out;
 }
 
-test('src/ has no clock or unseeded randomness', () => {
+test('src/ has no clock, unseeded randomness or non-portable arithmetic', () => {
   const offenders = [];
   for (const file of listSources(root)) {
     const text = readFileSync(file, 'utf8');
-    const rules = [...FORBIDDEN, LOCALE, ...(basename(file) === 'fixed.mjs' ? [] : [TRANSCENDENTAL])];
+    const rules = [...FORBIDDEN, LOCALE, TRANSCENDENTAL, EXPONENT];
     for (const re of rules) if (re.test(text)) offenders.push(`${file}: ${re}`);
   }
   assert.deepEqual(offenders, []);
@@ -36,6 +37,8 @@ test('lint negative self-checks detect every forbidden family', () => {
   for (const name of ['exp', 'log', 'pow', 'sin', 'cos', 'atan2', 'hypot', 'log1p']) assert.ok(TRANSCENDENTAL.test(`Math.${name}(x)`));
   assert.ok(LOCALE.test('a.localeCompare(b)'));
   assert.equal(TRANSCENDENTAL.test('Math.floor(x)'), false);
+  for (const sample of ['2**(count-1)', '2n ** 32n', 'x **= 2', 'a[i]**2', 'f(x) ** 2', '10n**9n']) assert.ok(EXPONENT.test(sample), sample);
+  for (const sample of ['/** doc */', ' * bullet', 'a * b', 'a*b*c']) assert.equal(EXPONENT.test(sample), false, sample);
 });
 
 test('runtime imports stay local; refiners and P have no narrative or Atlas imports', () => {
