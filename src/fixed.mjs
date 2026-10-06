@@ -1,6 +1,6 @@
 import { floorDiv } from './time.mjs';
 export { ceilDiv } from './time.mjs';
-export const ONE = 2n ** 32n;
+export const ONE = 1n << 32n;
 export function mulDiv(a, b, c) {
   if ([a, b, c].some(x => typeof x !== 'bigint')) throw new TypeError('BigInt required');
   return floorDiv(a * b, c);

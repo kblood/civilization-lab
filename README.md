@@ -86,6 +86,7 @@ the most common violations.
    semantics; never `Math.imul` for distances). Floats only where the operation
    is IEEE-exact and platform-independent; no transcendental functions on a
    path that feeds a digest unless their result is quantised first.
+   The `**` operator and `Math.pow` are forbidden in `src/`; use integer shifts, BigInt shifts or literal constants (enforced by `tests/determinism-lint.test.mjs`).
 5. **Coarse constrains fine.** A finer level is a refinement conditioned on the
    coarser level's outcome; it may add detail, never contradict it.
 6. **Digests.** Each scenario emits a stable digest of its results so that

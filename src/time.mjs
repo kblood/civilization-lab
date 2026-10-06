@@ -1,4 +1,4 @@
-export const YEAR_NS = 31_557_600n * 10n ** 9n;
+export const YEAR_NS = 31_557_600n * 1_000_000_000n;
 export const CIV_MAX_YEAR = Number.MAX_SAFE_INTEGER;
 export const WIDTHS = Object.freeze({ year: 1, decade: 10, tick: 10, century: 100,
   millennium: 1000, envEpoch: 1000, chapter: 6400 });

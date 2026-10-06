@@ -569,7 +569,7 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
       const status=m.payload.status,old=pre.lineageReports.find(r=>r.source===status.source);
       if(status.source!==pre.id&&status.lineageId===pre.lineageId&&(!old||status.reportYear>old.reportYear))op.set(e,pre,'arc','lineageReports',[...pre.lineageReports.filter(r=>r.source!==status.source),status].sort((a,b)=>compare(a.source,b.source)));
     }
-    if(m.type==='TARGET_FAILURE'){const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);if(old?.eventId!==f.eventId){const count=Math.min(4,(old?.count??0)+1);op.set(e,pre,'arc','signals',pre.signals.filter(s=>s.body!==f.body));op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,untilYear:year+1000*2**(count-1)}].sort((a,b)=>compare(a.body,b.body)));}}
+    if(m.type==='TARGET_FAILURE'){const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);if(old?.eventId!==f.eventId){const count=Math.min(4,(old?.count??0)+1);op.set(e,pre,'arc','signals',pre.signals.filter(s=>s.body!==f.body));op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,untilYear:year+1000*(1<<(count-1))}].sort((a,b)=>compare(a.body,b.body)));}}
     if(m.type==='SHARED')catastrophe(boundary,pre,e,op,m.payload);
     if(m.type==='PERILS_EXIT')op.set(e,pre,'arc','perils','exited');
     if(m.type==='PERILS_REENTER')op.set(e,pre,'arc','perils',pre.outcome.industrialEra>=3||pre.perils!=='none'?'active':'none');
