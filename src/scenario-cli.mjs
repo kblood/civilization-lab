@@ -7,8 +7,8 @@ import {refineYear,aggregateYears} from './refine-year.mjs';
 import {checkProjection} from './levels.mjs';
 import {annualHierarchy} from './annual-inspection.mjs';
 import {aggregateYearTree} from './refine-year.mjs';
-export function scenarioCLI(name,seed,untilYear){
-  const {scenario,world,domain}=createScenario(name,seed,{untilYear});
+export function scenarioCLI(name,seed,untilYear,options={}){
+  const {scenario,world,domain}=createScenario(name,seed,{...options,untilYear});
   if(world.status)throw new Error(world.status+': '+world.reason);
   const result=domain?world.compileSummary({observe:true,inspectSampleTicks:[world.def.fromTick,(world.def.fromTick+world.def.untilTick)/2n,world.def.untilTick-1n].map(String)}):world.run(),ticks=inspectionTicks(world,result,domain),story=narrative(world.def,result.events);
   console.log(`Scenario ${scenario.id}; seed ${seed}; through year ${result.state.tick*10n}; ${result.events.length} events.`);

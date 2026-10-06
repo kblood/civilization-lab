@@ -9,10 +9,10 @@ export const LABEL='seeded scenarios, model attribution, not predictions';
 export const METRICS=['industrialE3','atomicE4','interplanetary','eraE5','interstellar','eraE6','extinct','extinctSelf','extinctNatural','extinctStellar','extinctNaturalStellar','colonyOnlyLoss','noLineage','pendingOrigin','collapseRecovery','firstContact','existentialCap','error'];
 export const DEFAULT_JOBS=Math.min(4,cpus().length);
 const order=(a,b)=>compare(a.scenario,b.scenario)||compare(a.seed,b.seed);
-export function ensemblePlan(n,{scenario,untilYear}={}){
+export function ensemblePlan(n,{scenario,untilYear,targetingPolicy}={}){
   if(!Number.isSafeInteger(n)||n<1)throw new RangeError('ensemble must be a positive integer');
   if(scenario&&!SCENARIOS.includes(scenario))throw new TypeError('Unknown ensemble scenario');
-  return Array.from({length:n},(_,i)=>{const name=scenario??SCENARIOS[i%SCENARIOS.length];return {scenario:name,seed:`${name}-${i}`,untilYear};});
+  return Array.from({length:n},(_,i)=>{const name=scenario??SCENARIOS[i%SCENARIOS.length];return {scenario:name,seed:`${name}-${i}`,untilYear,...(targetingPolicy!==undefined?{targetingPolicy}:{})};});
 }
 export function fraction(k,n){const tenths=n?BigInt(k)*1000n/BigInt(n):0n;return `${k}/${n} (${tenths/10n}.${tenths%10n}%)`;}
 export function lowerMedian(values){const a=values.filter(v=>v!==null&&v!==undefined).sort((a,b)=>a-b);return a.length?a[Math.floor((a.length-1)/2)]:null;}
@@ -60,7 +60,7 @@ export function summarizeRun(task,world,result){
   // First-era witnesses include the pre-state even when century plots omit it.
   const eraOrigin=first[0]??originYear;
   const startedEra=first[0]===null?null:first.reduce((n,y,i)=>y===first[0]?i:n,0);
-  return {scenario:task.scenario,seed:task.seed,untilYear:task.untilYear??world.def.untilTick*10n+'',endYear:Number(result.state.tick*10n),outcome,classes,flags,originYear:eraOrigin,startedEra,firstEras:first,firstEnergy:result.firstEnergy,maxEra:result.maxEra,
+  return {...(task.targetingPolicy!==undefined?{targetingPolicy:task.targetingPolicy}:{}),scenario:task.scenario,seed:task.seed,untilYear:task.untilYear??world.def.untilTick*10n+'',endYear:Number(result.state.tick*10n),outcome,classes,flags,originYear:eraOrigin,startedEra,firstEras:first,firstEnergy:result.firstEnergy,maxEra:result.maxEra,
     timeE2:first[2]===null||eraOrigin===null||startedEra>=2?null:first[2]-eraOrigin,timeE3:first[3]===null||eraOrigin===null||startedEra>=3?null:first[3]-eraOrigin,
     causes,classCauses,explanation:result.state.lineages.length?[...result.state.lineages].sort((a,b)=>compare(a.id,b.id)).map(l=>{
       const home=arcs.find(a=>a.lineageId===l.id&&!a.isColony),system=world.def.planets.find(p=>p.body===home?.body)?.system;
@@ -70,7 +70,7 @@ export function summarizeRun(task,world,result){
     timeline:{observations:result.observations,arcs,events:events.map(e=>({id:e.id,kind:e.kind,dateYear:e.dateYear,ownerId:e.ownerId,salience:e.salience??0,causes:e.causes,data:{outcome:e.data.outcome,launch:e.data.launch}}))}};
 }
 export function runSeed(task){
-  try{const {world,domain}=createScenario(task.scenario,task.seed,{untilYear:task.untilYear});if(!domain||world.status)throw new Error(world.status??'Ensemble requires domain');return summarizeRun(task,world,world.compileSummary({observe:true}));}
+  try{const {world,domain}=createScenario(task.scenario,task.seed,{untilYear:task.untilYear,...(task.targetingPolicy!==undefined?{targetingPolicy:task.targetingPolicy}:{})});if(!domain||world.status)throw new Error(world.status??'Ensemble requires domain');return summarizeRun(task,world,world.compileSummary({observe:true}));}
   catch(e){return {...task,outcome:'ERROR',classes:['ERROR'],flags:Object.fromEntries(METRICS.map(k=>[k,k==='error'])),causes:[],explanation:`ERROR: ${String(e.message).replace(/[\r\n]/g,' ')}`,firstEras:Array(8).fill(null),firstEnergy:Array(7).fill(null),timeE2:null,timeE3:null};}
 }
 export function eraStatistics(runs,era){

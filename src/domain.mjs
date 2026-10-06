@@ -43,6 +43,10 @@ export function expandDomain(input) {
   if(domain.origins.some(id=>!planets.some(p=>p.body===id)))throw new TypeError('Unknown origin');
   return {domain,systems,planets,routes};
 }
+export function uninhabitableAt(def,p,t){
+  const life=p.lifecycle.value;
+  return Number(t*10n)<life.habitableFromYear||Number(t*10n)>=life.habitableUntilYear||life.stellarDoomYear!=null&&Number(t*10n)>=life.stellarDoomYear+Number(override(def,'parameters.stellarGraceYears')??500)||!p.epochs.value.rows.some(r=>BigInt(r.fromEpoch)<=F(t,100n)&&F(t,100n)<BigInt(r.untilEpoch)&&BigInt(r.Kbase)>0n);
+}
 export function originSchedule(def,p) {
   const id=originId(p.body),rates=[0,1,2].map(j=>1n<<(12n+below(address(def,id,`orig.rate.${j}`,'D'),11n)));
   const waitYears=rates.map((rate,j)=>C(expQ32(address(def,id,`orig.step.${j}`,'D')),rate));
@@ -187,8 +191,8 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         e.params={persons:String(persons),launchYear:String(v.launchYear),arrivalYear:String(v.arrivalYear),deliveryYear:String(t*10n)};e.data.source=v.id;e.refs.push({role:'source',entityId:v.id});
         if(!v.launchEventId.includes('#launch-fixture:'))e.causes=[{eventId:v.launchEventId,edge:'EXOGENOUS',weightPermille:1000}];
         let a=state.arcs.find(a=>a.body===v.destination),reason=a&&a.lineageId!==v.lineageId?'occupied-by-other-lineage':null;
-        const life=p.lifecycle.value,host=p.hosting==='habitable'||p.hosting==='habitat-buildable'&&v.tiers[0]>=5&&v.tiers[1]>=5;
-        if(!reason&&(!host||Number(t*10n)<life.habitableFromYear||Number(t*10n)>=life.habitableUntilYear||life.stellarDoomYear!=null&&Number(t*10n)>=life.stellarDoomYear+Number(override(def,'parameters.stellarGraceYears')??500)||!p.epochs.value.rows.some(r=>BigInt(r.fromEpoch)<=F(t,100n)&&F(t,100n)<BigInt(r.untilEpoch)&&BigInt(r.Kbase)>0n)))reason='destination-uninhabitable';
+        const host=p.hosting==='habitable'||p.hosting==='habitat-buildable'&&v.tiers[0]>=5&&v.tiers[1]>=5;
+        if(!reason&&(!host||uninhabitableAt(def,p,t)))reason='destination-uninhabitable';
         if(reason){e.data.outcome='rejected';e.data.stage='REJECTED';e.reason=reason;e.effects.push({target:account.id,field:'transit.pop',op:'add',amount:String(-persons)});account.pop=0n;v.status=reason==='occupied-by-other-lineage'?'turned-away':'lost';death(state,v,e,tickEvents.filter(x=>x.kind==='COLONY_FOUNDED'&&x.ownerId===v.destination).length,0);
           if(reason==='occupied-by-other-lineage'){
             const prefix=`${state.id}#msg:${t}~${v.sourceArc}~SIGNAL~${a.id}~`,ordinal=state.messages.filter(m=>m.id.startsWith(prefix)).length;
