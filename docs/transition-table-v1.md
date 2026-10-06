@@ -6362,3 +6362,51 @@ here. Self-generated goldens establish stability, not an independent oracle.
 | P: temperate / civ-m2a-golden / 100 years | `cfe5fb1723eb574aaf24af031359ffdfd837c9e8f21c2c0281d74df5987e2acd` | `1567cb59f6fcb4243e8b492ef3243ea6631711335ea0ba048027e2db795213f8` | Forced model projection replaces ticks with fixed modelTickMaximum; revised contract/table also changes RNG namespace. |
 | D: toy-12 / toy-1 / 100 years | `adbb432ab45d9fa9e4d0ae7e670066f0832df76574a87348bd714c76ed6f9b0d` | `c998e6fff27bc9394f24e9882959f8ef08409c9871eb28a334c796ade079dbed` | This non-forced bundle is unchanged, but the revised shared contract/table changes RNG namespace. |
 | M1 | `c3d614d0bbd2be2b3745ffaf766041d45671d99bb8770a8e7dbde7f9fd6510dc` | unchanged, observed | M1 does not use this contract or projection. |
+
+## M5 round 1 — failure-reason-aware targeting (opt-in)
+
+Domain API options on `createDomainDefinition`, `createDomain` and
+`createScenario` accept only `targetingPolicy: 'm5-targeting-1'`; unknown
+values and planet-only paths reject it with `RangeError`. There is no CLI,
+scenario-file or override key. Unset runs retain the M4 payloads, memory,
+launch params and digests; the manifest policy key is absent.
+
+`TARGETING_M5` in `src/m2b.mjs` freezes these retry priors [scenario]:
+
+| Delivered failure reason | Retry delay from failure event year [scenario] | Early retry |
+| --- | --- | --- |
+| `transit-loss` (`VOYAGE_LOST`) | 500 years | Transport tier strictly above the failed voyage's tier |
+| `occupied` (foreign lineage rejects arrival) | 2,000 years, reusing `OCCUPANCY_YEARS` | None |
+| `uninhabitable` (destination rejects arrival) | 10,000 years | None |
+| `colony-died` (`COLONY_LOST` or colony `EXTINCTION`) | Integer table 1,000 / 2,000 / 4,000 / 8,000 years; capped | None |
+
+Failure payloads add `reason`, `year` (the event's `dateYear`) and
+`transportTier` (voyage tier for voyage/arrival failures, null for colony
+loss). One body-sorted memory entry records body, count, eventId,
+failureYear, reason, transportTier and untilYear. As in M4, distinct receipts
+increment the count up to four; a duplicate of the stored eventId is a no-op.
+Failure handling leaves occupancy signals intact. A route is blocked while
+its failure deadline is active, subject only to the transit tier bypass;
+foreign occupancy still blocks independently. Habitat weights remain 1000:200.
+
+Founding and reinforcement success signals add `eventYear`. A delivered
+own-lineage success strictly newer than a body's remembered failure clears
+that failure; failures older than known success are ignored. The existing
+per-source signal records retain the greatest own-lineage success eventYear,
+even if an older or generic signal arrives later. This avoids adding an arc
+field and keeps evidence in the existing witnessed signals. Equal event years
+do not clear or suppress failures. Opt-in LAUNCH params expose `priorFailure`
+(or `none`) and `priorFailureActive` (`0`/`1`); a tier bypass can launch with
+an active remembered failure.
+
+The manifest adds `scenarioPriors.targetingPolicy` with version and all four
+retry priors. `def.targetingPolicy` is that block or null, inherited by arc
+definitions; definitions themselves are not state witnesses or digest inputs.
+`rngManifestDigest` hashes the manifest without this policy block. Addressed
+solver, hazard, cell-refinement and narrative draws use it (legacy definitions
+fall back to manifestDigest). Thus opt-in and default runs share variates for
+matching addresses, and arc state digests match before the first differing
+policy evidence/decision. Shared draws do **not** mean the manifest is the
+same: the full manifest and recipe retain the policy, and resulting histories
+are separately digested. The forced voyage-loss test pins the default golden
+and compares every arc at every tick before the first failure delivery.

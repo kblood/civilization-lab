@@ -1,6 +1,12 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**M5 round 1 (opt-in):** failure-reason-aware targeting behind the domain API
+option `targetingPolicy: 'm5-targeting-1'`. There are four failure reasons, each
+with its own retry rule, and delivered success clears the failure memory.
+Default runs and digests are byte-identical; `npm test` passes 159/159 with
+0 skipped. The effect on launches is not yet measured with an ensemble. See
+[the M5 round 1 doc](docs/m5-round1-2026-10-07.md).
 **M4d:** delivered own-lineage STATUS reports now support tier maintenance
 across declared interplanetary routes, with light-speed delay and expiry after
 silence. The 1 kyr founding reserve remains a bridge. Lonely near-expiry colony

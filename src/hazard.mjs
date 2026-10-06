@@ -33,7 +33,7 @@ export function compactHazardKey(id) {
   return key;
 }
 export function threshold(def, hazardId, episode) {
-  return expQ32({ worldSeed: def.seed, manifestDigest: def.manifestDigest, level: 'P',
+  return expQ32({ worldSeed: def.seed, manifestDigest: def.rngManifestDigest??def.manifestDigest, level: 'P',
     entityId: hazardKey(hazardId), purpose: `haz.${hazardId.kind}`,
     episodeOrBucket: episode, ordinal: 0 });
 }

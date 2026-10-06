@@ -14,7 +14,7 @@ export { createDefinition } from './civ-input.mjs';
 export { bevertonHolt } from './tech.mjs';
 import { stateDigest } from './state-witness.mjs';
 import { transitionDigest, WITNESS_VERSION } from './delta-witness.mjs';
-import {extraOpportunities,extraMagnitudes,applyExtra,catastrophe,PERILS,routesFor} from './m2b.mjs';
+import {extraOpportunities,extraMagnitudes,applyExtra,catastrophe,PERILS,routesFor,TARGETING_M5,receivedSignal} from './m2b.mjs';
 export { stateDigest } from './state-witness.mjs';
 const boundaryDigests=new WeakMap();
 const byId=(a,b)=>compare(a.id,b.id);
@@ -569,11 +569,25 @@ export function stepPlanet(def,boundary,{founding=false,collectUpdates=true,star
       const status=m.payload.status,old=pre.lineageReports.find(r=>r.source===status.source);
       if(status.source!==pre.id&&status.lineageId===pre.lineageId&&(!old||status.reportYear>old.reportYear))op.set(e,pre,'arc','lineageReports',[...pre.lineageReports.filter(r=>r.source!==status.source),status].sort((a,b)=>compare(a.source,b.source)));
     }
-    if(m.type==='TARGET_FAILURE'){const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);if(old?.eventId!==f.eventId){const count=Math.min(4,(old?.count??0)+1);op.set(e,pre,'arc','signals',pre.signals.filter(s=>s.body!==f.body));op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,untilYear:year+1000*(1<<(count-1))}].sort((a,b)=>compare(a.body,b.body)));}}
+    if(m.type==='TARGET_FAILURE'&&!def.targetingPolicy){const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);if(old?.eventId!==f.eventId){const count=Math.min(4,(old?.count??0)+1);op.set(e,pre,'arc','signals',pre.signals.filter(s=>s.body!==f.body));op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,untilYear:year+1000*(1<<(count-1))}].sort((a,b)=>compare(a.body,b.body)));}}
+    if(m.type==='TARGET_FAILURE'&&def.targetingPolicy) {
+      const f=m.payload.failure,old=pre.targetFailures.find(x=>x.body===f.body);
+      const newerSuccess=pre.signals.some(s=>s.body===f.body&&s.lineageId===pre.lineageId&&s.eventYear>f.year);
+      if(!newerSuccess&&old?.eventId!==f.eventId) {
+        const count=Math.min(4,(old?.count??0)+1),retry={'transit-loss':TARGETING_M5.transitLossRetryYears,occupied:TARGETING_M5.occupancyYears,
+          uninhabitable:TARGETING_M5.uninhabitableResurveyYears,'colony-died':TARGETING_M5.colonyDiedBackoffYears[count-1]}[f.reason];
+        op.set(e,pre,'arc','targetFailures',[...pre.targetFailures.filter(x=>x.body!==f.body),{body:f.body,count,eventId:f.eventId,failureYear:f.year,reason:f.reason,transportTier:f.transportTier,untilYear:f.year+retry}].sort((a,b)=>compare(a.body,b.body)));
+      }
+    }
     if(m.type==='SHARED')catastrophe(boundary,pre,e,op,m.payload);
     if(m.type==='PERILS_EXIT')op.set(e,pre,'arc','perils','exited');
     if(m.type==='PERILS_REENTER')op.set(e,pre,'arc','perils',pre.outcome.industrialEra>=3||pre.perils!=='none'?'active':'none');
-    if(m.type==='SIGNAL'&&m.payload.signal)op.set(e,pre,'arc','signals',[...pre.signals.filter(s=>s.source!==m.payload.signal.source),{...m.payload.signal,arrivalYear:m.payload.signal.arrivalYear??year}].sort((a,b)=>compare(a.source,b.source)));
+    if(m.type==='SIGNAL'&&m.payload.signal) {
+      const signal=receivedSignal(def,pre,m.payload.signal);
+      op.set(e,pre,'arc','signals',[...pre.signals.filter(s=>s.source!==signal.source),{...signal,arrivalYear:signal.arrivalYear??year}].sort((a,b)=>compare(a.source,b.source)));
+      if(def.targetingPolicy&&signal.lineageId===pre.lineageId&&pre.targetFailures.some(f=>f.body===signal.body&&signal.eventYear>f.failureYear))
+        op.set(e,pre,'arc','targetFailures',pre.targetFailures.filter(f=>f.body!==signal.body||signal.eventYear<=f.failureYear));
+    }
     phase0Sequence=op.getSequence();
     inboxEffects.push({messageId:m.id,causeEventId:m.causeEventId,effects:e.effects,sets:e.data.sets.sort((a,b)=>compare(a.target,b.target)||compare(a.field,b.field))});
   }

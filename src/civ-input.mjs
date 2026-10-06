@@ -6,7 +6,7 @@ import { below, chance, encodeFields, expQ32 } from './rng.mjs';
 import { compare } from './canonical.mjs';
 import { MAX_TIERS, GROWTH, BUILD } from './tech.mjs';
 import { floorDiv as F } from './time.mjs';
-export const address=(def,entityId,purpose,level='P')=>({worldSeed:def.seed,manifestDigest:def.manifestDigest,level,entityId,purpose,episodeOrBucket:0n,ordinal:0});
+export const address=(def,entityId,purpose,level='P')=>({worldSeed:def.seed,manifestDigest:def.rngManifestDigest??def.manifestDigest,level,entityId,purpose,episodeOrBucket:0n,ordinal:0});
 export const override=(def,key)=>def.forced.overrides.find(o=>o.key===key)?.value;
 export function magnitude(def,id,purpose,lo,hi) {
   const fixed=override(def,`magnitude.${purpose}`);
@@ -91,7 +91,8 @@ export function validateForced(f,planet) {
   const h=BigInt(f.overrides.find(o=>o.key==='hazard.NATURAL_CATASTROPHE.q32')?.value??429496),p=BigInt(f.overrides.find(o=>o.key==='parameters.naturalExtinctionPpm')?.value??(h>3067833000n?3067833000000n/h:1000n));
   if(h*p>3067833000000n)throw new RangeError('Natural extinction rate cap');
 }
-export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null,untilYear}={}) {
+export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null,untilYear,targetingPolicy}={}) {
+  if(targetingPolicy!==undefined)throw new RangeError('Targeting policy requires a domain');
   if(typeof seed!=='string'||!seed.isWellFormed()||!Number.isSafeInteger(years)||years<10||years%10||years>400000)throw new RangeError('Invalid run');
   const {path,planet:original}=loadPlanet(fixture);
   const requestedTicks=forced===null?years/10:forced.ticks;

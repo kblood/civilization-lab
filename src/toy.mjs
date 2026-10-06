@@ -27,7 +27,7 @@ function genesis(def) {
 }
 const stateDigest = state => sha256Hex(canonicalBytes(state));
 function magnitudeAddress(def, id) {
-  return { worldSeed: def.seed, manifestDigest: def.manifestDigest, level: 'P', entityId: id,
+  return { worldSeed: def.seed, manifestDigest: def.rngManifestDigest??def.manifestDigest, level: 'P', entityId: id,
     purpose: 'evt.toy.magnitude', episodeOrBucket: 0, ordinal: 0 };
 }
 function step(def, state, tick, magnitude = below) {

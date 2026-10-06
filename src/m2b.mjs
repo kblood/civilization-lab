@@ -14,9 +14,18 @@ export function message(domain,tick,source,type,target,causeEventId,data,ordinal
 export const berths=r=>[4000n,8000n,16000n][r.tiers[3]-5]??0n;
 // M4c [scenario]: foreign occupancy becomes unknown after 2,000 years.
 export const OCCUPANCY_YEARS=2000;
+// M5 opt-in retry priors [scenario]; no escalation except colony deaths.
+export const TARGETING_M5=Object.freeze({version:'m5-targeting-1',transitLossRetryYears:500,occupancyYears:OCCUPANCY_YEARS,
+  uninhabitableResurveyYears:10000,colonyDiedBackoffYears:Object.freeze([1000,2000,4000,8000])});
+// Retain success chronology even when a later-delivered signal is older or generic.
+export function receivedSignal(def,arc,signal) {
+  if(!def.targetingPolicy||signal.lineageId!==arc.lineageId)return signal;
+  const old=arc.signals.find(s=>s.source===signal.source&&s.body===signal.body&&s.lineageId===arc.lineageId);
+  return old?.eventYear!==undefined&&(signal.eventYear===undefined||old.eventYear>signal.eventYear)?{...signal,eventYear:old.eventYear}:signal;
+}
 export function routesFor(def,r,pre=null) {
   return (def.routes??[]).filter(e=>e.from===def.planet.body&&e.travelYearsByTransportTier[r.tiers[3]]!==null&&
-    (!pre||!pre.signals.some(s=>s.body===e.to&&s.lineageId!==pre.lineageId&&Number(pre.tick*10n)<s.arrivalYear+OCCUPANCY_YEARS)&&!pre.targetFailures.some(f=>f.body===e.to&&Number(pre.tick*10n)<f.untilYear))&&
+    (!pre||!pre.signals.some(s=>s.body===e.to&&s.lineageId!==pre.lineageId&&Number(pre.tick*10n)<s.arrivalYear+OCCUPANCY_YEARS)&&!pre.targetFailures.some(f=>f.body===e.to&&Number(pre.tick*10n)<f.untilYear&&!(def.targetingPolicy&&f.reason==='transit-loss'&&r.tiers[3]>f.transportTier)))&&
     (e.destinationHosting==='habitable'||e.destinationHosting==='habitat-buildable'&&r.tiers[0]>=5&&r.tiers[1]>=5));
 }
 export function extraOpportunities(def,pre,add) {
@@ -66,6 +75,7 @@ export function extraMagnitudes(def,pre,e,o) {
   if(e.kind==='LAUNCH') {
     const r=regionById(pre,o.r),route=weightedPick(address(def,e.id,'evt.launch.destination'),routesFor(def,r,pre).map(route=>({id:route.to,weight:route.destinationHosting==='habitable'?1000n:200n,route}))).route;
     o.route=route;e.params={persons:String(min(min(F(r.infra,10n),F(r.fuel,5n)),min(berths(r),max(0n,r.pop-2000n)))),travelYears:String(route.travelYearsByTransportTier[r.tiers[3]])};
+    if(def.targetingPolicy){const failure=pre.targetFailures.find(f=>f.body===route.to);e.params.priorFailure=failure?.reason??'none';e.params.priorFailureActive=failure&&Number(pre.tick*10n)<failure.untilYear?'1':'0';}
   }
 }
 export function shock(op,e,r,permille,ticks,tick) {

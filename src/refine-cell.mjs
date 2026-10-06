@@ -26,10 +26,10 @@ export function allocate(def,pop,year){
   const weights=cellWeights(def,year).map(c=>c.weight),key=String(pop)+':'+weights.join(',');let value=allocationCache.get(key);
   if(value===undefined){value=Object.freeze(splitPopulation(pop,weights));if(allocationCache.size>=4096)allocationCache.clear();allocationCache.set(key,value);}return value;
 }
-const rng=(def,id,purpose,tick,ordinal=0)=>({worldSeed:def.seed,manifestDigest:def.manifestDigest,level:'C',entityId:id,purpose,episodeOrBucket:BigInt(tick),ordinal});
+const rng=(def,id,purpose,tick,ordinal=0)=>({worldSeed:def.seed,manifestDigest:def.rngManifestDigest??def.manifestDigest,level:'C',entityId:id,purpose,episodeOrBucket:BigInt(tick),ordinal});
 // Bounded, lookup-only caches of addressed placement draws, never RNG cursors.
 const placementCache=new Map();
-function placement(def,id,purpose,bound){const key=hash([def.seed,def.manifestDigest,id,purpose]);let n=placementCache.get(key);if(n===undefined){n=Number(below(rng(def,id,purpose,0n),bound));if(placementCache.size>=4096)placementCache.clear();placementCache.set(key,n);}return n;}
+function placement(def,id,purpose,bound){const key=hash([def.seed,def.rngManifestDigest??def.manifestDigest,id,purpose]);let n=placementCache.get(key);if(n===undefined){n=Number(below(rng(def,id,purpose,0n),bound));if(placementCache.size>=4096)placementCache.clear();placementCache.set(key,n);}return n;}
 const townStateCache=new Map();let townCacheNodes=0;
 function townEpisodes(def,p,threshold){
   const history=p.boundaryHistory??[{tick:p.tick,pop:p.start.pop},{tick:String(BigInt(p.tick)+1n),pop:p.end.pop}];
