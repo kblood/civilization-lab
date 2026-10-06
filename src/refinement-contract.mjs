@@ -13,4 +13,4 @@ export function regionContract(def,boundary,pre,end,updates,events,regionId,boun
     if(delta!==0n)phases.push({phase:'event',eventId:event.id,delta});}
   return {tick:String(pre.tick),regionId,start:summary(b,boundary),end:summary(e,end),naturalDelta,phases,mandatoryEvents,recipeDigest:def.recipeDigest,boundaryHistory:boundaryHistory??[{tick:String(pre.tick),pop:b.pop},{tick:String(pre.tick+1n),pop:e.pop}]};
 }
-export function cellDefinition(def,localId){const r=def.planet.partition.value.regions.find(r=>r.id===localId);return {seed:def.seed,manifestDigest:def.manifestDigest,cells:r.cells,weight:r.weight,epochs:def.planet.epochs.value.rows.filter(r=>r.regionId===localId),townThreshold:1000};}
+export function cellDefinition(def,localId){const r=def.planet.partition.value.regions.find(r=>r.id===localId);return {seed:def.seed,manifestDigest:def.manifestDigest,...(def.rngManifestDigest!==undefined?{rngManifestDigest:def.rngManifestDigest}:{}),cells:r.cells,weight:r.weight,epochs:def.planet.epochs.value.rows.filter(r=>r.regionId===localId),townThreshold:1000};}

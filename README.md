@@ -1,6 +1,12 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**M5 round 1 (opt-in):** failure-reason-aware targeting behind the domain API
+option `targetingPolicy: 'm5-targeting-1'`. There are four failure reasons, each
+with its own retry rule, and delivered success clears the failure memory.
+Default runs and digests are byte-identical; `npm test` passes 159/159 with
+0 skipped. The effect on launches is not yet measured with an ensemble. See
+[the M5 round 1 doc](docs/m5-round1-2026-10-07.md).
 **M4d:** delivered own-lineage STATUS reports now support tier maintenance
 across declared interplanetary routes, with light-speed delay and expiry after
 silence. The 1 kyr founding reserve remains a bridge. Lonely near-expiry colony
@@ -27,8 +33,10 @@ files finish below two seconds alone. Fresh commands and timing evidence are in
 [the M3 handoff](docs/m3-implementation.md). The M1 digest is unchanged.
 The full 64-seed report and six SVGs are byte-identical at jobs=4 and jobs=1.
 The fixed 16-seed-per-planet Kremer panel has cold median **9,264** versus
-**4,866** temperate; the original four-seed test remains **NOT MET** and
-skipped (3,981 versus 4,843). No model, fixture, prior or golden changed.
+**4,866** temperate. At M3 the original four-seed test was **NOT MET** and
+skipped (3,981 versus 4,843); since M4 it **passes** on `main` (cold lower
+median 36,373 versus temperate 27,598 years; 0 skipped, re-verified 2026-10-07).
+No model, fixture, prior or golden changed in M3.
 E3-start lower median times to E5/E6/E7 are **480/540/580 years**, an open
 calibration item. **Visual check NOT done** for revised SVGs: structural
 collision/XML checks passed; rasterisation and Luna remain runner work.

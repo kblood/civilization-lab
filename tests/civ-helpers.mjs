@@ -50,5 +50,5 @@ export function forced(kind,patch={}) {
   }
   return f;
 }
-export function runForced(f){return !f.base.includes('/domains/')&&!f.base.endsWith('/home-system.json')?createPlanet(f.base,f.seed,{forced:f}).run():createDomain(f.base,f.seed,{forced:f}).run();}
+export function runForced(f,options={}){return !f.base.includes('/domains/')&&!f.base.endsWith('/home-system.json')?createPlanet(f.base,f.seed,{...options,forced:f}).run():createDomain(f.base,f.seed,{...options,forced:f}).run();}
 export function setOverride(f,key,value){f.overrides=f.overrides.filter(o=>o.key!==key).concat({key,value}).sort((a,b)=>a.key<b.key?-1:1);return f;}

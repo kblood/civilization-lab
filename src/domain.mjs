@@ -12,7 +12,7 @@ import {hazardKey,compactHazardKey,advanceHazard} from './hazard.mjs';
 import {messageIntent,thresholdIntent,hazardIntent,compareEvents,sortEvents} from './events.mjs';
 import {population} from './polities.mjs';
 import {STATUS_PERIOD_YEARS,GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
-import {payload,message,PERILS} from './m2b.mjs';
+import {payload,message,PERILS,TARGETING_M5,receivedSignal} from './m2b.mjs';
 const byId=(a,b)=>compare(a.id,b.id),routeOrder=(a,b)=>compare(a.from,b.from)||compare(a.to,b.to);
 const archiveOrder=(a,b)=>compare(a.scope,b.scope)||compare(a.kind,b.kind)||compare(a.id,b.id);
 const messageOrder=(a,b)=>compare(a.deliveryTick,b.deliveryTick)||compare(a.targetId,b.targetId)||compare(a.id,b.id);
@@ -60,7 +60,8 @@ export function arcDefinition(def,body,lineageId,episode,fromTick,scenarioParams
   for(const r of planet.partition.value.regions){const from=arcId+'#'+r.id,queue=[{to:from,hops:0}];for(let j=0;j<queue.length;j++)for(const e of edges.filter(e=>e.from===queue[j].to))if(!queue.some(q=>q.to===e.to))queue.push({to:e.to,hops:queue[j].hops+1});distances.push(...queue.map(q=>({from,...q})));}
   return freezeGenerated({...def,planet,arcId,lineageId,episode,fromTick,scenarioParams,edges,distances:distances.sort((a,b)=>compare(a.from,b.from)||compare(a.to,b.to)),forced:{...def.forced,initial}});
 }
-export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null,untilYear}={}) {
+export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null,untilYear,targetingPolicy}={}) {
+  if(targetingPolicy!==undefined&&targetingPolicy!==TARGETING_M5.version)throw new RangeError('Unknown targeting policy');
   if(typeof seed!=='string'||!seed.isWellFormed()||years!==undefined&&(!Number.isSafeInteger(years)||years<10||years%10))throw new RangeError('Invalid run');
   const bundle=expandDomain(input),home=bundle.planets.find(p=>p.body===bundle.domain.origins[0])??bundle.planets[0];
   for(const p of bundle.planets)for(const key of ['lifecycle','partition','epochs'])if(p[key].status!=='known')return {status:p[key].status==='unsupported'?'not-modelled':'uninhabited',reason:p[key].capability??p[key].reason};
@@ -71,7 +72,9 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   const template=createDefinition('temperate',seed,{years:10}).manifest;
   const manifest={...template,inputBundleDigest:digest({domain:bundle.domain,systems:bundle.systems,forced:forcedModelInput(forced)}),scenarioPriors:{...template.scenarioPriors,parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced?.overrides??[]}}};
   if(bundle.planets.some(p=>p.lifecycle.value.stellarDoomYear!=null))manifest.scenarioPriors.stellarPolicy={version:'m3b-stellar-1',graceYears:Number(forced?.overrides.find(o=>o.key==='parameters.stellarGraceYears')?.value??500)};
-  const def={...bundle,seed,manifest,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
+  const rngManifestDigest=digest(manifest);
+  if(targetingPolicy!==undefined)manifest.scenarioPriors.targetingPolicy=TARGETING_M5;
+  const def={...bundle,seed,manifest,...(targetingPolicy!==undefined?{rngManifestDigest}:{}),targetingPolicy:manifest.scenarioPriors.targetingPolicy??null,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
     g:forced?.overrides.find(o=>o.key==='parameters.g')?.value??GROWTH,build:forced?.overrides.find(o=>o.key==='parameters.build')?.value??BUILD,keep:Number(forced?.overrides.find(o=>o.key==='parameters.keepPermille')?.value??490)};
   if(bundle.planets.some(p=>['lifecycle','partition','epochs'].some(k=>p[k].status!=='known')))throw new TypeError('not-modelled: required domain capability');
   def.origins=bundle.domain.origins.map(id=>originSchedule(def,bundle.planets.find(p=>p.body===id)));
@@ -171,7 +174,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
           const a=state.arcs.find(a=>a.body===m.targetId||a.id===m.targetId);if(!a)continue;
           const e=dEvent(def,state,'SIGNAL_ARRIVAL',a.id,messageIntent(m.id),{mode:'scheduled'},Number(t*10n),0);
           e.params={arrivalYear:String(m.payload.signal.arrivalYear),deliveryYear:String(t*10n)};
-          const signal=m.payload.signal;
+          const signal=receivedSignal(def,a,m.payload.signal);
           e.data.source=signal.source;e.data.target=a.id;
           const signals=[...a.signals.filter(s=>s.source!==signal.source),signal].sort((a,b)=>compare(a.source,b.source));
           e.effects.push({target:a.id,field:'arc.signals',op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.signals',value:signals});
@@ -257,15 +260,15 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         if(e.kind==='COLONY_FOUNDED'||e.kind==='VOYAGE_LOST') {
           const v=state.voyages.find(v=>v.id===(e.kind==='VOYAGE_LOST'?e.ownerId:e.data.source));
           if(!v)continue;
-          if(e.kind==='VOYAGE_LOST'||e.data.outcome==='rejected')report(v.destination,v.lineageId,'TARGET_FAILURE',e.id,{failure:{body:v.destination,eventId:e.id}},Math.max(Number((t+1n)*10n),v.arrivalYear));
+          if(e.kind==='VOYAGE_LOST'||e.data.outcome==='rejected')report(v.destination,v.lineageId,'TARGET_FAILURE',e.id,{failure:{body:v.destination,eventId:e.id,...(def.targetingPolicy?{reason:e.kind==='VOYAGE_LOST'?'transit-loss':e.reason==='occupied-by-other-lineage'?'occupied':'uninhabitable',year:e.dateYear,transportTier:v.tiers[3]}:{})}},Math.max(Number((t+1n)*10n),v.arrivalYear));
           if(e.kind==='COLONY_FOUNDED'&&e.data.outcome!=='rejected') {
             const a=state.arcs.find(a=>a.id===e.data.target);
-            report(a.body,a.lineageId,'SIGNAL',e.id,{signal:{source:a.id,lineageId:a.lineageId,body:a.body,tiers:v.tiers,strength:1000,physical:true,arrivalYear:Number((t+1n)*10n)}});
+            report(a.body,a.lineageId,'SIGNAL',e.id,{signal:{source:a.id,lineageId:a.lineageId,body:a.body,tiers:v.tiers,strength:1000,physical:true,arrivalYear:Number((t+1n)*10n),...(def.targetingPolicy?{eventYear:e.dateYear}:{})}});
           }
         }
         if(e.kind==='COLONY_LOST'||e.kind==='EXTINCTION') {
           const a=state.arcs.find(a=>a.id===e.ownerId);
-          if(a?.isColony)report(a.body,a.lineageId,'TARGET_FAILURE',e.id,{failure:{body:a.body,eventId:e.id}});
+          if(a?.isColony)report(a.body,a.lineageId,'TARGET_FAILURE',e.id,{failure:{body:a.body,eventId:e.id,...(def.targetingPolicy?{reason:'colony-died',year:e.dateYear,transportTier:null}:{})}});
         }
       }
 
