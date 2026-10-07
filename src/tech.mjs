@@ -14,6 +14,21 @@ export const COLONY_M5=Object.freeze({version:'m5-colony-1',reserveInitialYears:
 export const colonyDrain=(maint,limit)=>maint>=limit?0:Number(C(BigInt(COLONY_M5.maxDrainYearsPerTick)*(limit-maint),limit));
 export const colonyStock=(stock,drain)=>drain?Math.max(0,stock-drain):Math.min(COLONY_M5.reserveCapYears,stock+COLONY_M5.localRegainYearsPerTick);
 export const qualifiedPopulation=a=>MAX_TIERS.map((max,d)=>Array.from({length:max+1},(_,k)=>a.regions.reduce((n,r)=>n+(r.pop>0n&&r.tiers[d]>=k?r.pop:0n),0n)));
+// M5 round 3 opt-in superset of m5-colony-1 (reserve values inherited unchanged).
+// Every added value is [scenario]; rationale in docs/transition-table-v1.md.
+export const COLONY_M5_2=Object.freeze({...COLONY_M5,version:'m5-colony-2',extends:'m5-colony-1',allocation:'remaining-capacity-largest-remainder',
+  diversionMaxTravelYears:500,strandedSurvivalYears:500,maxDiversions:1,maxStrandings:1,specialists:'arrival-status-roster'});
+export const COLONY_POLICIES=Object.freeze([COLONY_M5,COLONY_M5_2]);
+// Largest-remainder split of persons over rows {id, room}; zero-room rows get nobody,
+// remainder ties go to the lower id. Returns id-sorted rows with persons > 0.
+export function allocateByCapacity(persons,rows) {
+  const open=rows.filter(r=>r.room>0n),total=open.reduce((n,r)=>n+r.room,0n);
+  if(!total||persons<=0n)return [];
+  const shares=open.map(r=>({id:r.id,persons:persons*r.room/total,rem:persons*r.room%total}));
+  let left=persons-shares.reduce((n,s)=>n+s.persons,0n);
+  for(const s of [...shares].sort((a,b)=>compare(b.rem,a.rem)||compare(a.id,b.id))){if(left===0n)break;s.persons++;left--;}
+  return shares.filter(s=>s.persons>0n).map(s=>({id:s.id,persons:s.persons})).sort((a,b)=>compare(a.id,b.id));
+}
 export const COLONY_ARCHIVE_YEARS=1000;
 export const STATUS_PERIOD_YEARS=100;
 export const STATUS_STALE_YEARS=300;
