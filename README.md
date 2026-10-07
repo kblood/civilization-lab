@@ -1,6 +1,10 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**Stellar survival decision (2026-10-07, docs only):** later-doomed refuges stay
+at full weight and surviving one's star (habitats, arks) is deferred until a
+stated trigger fires; the design is reserved for `m5-stellar-3`. See
+[the decision](docs/stellar-survival-decision-2026-10-07.md).
 **Evacuation avoids doomed worlds (2026-10-07, default):** from the year a
 star's doom occurs, no launcher on that star's worlds targets a destination that
 dies no later than its own, so a tier-7 civilisation sends every evacuee
