@@ -1248,9 +1248,9 @@
           "habitableFromYear": 0,
           "habitableUntilYear": 2000000,
           "complexLifeFromYear": null,
-          "stellarDoomYear": null
+          "stellarDoomYear": 3000
         },
-        "digest": "85f107b6c20f82d694ff951e47651fe2fd322b10ffe9f8c4cec00de66937face"
+        "digest": "692e2ad663dcb14c252db417dfc9c79b796f57e55e7ab56eeaee16ec8d5bf123"
       },
       "partition": {
         "status": "known",
@@ -2082,9 +2082,9 @@
           "habitableFromYear": 0,
           "habitableUntilYear": 2000000,
           "complexLifeFromYear": null,
-          "stellarDoomYear": null
+          "stellarDoomYear": 3000
         },
-        "digest": "85f107b6c20f82d694ff951e47651fe2fd322b10ffe9f8c4cec00de66937face"
+        "digest": "692e2ad663dcb14c252db417dfc9c79b796f57e55e7ab56eeaee16ec8d5bf123"
       },
       "partition": {
         "status": "known",
@@ -2916,9 +2916,9 @@
           "habitableFromYear": 0,
           "habitableUntilYear": 2000000,
           "complexLifeFromYear": null,
-          "stellarDoomYear": null
+          "stellarDoomYear": 3000
         },
-        "digest": "85f107b6c20f82d694ff951e47651fe2fd322b10ffe9f8c4cec00de66937face"
+        "digest": "692e2ad663dcb14c252db417dfc9c79b796f57e55e7ab56eeaee16ec8d5bf123"
       },
       "partition": {
         "status": "known",

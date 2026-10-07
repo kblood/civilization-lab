@@ -6,7 +6,8 @@ star's doom occurs, no launcher on that star's worlds targets a destination that
 dies no later than its own, so a tier-7 civilisation sends every evacuee
 interstellar and a tier-6 one has nowhere to go. Decided by Fable 5.1 on
 Kasper's instruction (overrulable); manifest `stellarPolicy` is now
-`m5-stellar-2`. Only the doomed-star digests changed. See
+`m5-stellar-2`. The m3b 3,000-year control's companions now share its doom too
+(no exemptions left). Only the doomed-star digests changed; `npm test` 182/182. See
 [the doc](docs/evacuation-doom-2026-10-07.md).
 **Doomed-star neighbours (2026-10-07):** the companion worlds of the doomed
 star now die with it (shared `stellarDoomYear`, uninhabitable from 25,500 via

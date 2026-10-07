@@ -127,6 +127,53 @@ test asserts the first launch at 25,001 and founding at 25,410.
 `npm test` (Node v24.7.0, `--test-concurrency=1`) after commit 1: **182 tests,
 182 pass, 0 fail, 0 cancelled, 0 skipped** (178 on main + 4 new).
 
+## Commit 2: the m3b 3,000-year control aligned
+
+- `tools/build-m5-neighbours-doom.mjs` now takes the system fixture from
+  `process.argv[2]` (default: the m4c system). Run on
+  `fixtures/planets/m3b-doomed-star-system.json`, it set b1, b2 and b3 to
+  `stellarDoomYear` 3000 (lifecycle digest `85f107b6…face` →
+  `692e2ad6…f123`); nothing else in the file changed. A second run on m3b, and a
+  run with the default m4c path, leave `git diff --stat` unchanged (idempotent).
+  `tools/build-m3b-fixtures.mjs` is untouched, so the m3b control is reproduced
+  in two steps: `node tools/build-m3b-fixtures.mjs`, then
+  `node tools/build-m5-neighbours-doom.mjs fixtures/planets/m3b-doomed-star-system.json`.
+- `tests/stellar-grace.test.mjs`, first test: survivors case at transport tier 7
+  (tiers [5,5,4,7,4,3,4]); every accepted LAUNCH from 3,000 on targets
+  `stub:s01:b0` (observed: 3,000 and 3,010) and COLONY_FOUNDED on s01:b0 at
+  3,400. New tier-6 case with the LAUNCH hazard forced: zero accepted LAUNCH and
+  EXTINCT_STELLAR. The no-launch case and the second test (origin 3,600 →
+  NO_LINEAGE) are unchanged.
+- `tests/m5-neighbours-doom.test.mjs`: the exemptions list is gone; every
+  `civ-system-stub-1` fixture is guarded, and the negative self-check now clones
+  the m4c system in memory, nulls one companion's doom and asserts the guard
+  throws.
+
+m3b is not in `tools/digest-capture.sh`; the capture after commit 2 is
+byte-identical to the one after commit 1 (`9dafd549…5664`).
+
+## Independent review (Astra, read-only)
+
+`codex exec -m gpt-6-astra -s read-only` on `git diff e735dbd`: **no
+implementation bug found** ("All launch callers apply the filter; colony
+definitions retain `planets`; arrival acceptance remains consistent with the
+launch-only decision. Manifest gating and deterministic arithmetic/order look
+correct."). Two test findings, both addressed in commit 2:
+
+1. (risk) no coverage of a companion colony that launches after the doom
+   without the `evacuating` flag. Added: a unit case with a b1 colony launcher
+   (home and s01 routes at tick 2499, only s01 at tick 2501 with
+   `evacuating:false`), and the pre-doom fixture now also asserts a companion
+   colony was founded before 25,000 and that no accepted launch from 25,000 on
+   targets any `stub:s00:` body.
+2. (nit) unit coverage lacked an earlier-doomed destination, explicit null own
+   doom and missing `planets` with a known own doom; all three added. A mutation
+   check (`dest<=own` → `dest===own`) now fails the unit test (3 pass, 1 fail),
+   then was reverted.
+
+`npm test` (Node v24.7.0, `--test-concurrency=1`) after commit 2: **182 tests,
+182 pass, 0 fail, 0 cancelled, 0 skipped**, 29.1 s.
+
 ## Open items
 
 - A destination doomed later than the launcher stays an allowed refuge at full

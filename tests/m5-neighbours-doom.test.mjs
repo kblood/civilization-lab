@@ -5,21 +5,18 @@ import {readFixture,Availability} from '../src/environment.mjs';
 import {createScenario} from '../src/scenario.mjs';
 import {uninhabitableAt} from '../src/domain.mjs';
 
-// Legacy 3000-year stellar-grace control, deliberately kept unchanged.
-const exemptions=['fixtures/planets/m3b-doomed-star-system.json'];
 function consistentDoom(system){
   assert.equal(new Set(system.bodies.map(p=>p.lifecycle.value.stellarDoomYear)).size,1,
     'System bodies must have all-null or identical stellarDoomYear values');
 }
-test('system fixtures share stellar doom, except the explicit legacy control',()=>{
+test('every system fixture shares stellar doom (no exemptions); the guard has teeth',()=>{
   const systems=readdirSync(new URL('../fixtures/planets/',import.meta.url)).filter(n=>n.endsWith('.json')).sort()
     .map(n=>'fixtures/planets/'+n).filter(p=>readFixture(p).schemaVersion==='civ-system-stub-1');
-  assert.ok(systems.length>0);
-  for(const path of systems)if(!exemptions.includes(path))consistentDoom(readFixture(path));
-  for(const path of exemptions){
-    assert.ok(systems.includes(path));
-    assert.throws(()=>consistentDoom(readFixture(path)),/System bodies must/);
-  }
+  assert.ok(systems.includes('fixtures/planets/m3b-doomed-star-system.json'));
+  for(const path of systems)consistentDoom(readFixture(path));
+  const broken=structuredClone(readFixture('fixtures/planets/m4c-doomed-star-system.json'));
+  broken.bodies[1].lifecycle.value.stellarDoomYear=null;
+  assert.throws(()=>consistentDoom(broken),/System bodies must/);
 });
 test('doomed neighbours share the home doom and only tier-7 interstellar destinations survive',()=>{
   const def=createScenario('doomed-star','m5-neighbours-doom',{untilYear:10}).world.def;
