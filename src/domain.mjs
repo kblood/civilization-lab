@@ -1,6 +1,6 @@
 import {compare,canonicalBytes,canonicalString} from './canonical.mjs';
 import {digest,readFixture,validateStub,validatePlanet,Availability,StubEnvironment} from './environment.mjs';
-import {createDefinition,validateForced,forcedModelInput,FORCED_TICK_MAXIMUM,address,override,priors,originId,chanceMagnitude} from './civ-input.mjs';
+import {createDefinition,validateForced,forcedModelInput,FORCED_TICK_MAXIMUM,address,override,priors,originId,chanceMagnitude,stellarPolicy} from './civ-input.mjs';
 import {skeleton,installEnvironment,stepPlanet,event,recorder,maximumEra} from './planet.mjs';
 import {stateDigest} from './state-witness.mjs';
 import {valueDelta} from './delta-witness.mjs';
@@ -76,7 +76,7 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   if(epochOverride){home.epochs=Availability.known({rows:epochOverride.value});validatePlanet(home);}
   const template=createDefinition('temperate',seed,{years:10}).manifest;
   const manifest={...template,inputBundleDigest:digest({domain:bundle.domain,systems:bundle.systems,forced:forcedModelInput(forced)}),scenarioPriors:{...template.scenarioPriors,parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced?.overrides??[]}}};
-  if(bundle.planets.some(p=>p.lifecycle.value.stellarDoomYear!=null))manifest.scenarioPriors.stellarPolicy={version:'m3b-stellar-1',graceYears:Number(forced?.overrides.find(o=>o.key==='parameters.stellarGraceYears')?.value??500)};
+  if(bundle.planets.some(p=>p.lifecycle.value.stellarDoomYear!=null))manifest.scenarioPriors.stellarPolicy=stellarPolicy(Number(forced?.overrides.find(o=>o.key==='parameters.stellarGraceYears')?.value??500));
   const rngManifestDigest=digest(manifest);
   if(targetingPolicy!==undefined)manifest.scenarioPriors.targetingPolicy=TARGETING_M5;
   if(colonyPolicy!==undefined)manifest.scenarioPriors.colonyPolicy=COLONY_M5;

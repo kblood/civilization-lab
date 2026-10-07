@@ -6447,3 +6447,25 @@ unchanged from default. Disconnect at support expiry 2400 gives first TECH_LOSS
 at 2420 off versus 3850 on (+1430 years, maximum drain 7/tick). A 1000-person
 advanced enclave plus 1000000 low-tier people credits 100100 off versus 100 on;
 with 4000 local people and depleted stock, Energy lowTicks is 0 off versus 1 on.
+
+## Runner decision 2026-10-07 (M5): launches after stellar doom avoid doomed destinations
+
+Decided by Fable 5.1 on Kasper's instruction (overrulable); see
+`docs/evacuation-doom-2026-10-07.md`. This is a default rule, not an opt-in
+policy. From the year a body's star doom occurs (`year >= own stellarDoomYear`),
+no launcher on that body targets a destination whose star dies no later than
+its own (`dest.stellarDoomYear != null && dest.stellarDoomYear <= own.stellarDoomYear`).
+Before the doom year nothing changes (no foreknowledge). The rule is one
+clause of `routesFor`, so LAUNCH opportunities and the LAUNCH destination pick
+both see it; a launcher with no remaining route gets no LAUNCH opportunity.
+Definitions without lifecycle or planets switch it off. It is a pure integer
+comparison over `(def, region, pre)`; no new LAUNCH params.
+
+The manifest `stellarPolicy` block of worlds with non-null stellar doom moves
+from `m3b-stellar-1` to `m5-stellar-2`; the RNG manifest digest is still taken
+after it, so only doomed worlds are re-keyed. The M3b section above stays as
+history for the grace and apportionment rules, which are unchanged.
+
+```json
+{"version":"m5-stellar-2","supersedes":"m3b-stellar-1","graceYears":{"override":"parameters.stellarGraceYears","default":500},"doomedDestinations":"excluded-from-own-doom-year","rule":"pre && own != null && year >= own && dest != null && dest <= own excludes the route","label":"scenario"}
+```

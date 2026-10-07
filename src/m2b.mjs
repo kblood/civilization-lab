@@ -23,8 +23,18 @@ export function receivedSignal(def,arc,signal) {
   const old=arc.signals.find(s=>s.source===signal.source&&s.body===signal.body&&s.lineageId===arc.lineageId);
   return old?.eventYear!==undefined&&(signal.eventYear===undefined||old.eventYear>signal.eventYear)?{...signal,eventYear:old.eventYear}:signal;
 }
+// M5 default (Fable 5.1 decision 2026-10-07): a destination whose star dies no
+// later than the launcher's own is "doomed" for that launcher. Stub defs without
+// lifecycle or planets leave the rule off.
+const ownDoomYear=def=>def.planet?.lifecycle?.value?.stellarDoomYear??null;
+export function doomedDestination(def,body) {
+  const own=ownDoomYear(def),dest=def.planets?.find(p=>p.body===body)?.lifecycle?.value?.stellarDoomYear??null;
+  return dest!=null&&own!=null&&dest<=own;
+}
 export function routesFor(def,r,pre=null) {
+  const own=ownDoomYear(def);
   return (def.routes??[]).filter(e=>e.from===def.planet.body&&e.travelYearsByTransportTier[r.tiers[3]]!==null&&
+    !(pre&&own!=null&&Number(pre.tick*10n)>=own&&doomedDestination(def,e.to))&&
     (!pre||!pre.signals.some(s=>s.body===e.to&&s.lineageId!==pre.lineageId&&Number(pre.tick*10n)<s.arrivalYear+OCCUPANCY_YEARS)&&!pre.targetFailures.some(f=>f.body===e.to&&Number(pre.tick*10n)<f.untilYear&&!(def.targetingPolicy&&f.reason==='transit-loss'&&r.tiers[3]>f.transportTier)))&&
     (e.destinationHosting==='habitable'||e.destinationHosting==='habitat-buildable'&&r.tiers[0]>=5&&r.tiers[1]>=5));
 }

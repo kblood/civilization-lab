@@ -1,6 +1,13 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**Evacuation avoids doomed worlds (2026-10-07, default):** from the year a
+star's doom occurs, no launcher on that star's worlds targets a destination that
+dies no later than its own, so a tier-7 civilisation sends every evacuee
+interstellar and a tier-6 one has nowhere to go. Decided by Fable 5.1 on
+Kasper's instruction (overrulable); manifest `stellarPolicy` is now
+`m5-stellar-2`. Only the doomed-star digests changed. See
+[the doc](docs/evacuation-doom-2026-10-07.md).
 **Doomed-star neighbours (2026-10-07):** the companion worlds of the doomed
 star now die with it (shared `stellarDoomYear`, uninhabitable from 25,500 via
 the existing stellar model), so only tier-7 interstellar evacuation can save a

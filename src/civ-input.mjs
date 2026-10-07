@@ -30,6 +30,9 @@ export function postSapience(base,seed,ticks) {
 }
 const nat=s=>typeof s==='string'&&/^(0|[1-9][0-9]*)$/.test(s);
 export const FORCED_TICK_MAXIMUM=40000;
+// Manifest block for worlds with stellar doom; m5-stellar-2 supersedes m3b-stellar-1
+// (launches after the observed doom avoid destinations doomed no later than the launcher).
+export const stellarPolicy=graceYears=>Object.freeze({version:'m5-stellar-2',graceYears,doomedDestinations:'excluded-from-own-doom-year'});
 // Only declared model data enters B. ticks selects an execution slice.
 export function forcedModelInput(forced) {
   if(forced===null)return null;
@@ -115,7 +118,7 @@ export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=200
   const manifest={manifestVersion:'civ-manifest-1',modelVersion:'civ-m2-1',rngVersion:'civ-rng-1',samplerVersion:'civ-samplers-1',arithmeticVersion:'civ-fixed-1',catalogueVersion:'civ-catalogue-1',partitionVersion:'civ-stub-regions-1',tickYears:10,chapterTicks:640,envEpochYears:1000,atlasVersions:{},
     inputBundleDigest:digest({domain,systems,forced:forcedModelInput(forced)}),scenarioPriors:{parameters:{version:'civ-transition-table-1',milestone:'M2b',overrides:forced.overrides},contractDigest:sha256Hex(Buffer.from(CONTRACT_TEXT)),tableDigest:digest(TABLE),
       originRateLog2:[12,22],learningLog2:[8,12],innovationLog2:[17,23],nuclearLog2:[8,24],pandemicLog2:[12,28],runawayLog2:[14,29],sharedLog2:[0,19],colonizerLog2:[15,19]}};
-  if(planet.lifecycle.value.stellarDoomYear!=null)manifest.scenarioPriors.stellarPolicy={version:'m3b-stellar-1',graceYears:Number(override({forced},'parameters.stellarGraceYears')??500)};
+  if(planet.lifecycle.value.stellarDoomYear!=null)manifest.scenarioPriors.stellarPolicy=stellarPolicy(Number(override({forced},'parameters.stellarGraceYears')??500));
   const fromTick=BigInt(forced.initial?.atTick??'0'),untilTick=fromTick+BigInt(executionTicks),arcId=`arc:${planet.body}:lin:${planet.body}:0`;
   const def={compactHazards:true,seed,manifest:deepFreeze(manifest),manifestDigest:digest(manifest),recipeDigest:digest({seed,manifest,fromTick}),fromTick,untilTick,forced:deepFreeze(forced),planet:deepFreeze(planet),domain,arcId,env};
   const rates=[0,1,2].map(j=>1n<<(12n+below(address(def,originId(planet.body),`orig.rate.${j}`,'D'),11n)));
