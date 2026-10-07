@@ -9,8 +9,10 @@ import {ensemblePlan,runEnsemble,aggregate,DEFAULT_JOBS} from './ensemble.mjs';
 import {writeReport,aggregateText} from './report.mjs';
 import {SCENARIOS} from './scenario.mjs';
 const args=process.argv.slice(2), value=key=>args[args.indexOf(key)+1];
-const policyOptions=args.includes('--targeting-policy')?{targetingPolicy:value('--targeting-policy')}:{};
+const policyOptions={};
+for(const [flag,key] of [['--targeting-policy','targetingPolicy'],['--colony-policy','colonyPolicy']])if(args.includes(flag)){policyOptions[key]=value(flag);if(!policyOptions[key]||policyOptions[key].startsWith('--'))throw new RangeError('Missing '+key);}
 if(args.includes('--targeting-policy')&&(!policyOptions.targetingPolicy||policyOptions.targetingPolicy.startsWith('--')))throw new RangeError('Missing targeting policy');
+if(policyOptions.colonyPolicy!==undefined&&!['--scenario','--domain','--ensemble','--civ'].some(flag=>args.includes(flag)))throw new RangeError('Colony policy requires a domain');
 if(args.includes('--ensemble')) {
   const tasks=ensemblePlan(Number(value('--ensemble')),{...policyOptions,scenario:args.includes('--scenario')?value('--scenario'):undefined,untilYear:args.includes('--until-year')?Number(value('--until-year')):undefined});
   const runs=await runEnsemble(tasks,{jobs:args.includes('--jobs')?Number(value('--jobs')):DEFAULT_JOBS,timings:true});

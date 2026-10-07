@@ -11,7 +11,7 @@ import {below,expQ32,chance} from './rng.mjs';
 import {hazardKey,compactHazardKey,advanceHazard} from './hazard.mjs';
 import {messageIntent,thresholdIntent,hazardIntent,compareEvents,sortEvents} from './events.mjs';
 import {population} from './polities.mjs';
-import {STATUS_PERIOD_YEARS,GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
+import {COLONY_M5,qualifiedPopulation,STATUS_PERIOD_YEARS,GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
 import {payload,message,PERILS,TARGETING_M5,receivedSignal} from './m2b.mjs';
 const byId=(a,b)=>compare(a.id,b.id),routeOrder=(a,b)=>compare(a.from,b.from)||compare(a.to,b.to);
 const archiveOrder=(a,b)=>compare(a.scope,b.scope)||compare(a.kind,b.kind)||compare(a.id,b.id);
@@ -64,7 +64,8 @@ export function arcDefinition(def,body,lineageId,episode,fromTick,scenarioParams
   for(const r of planet.partition.value.regions){const from=arcId+'#'+r.id,queue=[{to:from,hops:0}];for(let j=0;j<queue.length;j++)for(const e of edges.filter(e=>e.from===queue[j].to))if(!queue.some(q=>q.to===e.to))queue.push({to:e.to,hops:queue[j].hops+1});distances.push(...queue.map(q=>({from,...q})));}
   return freezeGenerated({...def,planet,arcId,lineageId,episode,fromTick,scenarioParams,edges,distances:distances.sort((a,b)=>compare(a.from,b.from)||compare(a.to,b.to)),forced:{...def.forced,initial}});
 }
-export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null,untilYear,targetingPolicy}={}) {
+export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null,untilYear,targetingPolicy,colonyPolicy}={}) {
+  if(colonyPolicy!==undefined&&colonyPolicy!==COLONY_M5.version)throw new RangeError('Unknown colony policy');
   if(targetingPolicy!==undefined&&targetingPolicy!==TARGETING_M5.version)throw new RangeError('Unknown targeting policy');
   if(typeof seed!=='string'||!seed.isWellFormed()||years!==undefined&&(!Number.isSafeInteger(years)||years<10||years%10))throw new RangeError('Invalid run');
   const bundle=expandDomain(input),home=bundle.planets.find(p=>p.body===bundle.domain.origins[0])??bundle.planets[0];
@@ -78,7 +79,8 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   if(bundle.planets.some(p=>p.lifecycle.value.stellarDoomYear!=null))manifest.scenarioPriors.stellarPolicy={version:'m3b-stellar-1',graceYears:Number(forced?.overrides.find(o=>o.key==='parameters.stellarGraceYears')?.value??500)};
   const rngManifestDigest=digest(manifest);
   if(targetingPolicy!==undefined)manifest.scenarioPriors.targetingPolicy=TARGETING_M5;
-  const def={...bundle,seed,manifest,...(targetingPolicy!==undefined?{rngManifestDigest}:{}),targetingPolicy:manifest.scenarioPriors.targetingPolicy??null,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
+  if(colonyPolicy!==undefined)manifest.scenarioPriors.colonyPolicy=COLONY_M5;
+  const def={...bundle,seed,manifest,...(targetingPolicy!==undefined||colonyPolicy!==undefined?{rngManifestDigest}:{}),...(colonyPolicy!==undefined?{colonyPolicy:COLONY_M5}:{}),targetingPolicy:manifest.scenarioPriors.targetingPolicy??null,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
     g:forced?.overrides.find(o=>o.key==='parameters.g')?.value??GROWTH,build:forced?.overrides.find(o=>o.key==='parameters.build')?.value??BUILD,keep:Number(forced?.overrides.find(o=>o.key==='parameters.keepPermille')?.value??490)};
   if(bundle.planets.some(p=>['lifecycle','partition','epochs'].some(k=>p[k].status!=='known')))throw new TypeError('not-modelled: required domain capability');
   def.origins=bundle.domain.origins.map(id=>originSchedule(def,bundle.planets.find(p=>p.body===id)));
@@ -211,6 +213,10 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
             for(const field of ['colonizer','foundingTiers','isColony'])if(canonicalString(a[field])!==canonicalString(before[field])){e.effects.push({target:a.id,field:'arc.'+field,op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.'+field,value:a[field]});}
             for(const v of a.regions)for(const field of ['culture','cultureId','tiers'])if(canonicalString(v[field])!==canonicalString(before.regions.find(r=>r.id===v.id)[field])){e.effects.push({target:v.id,field:'region.'+field,op:'set',amount:'0'});e.data.sets.push({target:v.id,field:'region.'+field,value:v[field]});}
           }
+          if(def.colonyPolicy&&a.isColony) {
+            const stock=fresh?COLONY_M5.reserveInitialYears:Math.min(COLONY_M5.reserveCapYears,a.colonyReserve+(v.tiers.every((tier,d)=>tier>=a.foundingTiers[d])?Number(min(BigInt(COLONY_M5.reserveCapYears),F(persons*BigInt(COLONY_M5.reinforcementYearsPerThousand),1000n))):0));
+            if(stock!==a.colonyReserve){a.colonyReserve=stock;e.effects.push({target:a.id,field:'arc.colonyReserve',op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.colonyReserve',value:stock});}
+          }
           e.data.target=a.id;e.data.stage=fresh?'FOUNDED':'REINFORCEMENT';e.refs.push({role:'target',entityId:a.id});
           arrivals.set(a.id,[...(arrivals.get(a.id)??[]),e.id]);
         }
@@ -258,7 +264,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         if(Number(t*10n)!==a.foundedYear&&reportYear%STATUS_PERIOD_YEARS!==0)continue;
         const pop=population(a.regions);if(pop===0n)continue;
         const tiers=Array.from({length:7},(_,d)=>a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.tiers[d]):n,0));
-        report(a.body,a.lineageId,'STATUS',null,{status:{source:a.id,lineageId:a.lineageId,population:pop,tiers,reportYear,routeDelayYears:0}},reportYear);
+        report(a.body,a.lineageId,'STATUS',null,{status:{source:a.id,lineageId:a.lineageId,population:pop,tiers,...(def.colonyPolicy?{qualified:qualifiedPopulation(a)}:{}),reportYear,routeDelayYears:0}},reportYear);
       }
       for(const e of allTick.filter(e=>e.resolution==='accepted')) {
         if(e.kind==='COLONY_FOUNDED'||e.kind==='VOYAGE_LOST') {

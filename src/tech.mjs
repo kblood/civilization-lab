@@ -1,4 +1,4 @@
-import { floorDiv as F } from './time.mjs';
+import { floorDiv as F, ceilDiv as C } from './time.mjs';
 import { compare } from './canonical.mjs';
 import { deepFreeze } from './manifest.mjs';
 export const DOMAINS = Object.freeze(['Energy','Subsistence','Materials','Transport','Information','Medicine','Organisation']);
@@ -9,19 +9,24 @@ export const NSTAR = deepFreeze([[0,100,500,2000,10000,40000,100000],[0,50,100,5
   [0,50,200,1000,10000],[0,100,300,1000,10000,40000]]);
 export const DISCOVERY_COST = deepFreeze([[0,2,5,10,20,100,3000],[0,2,5,10,20,100],[0,2,5,10,20,100],[0,2,5,10,20,100,500,2000],[0,2,5,10,20,100],[0,2,5,10,20],[0,2,5,10,20,100]]);
 export const discoveryRate=(d,target,neff,ppm)=>F(400n*neff*BigInt(ppm),1000000n*BigInt(DISCOVERY_COST[d][target]));
+// All COLONY_M5 values are [scenario], not historical estimates.
+export const COLONY_M5=Object.freeze({version:'m5-colony-1',reserveInitialYears:1000,reserveCapYears:1000,maxDrainYearsPerTick:10,localRegainYearsPerTick:5,reinforcementYearsPerThousand:250});
+export const colonyDrain=(maint,limit)=>maint>=limit?0:Number(C(BigInt(COLONY_M5.maxDrainYearsPerTick)*(limit-maint),limit));
+export const colonyStock=(stock,drain)=>drain?Math.max(0,stock-drain):Math.min(COLONY_M5.reserveCapYears,stock+COLONY_M5.localRegainYearsPerTick);
+export const qualifiedPopulation=a=>MAX_TIERS.map((max,d)=>Array.from({length:max+1},(_,k)=>a.regions.reduce((n,r)=>n+(r.pop>0n&&r.tiers[d]>=k?r.pop:0n),0n)));
 export const COLONY_ARCHIVE_YEARS=1000;
 export const STATUS_PERIOD_YEARS=100;
 export const STATUS_STALE_YEARS=300;
 export const INTERPLANETARY_LINK_PERMILLE=100;
 export const MAX_RECOVERIES=4;
-export function maintenancePopulation(a,r,d,neff,limit) {
+export function maintenancePopulation(a,r,d,neff,limit,policy=null,reserve=true) {
   const year=Number(a.tick*10n);
   let reported=0n;
   for(const report of [...(a.lineageReports??[])].sort((a,b)=>compare(a.source,b.source))) {
-    if(report.source!==a.id&&report.lineageId===a.lineageId&&year>=report.reportYear&&year<report.reportYear+STATUS_STALE_YEARS+report.routeDelayYears&&report.tiers[d]>=r.tiers[d])reported+=BigInt(report.population);
+    if(report.source!==a.id&&report.lineageId===a.lineageId&&year>=report.reportYear&&year<report.reportYear+STATUS_STALE_YEARS+report.routeDelayYears&&report.tiers[d]>=r.tiers[d])reported+=BigInt(policy&&report.qualified?report.qualified[d][r.tiers[d]]:report.population);
   }
   neff+=F(reported*BigInt(INTERPLANETARY_LINK_PERMILLE),1000n);
-  return a.isColony&&r.pop>0n&&Number(a.tick*10n)<a.foundedYear+COLONY_ARCHIVE_YEARS&&r.tiers[d]<=a.foundingTiers[d]?max(neff,limit):neff;
+  return reserve&&a.isColony&&r.pop>0n&&(policy?a.colonyReserve>0:Number(a.tick*10n)<a.foundedYear+COLONY_ARCHIVE_YEARS)&&r.tiers[d]<=a.foundingTiers[d]?max(neff,limit):neff;
 }
 export const GROWTH = Object.freeze([10050,20201,105171,221403,161834,105171,105171,105171]);
 export const CAPTURE = Object.freeze([4500n,8000n,26000n,77000n,230000n,1000000n,5000000n,10000000n]);

@@ -27,11 +27,12 @@ export function render(report){
   }
   return lines.join('\n')+'\n';
 }
-export async function measure(scenario,seed,{targetingPolicy,untilYear}={}){
+export async function measure(scenario,seed,{targetingPolicy,colonyPolicy,untilYear}={}){
   const {createScenario}=await load('scenario'),{summarizeRun}=await load('ensemble');
   const compilationStart=process.hrtime.bigint();
   const observedSafe=new Set();let observedPerils=false;
-  const {world}=createScenario(scenario,seed,{...(untilYear!==undefined?{untilYear}:{}),...(targetingPolicy!==undefined?{targetingPolicy}:{})});
+  const {world}=createScenario(scenario,seed,{...(untilYear!==undefined?{untilYear}:{}),...(targetingPolicy!==undefined?{targetingPolicy}:{}),...(colonyPolicy!==undefined?{colonyPolicy}:{})});
+  if(colonyPolicy!==undefined&&world.def.colonyPolicy?.version!==colonyPolicy)throw new Error('Root does not support colony policy');
   if(targetingPolicy!==undefined&&world.def.targetingPolicy?.version!==targetingPolicy)throw new Error('Root does not support targeting policy');
   const result=world.compileSummary({observe:true,onPerilsTick:({tick,exitedArcs})=>{
     observedPerils=true;for(const id of exitedArcs)observedSafe.add(tick+'|'+id);
@@ -114,7 +115,8 @@ if(args.includes('--worker')){
   const {SCENARIOS}=await load('scenario'),n=Number(arg('--n','30')),jobs=Number(arg('--jobs','2'));
   if(!Number.isSafeInteger(n)||n<30||!Number.isSafeInteger(jobs)||jobs<1)throw new Error('Require --n >=30 and --jobs >=1');
   const scenarios=arg('--scenario',null)?[arg('--scenario')]:[...SCENARIOS].sort();
-  const targetingPolicy=arg('--targeting-policy',undefined),options={...(targetingPolicy!==undefined?{targetingPolicy}:{}),...(args.includes('--until-year')?{untilYear:Number(arg('--until-year'))}:{})};
+  const targetingPolicy=arg('--targeting-policy',undefined),colonyPolicy=arg('--colony-policy',undefined),options={...(targetingPolicy!==undefined?{targetingPolicy}:{}),...(colonyPolicy!==undefined?{colonyPolicy}:{}),...(args.includes('--until-year')?{untilYear:Number(arg('--until-year'))}:{})};
+  if(args.includes('--colony-policy')&&(!colonyPolicy||colonyPolicy.startsWith('--')))throw new RangeError('Missing colony policy');
   if(args.includes('--targeting-policy')&&(!targetingPolicy||targetingPolicy.startsWith('--')))throw new RangeError('Missing targeting policy');
   const tasks=scenarios.flatMap(scenario=>Array.from({length:n},(_,i)=>({scenario,seed:scenario+'-'+i,...options}))),rows=[];let cursor=0,overBudget=false;
   await Promise.all(Array.from({length:Math.min(jobs,tasks.length)},async()=>{while(cursor<tasks.length){const task=tasks[cursor++];
@@ -124,7 +126,7 @@ if(args.includes('--worker')){
       child.on('exit',code=>resolveAnswer(answer??{result:{seed:task.seed,error:'worker exit '+code}}));child.send(task);
     });rows.push({scenario:task.scenario,...answer.result});overBudget ||= answer.overBudget;
   }}));
-  const report={...(targetingPolicy!==undefined?{targetingPolicy}:{}),version:'m4-plausibility-1',method:{...(targetingPolicy!==undefined?{launchPriorFailure:'Accepted LAUNCH events grouped by params.priorFailure; active counts priorFailureActive=1, using delivered failure knowledge rather than omniscient earlier failures.'}:{}),seedPattern:'scenario-i, i=0..N-1',quantile:'sorted[floor((n-1)*p/100)]',
+  const report={...(targetingPolicy!==undefined?{targetingPolicy}:{}),...(colonyPolicy!==undefined?{colonyPolicy}:{}),version:'m4-plausibility-1',method:{...(targetingPolicy!==undefined?{launchPriorFailure:'Accepted LAUNCH events grouped by params.priorFailure; active counts priorFailureActive=1, using delivered failure knowledge rather than omniscient earlier failures.'}:{}),seedPattern:'scenario-i, i=0..N-1',quantile:'sorted[floor((n-1)*p/100)]',
     durations:'Exclude starts above source; separate pending origins, true no-lineage, errors, and right censoring including source not reached. No-lineage is also unobserved advancement, never an observed duration.',
     latePostExit:'Accepted P events dated in last half of configured horizon whose owning arc pre-state has perils=exited; exact event-tick inspection, including reentry. D events excluded because D has no perils state.',
     multiBody:'At least two bodies ever inhabited by one lineage, not necessarily simultaneous. Outcome class counts are per seed; lineage counts separate.',
