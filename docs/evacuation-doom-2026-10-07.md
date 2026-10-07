@@ -176,10 +176,10 @@ correct."). Two test findings, both addressed in commit 2:
 
 ## Open items
 
-- A destination doomed later than the launcher stays an allowed refuge at full
-  weight (open refinement).
-- When habitats or arks are modelled, this rule becomes conditional on that
-  capability.
+- Later-doomed refuges and habitat/ark survival are decided in
+  [stellar-survival-decision](stellar-survival-decision-2026-10-07.md): full
+  weight now, survival deferred until its trigger, both reserved for
+  `m5-stellar-3`.
 - `docs/evidence/m4-plausibility-after.json` stays stale for doomed-star.
 - Matched variates (excluding the stellar block from `rngManifestDigest`) were
   deliberately not done.
