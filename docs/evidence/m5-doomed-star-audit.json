@@ -1,0 +1,3855 @@
+{
+  "version": "m5-doomed-star-audit-1",
+  "scenario": "doomed-star",
+  "n": 30,
+  "doomYear": 25000,
+  "doomEndYear": 25500,
+  "pass": true,
+  "invariants": [
+    {
+      "id": "I1",
+      "title": "zero accepted LAUNCH dated >= 25000 from an stub:s00 body to any stub:s00:* body",
+      "pass": true,
+      "violations": [],
+      "note": "Gated on stub:s00 launchers: m5-stellar-2 does not restrict launchers on undoomed worlds, so returns from stub:s01/stub:s02 to stub:s00:b0 are reported (reported.returnsToHome) and appear in I8 when rejected."
+    },
+    {
+      "id": "I2",
+      "title": "every accepted LAUNCH dated >= 25000 from an stub:s00 body targets stub:s01:b0",
+      "pass": true,
+      "violations": []
+    },
+    {
+      "id": "I3",
+      "title": "zero accepted LAUNCH dated >= 25500 from any stub:s00 body",
+      "pass": true,
+      "violations": []
+    },
+    {
+      "id": "I4",
+      "title": "no stub:s00 arc alive at the horizon; every stub:s00 arc existing at 25500 died with STELLAR_DOOM",
+      "pass": true,
+      "violations": [],
+      "method": "Arc death from accepted EXTINCTION events per arc (timeline.arcs has no population); STELLAR_DOOM dated >= doom-end and <= the EXTINCTION year counts as the cause; the final observation pop is a cross-check."
+    },
+    {
+      "id": "I5",
+      "title": "every lineage not EXTINCT_* at the horizon has a living arc in stub:s01/stub:s02 and firstEras[6] non-null before 25500",
+      "pass": true,
+      "violations": [],
+      "method": "Lineage end from LINEAGE_EXTINCTION events; living arc = no EXTINCTION event (cross-checked against the final observation pop)."
+    },
+    {
+      "id": "I6",
+      "title": "no ERROR seed",
+      "pass": true,
+      "violations": []
+    },
+    {
+      "id": "I7",
+      "title": "determinism: doomed-star-0 resultDigest = d0d26b3d…; re-runs at jobs=1 identical",
+      "pass": true,
+      "violations": [],
+      "skipped": false,
+      "seed0Digest": "d0d26b3d082d9429ef936b8b1bf90dd1f433188523bd1beea6d26f245850afd0",
+      "reruns": [
+        {
+          "seed": "doomed-star-0",
+          "mode": "runEnsemble jobs=1",
+          "resultDigest": "d0d26b3d082d9429ef936b8b1bf90dd1f433188523bd1beea6d26f245850afd0",
+          "identical": true
+        },
+        {
+          "seed": "doomed-star-21",
+          "mode": "runEnsemble jobs=1",
+          "resultDigest": "05f67a9b63c23144c3e4494feccf6d86925b5a1dc07af264ea8ecd5e3fe1c90c",
+          "identical": true
+        },
+        {
+          "seed": "doomed-star-21",
+          "mode": "in-process detail",
+          "resultDigest": "05f67a9b63c23144c3e4494feccf6d86925b5a1dc07af264ea8ecd5e3fe1c90c",
+          "identical": true
+        }
+      ]
+    },
+    {
+      "id": "I8",
+      "title": "every destination-uninhabitable rejection is a pre-25,000 in-system voyage arriving >= 25,500 or an s01 -> s00:b0 return",
+      "pass": true,
+      "violations": [],
+      "rejections": [],
+      "method": "Rejected COLONY_FOUNDED linked to its LAUNCH through causes; summarizeRun drops e.reason, so the reason comes from the raw detail run when present, otherwise it is derived."
+    }
+  ],
+  "reported": {
+    "outcomeClasses": {
+      "COLLAPSED_RECOVERING": 1,
+      "EXTINCT_NATURAL": 3,
+      "EXTINCT_SELF": 2,
+      "EXTINCT_STELLAR": 24
+    },
+    "outcomes": {
+      "COLLAPSED_RECOVERING": 1,
+      "EXTINCT_NATURAL": 3,
+      "EXTINCT_SELF": 2,
+      "EXTINCT_STELLAR": 24
+    },
+    "survivors": [
+      {
+        "seed": "doomed-star-21",
+        "outcome": "COLLAPSED_RECOVERING",
+        "firstEra6": 14280,
+        "viaTier7": true
+      }
+    ],
+    "survivorsOnlyViaTier7": true,
+    "eraE5By25000": {
+      "count": 3,
+      "seeds": [
+        {
+          "seed": "doomed-star-12",
+          "year": 14220
+        },
+        {
+          "seed": "doomed-star-21",
+          "year": 11750
+        },
+        {
+          "seed": "doomed-star-23",
+          "year": 15620
+        }
+      ],
+      "record": "4/30 E5plus over 30,000 years (docs/evidence/m4-plausibility-after.json, pre-neighbours fixture)"
+    },
+    "energy5By25000": {
+      "count": 11,
+      "seeds": [
+        {
+          "seed": "doomed-star-1",
+          "year": 13740
+        },
+        {
+          "seed": "doomed-star-12",
+          "year": 6270
+        },
+        {
+          "seed": "doomed-star-14",
+          "year": 6410
+        },
+        {
+          "seed": "doomed-star-15",
+          "year": 5290
+        },
+        {
+          "seed": "doomed-star-17",
+          "year": 4460
+        },
+        {
+          "seed": "doomed-star-19",
+          "year": 14710
+        },
+        {
+          "seed": "doomed-star-21",
+          "year": 3450
+        },
+        {
+          "seed": "doomed-star-23",
+          "year": 4290
+        },
+        {
+          "seed": "doomed-star-24",
+          "year": 10210
+        },
+        {
+          "seed": "doomed-star-27",
+          "year": 1380
+        },
+        {
+          "seed": "doomed-star-3",
+          "year": 4980
+        }
+      ],
+      "note": "evacuation gate: energy tier >= 5 at the doom year"
+    },
+    "tier7Before25500": [
+      {
+        "seed": "doomed-star-21",
+        "year": 14280
+      }
+    ],
+    "graceWindowLaunches": {
+      "count": 156,
+      "wasted": 0,
+      "wastedNote": "old \"2/7 wasted on b1/b2\" metric; must read 0 under m5-stellar-2",
+      "personsKnown": 156,
+      "persons": "2496000",
+      "launches": [
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2500|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:4",
+          "dateYear": 25001,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25401,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2500|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:12",
+          "dateYear": 25002,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25402,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2500|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:9",
+          "dateYear": 25002,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25402,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2500|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:10",
+          "dateYear": 25004,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25404,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2501|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:13",
+          "dateYear": 25013,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25413,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2501|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:10",
+          "dateYear": 25014,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25414,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2501|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:11",
+          "dateYear": 25015,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25415,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2501|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:6",
+          "dateYear": 25015,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25415,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2502|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:7",
+          "dateYear": 25020,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25420,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2502|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:3",
+          "dateYear": 25028,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25428,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2502|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:14",
+          "dateYear": 25029,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25429,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2503|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:11",
+          "dateYear": 25032,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25432,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2503|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:10",
+          "dateYear": 25036,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25436,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2503|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:13",
+          "dateYear": 25038,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25438,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2504|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:14",
+          "dateYear": 25040,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25440,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2504|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:12",
+          "dateYear": 25044,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25444,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2504|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:4",
+          "dateYear": 25045,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25445,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2504|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:12",
+          "dateYear": 25047,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25447,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2505|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:13",
+          "dateYear": 25052,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25452,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2505|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:15",
+          "dateYear": 25053,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25453,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2506|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:15",
+          "dateYear": 25060,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25460,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2506|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:16",
+          "dateYear": 25061,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25461,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2506|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:6",
+          "dateYear": 25068,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25468,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2507|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:17",
+          "dateYear": 25070,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25470,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2507|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:7",
+          "dateYear": 25071,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25471,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2507|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:18",
+          "dateYear": 25074,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25474,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2508|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:20",
+          "dateYear": 25080,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25480,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2508|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:8",
+          "dateYear": 25083,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25483,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2508|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:20",
+          "dateYear": 25083,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25483,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2508|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:14",
+          "dateYear": 25085,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25485,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2509|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:22",
+          "dateYear": 25090,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25490,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2509|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:15",
+          "dateYear": 25093,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25493,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2509|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:21",
+          "dateYear": 25094,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25494,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2509|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:18",
+          "dateYear": 25097,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25497,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2509|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:9",
+          "dateYear": 25099,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25499,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2510|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:10",
+          "dateYear": 25100,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25500,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2510|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:19",
+          "dateYear": 25102,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25502,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2510|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:16",
+          "dateYear": 25108,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25508,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2511|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:13",
+          "dateYear": 25113,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25513,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2511|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:20",
+          "dateYear": 25115,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25515,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2511|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:22",
+          "dateYear": 25115,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25515,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2512|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:23",
+          "dateYear": 25120,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25520,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2512|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:16",
+          "dateYear": 25127,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25527,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2513|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:21",
+          "dateYear": 25130,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25530,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2513|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:17",
+          "dateYear": 25133,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25533,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2513|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:23",
+          "dateYear": 25133,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25533,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2514|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:24",
+          "dateYear": 25144,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25544,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2514|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:26",
+          "dateYear": 25145,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25545,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2514|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:22",
+          "dateYear": 25148,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25548,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2515|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:25",
+          "dateYear": 25151,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25551,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2515|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:23",
+          "dateYear": 25153,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25553,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2515|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:18",
+          "dateYear": 25155,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25555,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2515|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:27",
+          "dateYear": 25159,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25559,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2516|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:17",
+          "dateYear": 25161,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25561,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2516|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:27",
+          "dateYear": 25161,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25561,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2516|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:28",
+          "dateYear": 25165,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25565,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2517|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:29",
+          "dateYear": 25172,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25572,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2517|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:19",
+          "dateYear": 25178,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25578,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2518|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:30",
+          "dateYear": 25180,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25580,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2518|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:32",
+          "dateYear": 25180,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25580,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2518|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:20",
+          "dateYear": 25181,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25581,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2518|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:24",
+          "dateYear": 25184,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25584,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2518|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:20",
+          "dateYear": 25188,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25588,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2519|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:23",
+          "dateYear": 25192,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25592,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2519|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:33",
+          "dateYear": 25194,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25594,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2519|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:21",
+          "dateYear": 25196,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25596,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2519|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:25",
+          "dateYear": 25197,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25597,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2520|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:31",
+          "dateYear": 25200,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25600,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2520|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:26",
+          "dateYear": 25201,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25601,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2520|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:35",
+          "dateYear": 25202,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25602,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2520|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:22",
+          "dateYear": 25203,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25603,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2521|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:38",
+          "dateYear": 25210,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25610,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2521|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:28",
+          "dateYear": 25212,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25612,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2521|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:33",
+          "dateYear": 25215,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25615,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2522|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:41",
+          "dateYear": 25222,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25622,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2522|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:29",
+          "dateYear": 25225,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25625,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2522|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:23",
+          "dateYear": 25226,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25626,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2523|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:30",
+          "dateYear": 25230,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25630,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2523|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:24",
+          "dateYear": 25230,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25630,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2523|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:34",
+          "dateYear": 25234,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25634,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2524|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:25",
+          "dateYear": 25243,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25643,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2524|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:44",
+          "dateYear": 25245,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25645,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2525|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:35",
+          "dateYear": 25254,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25654,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2525|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:46",
+          "dateYear": 25256,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25656,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2526|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:47",
+          "dateYear": 25262,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25662,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2526|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:32",
+          "dateYear": 25266,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25666,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2526|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:37",
+          "dateYear": 25267,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25667,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2527|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:48",
+          "dateYear": 25272,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25672,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2527|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:38",
+          "dateYear": 25273,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25673,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2527|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:34",
+          "dateYear": 25277,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25677,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2528|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:35",
+          "dateYear": 25282,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25682,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2528|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:41",
+          "dateYear": 25283,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25683,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2528|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:51",
+          "dateYear": 25284,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25684,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2529|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:52",
+          "dateYear": 25290,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25690,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2529|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:26",
+          "dateYear": 25291,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25691,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2529|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:45",
+          "dateYear": 25295,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25695,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2530|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:37",
+          "dateYear": 25301,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25701,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2530|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:28",
+          "dateYear": 25301,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25701,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2530|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:53",
+          "dateYear": 25301,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25701,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2530|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:46",
+          "dateYear": 25309,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25709,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2531|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:40",
+          "dateYear": 25310,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25710,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2531|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:31",
+          "dateYear": 25310,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25710,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2532|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:33",
+          "dateYear": 25321,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25721,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2532|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:55",
+          "dateYear": 25322,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25722,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2532|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:41",
+          "dateYear": 25326,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25726,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2532|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:47",
+          "dateYear": 25326,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25726,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2533|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:43",
+          "dateYear": 25330,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25730,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2533|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:56",
+          "dateYear": 25331,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25731,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2533|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:50",
+          "dateYear": 25333,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25733,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2533|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:34",
+          "dateYear": 25338,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25738,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2534|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:51",
+          "dateYear": 25342,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25742,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2534|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:44",
+          "dateYear": 25345,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25745,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2534|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:58",
+          "dateYear": 25347,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25747,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2535|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:46",
+          "dateYear": 25352,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25752,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2535|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:52",
+          "dateYear": 25353,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25753,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2535|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:59",
+          "dateYear": 25356,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25756,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2536|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:48",
+          "dateYear": 25363,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25763,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2536|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:53",
+          "dateYear": 25366,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25766,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2536|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:60",
+          "dateYear": 25368,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25768,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2537|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:35",
+          "dateYear": 25370,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25770,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2537|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:61",
+          "dateYear": 25372,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25772,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2537|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:55",
+          "dateYear": 25375,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25775,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2537|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:51",
+          "dateYear": 25378,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25778,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2538|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:56",
+          "dateYear": 25380,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25780,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2538|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:62",
+          "dateYear": 25380,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25780,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2538|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:37",
+          "dateYear": 25384,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25784,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2539|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:65",
+          "dateYear": 25395,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25795,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2539|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:52",
+          "dateYear": 25399,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25799,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2540|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:53",
+          "dateYear": 25400,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25800,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2540|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:58",
+          "dateYear": 25400,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25800,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2540|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:66",
+          "dateYear": 25402,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25802,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2540|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:39",
+          "dateYear": 25403,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25803,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2541|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:40",
+          "dateYear": 25410,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25810,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2541|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:55",
+          "dateYear": 25415,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25815,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2541|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:59",
+          "dateYear": 25415,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25815,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2542|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:61",
+          "dateYear": 25424,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25824,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2542|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:44",
+          "dateYear": 25425,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25825,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2543|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:46",
+          "dateYear": 25432,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25832,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2543|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:69",
+          "dateYear": 25432,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25832,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2543|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:56",
+          "dateYear": 25436,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25836,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2544|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:47",
+          "dateYear": 25440,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25840,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2544|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:73",
+          "dateYear": 25441,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25841,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2545|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:48",
+          "dateYear": 25454,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25854,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2545|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:57",
+          "dateYear": 25457,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25857,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2546|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:64",
+          "dateYear": 25462,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25862,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2546|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:50",
+          "dateYear": 25463,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25863,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2546|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:74",
+          "dateYear": 25468,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25868,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2547|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:75",
+          "dateYear": 25472,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25872,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2547|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:66",
+          "dateYear": 25478,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25878,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2548|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:67",
+          "dateYear": 25480,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25880,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2548|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:58",
+          "dateYear": 25481,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25881,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2548|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:53",
+          "dateYear": 25482,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25882,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2549|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:71",
+          "dateYear": 25490,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25890,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2549|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:76",
+          "dateYear": 25490,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25890,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2549|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:59",
+          "dateYear": 25493,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25893,
+          "transportTier": 7,
+          "persons": "16000"
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2549|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:57",
+          "dateYear": 25493,
+          "source": "stub:s00:b0",
+          "destination": "stub:s01:b0",
+          "arrivalYear": 25893,
+          "transportTier": 7,
+          "persons": "16000"
+        }
+      ]
+    },
+    "preDoomCompanionLaunches": {
+      "count": 105,
+      "launches": [
+        {
+          "seed": "doomed-star-1",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1420|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 14206,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 14226,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-1",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1480|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:1",
+          "dateYear": 14802,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 14822,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-1",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|1560|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:0",
+          "dateYear": 15603,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 15623,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-1",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|1650|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:1",
+          "dateYear": 16505,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 16525,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1340|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:0",
+          "dateYear": 13408,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 13428,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1480|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:1",
+          "dateYear": 14804,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 14809,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1550|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:2",
+          "dateYear": 15505,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 15510,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1640|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:3",
+          "dateYear": 16402,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 16407,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1660|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:4",
+          "dateYear": 16602,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 16607,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1790|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 17904,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 17924,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1810|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:5",
+          "dateYear": 18100,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18105,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|1830|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:0",
+          "dateYear": 18300,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 18320,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1850|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:6",
+          "dateYear": 18506,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18511,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1880|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:7",
+          "dateYear": 18800,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18805,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b2:lin:stub:s00:b0:0#r00|LAUNCH|1890|h:7a7100568135d110a033a18f506c2a76fbe27d7018cbcd12ddb497db5dd0e6ad:1",
+          "dateYear": 18900,
+          "source": "stub:s00:b2",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18905,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|1900|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:0",
+          "dateYear": 19000,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19020,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|1910|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:2",
+          "dateYear": 19109,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19129,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1920|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:1",
+          "dateYear": 19203,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19223,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1930|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:8",
+          "dateYear": 19301,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19306,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1950|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:9",
+          "dateYear": 19509,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19514,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|1960|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:3",
+          "dateYear": 19601,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19621,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2010|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:2",
+          "dateYear": 20109,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 20129,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2030|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:10",
+          "dateYear": 20309,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 20314,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2110|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:11",
+          "dateYear": 21104,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 21109,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2190|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:3",
+          "dateYear": 21900,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 21905,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2220|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:12",
+          "dateYear": 22201,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22221,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|2240|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:4",
+          "dateYear": 22401,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 22421,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2250|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:13",
+          "dateYear": 22506,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 22511,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2270|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:4",
+          "dateYear": 22705,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 22710,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2300|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:1",
+          "dateYear": 23006,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 23026,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2320|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:0",
+          "dateYear": 23202,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23222,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2320|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:2",
+          "dateYear": 23208,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23213,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|2350|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:5",
+          "dateYear": 23509,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23529,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2360|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:1",
+          "dateYear": 23605,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23625,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|2370|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:6",
+          "dateYear": 23703,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23723,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2370|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:5",
+          "dateYear": 23707,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23712,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r03|LAUNCH|2390|h:e006218c35eb4100f18c9ab2b79cd612706168a9c025b2aa03ff61fc75002f0b:7",
+          "dateYear": 23902,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23922,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2470|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:14",
+          "dateYear": 24704,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 24709,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-12",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2490|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:6",
+          "dateYear": 24908,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 24913,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-15",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|660|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 6604,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 6624,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-17",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|840|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 8405,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 8425,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-17",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|850|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:1",
+          "dateYear": 8506,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 8526,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1260|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:0",
+          "dateYear": 12606,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 12611,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1310|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 13107,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 13127,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1360|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:1",
+          "dateYear": 13603,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 13608,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1380|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:0",
+          "dateYear": 13800,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 13820,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1390|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:1",
+          "dateYear": 13907,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 13927,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1410|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:2",
+          "dateYear": 14100,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 14120,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1420|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:2",
+          "dateYear": 14203,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 14208,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1470|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:3",
+          "dateYear": 14704,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 14724,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1610|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:4",
+          "dateYear": 16108,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 16128,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1660|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:3",
+          "dateYear": 16607,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 16612,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1710|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:4",
+          "dateYear": 17109,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 17114,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1740|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:5",
+          "dateYear": 17400,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 17405,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1860|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:5",
+          "dateYear": 18604,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 18624,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1880|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:6",
+          "dateYear": 18809,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18814,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|1910|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:0",
+          "dateYear": 19101,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19121,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|1940|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:1",
+          "dateYear": 19404,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 19424,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|1970|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:6",
+          "dateYear": 19707,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 19727,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1980|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:7",
+          "dateYear": 19806,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 19807,
+          "transportTier": 7
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2080|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:7",
+          "dateYear": 20808,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 20828,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2160|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:0",
+          "dateYear": 21605,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 21625,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r10|LAUNCH|2190|h:53943c5e3ddda71f6e88b2c203a06498eaa6dc914125139bb6ff3363e2ce2587:8",
+          "dateYear": 21901,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 21906,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2200|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:0",
+          "dateYear": 22002,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22022,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2230|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:2",
+          "dateYear": 22301,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22321,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2270|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:2",
+          "dateYear": 22701,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22706,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2270|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:3",
+          "dateYear": 22708,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22728,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2280|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:4",
+          "dateYear": 22804,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 22824,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2290|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:5",
+          "dateYear": 22903,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22923,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r11|LAUNCH|2290|h:3a5930b3d3d6dfd133562fd13f31ebf6e4600cd51da265e7c7f2094e100212ab:3",
+          "dateYear": 22909,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22914,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2310|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:1",
+          "dateYear": 23100,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 23120,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2330|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:11",
+          "dateYear": 23304,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23305,
+          "transportTier": 7
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r02|LAUNCH|2330|h:8eab40e70e0c56b957acb77caaa03325f16b59a7f17fa93fcd925751f82125a6:2",
+          "dateYear": 23304,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 23309,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2340|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:6",
+          "dateYear": 23409,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 23429,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r09|LAUNCH|2380|h:a6be9a207eee2b2113a3d4867322eb8ff5e264adcbe1bc8c7cd818efcd9bccab:7",
+          "dateYear": 23801,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 23821,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-21",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2440|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:8",
+          "dateYear": 24402,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 24403,
+          "transportTier": 7
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|590|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:0",
+          "dateYear": 5902,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 5922,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|750|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:1",
+          "dateYear": 7504,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 7524,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b2:lin:stub:s00:b0:0#r00|LAUNCH|920|h:7a7100568135d110a033a18f506c2a76fbe27d7018cbcd12ddb497db5dd0e6ad:2",
+          "dateYear": 9204,
+          "source": "stub:s00:b2",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 9224,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1420|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:2",
+          "dateYear": 14209,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 14229,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1470|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 14702,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 14722,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1530|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:1",
+          "dateYear": 15303,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 15323,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1720|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:3",
+          "dateYear": 17208,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 17213,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1730|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:2",
+          "dateYear": 17309,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 17314,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1770|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:3",
+          "dateYear": 17709,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 17714,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1820|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:4",
+          "dateYear": 18202,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 18207,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|1840|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:5",
+          "dateYear": 18404,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18409,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|1880|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:4",
+          "dateYear": 18802,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 18807,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2030|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:6",
+          "dateYear": 20301,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 20306,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2120|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:5",
+          "dateYear": 21203,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 21208,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2130|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:6",
+          "dateYear": 21302,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 21307,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2140|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:7",
+          "dateYear": 21405,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 21410,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2160|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:8",
+          "dateYear": 21608,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 21613,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2190|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:7",
+          "dateYear": 21900,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 21905,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|2190|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:9",
+          "dateYear": 21902,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 21907,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2200|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:8",
+          "dateYear": 22000,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 22005,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2260|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:9",
+          "dateYear": 22606,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22611,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2340|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:10",
+          "dateYear": 23404,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 23409,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-23",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2480|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:11",
+          "dateYear": 24809,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 24814,
+          "transportTier": 6
+        },
+        {
+          "seed": "doomed-star-24",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2190|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:0",
+          "dateYear": 21904,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 21924,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-24",
+          "id": "arc:stub:s00:b2:lin:stub:s00:b0:0#r00|LAUNCH|2230|h:7a7100568135d110a033a18f506c2a76fbe27d7018cbcd12ddb497db5dd0e6ad:0",
+          "dateYear": 22301,
+          "source": "stub:s00:b2",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 22321,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-24",
+          "id": "arc:stub:s00:b1:lin:stub:s00:b0:0#r00|LAUNCH|2240|h:569b25e1bb5e8f42c91498b4801f76d09ed57be1e0362b36e3235e1abb9fa9cf:0",
+          "dateYear": 22407,
+          "source": "stub:s00:b1",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 22427,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-24",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r00|LAUNCH|2330|h:5616bb472eef0bb46314586e20a9bf3f068eff12792ee80dc5aa64ce3905b59a:1",
+          "dateYear": 23303,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 23323,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-3",
+          "id": "arc:stub:s00:b0:lin:stub:s00:b0:0#r01|LAUNCH|590|h:435f664d690a0f3958660dbdf99577fb92977fa6e86e58251603aa3d8b3245c3:0",
+          "dateYear": 5902,
+          "source": "stub:s00:b0",
+          "destination": "stub:s00:b1",
+          "arrivalYear": 5922,
+          "transportTier": 5
+        },
+        {
+          "seed": "doomed-star-3",
+          "id": "arc:stub:s00:b1:lin:stub:s00:b0:0#r00|LAUNCH|610|h:569b25e1bb5e8f42c91498b4801f76d09ed57be1e0362b36e3235e1abb9fa9cf:0",
+          "dateYear": 6108,
+          "source": "stub:s00:b1",
+          "destination": "stub:s00:b2",
+          "arrivalYear": 6128,
+          "transportTier": 5
+        }
+      ],
+      "companionColonies": 17,
+      "fates": {
+        "died at doom-end (STELLAR_DOOM)": 9,
+        "died before doom": 8
+      },
+      "colonies": [
+        {
+          "seed": "doomed-star-1",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 18910,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-1",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-12",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-12",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 23280,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-12",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:1",
+          "body": "stub:s00:b2",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-15",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 6800,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-17",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 14600,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-17",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 9930,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-21",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-21",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-23",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-23",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 9770,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-23",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:1",
+          "body": "stub:s00:b2",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-24",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-24",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 25500,
+          "fate": "died at doom-end (STELLAR_DOOM)"
+        },
+        {
+          "seed": "doomed-star-3",
+          "arc": "arc:stub:s00:b1:lin:stub:s00:b0:0",
+          "body": "stub:s00:b1",
+          "extinctionYear": 10410,
+          "fate": "died before doom"
+        },
+        {
+          "seed": "doomed-star-3",
+          "arc": "arc:stub:s00:b2:lin:stub:s00:b0:0",
+          "body": "stub:s00:b2",
+          "extinctionYear": 15860,
+          "fate": "died before doom"
+        }
+      ]
+    },
+    "trigger": {
+      "metric": "seeds with firstEnergy[6] < 25000",
+      "count": 0,
+      "expected": 0,
+      "seeds": []
+    },
+    "refugeArrivals": [
+      {
+        "seed": "doomed-star-21",
+        "arrivals": [
+          {
+            "dateYear": 19410,
+            "source": "stub:s00:b0",
+            "launchYear": 19009,
+            "arrivalYear": 19409
+          },
+          {
+            "dateYear": 19910,
+            "source": "stub:s00:b0",
+            "launchYear": 19508,
+            "arrivalYear": 19908
+          },
+          {
+            "dateYear": 21510,
+            "source": "stub:s00:b0",
+            "launchYear": 21108,
+            "arrivalYear": 21508
+          },
+          {
+            "dateYear": 22010,
+            "source": "stub:s00:b0",
+            "launchYear": 21602,
+            "arrivalYear": 22002
+          },
+          {
+            "dateYear": 22400,
+            "source": "stub:s00:b0",
+            "launchYear": 22000,
+            "arrivalYear": 22400
+          },
+          {
+            "dateYear": 22610,
+            "source": "stub:s00:b0",
+            "launchYear": 22202,
+            "arrivalYear": 22602
+          },
+          {
+            "dateYear": 22610,
+            "source": "stub:s00:b0",
+            "launchYear": 22206,
+            "arrivalYear": 22606
+          },
+          {
+            "dateYear": 23110,
+            "source": "stub:s00:b0",
+            "launchYear": 22706,
+            "arrivalYear": 23106
+          },
+          {
+            "dateYear": 23210,
+            "source": "stub:s00:b0",
+            "launchYear": 22807,
+            "arrivalYear": 23207
+          },
+          {
+            "dateYear": 23410,
+            "source": "stub:s00:b0",
+            "launchYear": 23001,
+            "arrivalYear": 23401
+          },
+          {
+            "dateYear": 24710,
+            "source": "stub:s00:b0",
+            "launchYear": 24305,
+            "arrivalYear": 24705
+          },
+          {
+            "dateYear": 25410,
+            "source": "stub:s00:b0",
+            "launchYear": 25001,
+            "arrivalYear": 25401
+          },
+          {
+            "dateYear": 25410,
+            "source": "stub:s00:b0",
+            "launchYear": 25002,
+            "arrivalYear": 25402
+          },
+          {
+            "dateYear": 25410,
+            "source": "stub:s00:b0",
+            "launchYear": 25002,
+            "arrivalYear": 25402
+          },
+          {
+            "dateYear": 25410,
+            "source": "stub:s00:b0",
+            "launchYear": 25004,
+            "arrivalYear": 25404
+          },
+          {
+            "dateYear": 25420,
+            "source": "stub:s00:b0",
+            "launchYear": 25013,
+            "arrivalYear": 25413
+          },
+          {
+            "dateYear": 25420,
+            "source": "stub:s00:b0",
+            "launchYear": 25014,
+            "arrivalYear": 25414
+          },
+          {
+            "dateYear": 25420,
+            "source": "stub:s00:b0",
+            "launchYear": 25015,
+            "arrivalYear": 25415
+          },
+          {
+            "dateYear": 25420,
+            "source": "stub:s00:b0",
+            "launchYear": 25015,
+            "arrivalYear": 25415
+          },
+          {
+            "dateYear": 25420,
+            "source": "stub:s00:b0",
+            "launchYear": 25020,
+            "arrivalYear": 25420
+          },
+          {
+            "dateYear": 25430,
+            "source": "stub:s00:b0",
+            "launchYear": 25028,
+            "arrivalYear": 25428
+          },
+          {
+            "dateYear": 25430,
+            "source": "stub:s00:b0",
+            "launchYear": 25029,
+            "arrivalYear": 25429
+          },
+          {
+            "dateYear": 25440,
+            "source": "stub:s00:b0",
+            "launchYear": 25032,
+            "arrivalYear": 25432
+          },
+          {
+            "dateYear": 25440,
+            "source": "stub:s00:b0",
+            "launchYear": 25036,
+            "arrivalYear": 25436
+          },
+          {
+            "dateYear": 25440,
+            "source": "stub:s00:b0",
+            "launchYear": 25038,
+            "arrivalYear": 25438
+          },
+          {
+            "dateYear": 25440,
+            "source": "stub:s00:b0",
+            "launchYear": 25040,
+            "arrivalYear": 25440
+          },
+          {
+            "dateYear": 25450,
+            "source": "stub:s00:b0",
+            "launchYear": 25044,
+            "arrivalYear": 25444
+          },
+          {
+            "dateYear": 25450,
+            "source": "stub:s00:b0",
+            "launchYear": 25045,
+            "arrivalYear": 25445
+          },
+          {
+            "dateYear": 25450,
+            "source": "stub:s00:b0",
+            "launchYear": 25047,
+            "arrivalYear": 25447
+          },
+          {
+            "dateYear": 25460,
+            "source": "stub:s00:b0",
+            "launchYear": 25052,
+            "arrivalYear": 25452
+          },
+          {
+            "dateYear": 25460,
+            "source": "stub:s00:b0",
+            "launchYear": 25053,
+            "arrivalYear": 25453
+          },
+          {
+            "dateYear": 25460,
+            "source": "stub:s00:b0",
+            "launchYear": 25060,
+            "arrivalYear": 25460
+          },
+          {
+            "dateYear": 25470,
+            "source": "stub:s00:b0",
+            "launchYear": 25061,
+            "arrivalYear": 25461
+          },
+          {
+            "dateYear": 25470,
+            "source": "stub:s00:b0",
+            "launchYear": 25068,
+            "arrivalYear": 25468
+          },
+          {
+            "dateYear": 25470,
+            "source": "stub:s00:b0",
+            "launchYear": 25070,
+            "arrivalYear": 25470
+          },
+          {
+            "dateYear": 25480,
+            "source": "stub:s00:b0",
+            "launchYear": 25071,
+            "arrivalYear": 25471
+          },
+          {
+            "dateYear": 25480,
+            "source": "stub:s00:b0",
+            "launchYear": 25074,
+            "arrivalYear": 25474
+          },
+          {
+            "dateYear": 25480,
+            "source": "stub:s00:b0",
+            "launchYear": 25080,
+            "arrivalYear": 25480
+          },
+          {
+            "dateYear": 25490,
+            "source": "stub:s00:b0",
+            "launchYear": 25083,
+            "arrivalYear": 25483
+          },
+          {
+            "dateYear": 25490,
+            "source": "stub:s00:b0",
+            "launchYear": 25083,
+            "arrivalYear": 25483
+          },
+          {
+            "dateYear": 25490,
+            "source": "stub:s00:b0",
+            "launchYear": 25085,
+            "arrivalYear": 25485
+          },
+          {
+            "dateYear": 25490,
+            "source": "stub:s00:b0",
+            "launchYear": 25090,
+            "arrivalYear": 25490
+          },
+          {
+            "dateYear": 25500,
+            "source": "stub:s00:b0",
+            "launchYear": 25093,
+            "arrivalYear": 25493
+          },
+          {
+            "dateYear": 25500,
+            "source": "stub:s00:b0",
+            "launchYear": 25094,
+            "arrivalYear": 25494
+          },
+          {
+            "dateYear": 25500,
+            "source": "stub:s00:b0",
+            "launchYear": 25097,
+            "arrivalYear": 25497
+          },
+          {
+            "dateYear": 25500,
+            "source": "stub:s00:b0",
+            "launchYear": 25099,
+            "arrivalYear": 25499
+          },
+          {
+            "dateYear": 25500,
+            "source": "stub:s00:b0",
+            "launchYear": 25100,
+            "arrivalYear": 25500
+          },
+          {
+            "dateYear": 25510,
+            "source": "stub:s00:b0",
+            "launchYear": 25102,
+            "arrivalYear": 25502
+          },
+          {
+            "dateYear": 25510,
+            "source": "stub:s00:b0",
+            "launchYear": 25108,
+            "arrivalYear": 25508
+          },
+          {
+            "dateYear": 25520,
+            "source": "stub:s00:b0",
+            "launchYear": 25113,
+            "arrivalYear": 25513
+          },
+          {
+            "dateYear": 25520,
+            "source": "stub:s00:b0",
+            "launchYear": 25115,
+            "arrivalYear": 25515
+          },
+          {
+            "dateYear": 25520,
+            "source": "stub:s00:b0",
+            "launchYear": 25115,
+            "arrivalYear": 25515
+          },
+          {
+            "dateYear": 25520,
+            "source": "stub:s00:b0",
+            "launchYear": 25120,
+            "arrivalYear": 25520
+          },
+          {
+            "dateYear": 25530,
+            "source": "stub:s00:b0",
+            "launchYear": 25127,
+            "arrivalYear": 25527
+          },
+          {
+            "dateYear": 25530,
+            "source": "stub:s00:b0",
+            "launchYear": 25130,
+            "arrivalYear": 25530
+          },
+          {
+            "dateYear": 25540,
+            "source": "stub:s00:b0",
+            "launchYear": 25133,
+            "arrivalYear": 25533
+          },
+          {
+            "dateYear": 25540,
+            "source": "stub:s00:b0",
+            "launchYear": 25133,
+            "arrivalYear": 25533
+          },
+          {
+            "dateYear": 25550,
+            "source": "stub:s00:b0",
+            "launchYear": 25144,
+            "arrivalYear": 25544
+          },
+          {
+            "dateYear": 25550,
+            "source": "stub:s00:b0",
+            "launchYear": 25145,
+            "arrivalYear": 25545
+          },
+          {
+            "dateYear": 25550,
+            "source": "stub:s00:b0",
+            "launchYear": 25148,
+            "arrivalYear": 25548
+          },
+          {
+            "dateYear": 25560,
+            "source": "stub:s00:b0",
+            "launchYear": 25151,
+            "arrivalYear": 25551
+          },
+          {
+            "dateYear": 25560,
+            "source": "stub:s00:b0",
+            "launchYear": 25153,
+            "arrivalYear": 25553
+          },
+          {
+            "dateYear": 25560,
+            "source": "stub:s00:b0",
+            "launchYear": 25155,
+            "arrivalYear": 25555
+          },
+          {
+            "dateYear": 25560,
+            "source": "stub:s00:b0",
+            "launchYear": 25159,
+            "arrivalYear": 25559
+          },
+          {
+            "dateYear": 25570,
+            "source": "stub:s00:b0",
+            "launchYear": 25161,
+            "arrivalYear": 25561
+          },
+          {
+            "dateYear": 25570,
+            "source": "stub:s00:b0",
+            "launchYear": 25161,
+            "arrivalYear": 25561
+          },
+          {
+            "dateYear": 25570,
+            "source": "stub:s00:b0",
+            "launchYear": 25165,
+            "arrivalYear": 25565
+          },
+          {
+            "dateYear": 25580,
+            "source": "stub:s00:b0",
+            "launchYear": 25172,
+            "arrivalYear": 25572
+          },
+          {
+            "dateYear": 25580,
+            "source": "stub:s00:b0",
+            "launchYear": 25178,
+            "arrivalYear": 25578
+          },
+          {
+            "dateYear": 25580,
+            "source": "stub:s00:b0",
+            "launchYear": 25180,
+            "arrivalYear": 25580
+          },
+          {
+            "dateYear": 25580,
+            "source": "stub:s00:b0",
+            "launchYear": 25180,
+            "arrivalYear": 25580
+          },
+          {
+            "dateYear": 25590,
+            "source": "stub:s00:b0",
+            "launchYear": 25181,
+            "arrivalYear": 25581
+          },
+          {
+            "dateYear": 25590,
+            "source": "stub:s00:b0",
+            "launchYear": 25184,
+            "arrivalYear": 25584
+          },
+          {
+            "dateYear": 25590,
+            "source": "stub:s00:b0",
+            "launchYear": 25188,
+            "arrivalYear": 25588
+          },
+          {
+            "dateYear": 25600,
+            "source": "stub:s00:b0",
+            "launchYear": 25192,
+            "arrivalYear": 25592
+          },
+          {
+            "dateYear": 25600,
+            "source": "stub:s00:b0",
+            "launchYear": 25194,
+            "arrivalYear": 25594
+          },
+          {
+            "dateYear": 25600,
+            "source": "stub:s00:b0",
+            "launchYear": 25196,
+            "arrivalYear": 25596
+          },
+          {
+            "dateYear": 25600,
+            "source": "stub:s00:b0",
+            "launchYear": 25197,
+            "arrivalYear": 25597
+          },
+          {
+            "dateYear": 25600,
+            "source": "stub:s00:b0",
+            "launchYear": 25200,
+            "arrivalYear": 25600
+          },
+          {
+            "dateYear": 25610,
+            "source": "stub:s00:b0",
+            "launchYear": 25201,
+            "arrivalYear": 25601
+          },
+          {
+            "dateYear": 25610,
+            "source": "stub:s00:b0",
+            "launchYear": 25202,
+            "arrivalYear": 25602
+          },
+          {
+            "dateYear": 25610,
+            "source": "stub:s00:b0",
+            "launchYear": 25203,
+            "arrivalYear": 25603
+          },
+          {
+            "dateYear": 25610,
+            "source": "stub:s00:b0",
+            "launchYear": 25210,
+            "arrivalYear": 25610
+          },
+          {
+            "dateYear": 25620,
+            "source": "stub:s00:b0",
+            "launchYear": 25212,
+            "arrivalYear": 25612
+          },
+          {
+            "dateYear": 25620,
+            "source": "stub:s00:b0",
+            "launchYear": 25215,
+            "arrivalYear": 25615
+          },
+          {
+            "dateYear": 25630,
+            "source": "stub:s00:b0",
+            "launchYear": 25222,
+            "arrivalYear": 25622
+          },
+          {
+            "dateYear": 25630,
+            "source": "stub:s00:b0",
+            "launchYear": 25225,
+            "arrivalYear": 25625
+          },
+          {
+            "dateYear": 25630,
+            "source": "stub:s00:b0",
+            "launchYear": 25226,
+            "arrivalYear": 25626
+          },
+          {
+            "dateYear": 25630,
+            "source": "stub:s00:b0",
+            "launchYear": 25230,
+            "arrivalYear": 25630
+          },
+          {
+            "dateYear": 25630,
+            "source": "stub:s00:b0",
+            "launchYear": 25230,
+            "arrivalYear": 25630
+          },
+          {
+            "dateYear": 25640,
+            "source": "stub:s00:b0",
+            "launchYear": 25234,
+            "arrivalYear": 25634
+          },
+          {
+            "dateYear": 25650,
+            "source": "stub:s00:b0",
+            "launchYear": 25243,
+            "arrivalYear": 25643
+          },
+          {
+            "dateYear": 25650,
+            "source": "stub:s00:b0",
+            "launchYear": 25245,
+            "arrivalYear": 25645
+          },
+          {
+            "dateYear": 25660,
+            "source": "stub:s00:b0",
+            "launchYear": 25254,
+            "arrivalYear": 25654
+          },
+          {
+            "dateYear": 25660,
+            "source": "stub:s00:b0",
+            "launchYear": 25256,
+            "arrivalYear": 25656
+          },
+          {
+            "dateYear": 25670,
+            "source": "stub:s00:b0",
+            "launchYear": 25262,
+            "arrivalYear": 25662
+          },
+          {
+            "dateYear": 25670,
+            "source": "stub:s00:b0",
+            "launchYear": 25266,
+            "arrivalYear": 25666
+          },
+          {
+            "dateYear": 25670,
+            "source": "stub:s00:b0",
+            "launchYear": 25267,
+            "arrivalYear": 25667
+          },
+          {
+            "dateYear": 25680,
+            "source": "stub:s00:b0",
+            "launchYear": 25272,
+            "arrivalYear": 25672
+          },
+          {
+            "dateYear": 25680,
+            "source": "stub:s00:b0",
+            "launchYear": 25273,
+            "arrivalYear": 25673
+          },
+          {
+            "dateYear": 25680,
+            "source": "stub:s00:b0",
+            "launchYear": 25277,
+            "arrivalYear": 25677
+          },
+          {
+            "dateYear": 25690,
+            "source": "stub:s00:b0",
+            "launchYear": 25282,
+            "arrivalYear": 25682
+          },
+          {
+            "dateYear": 25690,
+            "source": "stub:s00:b0",
+            "launchYear": 25283,
+            "arrivalYear": 25683
+          },
+          {
+            "dateYear": 25690,
+            "source": "stub:s00:b0",
+            "launchYear": 25284,
+            "arrivalYear": 25684
+          },
+          {
+            "dateYear": 25690,
+            "source": "stub:s00:b0",
+            "launchYear": 25290,
+            "arrivalYear": 25690
+          },
+          {
+            "dateYear": 25700,
+            "source": "stub:s00:b0",
+            "launchYear": 25291,
+            "arrivalYear": 25691
+          },
+          {
+            "dateYear": 25700,
+            "source": "stub:s00:b0",
+            "launchYear": 25295,
+            "arrivalYear": 25695
+          },
+          {
+            "dateYear": 25710,
+            "source": "stub:s00:b0",
+            "launchYear": 25301,
+            "arrivalYear": 25701
+          },
+          {
+            "dateYear": 25710,
+            "source": "stub:s00:b0",
+            "launchYear": 25301,
+            "arrivalYear": 25701
+          },
+          {
+            "dateYear": 25710,
+            "source": "stub:s00:b0",
+            "launchYear": 25301,
+            "arrivalYear": 25701
+          },
+          {
+            "dateYear": 25710,
+            "source": "stub:s00:b0",
+            "launchYear": 25309,
+            "arrivalYear": 25709
+          },
+          {
+            "dateYear": 25710,
+            "source": "stub:s00:b0",
+            "launchYear": 25310,
+            "arrivalYear": 25710
+          },
+          {
+            "dateYear": 25710,
+            "source": "stub:s00:b0",
+            "launchYear": 25310,
+            "arrivalYear": 25710
+          },
+          {
+            "dateYear": 25730,
+            "source": "stub:s00:b0",
+            "launchYear": 25321,
+            "arrivalYear": 25721
+          },
+          {
+            "dateYear": 25730,
+            "source": "stub:s00:b0",
+            "launchYear": 25322,
+            "arrivalYear": 25722
+          },
+          {
+            "dateYear": 25730,
+            "source": "stub:s00:b0",
+            "launchYear": 25326,
+            "arrivalYear": 25726
+          },
+          {
+            "dateYear": 25730,
+            "source": "stub:s00:b0",
+            "launchYear": 25326,
+            "arrivalYear": 25726
+          },
+          {
+            "dateYear": 25730,
+            "source": "stub:s00:b0",
+            "launchYear": 25330,
+            "arrivalYear": 25730
+          },
+          {
+            "dateYear": 25740,
+            "source": "stub:s00:b0",
+            "launchYear": 25331,
+            "arrivalYear": 25731
+          },
+          {
+            "dateYear": 25740,
+            "source": "stub:s00:b0",
+            "launchYear": 25333,
+            "arrivalYear": 25733
+          },
+          {
+            "dateYear": 25740,
+            "source": "stub:s00:b0",
+            "launchYear": 25338,
+            "arrivalYear": 25738
+          },
+          {
+            "dateYear": 25750,
+            "source": "stub:s00:b0",
+            "launchYear": 25342,
+            "arrivalYear": 25742
+          },
+          {
+            "dateYear": 25750,
+            "source": "stub:s00:b0",
+            "launchYear": 25345,
+            "arrivalYear": 25745
+          },
+          {
+            "dateYear": 25750,
+            "source": "stub:s00:b0",
+            "launchYear": 25347,
+            "arrivalYear": 25747
+          },
+          {
+            "dateYear": 25760,
+            "source": "stub:s00:b0",
+            "launchYear": 25352,
+            "arrivalYear": 25752
+          },
+          {
+            "dateYear": 25760,
+            "source": "stub:s00:b0",
+            "launchYear": 25353,
+            "arrivalYear": 25753
+          },
+          {
+            "dateYear": 25760,
+            "source": "stub:s00:b0",
+            "launchYear": 25356,
+            "arrivalYear": 25756
+          },
+          {
+            "dateYear": 25770,
+            "source": "stub:s00:b0",
+            "launchYear": 25363,
+            "arrivalYear": 25763
+          },
+          {
+            "dateYear": 25770,
+            "source": "stub:s00:b0",
+            "launchYear": 25366,
+            "arrivalYear": 25766
+          },
+          {
+            "dateYear": 25770,
+            "source": "stub:s00:b0",
+            "launchYear": 25368,
+            "arrivalYear": 25768
+          },
+          {
+            "dateYear": 25770,
+            "source": "stub:s00:b0",
+            "launchYear": 25370,
+            "arrivalYear": 25770
+          },
+          {
+            "dateYear": 25780,
+            "source": "stub:s00:b0",
+            "launchYear": 25372,
+            "arrivalYear": 25772
+          },
+          {
+            "dateYear": 25780,
+            "source": "stub:s00:b0",
+            "launchYear": 25375,
+            "arrivalYear": 25775
+          },
+          {
+            "dateYear": 25780,
+            "source": "stub:s00:b0",
+            "launchYear": 25378,
+            "arrivalYear": 25778
+          },
+          {
+            "dateYear": 25780,
+            "source": "stub:s00:b0",
+            "launchYear": 25380,
+            "arrivalYear": 25780
+          },
+          {
+            "dateYear": 25780,
+            "source": "stub:s00:b0",
+            "launchYear": 25380,
+            "arrivalYear": 25780
+          },
+          {
+            "dateYear": 25790,
+            "source": "stub:s00:b0",
+            "launchYear": 25384,
+            "arrivalYear": 25784
+          },
+          {
+            "dateYear": 25800,
+            "source": "stub:s00:b0",
+            "launchYear": 25395,
+            "arrivalYear": 25795
+          },
+          {
+            "dateYear": 25800,
+            "source": "stub:s00:b0",
+            "launchYear": 25399,
+            "arrivalYear": 25799
+          },
+          {
+            "dateYear": 25800,
+            "source": "stub:s00:b0",
+            "launchYear": 25400,
+            "arrivalYear": 25800
+          },
+          {
+            "dateYear": 25800,
+            "source": "stub:s00:b0",
+            "launchYear": 25400,
+            "arrivalYear": 25800
+          },
+          {
+            "dateYear": 25810,
+            "source": "stub:s00:b0",
+            "launchYear": 25402,
+            "arrivalYear": 25802
+          },
+          {
+            "dateYear": 25810,
+            "source": "stub:s00:b0",
+            "launchYear": 25403,
+            "arrivalYear": 25803
+          },
+          {
+            "dateYear": 25810,
+            "source": "stub:s00:b0",
+            "launchYear": 25410,
+            "arrivalYear": 25810
+          },
+          {
+            "dateYear": 25820,
+            "source": "stub:s00:b0",
+            "launchYear": 25415,
+            "arrivalYear": 25815
+          },
+          {
+            "dateYear": 25820,
+            "source": "stub:s00:b0",
+            "launchYear": 25415,
+            "arrivalYear": 25815
+          },
+          {
+            "dateYear": 25830,
+            "source": "stub:s00:b0",
+            "launchYear": 25424,
+            "arrivalYear": 25824
+          },
+          {
+            "dateYear": 25830,
+            "source": "stub:s00:b0",
+            "launchYear": 25425,
+            "arrivalYear": 25825
+          },
+          {
+            "dateYear": 25840,
+            "source": "stub:s00:b0",
+            "launchYear": 25432,
+            "arrivalYear": 25832
+          },
+          {
+            "dateYear": 25840,
+            "source": "stub:s00:b0",
+            "launchYear": 25432,
+            "arrivalYear": 25832
+          },
+          {
+            "dateYear": 25840,
+            "source": "stub:s00:b0",
+            "launchYear": 25436,
+            "arrivalYear": 25836
+          },
+          {
+            "dateYear": 25840,
+            "source": "stub:s00:b0",
+            "launchYear": 25440,
+            "arrivalYear": 25840
+          },
+          {
+            "dateYear": 25850,
+            "source": "stub:s00:b0",
+            "launchYear": 25441,
+            "arrivalYear": 25841
+          },
+          {
+            "dateYear": 25860,
+            "source": "stub:s00:b0",
+            "launchYear": 25454,
+            "arrivalYear": 25854
+          },
+          {
+            "dateYear": 25860,
+            "source": "stub:s00:b0",
+            "launchYear": 25457,
+            "arrivalYear": 25857
+          },
+          {
+            "dateYear": 25870,
+            "source": "stub:s00:b0",
+            "launchYear": 25462,
+            "arrivalYear": 25862
+          },
+          {
+            "dateYear": 25870,
+            "source": "stub:s00:b0",
+            "launchYear": 25463,
+            "arrivalYear": 25863
+          },
+          {
+            "dateYear": 25870,
+            "source": "stub:s00:b0",
+            "launchYear": 25468,
+            "arrivalYear": 25868
+          },
+          {
+            "dateYear": 25880,
+            "source": "stub:s00:b0",
+            "launchYear": 25472,
+            "arrivalYear": 25872
+          },
+          {
+            "dateYear": 25880,
+            "source": "stub:s00:b0",
+            "launchYear": 25478,
+            "arrivalYear": 25878
+          },
+          {
+            "dateYear": 25880,
+            "source": "stub:s00:b0",
+            "launchYear": 25480,
+            "arrivalYear": 25880
+          },
+          {
+            "dateYear": 25890,
+            "source": "stub:s00:b0",
+            "launchYear": 25481,
+            "arrivalYear": 25881
+          },
+          {
+            "dateYear": 25890,
+            "source": "stub:s00:b0",
+            "launchYear": 25482,
+            "arrivalYear": 25882
+          },
+          {
+            "dateYear": 25890,
+            "source": "stub:s00:b0",
+            "launchYear": 25490,
+            "arrivalYear": 25890
+          },
+          {
+            "dateYear": 25890,
+            "source": "stub:s00:b0",
+            "launchYear": 25490,
+            "arrivalYear": 25890
+          },
+          {
+            "dateYear": 25900,
+            "source": "stub:s00:b0",
+            "launchYear": 25493,
+            "arrivalYear": 25893
+          },
+          {
+            "dateYear": 25900,
+            "source": "stub:s00:b0",
+            "launchYear": 25493,
+            "arrivalYear": 25893
+          }
+        ],
+        "firstArrival": 19410,
+        "latestHomeSourcedArrivalYear": 25893,
+        "withinLatestPossible": true
+      }
+    ],
+    "returnsToHome": []
+  },
+  "method": {
+    "arcs": "timeline.arcs (seenArcs) has no final populations: arc death is derived from EXTINCTION events per arc, lineage death from LINEAGE_EXTINCTION; the final observation pop is a cross-check.",
+    "persons": "summarizeRun drops LAUNCH params, so persons come from an in-process raw run of the seeds that need them (--no-detail skips it).",
+    "label": "seeded scenarios, model attribution, not predictions"
+  },
+  "rerunChoice": "first surviving seed",
+  "detailSeeds": [
+    "doomed-star-21"
+  ]
+}
