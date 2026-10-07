@@ -6484,12 +6484,12 @@ Every inherited reserve value (1000/1000/10/5/250) and rule is unchanged.
 | Key | Value | Rationale |
 |---|---|---|
 | `extends` | `m5-colony-1` [scenario] | Superset: reserve, drain, regain, refill and qualified STATUS apply unchanged. |
-| `allocation` | `remaining-capacity-largest-remainder` [scenario] | Answers review 3 finding 5 (first positive-capacity region ignores remaining room). Integer split by `max(0, K − pop)`; empty regions are judged with the passengers' tiers; ties by region id; no room anywhere falls back to the default region. |
+| `allocation` | `founders-together-reinforcements-by-remaining-room` [scenario] (D5) | Answers review 3 finding 5 (first positive-capacity region ignores remaining room) without splitting a founding party. Room is `max(0, K − pop)`, with empty regions judged with the passengers' tiers. Arrivals go first to regions that already have people, split by largest remainder in proportion to room (ties by region id); only the overflow fills empty regions one at a time, starting with m5-colony-1's landing region (first `K > 0`) and then region id. Anything left when every region is full goes to that landing region. A founding party that fits one region therefore lands exactly as under m5-colony-1. |
 | `diversionMaxTravelYears` | 500 [scenario] | Bounded extra transit. Equal to the stranded window, so a crew's life-support horizon without a planet is the same under way or parked; admits every in-system route and interstellar routes up to 5 ly at transport tier 7. |
 | `strandedSurvivalYears` | 500 [scenario] | Same order as the 500-year stellar grace and the 500-year transit-loss retry already in the table; a habitat-capable crew (Energy ≥ 5, Subsistence ≥ 5) survives this long off-planet, then retries once. No source; authored. |
 | `maxDiversions` | 1 [scenario] | Bound; enforced by the `~diverted` leg-id suffix. |
 | `maxStrandings` | 1 [scenario] | Bound; enforced by the `~stranded` leg-id suffix. With one diversion, a voyage makes at most three arrivals. |
-| `specialists` | `arrival-status-roster` [scenario] | Answers finding 5 (arrivals carry no knowledge): passengers' qualified counts enter the existing STATUS/lineageReports channel, so credit is 100/1000 for 300 years, tier-qualified, one slot per arc (same-tick arrivals summed, later ticks replace). |
+| `specialists` | `reinforcement-status-roster` [scenario] (D5) | Answers finding 5 (arrivals carry no knowledge) for reinforcements only: their qualified counts enter the existing STATUS/lineageReports channel, so credit is 100/1000 for 300 years, tier-qualified, one slot per arc (same-tick arrivals summed, later ticks replace). Founders get no roster: their knowledge already is the colony (`foundingTiers`, region tiers, `reserveInitialYears`), so crediting them again would count them twice. |
 
 Rejection resolution order: divert (best `routesFor` route out of the rejecting
 body for the voyage's tiers, travel ≤ 500 years, ranked habitable before
@@ -6509,13 +6509,27 @@ receiving regions take the voyage's tiers, culture and cultureId as set
 effects/data.sets. The catalogue, `validateEvent`, `COLONY_ARC_FIELDS` and
 `WITNESS_VERSION` are unchanged.
 
-Fixture observations: unsupported TECH_LOSS/EXTINCTION ages stay 1020/1040; the
-network disconnect gives first TECH_LOSS at 3420 (m5-colony-1: 3850) because the
-founders are split 8 × 500; a barren-destination voyage is diverted to its
-habitable home world and reinforces it; a foreign-occupied arrival is stranded
-500 years, retried and then lost; a founding roster credits +400 Energy
-maintenance through year 300 and 0 from year 310.
+Fixture observations (after D5): unsupported TECH_LOSS/EXTINCTION ages stay
+1020/1040 and the reserve-cliff history is byte-identical to m5-colony-1; on the
+network fixture the colony after the founding tick equals m5-colony-1's and the
+disconnect gives first TECH_LOSS at 3850, as m5-colony-1; a 2000-person
+reinforcement joins populated r00, and a 200000-person one fills r00 to its room
+(116000) and starts r01 with the 84000 overflow; a barren-destination voyage is
+diverted to its habitable home world and reinforces it; a foreign-occupied
+arrival is stranded 500 years, retried and then lost; a reinforcement roster
+credits Energy +200 maintenance through 300 years after arrival.
+
+**D5 amendment (Opus-decided on Kasper's instruction, overrulable).** Round 3
+split every arrival over all regions by room and credited founders as arriving
+specialists. Splitting 4000 founders into eight 500-person regions created
+below-viable outposts, and since `REGRESSED_STABLE` fires on any region every
+split was penalised: the network fixture lost technology at 3420 instead of
+3850. m5-colony-2 is opt-in, unmeasured and unreleased, so it was changed in
+place (version string unchanged; the `allocation` and `specialists` descriptors
+changed, so m5-colony-2 manifest and recipe digests differ from round 3). Default
+and m5-colony-1 bytes, the contract digest and the table digest are unchanged.
+See `docs/m5-round3-2026-10-07.md`, "D5".
 
 ```json
-{"version":"m5-colony-2","extends":"m5-colony-1","allocation":"remaining-capacity-largest-remainder","diversionMaxTravelYears":500,"strandedSurvivalYears":500,"maxDiversions":1,"maxStrandings":1,"specialists":"arrival-status-roster","label":"scenario"}
+{"version":"m5-colony-2","extends":"m5-colony-1","allocation":"founders-together-reinforcements-by-remaining-room","diversionMaxTravelYears":500,"strandedSurvivalYears":500,"maxDiversions":1,"maxStrandings":1,"specialists":"reinforcement-status-roster","label":"scenario"}
 ```
