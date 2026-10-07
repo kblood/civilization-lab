@@ -6,7 +6,7 @@ import { threshold, advanceHazard, compactHazardKey as hazardKey } from './hazar
 import { eventId, hazardIntent, thresholdIntent, messageIntent, chainIntent, compareEvents, sortEvents } from './events.mjs';
 import { kindOf, IMPLEMENTED } from './catalogue.mjs';
 import { createDefinition, magnitude, chanceMagnitude, priors, override, originId } from './civ-input.mjs';
-import { DOMAINS, MAX_TIERS, NSTAR, discoveryRate, maintenancePopulation, MAX_RECOVERIES, CAPTURE, FUEL, gate, era, capacity, damage, pressure, bevertonHolt, min, max } from './tech.mjs';
+import { DOMAINS, MAX_TIERS, NSTAR, COLONY_M5, colonyDrain, colonyStock, discoveryRate, maintenancePopulation, MAX_RECOVERIES, CAPTURE, FUEL, gate, era, capacity, damage, pressure, bevertonHolt, min, max } from './tech.mjs';
 import { prepareArc, regionById, polityById, population, members, fighting, clamp, polityRecord, splitRecords, naturalPolity, powerAt, rebuildOwnership } from './polities.mjs';
 import { refsUnique, newChain, advanceChain, chainWitness, participant } from './chains.mjs';
 import { addScore, distance, deriveScores, mergeProvenance, causes } from './provenance.mjs';
@@ -65,6 +65,7 @@ export function skeleton(def) {
     for(const key of ['isColony','colonizer','perils','nonviable'])a[key]=initial.arc[key];
     if(a.isColony)a.foundingTiers=[...(a.regions.find(r=>r.pop>0n)?.tiers??Array(7).fill(0))];
   }
+  if(def.colonyPolicy&&a.isColony)a.colonyReserve=COLONY_M5.reserveInitialYears;
   installEnvironment(def,a);
   a.outcome.industrialEra=a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.era):n,0);
   a.outcome.political=a.polities.length?'continuous':'none';
@@ -89,7 +90,7 @@ const learningThresholds=new WeakMap();
 function natural(def,pre,next,scores,collectUpdates) {
   let limits=learningThresholds.get(pre.scenarioParams);
   if(!limits){limits=NSTAR.map(row=>row.map(n=>F(BigInt(n)*BigInt(pre.scenarioParams.learningBias),1000n)));learningThresholds.set(pre.scenarioParams,limits);}
-  const deltas=[],polityNatural=[];
+  const deltas=[],polityNatural=[];let drain=0;
   const alive=population(pre.regions)>0n;
   for(let i=0;i<pre.regions.length;i++) {
     const p=pre.regions[i],r=next.regions[i],owner=polityById(pre,p.polityId),neff=effectivePopulation(def,pre,p);
@@ -101,7 +102,9 @@ function natural(def,pre,next,scores,collectUpdates) {
       r.forcing=F(p.forcing*990n,1000n)+(p.tiers[0]===3?F(p.energy,1000n):p.tiers[0]===4?F(p.energy,2000n):0n);
       r.renewable=clamp(p.renewable+20-F(pressure(p),50));r.immunityTicks=Math.min(20,p.immunityTicks+1);
       r.lowTicks=p.lowTicks;
-      for(let d=0;d<7;d++){const v=p.tiers[d]>0&&maintenancePopulation(pre,p,d,neff,limits[d][p.tiers[d]])<limits[d][p.tiers[d]]?Math.min(2,p.lowTicks[d]+1):0;
+      for(let d=0;d<7;d++){
+        if(def.colonyPolicy&&pre.isColony&&p.pop>0n&&p.tiers[d]>0&&p.tiers[d]<=pre.foundingTiers[d])drain=Math.max(drain,colonyDrain(maintenancePopulation(pre,p,d,neff,limits[d][p.tiers[d]],def.colonyPolicy,false),limits[d][p.tiers[d]]));
+        const v=p.tiers[d]>0&&maintenancePopulation(pre,p,d,neff,limits[d][p.tiers[d]],def.colonyPolicy)<limits[d][p.tiers[d]]?Math.min(2,p.lowTicks[d]+1):0;
         if(v!==p.lowTicks[d]){if(r.lowTicks===p.lowTicks)r.lowTicks=[...p.lowTicks];r.lowTicks[d]=v;}}
       const capital=owner&&regionById(pre,owner.capital);
       r.culture=capital&&p.culture.some((n,j)=>capital.culture[j]!==n)?p.culture.map((n,j)=>n+compare(capital.culture[j],n)):p.culture;
@@ -112,6 +115,8 @@ function natural(def,pre,next,scores,collectUpdates) {
     }
     if(r.pop<p.pop)next.lastDeath={tick:pre.tick,stage:3,ownerId:pre.id,sequence:i,dateYear:Number(pre.tick*10n+9n),eventId:null,kind:null};
   }
+  // Evaluate shortfall even at zero stock: unsupported reserves must not oscillate 0 -> 5.
+  if(def.colonyPolicy&&pre.isColony)next.colonyReserve=colonyStock(pre.colonyReserve,drain);
   next.polities=pre.polities.map(p=>{
     const q=alive?naturalPolity(pre,p):{...p},d={polityId:p.id};
     const wars=pre.chains.filter(c=>c.kind==='WAR'&&c.refs.some(r=>r.entityId===p.id));

@@ -91,7 +91,8 @@ export function validateForced(f,planet) {
   const h=BigInt(f.overrides.find(o=>o.key==='hazard.NATURAL_CATASTROPHE.q32')?.value??429496),p=BigInt(f.overrides.find(o=>o.key==='parameters.naturalExtinctionPpm')?.value??(h>3067833000n?3067833000000n/h:1000n));
   if(h*p>3067833000000n)throw new RangeError('Natural extinction rate cap');
 }
-export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null,untilYear,targetingPolicy}={}) {
+export function createDefinition(fixture='temperate',seed='civ-m2a-1',{years=20000,forced=null,untilYear,targetingPolicy,colonyPolicy}={}) {
+  if(colonyPolicy!==undefined)throw new RangeError('Colony policy requires a domain');
   if(targetingPolicy!==undefined)throw new RangeError('Targeting policy requires a domain');
   if(typeof seed!=='string'||!seed.isWellFormed()||!Number.isSafeInteger(years)||years<10||years%10||years>400000)throw new RangeError('Invalid run');
   const {path,planet:original}=loadPlanet(fixture);

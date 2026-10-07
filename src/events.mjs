@@ -68,8 +68,9 @@ export function validateEvent(e) {
       !['accepted','pre-empted'].includes(e.resolution) || !(e.reason === null || text(e.reason)) ||
       !e.data || Object.keys(e.data).sort(compare).join('|') !== 'launch|outcome|sets|source|stage|survivor|target' ||
       !Array.isArray(e.data.sets) || !sortedUnique(e.data.sets, s => [s.target,s.field]) || e.refs.some(r=>r.entityId.length>65536)) fail();
+    // Opt-in annex write; keep the legacy catalogue/table digest unchanged.
     for (const x of e.effects) {
-      if (!row.writes.includes(x.field) || Object.keys(x).sort(compare).join('|') !== (x.op==='transfer'?'amount|field|op|target|to|toField':'amount|field|op|target') || x.op==='scale') fail();
+      if (!(row.writes.includes(x.field)||e.kind==='COLONY_FOUNDED'&&x.field==='arc.colonyReserve'&&x.op==='set') || Object.keys(x).sort(compare).join('|') !== (x.op==='transfer'?'amount|field|op|target|to|toField':'amount|field|op|target') || x.op==='scale') fail();
       if (x.op === 'transfer' ? !text(x.toField) : ('to' in x || 'toField' in x)) fail();
       if (x.op === 'transfer' && !row.writes.includes(x.toField)) fail();
       if (x.op === 'set' && (x.amount !== '0' || !e.data.sets.some(s=>s.target===x.target&&s.field===x.field))) fail();

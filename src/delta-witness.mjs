@@ -5,6 +5,7 @@ export const WITNESS_VERSION='m4d-delta-witness-1';
 // These field orders are part of the witness schema, not object insertion order.
 export const REGION_FIELDS=Object.freeze(['id','localId','pop','Kbase','K','renewable','infra','fuel','forcing','immunityTicks','damage','polityId','cultureId','culture','tiers','caps','era','energy','resources','collapse','lowTicks','ceilings','spaceflight','berthsUsed','recoveries'].sort(compare));
 export const ARC_FIELDS=Object.freeze(['id','lineageId','body','episode','foundedYear','foundingTiers','lastDeath','isColony','colonizer','polities','hazardEpisodes','chains','provenance','latches','perils','nonviable','outcome','scenarioParams','inbox','outbox','tick','evacuating','signals','contacts','diffusionEdges','targetFailures','lineageReports'].sort(compare));
+export const COLONY_ARC_FIELDS=Object.freeze([...ARC_FIELDS,'colonyReserve']);
 // Lengths count UTF-16 code units; the completed text is hashed as UTF-8.
 // s<string-length>:<string>, n<integer>;, z/f/t, a<count>:<values>,
 // o<count>:<sorted key/value pairs>. BigInts use decimal strings, as in M1.
@@ -68,6 +69,6 @@ export function transitionText(previous,before,after) {
     const delta=fields(before.regions[i],after.regions[i],REGION_FIELDS);
     if(delta!=='0:'){regions+=i+';'+delta;count++;}
   }
-  return WITNESS_VERSION+';'+previous+fields(before,after,ARC_FIELDS)+count+':'+regions+hazards(before.hazardLedger,after.hazardLedger);
+  return WITNESS_VERSION+';'+previous+fields(before,after,Object.hasOwn(after,'colonyReserve')?COLONY_ARC_FIELDS:ARC_FIELDS)+count+':'+regions+hazards(before.hazardLedger,after.hazardLedger);
 }
 export function transitionDigest(previous,before,after) {return sha256Hex(transitionText(previous,before,after));}

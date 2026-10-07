@@ -6410,3 +6410,40 @@ policy evidence/decision. Shared draws do **not** mean the manifest is the
 same: the full manifest and recipe retain the policy, and resulting histories
 are separately digested. The forced voyage-loss test pins the default golden
 and compares every arc at every tick before the first failure delivery.
+
+
+## M5 round 2: colony reserve (opt-in)
+
+Domain/scenario APIs and CLI `--colony-policy m5-colony-1` enable the policy;
+planet-only paths reject it. It composes with `--targeting-policy` in scenario,
+domain, ensemble, timeline and plausibility tooling. Unset policy keys and
+colony stock fields are absent. RNG addressing hashes the manifest before
+both M5 blocks; manifest and recipe hashes retain enabled policy blocks.
+
+`COLONY_M5` constants: version `m5-colony-1` [scenario],
+reserveInitialYears 1000 [scenario], reserveCapYears 1000 [scenario],
+maxDrainYearsPerTick 10 [scenario], localRegainYearsPerTick 5 [scenario],
+reinforcementYearsPerThousand 250 [scenario].
+
+Only colony arcs gain Number `colonyReserve`. Positive stock protects living
+regions at copied founding tiers. Fresh own-lineage STATUS support uses each
+domain/tier's summed qualifying population, multiplied by the existing 100/1000
+link credit. Per tick drain is the maximum ceiling of 10 * shortfall / limit
+over eligible region/domain pairs; stock floors at zero. No shortfall regains
+5, capped at 1000. Shortfall demand is evaluated even at zero stock, explicitly
+avoiding unsupported 0/5 oscillation and a hidden survival boost (a clarification
+of the positive-stock drain condition). Newly invented tiers get no reserve.
+
+Accepted same-lineage reinforcement meeting every founding tier adds
+floor(persons * 250 / 1000), capped at 1000. Founding and changed reinforcement
+stock emit `arc.colonyReserve` set effects/data.sets. This annex extends the
+COLONY_FOUNDED allowed writes without changing the legacy catalogue or table.
+The opt-in COLONY_ARC_FIELDS extends the legacy ARC_FIELDS by appending
+colonyReserve; default schema and WITNESS_VERSION stay unchanged;
+state witnesses already hash all arc keys.
+
+Fixture observations: unsupported TECH_LOSS/EXTINCTION ages 1020/1040 years,
+unchanged from default. Disconnect at support expiry 2400 gives first TECH_LOSS
+at 2420 off versus 3850 on (+1430 years, maximum drain 7/tick). A 1000-person
+advanced enclave plus 1000000 low-tier people credits 100100 off versus 100 on;
+with 4000 local people and depleted stock, Energy lowTicks is 0 off versus 1 on.
