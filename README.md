@@ -1,6 +1,11 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**Doomed-star ensemble (2026-10-07, measurement only):** the 30-seed audit
+passes all eight invariants; 24/30 lineages die with their star, 5/30 die
+earlier, 1/30 survives through a tier-7 colony at `stub:s01:b0`; no evacuation
+launch went to a doomed world and the survival trigger did not fire. See
+[the results](docs/stellar-survival-decision-2026-10-07.md#results-the-30-seed-doomed-star-ensemble-2026-10-07).
 **Stellar survival decision (2026-10-07, docs only):** later-doomed refuges stay
 at full weight and surviving one's star (habitats, arks) is deferred until a
 stated trigger fires; the design is reserved for `m5-stellar-3`. See

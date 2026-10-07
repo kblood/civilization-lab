@@ -1,0 +1,7 @@
+$ node tools/m5-doomed-star-audit.mjs --n 30 --jobs 2 --out out/m5-doomed-star-audit.json   (main 40c8bd2, Node v24.7.0, 2026-10-07; machine loaded by a Chromium build, so wall times are not timing measurements)
+ensemble 30 seeds at jobs=2: 10387 ms
+I7 re-runs doomed-star-0, doomed-star-21 (first surviving seed): 2543 ms
+detail doomed-star-21: 1426 ms
+audit PASS; total 14367 ms; wrote out/m5-doomed-star-audit.json and out/m5-doomed-star-audit.txt
+
+exit 0

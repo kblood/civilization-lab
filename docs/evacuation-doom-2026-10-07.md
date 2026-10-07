@@ -183,8 +183,7 @@ correct."). Two test findings, both addressed in commit 2:
 - `docs/evidence/m4-plausibility-after.json` stays stale for doomed-star.
 - Matched variates (excluding the stellar block from `rngManifestDigest`) were
   deliberately not done.
-- The 30-seed doomed-star ensemble was not run (machine busy with other agents'
-  universe-atlas tests); it is the measurement for the next quiet window:
-  `node src/cli.mjs --ensemble 30 --scenario doomed-star --jobs 2 --out out/evac-doom`,
-  then report outcome classes and confirm zero LAUNCH to s00:b1/s00:b2 with
-  dateYear >= 25000.
+- The 30-seed doomed-star ensemble was run later (branch
+  `scenario/doomed-ensemble`, via `tools/m5-doomed-star-audit.mjs`): zero
+  LAUNCH to s00:b1/s00:b2 from 25,000 on, all eight audit invariants held. See
+  [the results](stellar-survival-decision-2026-10-07.md#results-the-30-seed-doomed-star-ensemble-2026-10-07).

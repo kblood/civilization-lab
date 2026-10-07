@@ -1,0 +1,47 @@
+# Supplementary per-seed fate table (NOT pre-registered; descriptive only).
+# Same plan as the audit: ensemblePlan(30,{scenario:"doomed-star"}), runEnsemble jobs=2, main 40c8bd2.
+# maxEra = summarizeRun maxEra index; E5 = firstEnergy[5]; T7era = firstEras[6]; lineageEnd = latest LINEAGE_EXTINCTION year.
+# Script (run as: node doomed-perseed.mjs <repo dir>):
+#   // Supplementary (not pre-registered): per-seed fate table for the doomed-star 30-seed ensemble.
+#   // Usage: node doomed-perseed.mjs <civilization-lab dir>
+#   import {pathToFileURL} from 'node:url';
+#   const root=process.argv[2];
+#   const {ensemblePlan,runEnsemble}=await import(pathToFileURL(root+'/src/ensemble.mjs').href);
+#   const runs=await runEnsemble(ensemblePlan(30,{scenario:'doomed-star'}),{jobs:2});
+#   const rows=runs.map(r=>{const ev=r.timeline.events;
+#     const linEnd=ev.filter(e=>e.kind==='LINEAGE_EXTINCTION').map(e=>e.dateYear);
+#     const launches=ev.filter(e=>e.kind==='LAUNCH'&&e.data.launch);
+#     const inter=launches.filter(e=>!e.data.launch.destination.startsWith('stub:s00:'));
+#     const evac=ev.filter(e=>e.kind==='EVACUATION'||e.kind==='STELLAR_DOOM'&&e.dateYear===25000).length;
+#     return [r.seed,r.outcome,'maxEra='+r.maxEra,'E5='+(r.firstEnergy[5]??'-'),'T7era='+(r.firstEras[6]??'-'),'lineageEnd='+(linEnd.length?Math.max(...linEnd):'-'),'launches='+launches.length,'interstellar='+inter.length,'resultDigest='+r.resultDigest.slice(0,16)].join('  ');});
+#   console.log(rows.join('\n'));
+doomed-star-0  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=d0d26b3d082d9429
+doomed-star-1  EXTINCT_STELLAR  maxEra=4  E5=13740  T7era=-  lineageEnd=25509  launches=4  interstellar=0  resultDigest=ab1a169b0cfa1e44
+doomed-star-10  EXTINCT_STELLAR  maxEra=3  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=bf08a8143a6f01af
+doomed-star-11  EXTINCT_STELLAR  maxEra=3  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=7191216a9a6f3d89
+doomed-star-12  EXTINCT_STELLAR  maxEra=5  E5=6270  T7era=-  lineageEnd=25509  launches=40  interstellar=0  resultDigest=b299e35acd8a9b65
+doomed-star-13  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=f5357e1245539229
+doomed-star-14  EXTINCT_SELF  maxEra=4  E5=6410  T7era=-  lineageEnd=10489  launches=0  interstellar=0  resultDigest=7f407973f283b791
+doomed-star-15  EXTINCT_SELF  maxEra=4  E5=5290  T7era=-  lineageEnd=6819  launches=1  interstellar=0  resultDigest=d8de939834e3b1e9
+doomed-star-16  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=e524c7e6cb697f2c
+doomed-star-17  EXTINCT_STELLAR  maxEra=4  E5=4460  T7era=-  lineageEnd=25009  launches=2  interstellar=0  resultDigest=a29c698880bbfba5
+doomed-star-18  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=c78779a871ade101
+doomed-star-19  EXTINCT_STELLAR  maxEra=4  E5=14710  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=7f5f468be723cd0a
+doomed-star-2  EXTINCT_NATURAL  maxEra=4  E5=-  T7era=-  lineageEnd=2299  launches=0  interstellar=0  resultDigest=3b3024dc201518a9
+doomed-star-20  EXTINCT_STELLAR  maxEra=3  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=b00875fd2700bbb3
+doomed-star-21  COLLAPSED_RECOVERING  maxEra=6  E5=3450  T7era=14280  lineageEnd=-  launches=201  interstellar=167  resultDigest=05f67a9b63c23144
+doomed-star-22  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=b9657a296c1f545b
+doomed-star-23  EXTINCT_STELLAR  maxEra=5  E5=4290  T7era=-  lineageEnd=25509  launches=35  interstellar=0  resultDigest=c579bbd050550b08
+doomed-star-24  EXTINCT_STELLAR  maxEra=4  E5=10210  T7era=-  lineageEnd=25509  launches=11  interstellar=0  resultDigest=bf794d22a21f4d14
+doomed-star-25  EXTINCT_NATURAL  maxEra=3  E5=-  T7era=-  lineageEnd=7179  launches=0  interstellar=0  resultDigest=b85116e44df10062
+doomed-star-26  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=3a480abfda63cce8
+doomed-star-27  EXTINCT_STELLAR  maxEra=4  E5=1380  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=a0dd195a8a614b3b
+doomed-star-28  EXTINCT_STELLAR  maxEra=3  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=825aa5d42670e082
+doomed-star-29  EXTINCT_STELLAR  maxEra=3  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=02fd4b56ea79c3f1
+doomed-star-3  EXTINCT_STELLAR  maxEra=4  E5=4980  T7era=-  lineageEnd=25509  launches=8  interstellar=0  resultDigest=324f46712a3d6e6b
+doomed-star-4  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=ea233dbaba332d51
+doomed-star-5  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=b5c1ba6231c1174a
+doomed-star-6  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=84ddea743b724de3
+doomed-star-7  EXTINCT_STELLAR  maxEra=3  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=8baf858eeea4f284
+doomed-star-8  EXTINCT_STELLAR  maxEra=4  E5=-  T7era=-  lineageEnd=25009  launches=0  interstellar=0  resultDigest=912df1dd5ecfc207
+doomed-star-9  EXTINCT_NATURAL  maxEra=3  E5=-  T7era=-  lineageEnd=14789  launches=0  interstellar=0  resultDigest=09eeba19e2cce8a3
