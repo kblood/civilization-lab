@@ -16,8 +16,12 @@ export const colonyStock=(stock,drain)=>drain?Math.max(0,stock-drain):Math.min(C
 export const qualifiedPopulation=a=>MAX_TIERS.map((max,d)=>Array.from({length:max+1},(_,k)=>a.regions.reduce((n,r)=>n+(r.pop>0n&&r.tiers[d]>=k?r.pop:0n),0n)));
 // M5 round 3 opt-in superset of m5-colony-1 (reserve values inherited unchanged).
 // Every added value is [scenario]; rationale in docs/transition-table-v1.md.
-export const COLONY_M5_2=Object.freeze({...COLONY_M5,version:'m5-colony-2',extends:'m5-colony-1',allocation:'remaining-capacity-largest-remainder',
-  diversionMaxTravelYears:500,strandedSurvivalYears:500,maxDiversions:1,maxStrandings:1,specialists:'arrival-status-roster'});
+// D5 (changed in place; opt-in, unmeasured, unreleased): founding parties fill m5-colony-1's landing region
+// first and spill in region order only when it is full; reinforcements split over populated regions by
+// remaining room (largest remainder) and only the overflow starts empty regions; the specialist roster is
+// for reinforcements only, since founders' knowledge already is the colony.
+export const COLONY_M5_2=Object.freeze({...COLONY_M5,version:'m5-colony-2',extends:'m5-colony-1',allocation:'founders-together-reinforcements-by-remaining-room',
+  diversionMaxTravelYears:500,strandedSurvivalYears:500,maxDiversions:1,maxStrandings:1,specialists:'reinforcement-status-roster'});
 export const COLONY_POLICIES=Object.freeze([COLONY_M5,COLONY_M5_2]);
 // Largest-remainder split of persons over rows {id, room}; zero-room rows get nobody,
 // remainder ties go to the lower id. Returns id-sorted rows with persons > 0.

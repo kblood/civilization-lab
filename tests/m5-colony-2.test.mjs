@@ -4,7 +4,8 @@ import {spawnSync} from 'node:child_process';
 import {forced,runForced,setOverride,region} from './civ-helpers.mjs';
 import {graph} from './domain-helpers.mjs';
 import {createDomain,createDomainDefinition,arcDefinition,VOYAGE_FIELDS} from '../src/domain.mjs';
-import {stepPlanet} from '../src/planet.mjs';
+import {stepPlanet,installEnvironment} from '../src/planet.mjs';
+import {canonicalString} from '../src/canonical.mjs';
 import {createScenario} from '../src/scenario.mjs';
 import {COLONY_M5,COLONY_M5_2,allocateByCapacity,maintenancePopulation} from '../src/tech.mjs';
 import {inspectionTicks} from '../src/inspection.mjs';
@@ -21,6 +22,8 @@ function occupied(n=3,ticks=60,patch={}){
   const input=graph(n);for(let i=1;i<n-1;i++)input.origins.push(`stub:s0${i}:b0`);
   const f=forced('COLONY_FOUNDED');f.initial.atTick='0';f.ticks=ticks;Object.assign(f.initial.voyages[0],{destination:'stub:s01:b0',arrivalYear:5,deliveryTick:'1',...patch});return {input,f};
 }
+// D5 overflow: a 200000-person reinforcement at tick 3 fills r00 (room 116000) and starts r01 with the rest.
+function overflow(){const f=cliff(false,4);f.initial.voyages.push({...f.initial.voyages[0],label:'b',pop:'200000',tiers:[...f.initial.voyages[0].tiers],arrivalYear:30,deliveryTick:'3'});return f;}
 // Barren destination in the home system: uninhabitable for any tiers.
 function barren(ticks=10){const f=forced('COLONY_FOUNDED');f.ticks=ticks;Object.assign(f.initial.voyages[0],{destination:'stub:s00:b3'});return f;}
 const runOccupied=(opts,...a)=>{const {input,f}=occupied(...a);return createDomain(input,f.seed,{forced:f,...opts}).run();};
@@ -38,39 +41,67 @@ test('policy-off and m5-colony-1 goldens captured on untouched main f034d7b stay
       occupied:runOccupied(opts).resultDigest,barren:runForced(barren(),opts).resultDigest};
     assert.deepEqual(seen,golden[name],name);
   }
-  const v2=runForced(cliff(),c2).resultDigest;assert.notEqual(v2,golden.c1.cliff,'negative control: m5-colony-2 changes the history');
+  // D5: a founding party that fits one region lands exactly as under m5-colony-1 and gets no specialist
+  // roster, so the plain reserve cliff is now byte-identical; a reinforcement (roster) still changes history.
+  assert.equal(runForced(cliff(),c2).resultDigest,golden.c1.cliff);
+  const reinforced=opts=>{const f=cliff(false,4);f.initial.voyages.push({...f.initial.voyages[0],label:'b',pop:'2000',tiers:[...f.initial.voyages[0].tiers],arrivalYear:30,deliveryTick:'3'});return runForced(f,opts).resultDigest;};
+  assert.notEqual(reinforced(c2),reinforced(c1),'negative control: m5-colony-2 changes the reinforced history');
 });
-test('capacity-aware allocation: largest remainder, id tie-break, founding and reinforcement split by remaining room',()=>{
+test('capacity-aware allocation (D5): founders stay together, reinforcements split over populated regions, only overflow starts new regions',()=>{
   assert.deepEqual(allocateByCapacity(10n,[{id:'b',room:1n},{id:'a',room:1n},{id:'c',room:1n}]),[{id:'a',persons:4n},{id:'b',persons:3n},{id:'c',persons:3n}]);
   assert.deepEqual(allocateByCapacity(7n,[{id:'a',room:0n},{id:'b',room:3n},{id:'c',room:1n}]),[{id:'b',persons:5n},{id:'c',persons:2n}]);
   assert.deepEqual(allocateByCapacity(5n,[{id:'a',room:0n}]),[]);assert.deepEqual(allocateByCapacity(0n,[{id:'a',room:9n}]),[]);
   for(const [p,rooms] of [[4001n,[3n,5n,7n,11n]],[1n,[5n,5n]],[999999n,[1n,2n,3n]]])assert.equal(allocateByCapacity(p,rooms.map((room,i)=>({id:'r'+i,room}))).reduce((n,s)=>n+s.persons,0n),p);
-  const tick=71,run=opts=>{const f=cliff(false,tick+1);f.initial.voyages.push({...f.initial.voyages[0],label:'b',pop:'2000',tiers:[...f.initial.voyages[0].tiers],arrivalYear:tick*10,deliveryTick:String(tick)});return runForced(f,opts);};
+  const tick=71,fixture=pop=>{const f=cliff(false,tick+1);f.initial.voyages.push({...f.initial.voyages[0],label:'b',pop,tiers:[...f.initial.voyages[0].tiers],arrivalYear:tick*10,deliveryTick:String(tick)});return f;};
+  const run=opts=>runForced(fixture('2000'),opts);
   const one=run(c1),two=run(c2),[f1,r1]=arrivals(one),[f2,r2]=arrivals(two);
-  // Negative: m5-colony-1 keeps the first positive-capacity region for both arrivals.
+  // m5-colony-1 keeps the first positive-capacity region for both arrivals.
   assert.deepEqual(moved(f1),[['r00','4000']]);assert.deepEqual(moved(r1),[['r00','2000']]);
-  // Founding: eight equal-room regions on the habitat-buildable body get 500 each.
-  assert.deepEqual(moved(f2),Array.from({length:8},(_,i)=>['r0'+i,'500']));
-  assert.deepEqual(moved(r2),Array.from({length:8},(_,i)=>['r0'+i,'250']));
+  // Founding: the 4000 founders fit m5-colony-1's landing region r00 (room 120000), so they land there together.
+  assert.deepEqual(moved(f2),[['r00','4000']]);
+  // Reinforcement: only r00 has people and it has room, so all 2000 join it; no empty region is started.
+  assert.deepEqual(moved(r2),[['r00','2000']]);
+  assert.equal(r2.data.sets.filter(s=>s.field.startsWith('region.')).length,0);
   const before=two.ledgers.find(l=>l.ledger.tick===String(tick-1)).state.arcs.find(a=>a.isColony);
-  assert.ok(before.regions.every(r=>r.K-r.pop===119500n));
+  assert.deepEqual(before.regions.map(r=>r.pop),[4000n,...Array(7).fill(0n)]);assert.equal(before.regions[0].K,120000n);
   assert.equal(r2.data.sets.find(s=>s.field==='arc.colonyReserve').value,r1.data.sets.find(s=>s.field==='arc.colonyReserve').value,'reserve rules are inherited unchanged');
+  // Negative: the round-3 split-everything allocation (every empty region's room judged with the passengers'
+  // tiers, all regions in proportion) would have started seven new 500-person regions at founding and, with
+  // r00 already holding 4000, seven new 251-person regions on reinforcement.
+  const f0=fixture('2000'),w0=createDomain(f0.base,f0.seed,{forced:f0,...c2}),pd=arcDefinition(w0.def,before.body,before.lineageId,before.episode,BigInt(before.foundedYear/10),before.scenarioParams);
+  const oldSplit=(arc,persons)=>{const probe=structuredClone(arc);for(const r of probe.regions)if(r.pop===0n)r.tiers=[...arc.foundingTiers];installEnvironment(pd,probe);
+    return allocateByCapacity(persons,probe.regions.map(r=>({id:r.id.slice(r.id.lastIndexOf('#')+1),room:r.K>r.pop?r.K-r.pop:0n})));};
+  const empty=structuredClone(before);for(const r of empty.regions)r.pop=0n;
+  assert.deepEqual(oldSplit(empty,4000n),Array.from({length:8},(_,i)=>({id:'r0'+i,persons:500n})));
+  assert.deepEqual(oldSplit(before,2000n),[{id:'r00',persons:243n},...Array.from({length:7},(_,i)=>({id:'r0'+(i+1),persons:251n}))]);
+  // Overflow: populated r00 is filled to its room (116000); only the rest starts r01, which takes the voyage's tiers.
+  const big=arrivals(runForced(overflow(),c2))[1];assert.deepEqual(moved(big),[['r00','116000'],['r01','84000']]);
+  assert.deepEqual(big.data.sets.filter(s=>s.field.startsWith('region.')).map(s=>[s.target.slice(-3),s.field]),[['r01','region.tiers']]);
   // Diverted reinforcement into the populated home world: room-weighted, not equal.
   const home=arrivals(runForced(barren(),c2))[1];assert.equal(home.data.stage,'REINFORCEMENT');
   assert.equal(moved(home).reduce((n,[,a])=>n+BigInt(a),0n),4000n);assert.ok(new Set(moved(home).map(([,a])=>a)).size>1);
 });
-test('unsupported reserve cliff: no hidden survival boost; disconnect timing measured on the network fixture',()=>{
+test('unsupported reserve cliff ages unchanged; disconnected network founds and loses tech exactly as m5-colony-1 (D5)',()=>{
   const r=runForced(cliff(),c2),birth=r.events.find(e=>e.kind==='COLONY_FOUNDED'&&e.data.stage==='FOUNDED'),own=r.events.filter(e=>e.ownerId.startsWith(birth.data.target));
   assert.equal(own.find(e=>e.kind==='TECH_LOSS').dateYear-birth.dateYear,1020);assert.equal(own.find(e=>e.kind==='EXTINCTION').dateYear-birth.dateYear,1040);
   assert.ok(r.ledgers.every(l=>l.state.arcs.every(a=>Object.hasOwn(a,'colonyReserve')===a.isColony)));
-  // Disconnect at support expiry (year 2400): first TECH_LOSS 3850 under m5-colony-1 (pinned there) but
-  // 3420 here, because the 4000 founders are split 8 x 500 by capacity. Recorded as a fixture property.
-  const f=cliff(true),w=createDomain(f.base,f.seed,{forced:f,...c2});let a=w.run().state.arcs.find(a=>a.isColony),loss;
-  assert.deepEqual(a.regions.map(r=>r.pop),Array(8).fill(500n));
-  const support=a.lineageReports.find(x=>!x.source.endsWith('#specialists'));assert.equal(support.reportYear+300+support.routeDelayYears,2400);
+  // Network fixture: the colony after the founding tick is canonically equal to m5-colony-1's (founders land
+  // together in r00, no founding specialist roster), and so is the founding event.
+  const net=(opts,ticks)=>{const f=cliff(true,ticks),w=createDomain(f.base,f.seed,{forced:f,...opts});return {w,r:w.run()};};
+  const one=net(c1,2).r,short=net(c2,2).r,{w,r:two}=net(c2),founded=arrivals(two)[0],colonyAt=r=>r.ledgers.find(l=>l.ledger.tick==='1').state.arcs.find(a=>a.isColony);
+  assert.equal(canonicalString(colonyAt(short)),canonicalString(colonyAt(two)));
+  assert.equal(founded.data.stage,'FOUNDED');assert.equal(founded.dateYear,10);
+  assert.equal(canonicalString(colonyAt(two)),canonicalString(colonyAt(one)));
+  assert.equal(canonicalString(founded),canonicalString(arrivals(one)[0]));
+  // Disconnect at support expiry (year 2400): first TECH_LOSS 3850, as under m5-colony-1 (pinned in m5-colony.test.mjs).
+  // Round 3 gave 3420 because the 4000 founders were split 8 x 500 and credited again as specialists; D5 removed both.
+  let a=two.state.arcs.find(a=>a.isColony),loss;
+  assert.deepEqual(a.regions.map(r=>r.pop),[4000n,...Array(7).fill(0n)]);
+  assert.deepEqual(a.lineageReports.map(x=>x.source.endsWith('#specialists')),[false]);
+  const support=a.lineageReports[0];assert.equal(support.reportYear+300+support.routeDelayYears,2400);
   const pd=arcDefinition(w.def,a.body,a.lineageId,a.episode,BigInt(a.foundedYear/10),a.scenarioParams);
   while(!loss&&!a.outcome.terminal&&a.tick<400n){const out=stepPlanet(pd,a);loss=out.events.find(e=>e.kind==='TECH_LOSS');a=out.state;}
-  assert.equal(loss.dateYear,3420);
+  assert.equal(loss.dateYear,3850);assert.ok(loss.ownerId.endsWith('#r00'));
 });
 test('rejected voyage is diverted to the best declared route and reinforces there; negative without a route',()=>{
   const r=runForced(barren(),c2),[rej,arr]=arrivals(r),leg=rej.refs.find(x=>x.role==='voyage').entityId;
@@ -102,16 +133,23 @@ test('foreign-occupied arrival is stranded for a finite window, retried once, th
   assert.deepEqual(arrivals(chain).map(e=>[e.ownerId,e.dateYear,e.data.stage]),[['stub:s01:b0',10,'DIVERTED'],['stub:s02:b0',20,'STRANDED'],['stub:s02:b0',520,'REJECTED']]);
   assert.ok(chain.archiveRecords.some(x=>x.kind==='voyage'&&x.id.endsWith('~diverted~stranded')&&x.record.status==='turned-away'));
 });
-test('arriving specialists join the maintenance roster: bounded credit, tier-qualified, replaced by newer arrivals',()=>{
+test('arriving specialists (reinforcements only) join the maintenance roster: bounded credit, tier-qualified',()=>{
   const tick=71,f=cliff(false,tick+1);f.initial.voyages.push({...f.initial.voyages[0],label:'b',pop:'2000',tiers:[5,5,4,6,4,2,4],arrivalYear:tick*10,deliveryTick:String(tick)});
-  const r=runForced(f,c2),early=r.ledgers.find(l=>l.ledger.tick==='2').state.arcs.find(a=>a.isColony),late=r.state.arcs.find(a=>a.isColony);
+  const r=runForced(f,c2),late=r.state.arcs.find(a=>a.isColony);
   const roster=a=>a.lineageReports.find(x=>x.source===a.id+'#specialists');
-  assert.deepEqual(roster(early).qualified[0],[4000n,4000n,4000n,4000n,4000n,4000n,0n]);assert.equal(roster(early).reportYear,10);assert.equal(roster(early).population,4000n);
+  // D5: a new colony gets no #specialists STATUS (founders are the colony: foundingTiers, region tiers, initial
+  // reserve). Round 3 credited the 4000 founders +400 Energy maintenance through year 300; that was double counting.
+  const specialistStatus=l=>l.state.arcs.some(a=>a.isColony&&(roster(a)||a.inbox.some(m=>m.type==='STATUS'&&m.payload.status.source.endsWith('#specialists'))));
+  const ticks=r.ledgers.filter(specialistStatus).map(l=>Number(l.ledger.tick));
+  assert.ok(ticks.length>0);assert.equal(Math.min(...ticks),tick,'first specialist STATUS comes with the reinforcement, not the founding');
+  // A reinforcement still gets one: 2000 persons, its own tiers, reported at its arrival year.
+  assert.equal(roster(late).population,2000n);assert.deepEqual(roster(late).tiers,[5,5,4,6,4,2,4]);
+  assert.deepEqual(roster(late).qualified[0],[2000n,2000n,2000n,2000n,2000n,2000n,0n]);
   assert.deepEqual(roster(late).qualified[5],[2000n,2000n,2000n,0n,0n]);assert.equal(roster(late).reportYear,710);
   const limit=1000000000n,credit=(a,tickNow,d)=>{const x={...a,tick:BigInt(tickNow)},y={...x,lineageReports:x.lineageReports.filter(s=>s!==roster(a))};return maintenancePopulation(x,x.regions[0],d,500n,limit,COLONY_M5_2,false)-maintenancePopulation(y,y.regions[0],d,500n,limit,COLONY_M5_2,false);};
-  assert.equal(credit(early,30,0),400n);assert.equal(credit(early,31,0),0n,'bounded: expires 300 years after arrival');
-  assert.equal(credit(late,72,0),200n);assert.equal(credit(late,72,5),0n,'negative: Medicine 2 specialists cannot qualify a Medicine 3 region');
-  for(const opts of [{},c1]){const s=runForced(cliff(false,3),opts).state.arcs.find(a=>a.isColony);assert.equal(roster(s),undefined);}
+  assert.equal(credit(late,72,0),200n);assert.equal(credit(late,100,0),200n);assert.equal(credit(late,101,0),0n,'bounded: expires 300 years after arrival');
+  assert.equal(credit(late,72,5),0n,'negative: Medicine 2 specialists cannot qualify a Medicine 3 region');
+  for(const opts of [{},c1,c2]){const s=runForced(cliff(false,3),opts).state.arcs.find(a=>a.isColony);assert.equal(roster(s),undefined);}
 });
 test('RNG parity, manifest block, rejection of unknown policies and CLI plumbing',()=>{
   const off=createDomainDefinition(),one=createDomainDefinition(undefined,undefined,c1),two=createDomainDefinition(undefined,undefined,c2);
@@ -126,7 +164,7 @@ test('RNG parity, manifest block, rejection of unknown policies and CLI plumbing
   assert.ok(ok.stdout.includes(createScenario('crowded-domain','s1',{...c2,untilYear:20}).world.def.manifestDigest));
 });
 test('witnesses, projection and arc order stay consistent for split, diverted and stranded arrivals',()=>{
-  for(const {input,f} of [{f:cliff(false,4)},{f:barren(4)},occupied(3,3)]){
+  for(const {input,f} of [{f:overflow()},{f:barren(4)},occupied(3,3)]){
     const w=createDomain(input??f.base,f.seed,{forced:f,...c2}),r=w.run();
     assert.equal(r.resultDigest,w.compileSummary().resultDigest);assert.equal(r.resultDigest,w.run({arcOrder:'reverse'}).resultDigest);
     for(const t of inspectionTicks(w,r,true))for(const region of t.start.regions){const p=regionContract(t.def,t.start,t.pre,t.end,t.updates,t.events,region.id),d=cellDefinition(t.def,region.localId);assert.deepEqual(aggregateCells(refineCell(d,p,{regionId:region.id,tick:t.tick})),p);}

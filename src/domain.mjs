@@ -150,12 +150,23 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       state.messages.push(m);
     }
     const v2=def.colonyPolicy?.version===COLONY_M5_2.version;
-    // m5-colony-2: remaining capacity per region; empty regions are judged with the
-    // passengers' tiers (they will carry them). A full arc falls back to the default region.
+    // m5-colony-2 (D5): remaining room per region; empty regions are judged with the passengers'
+    // tiers (they will carry them). Arrivals first go to populated regions, split by largest
+    // remainder in proportion to room; only the overflow fills empty regions one at a time, in
+    // m5-colony-1's landing order (first K > 0, then region id), so a founding party stays
+    // together and one that fits in a region lands exactly as under m5-colony-1. Anything left
+    // when every region is full goes to that landing (default) region.
     function capacityShares(a,v,persons) {
       const probe={...a,regions:a.regions.map(r=>({...r,tiers:r.pop>0n?r.tiers:[...v.tiers]}))};installEnvironment(definitions.get(a.id),probe);
-      const shares=allocateByCapacity(persons,probe.regions.map(r=>({id:r.id,room:r.K>r.pop?r.K-r.pop:0n})));
-      return shares.length?shares.map(s=>({r:a.regions.find(r=>r.id===s.id),persons:s.persons})):[{r:a.regions.find(r=>r.K>0n)??a.regions[0],persons}];
+      const room=new Map(probe.regions.map(r=>[r.id,r.K>r.pop?r.K-r.pop:0n])),given=new Map(),give=(id,n)=>{if(n>0n){given.set(id,(given.get(id)??0n)+n);room.set(id,room.get(id)-n);left-=n;}};
+      const landing=a.regions.find(r=>r.K>0n)??a.regions[0],order=[landing,...a.regions.filter(r=>r!==landing).sort(byId)];
+      let left=persons;
+      const populated=a.regions.filter(r=>r.pop>0n).map(r=>({id:r.id,room:room.get(r.id)})),open=populated.reduce((n,r)=>n+r.room,0n);
+      if(open>=left)for(const s of allocateByCapacity(left,populated))give(s.id,s.persons);
+      else for(const r of populated)give(r.id,r.room);
+      for(const r of order){if(left===0n)break;give(r.id,room.get(r.id)<left?room.get(r.id):left);}
+      if(left>0n)give(landing.id,left);
+      return given.size?a.regions.filter(r=>given.has(r.id)).sort(byId).map(r=>({r,persons:given.get(r.id)})):[{r:landing,persons}];
     }
     // m5-colony-2: a rejected voyage is diverted once (best declared route out of the rejecting
     // body, no RNG, no knowledge beyond routes and stellar doom) or stranded once (habitat tiers,
@@ -233,9 +244,10 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
             state.messages.push(message(state.id,t,v.sourceArc,'SIGNAL',a.id,e.id,{signal:{source:v.sourceArc,lineageId:v.lineageId,body:arcRecords.find(a=>a.id===v.sourceArc).body,tiers:v.tiers,strength:1000,physical:true,arrivalYear:Number(t*10n)}},ordinal));}}
         else {
           const fresh=!a;if(fresh){a=reserve(v.destination,v.lineageId);starts.set(a.id,structuredClone(a));a.isColony=true;a.foundingTiers=[...v.tiers];a.colonizer=chanceMagnitude(def,a.id,'arc.colonizer',a.scenarioParams.colonizerPpm);for(const r of a.regions){r.cultureId=v.cultureId;r.culture=[...v.culture];}
-            if(!v2){const landing=a.regions[0];landing.tiers=[...v.tiers];}installEnvironment(definitions.get(a.id),a);
+            const landing=a.regions[0];landing.tiers=[...v.tiers];installEnvironment(definitions.get(a.id),a);
           }else a=writable(a);
-          // m5-colony-2: split by remaining capacity; default keeps the first positive-capacity region.
+          // m5-colony-2: populated regions first by remaining room, overflow fills empty regions in
+          // landing order (capacityShares); default keeps the first positive-capacity region.
           const prior=v2&&!fresh?a.regions.map(r=>({id:r.id,culture:r.culture,cultureId:r.cultureId,tiers:r.tiers})):null;
           const shares=v2?capacityShares(a,v,persons):[{r:a.regions.find(r=>r.K>0n)??a.regions[0],persons}];
           for(const {r,persons:n} of shares){
@@ -253,7 +265,9 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
           }
           if(prior)for(const v of a.regions)for(const field of ['culture','cultureId','tiers'])if(canonicalString(v[field])!==canonicalString(prior.find(r=>r.id===v.id)[field])){e.effects.push({target:v.id,field:'region.'+field,op:'set',amount:'0'});e.data.sets.push({target:v.id,field:'region.'+field,value:v[field]});}
           // m5-colony-2: arriving specialists join the destination's maintenance roster (one STATUS slot per arc).
-          if(v2){const q=qualifiedPopulation({regions:[{pop:persons,tiers:v.tiers}]}),old=roster.get(a.id);
+          // Reinforcements only (D5): founders' knowledge already is the colony (foundingTiers, region tiers,
+          // reserveInitialYears), so crediting them again as specialists would count them twice.
+          if(v2&&!fresh){const q=qualifiedPopulation({regions:[{pop:persons,tiers:v.tiers}]}),old=roster.get(a.id);
             roster.set(a.id,old?{...old,population:old.population+persons,tiers:old.tiers.map((x,d)=>Math.max(x,v.tiers[d])),qualified:old.qualified.map((row,d)=>row.map((n,k)=>n+q[d][k]))}:{cause:e.id,lineageId:a.lineageId,population:persons,tiers:[...v.tiers],qualified:q});}
           if(def.colonyPolicy&&a.isColony) {
             const stock=fresh?COLONY_M5.reserveInitialYears:Math.min(COLONY_M5.reserveCapYears,a.colonyReserve+(v.tiers.every((tier,d)=>tier>=a.foundingTiers[d])?Number(min(BigInt(COLONY_M5.reserveCapYears),F(persons*BigInt(COLONY_M5.reinforcementYearsPerThousand),1000n))):0));
