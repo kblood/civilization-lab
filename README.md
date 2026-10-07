@@ -1,6 +1,12 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**Doomed-star neighbours (2026-10-07):** the companion worlds of the doomed
+star now die with it (shared `stellarDoomYear`, uninhabitable from 25,500 via
+the existing stellar model), so only tier-7 interstellar evacuation can save a
+lineage. Only the doomed-star digests changed; all other digests are
+byte-identical; `npm test` 178/178. Surviving stellar death (habitats, arks) is
+not modelled. See [the doc](docs/neighbours-doom-2026-10-07.md).
 **M5 round 1 (opt-in):** failure-reason-aware targeting behind the domain API
 option `targetingPolicy: 'm5-targeting-1'`. There are four failure reasons, each
 with its own retry rule, and delivered success clears the failure memory.

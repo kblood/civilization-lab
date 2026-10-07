@@ -22,7 +22,10 @@ test('all reachable scenario destinations have only absorbing uninhabitable inte
     actual[name]={};expected[name]={};
     for(const body of destinations){const rows=intervals(def,def.planets.find(p=>p.body===body));absorbing(def,rows);if(rows.length)actual[name][body]=rows.map(r=>({fromYear:Number(r.from*10n),untilYear:Number(r.until*10n)}));}
   }
-  expected['doomed-star']['stub:s00:b0']=[{fromYear:25500,untilYear:30000}];assert.deepEqual(actual,expected);
+  // Home and both reachable habitats die after the same stellar grace window;
+  // barren b3 is not a habitable/habitat route destination.
+  for(const body of ['stub:s00:b0','stub:s00:b1','stub:s00:b2'])expected['doomed-star'][body]=[{fromYear:25500,untilYear:30000}];
+  assert.deepEqual(actual,expected);
 });
 test('resurvey guard detects temporary habitability and middle-epoch gaps',()=>{
   const {world}=createScenario('crowded-domain','crowded-domain-0'),def=world.def,p=structuredClone(def.planets.find(p=>p.hosting==='habitable'));
