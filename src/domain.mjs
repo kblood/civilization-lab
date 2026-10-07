@@ -11,8 +11,8 @@ import {below,expQ32,chance} from './rng.mjs';
 import {hazardKey,compactHazardKey,advanceHazard} from './hazard.mjs';
 import {messageIntent,thresholdIntent,hazardIntent,compareEvents,sortEvents} from './events.mjs';
 import {population} from './polities.mjs';
-import {COLONY_M5,qualifiedPopulation,STATUS_PERIOD_YEARS,GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
-import {payload,message,PERILS,TARGETING_M5,receivedSignal} from './m2b.mjs';
+import {COLONY_M5,COLONY_M5_2,COLONY_POLICIES,allocateByCapacity,qualifiedPopulation,STATUS_PERIOD_YEARS,GROWTH,BUILD,MAX_TIERS,min,max,era} from './tech.mjs';
+import {payload,message,PERILS,TARGETING_M5,receivedSignal,routesFor} from './m2b.mjs';
 const byId=(a,b)=>compare(a.id,b.id),routeOrder=(a,b)=>compare(a.from,b.from)||compare(a.to,b.to);
 const archiveOrder=(a,b)=>compare(a.scope,b.scope)||compare(a.kind,b.kind)||compare(a.id,b.id);
 const messageOrder=(a,b)=>compare(a.deliveryTick,b.deliveryTick)||compare(a.targetId,b.targetId)||compare(a.id,b.id);
@@ -65,7 +65,8 @@ export function arcDefinition(def,body,lineageId,episode,fromTick,scenarioParams
   return freezeGenerated({...def,planet,arcId,lineageId,episode,fromTick,scenarioParams,edges,distances:distances.sort((a,b)=>compare(a.from,b.from)||compare(a.to,b.to)),forced:{...def.forced,initial}});
 }
 export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed='toy-1',{years,forced=null,untilYear,targetingPolicy,colonyPolicy}={}) {
-  if(colonyPolicy!==undefined&&colonyPolicy!==COLONY_M5.version)throw new RangeError('Unknown colony policy');
+  const colony=colonyPolicy===undefined?null:COLONY_POLICIES.find(p=>p.version===colonyPolicy)??null;
+  if(colonyPolicy!==undefined&&!colony)throw new RangeError('Unknown colony policy');
   if(targetingPolicy!==undefined&&targetingPolicy!==TARGETING_M5.version)throw new RangeError('Unknown targeting policy');
   if(typeof seed!=='string'||!seed.isWellFormed()||years!==undefined&&(!Number.isSafeInteger(years)||years<10||years%10))throw new RangeError('Invalid run');
   const bundle=expandDomain(input),home=bundle.planets.find(p=>p.body===bundle.domain.origins[0])??bundle.planets[0];
@@ -79,8 +80,8 @@ export function createDomainDefinition(input='fixtures/domains/toy-12.json',seed
   if(bundle.planets.some(p=>p.lifecycle.value.stellarDoomYear!=null))manifest.scenarioPriors.stellarPolicy=stellarPolicy(Number(forced?.overrides.find(o=>o.key==='parameters.stellarGraceYears')?.value??500));
   const rngManifestDigest=digest(manifest);
   if(targetingPolicy!==undefined)manifest.scenarioPriors.targetingPolicy=TARGETING_M5;
-  if(colonyPolicy!==undefined)manifest.scenarioPriors.colonyPolicy=COLONY_M5;
-  const def={...bundle,seed,manifest,...(targetingPolicy!==undefined||colonyPolicy!==undefined?{rngManifestDigest}:{}),...(colonyPolicy!==undefined?{colonyPolicy:COLONY_M5}:{}),targetingPolicy:manifest.scenarioPriors.targetingPolicy??null,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
+  if(colonyPolicy!==undefined)manifest.scenarioPriors.colonyPolicy=colony;
+  const def={...bundle,seed,manifest,...(targetingPolicy!==undefined||colonyPolicy!==undefined?{rngManifestDigest}:{}),...(colonyPolicy!==undefined?{colonyPolicy:colony}:{}),targetingPolicy:manifest.scenarioPriors.targetingPolicy??null,manifestDigest:digest(manifest),forced:forced??noForced(),compactHazards:true,
     g:forced?.overrides.find(o=>o.key==='parameters.g')?.value??GROWTH,build:forced?.overrides.find(o=>o.key==='parameters.build')?.value??BUILD,keep:Number(forced?.overrides.find(o=>o.key==='parameters.keepPermille')?.value??490)};
   if(bundle.planets.some(p=>['lifecycle','partition','epochs'].some(k=>p[k].status!=='known')))throw new TypeError('not-modelled: required domain capability');
   def.origins=bundle.domain.origins.map(id=>originSchedule(def,bundle.planets.find(p=>p.body===id)));
@@ -148,6 +149,32 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       if(fixture)m.id=state.id+'#fixture-arrival:'+fixture;
       state.messages.push(m);
     }
+    const v2=def.colonyPolicy?.version===COLONY_M5_2.version;
+    // m5-colony-2: remaining capacity per region; empty regions are judged with the
+    // passengers' tiers (they will carry them). A full arc falls back to the default region.
+    function capacityShares(a,v,persons) {
+      const probe={...a,regions:a.regions.map(r=>({...r,tiers:r.pop>0n?r.tiers:[...v.tiers]}))};installEnvironment(definitions.get(a.id),probe);
+      const shares=allocateByCapacity(persons,probe.regions.map(r=>({id:r.id,room:r.K>r.pop?r.K-r.pop:0n})));
+      return shares.length?shares.map(s=>({r:a.regions.find(r=>r.id===s.id),persons:s.persons})):[{r:a.regions.find(r=>r.K>0n)??a.regions[0],persons}];
+    }
+    // m5-colony-2: a rejected voyage is diverted once (best declared route out of the rejecting
+    // body, no RNG, no knowledge beyond routes and stellar doom) or stranded once (habitat tiers,
+    // finite window, then one retry at the same body); otherwise it dies as by default.
+    function rescueLeg(v,p,t,eventId) {
+      const year=Number(t*10n),policy=def.colonyPolicy,doom=p.lifecycle.value.stellarDoomYear,rank=r=>r.destinationHosting==='habitable'?0:1;
+      let leg=null;
+      if(!v.id.includes('~diverted')) {
+        const best=routesFor({routes:def.routes,planets:def.planets,planet:p},{tiers:v.tiers},{tick:t,lineageId:v.lineageId,signals:[],targetFailures:[]})
+          .map(r=>({r,years:r.travelYearsByTransportTier[v.tiers[3]]})).filter(x=>x.r.to!==p.body&&x.years<=policy.diversionMaxTravelYears)
+          .sort((a,b)=>compare(rank(a.r),rank(b.r))||compare(a.years,b.years)||compare(a.r.to,b.r.to))[0];
+        if(best)leg={status:'diverted',destination:best.r.to,years:best.years};
+      }
+      if(!leg&&!v.id.includes('~stranded')&&v.tiers[0]>=5&&v.tiers[1]>=5&&!(doom!=null&&year>=doom))leg={status:'stranded',destination:p.body,years:policy.strandedSurvivalYears};
+      if(!leg)return null;
+      const arrivalYear=year+leg.years;
+      return {status:leg.status,voyage:{id:`${v.id}~${leg.status}`,lineageId:v.lineageId,sourceArc:v.sourceArc,sourceRegion:v.sourceRegion,destination:leg.destination,launchEventId:eventId,launchYear:year,
+        arrivalYear,deliveryTick:max(C(BigInt(arrivalYear),10n),t+1n),tiers:[...v.tiers],cultureId:v.cultureId,culture:[...v.culture],status:'transit'}};
+    }
     if(def.forced.initial&&!suppressLineages.includes('lin:'+(def.domain.origins[0]??def.planets[0].body))) {
       const body=def.domain.origins[0]??def.planets[0].body,arc=reserve(body,'lin:'+body,def.forced.initial);
       const origin=state.origins.find(o=>o.body===body);if(origin)origin.status='founded';
@@ -170,7 +197,7 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
       dLedgers=[];dEvents=[];
     }
     while(state.tick<def.untilTick) {
-      const t=state.tick,start=previous,before=dView(state,roots),tickEvents=[],pEvents=[],transfers=[],retired=[],arrivals=new Map(),starts=new Map(),founding=[];
+      const t=state.tick,start=previous,before=dView(state,roots),tickEvents=[],pEvents=[],transfers=[],retired=[],arrivals=new Map(),starts=new Map(),founding=[],roster=new Map();
       // Copy only D-owned records. P inputs remain unchanged until their own step.
       state={...state,lineages:state.lineages.map(l=>({...l,arcs:[...l.arcs],voyages:[...l.voyages]})),origins:state.origins.map(o=>({...o})),bodyEpisodes:state.bodyEpisodes.map(b=>({...b})),arcs:[...state.arcs],voyages:state.voyages.map(v=>({...v})),transit:state.transit.map(v=>({...v})),messages:[...state.messages],latches:[...state.latches]};
       function writable(a) {if(!starts.has(a.id)){starts.set(a.id,a);const copy={...a,regions:a.regions.map(r=>({...r})),inbox:[...a.inbox]};state.arcs[state.arcs.findIndex(v=>v.id===a.id)]=copy;return copy;}return state.arcs.find(v=>v.id===a.id);}
@@ -195,24 +222,39 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         let a=state.arcs.find(a=>a.body===v.destination),reason=a&&a.lineageId!==v.lineageId?'occupied-by-other-lineage':null;
         const host=p.hosting==='habitable'||p.hosting==='habitat-buildable'&&v.tiers[0]>=5&&v.tiers[1]>=5;
         if(!reason&&(!host||uninhabitableAt(def,p,t)))reason='destination-uninhabitable';
-        if(reason){e.data.outcome='rejected';e.data.stage='REJECTED';e.reason=reason;e.effects.push({target:account.id,field:'transit.pop',op:'add',amount:String(-persons)});account.pop=0n;v.status=reason==='occupied-by-other-lineage'?'turned-away':'lost';death(state,v,e,tickEvents.filter(x=>x.kind==='COLONY_FOUNDED'&&x.ownerId===v.destination).length,0);
+        const leg=reason&&v2?rescueLeg(v,p,t,e.id):null;
+        if(reason){
+          if(leg){e.data.outcome='rejected';e.data.stage=leg.status==='diverted'?'DIVERTED':'STRANDED';e.reason=reason;
+            e.effects.push({target:account.id,field:'transit.pop',op:'transfer',amount:String(persons),to:'transit:'+leg.voyage.id,toField:'transit.pop'});transfers.push({eventId:e.id,...e.effects.at(-1)});
+            account.pop=0n;v.status=leg.status;e.refs.push({role:'voyage',entityId:leg.voyage.id});register(leg.voyage,persons);}
+          else {e.data.outcome='rejected';e.data.stage='REJECTED';e.reason=reason;e.effects.push({target:account.id,field:'transit.pop',op:'add',amount:String(-persons)});account.pop=0n;v.status=reason==='occupied-by-other-lineage'?'turned-away':'lost';death(state,v,e,tickEvents.filter(x=>x.kind==='COLONY_FOUNDED'&&x.ownerId===v.destination).length,0);}
           if(reason==='occupied-by-other-lineage'){
             const prefix=`${state.id}#msg:${t}~${v.sourceArc}~SIGNAL~${a.id}~`,ordinal=state.messages.filter(m=>m.id.startsWith(prefix)).length;
             state.messages.push(message(state.id,t,v.sourceArc,'SIGNAL',a.id,e.id,{signal:{source:v.sourceArc,lineageId:v.lineageId,body:arcRecords.find(a=>a.id===v.sourceArc).body,tiers:v.tiers,strength:1000,physical:true,arrivalYear:Number(t*10n)}},ordinal));}}
         else {
           const fresh=!a;if(fresh){a=reserve(v.destination,v.lineageId);starts.set(a.id,structuredClone(a));a.isColony=true;a.foundingTiers=[...v.tiers];a.colonizer=chanceMagnitude(def,a.id,'arc.colonizer',a.scenarioParams.colonizerPpm);for(const r of a.regions){r.cultureId=v.cultureId;r.culture=[...v.culture];}
-            const landing=a.regions[0];landing.tiers=[...v.tiers];installEnvironment(definitions.get(a.id),a);
+            if(!v2){const landing=a.regions[0];landing.tiers=[...v.tiers];}installEnvironment(definitions.get(a.id),a);
           }else a=writable(a);
-          const r=a.regions.find(r=>r.K>0n)??a.regions[0];
-          if(fresh){r.tiers=[...v.tiers];r.infra=10n*persons;}
-          r.pop+=persons;account.pop=0n;v.status='delivered';installEnvironment(definitions.get(a.id),a);a.outcome={...a.outcome,industrialEra:a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.era):n,0)};
-          e.effects.push({target:account.id,field:'transit.pop',op:'transfer',amount:String(persons),to:r.id,toField:'region.pop'});transfers.push({eventId:e.id,...e.effects.at(-1)});
+          // m5-colony-2: split by remaining capacity; default keeps the first positive-capacity region.
+          const prior=v2&&!fresh?a.regions.map(r=>({id:r.id,culture:r.culture,cultureId:r.cultureId,tiers:r.tiers})):null;
+          const shares=v2?capacityShares(a,v,persons):[{r:a.regions.find(r=>r.K>0n)??a.regions[0],persons}];
+          for(const {r,persons:n} of shares){
+            if(v2&&r.pop===0n){r.tiers=[...v.tiers];r.cultureId=v.cultureId;r.culture=[...v.culture];}
+            if(fresh){r.tiers=[...v.tiers];r.infra=10n*n;}
+            r.pop+=n;
+          }
+          account.pop=0n;v.status='delivered';installEnvironment(definitions.get(a.id),a);a.outcome={...a.outcome,industrialEra:a.regions.reduce((n,r)=>r.pop>0n?Math.max(n,r.era):n,0)};
+          for(const {r,persons:n} of shares){e.effects.push({target:account.id,field:'transit.pop',op:'transfer',amount:String(n),to:r.id,toField:'region.pop'});transfers.push({eventId:e.id,...e.effects.at(-1)});}
           if(fresh) {
-            e.effects.push({target:r.id,field:'region.infra',op:'add',amount:String(10n*persons)});
+            for(const {r,persons:n} of shares)e.effects.push({target:r.id,field:'region.infra',op:'add',amount:String(10n*n)});
             const before=starts.get(a.id);
             for(const field of ['colonizer','foundingTiers','isColony'])if(canonicalString(a[field])!==canonicalString(before[field])){e.effects.push({target:a.id,field:'arc.'+field,op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.'+field,value:a[field]});}
             for(const v of a.regions)for(const field of ['culture','cultureId','tiers'])if(canonicalString(v[field])!==canonicalString(before.regions.find(r=>r.id===v.id)[field])){e.effects.push({target:v.id,field:'region.'+field,op:'set',amount:'0'});e.data.sets.push({target:v.id,field:'region.'+field,value:v[field]});}
           }
+          if(prior)for(const v of a.regions)for(const field of ['culture','cultureId','tiers'])if(canonicalString(v[field])!==canonicalString(prior.find(r=>r.id===v.id)[field])){e.effects.push({target:v.id,field:'region.'+field,op:'set',amount:'0'});e.data.sets.push({target:v.id,field:'region.'+field,value:v[field]});}
+          // m5-colony-2: arriving specialists join the destination's maintenance roster (one STATUS slot per arc).
+          if(v2){const q=qualifiedPopulation({regions:[{pop:persons,tiers:v.tiers}]}),old=roster.get(a.id);
+            roster.set(a.id,old?{...old,population:old.population+persons,tiers:old.tiers.map((x,d)=>Math.max(x,v.tiers[d])),qualified:old.qualified.map((row,d)=>row.map((n,k)=>n+q[d][k]))}:{cause:e.id,lineageId:a.lineageId,population:persons,tiers:[...v.tiers],qualified:q});}
           if(def.colonyPolicy&&a.isColony) {
             const stock=fresh?COLONY_M5.reserveInitialYears:Math.min(COLONY_M5.reserveCapYears,a.colonyReserve+(v.tiers.every((tier,d)=>tier>=a.foundingTiers[d])?Number(min(BigInt(COLONY_M5.reserveCapYears),F(persons*BigInt(COLONY_M5.reinforcementYearsPerThousand),1000n))):0));
             if(stock!==a.colonyReserve){a.colonyReserve=stock;e.effects.push({target:a.id,field:'arc.colonyReserve',op:'set',amount:'0'});e.data.sets.push({target:a.id,field:'arc.colonyReserve',value:stock});}
@@ -222,6 +264,8 @@ export function createDomain(input='fixtures/domains/toy-12.json',seed='toy-1',o
         }
         v.hazard={...v.hazard,closed:true};e.effects.push({target:v.id,field:'voyage.status',op:'set',amount:'0'});e.data.sets.push({target:v.id,field:'voyage.status',value:v.status});tickEvents.push(finishEvent(e));
       }
+      for(const [id,s] of [...roster].sort((x,y)=>compare(x[0],y[0]))){const source=id+'#specialists';
+        writable(state.arcs.find(a=>a.id===id)).inbox.push(message(state.id,t,source,'STATUS',id,s.cause,{status:{source,lineageId:s.lineageId,population:s.population,tiers:s.tiers,qualified:s.qualified,reportYear:Number(t*10n),routeDelayYears:0}},0,t));}
       for(const o of state.origins.filter(o=>o.status==='pending'&&o.deliveryTick===t).sort((a,b)=>compare(a.body,b.body))) {
         if(suppressLineages.includes('lin:'+o.body))continue;
         if(state.arcs.some(a=>a.body===o.body)){o.status='preempted';continue;}

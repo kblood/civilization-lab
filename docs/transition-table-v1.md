@@ -6469,3 +6469,53 @@ history for the grace and apportionment rules, which are unchanged.
 ```json
 {"version":"m5-stellar-2","supersedes":"m3b-stellar-1","graceYears":{"override":"parameters.stellarGraceYears","default":500},"doomedDestinations":"excluded-from-own-doom-year","rule":"pre && own != null && year >= own && dest != null && dest <= own excludes the route","label":"scenario"}
 ```
+
+## M5 round 3: colony policy m5-colony-2 (opt-in)
+
+Fable 5.1 task T6 on Kasper's instruction (overrulable); see
+`docs/m5-round3-2026-10-07.md`. Domain/scenario APIs and CLI
+`--colony-policy m5-colony-2` enable it; planet-only paths reject it; any other
+value still throws `Unknown colony policy`. Default and `m5-colony-1` runs are
+byte-identical. RNG addressing still hashes the manifest before both M5 blocks.
+
+`COLONY_M5_2` is `COLONY_M5` with version `m5-colony-2` plus the keys below.
+Every inherited reserve value (1000/1000/10/5/250) and rule is unchanged.
+
+| Key | Value | Rationale |
+|---|---|---|
+| `extends` | `m5-colony-1` [scenario] | Superset: reserve, drain, regain, refill and qualified STATUS apply unchanged. |
+| `allocation` | `remaining-capacity-largest-remainder` [scenario] | Answers review 3 finding 5 (first positive-capacity region ignores remaining room). Integer split by `max(0, K − pop)`; empty regions are judged with the passengers' tiers; ties by region id; no room anywhere falls back to the default region. |
+| `diversionMaxTravelYears` | 500 [scenario] | Bounded extra transit. Equal to the stranded window, so a crew's life-support horizon without a planet is the same under way or parked; admits every in-system route and interstellar routes up to 5 ly at transport tier 7. |
+| `strandedSurvivalYears` | 500 [scenario] | Same order as the 500-year stellar grace and the 500-year transit-loss retry already in the table; a habitat-capable crew (Energy ≥ 5, Subsistence ≥ 5) survives this long off-planet, then retries once. No source; authored. |
+| `maxDiversions` | 1 [scenario] | Bound; enforced by the `~diverted` leg-id suffix. |
+| `maxStrandings` | 1 [scenario] | Bound; enforced by the `~stranded` leg-id suffix. With one diversion, a voyage makes at most three arrivals. |
+| `specialists` | `arrival-status-roster` [scenario] | Answers finding 5 (arrivals carry no knowledge): passengers' qualified counts enter the existing STATUS/lineageReports channel, so credit is 100/1000 for 300 years, tier-qualified, one slot per arc (same-tick arrivals summed, later ticks replace). |
+
+Rejection resolution order: divert (best `routesFor` route out of the rejecting
+body for the voyage's tiers, travel ≤ 500 years, ranked habitable before
+habitat-buildable, then shorter travel, then body id; no RNG and no signals or
+failures known to the crew), else strand (habitat tiers and no stellar doom
+reached at the rejecting body), else the default death. A rescued rejection is
+still `COLONY_FOUNDED` with `outcome: rejected` and the same reason; its stage is
+`DIVERTED` or `STRANDED`. It writes only the already-declared `transit.pop`
+(transfer to the new leg's transit account, also listed in the D ledger
+transfers) and `voyage.status` (`diverted` or `stranded`), adds a `voyage` ref
+to the new leg, records no death, still signals a foreign occupant and still
+reports `TARGET_FAILURE`. The new leg has the ordinary voyage record, its own
+ARRIVAL message and VOYAGE_LOST hazard, and `launchEventId` = the rejection
+event (the next arrival's EXOGENOUS cause). Capacity-split arrivals emit one
+`transit.pop → region.pop` transfer per receiving region; previously empty
+receiving regions take the voyage's tiers, culture and cultureId as set
+effects/data.sets. The catalogue, `validateEvent`, `COLONY_ARC_FIELDS` and
+`WITNESS_VERSION` are unchanged.
+
+Fixture observations: unsupported TECH_LOSS/EXTINCTION ages stay 1020/1040; the
+network disconnect gives first TECH_LOSS at 3420 (m5-colony-1: 3850) because the
+founders are split 8 × 500; a barren-destination voyage is diverted to its
+habitable home world and reinforces it; a foreign-occupied arrival is stranded
+500 years, retried and then lost; a founding roster credits +400 Energy
+maintenance through year 300 and 0 from year 310.
+
+```json
+{"version":"m5-colony-2","extends":"m5-colony-1","allocation":"remaining-capacity-largest-remainder","diversionMaxTravelYears":500,"strandedSurvivalYears":500,"maxDiversions":1,"maxStrandings":1,"specialists":"arrival-status-roster","label":"scenario"}
+```
