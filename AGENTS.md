@@ -42,18 +42,26 @@ are binding.
 
 ## Roles
 
-- **Sonnet agents** — web research. Economical with WebSearch (per-session
-  quota); read pages with WebFetch; `gh search`/`gh api` for code.
-- **Astra** (`gpt-6-astra` via the Codex CLI) — research, design and
-  implementation. Read-only runs for research/design/review; workspace-write
-  runs for implementation, confined to this directory. Astra edits files only;
-  the runner reviews `git diff`, runs checks and commits. Never invent Astra's
-  answer — if a run fails, say so.
-- **Opus** — design, review, and running the runner steps (checks, commits).
-- **Luna** (GPT Luna 6) — judges anything visual, only generated images, via
-  `node scripts/luna-eyes.mjs` from `../universe-atlas`. Ask three times for a
-  disputed image and report every answer. Exit code 2 means Luna is unavailable:
-  report "visual check NOT done".
+- Always use the newest model available in the requested family. Check the
+  current runtime's model list or aliases when assigning work; avoid pinning an
+  outdated numbered release in these reusable role instructions.
+- **OpenAI/Codex:** Sol handles coding; if Sol is unavailable, Astra may code.
+  Luna handles tests and verification. Astra handles task planning, 3D model
+  creation, and 3D quality assessment. Keep Astra implementation runs
+  workspace-write and confined to this repository; the runner reviews diffs
+  and observes checks before committing.
+- **Claude:** Haiku handles tests and searches, Sonnet handles coding, and Opus
+  handles task planning, 3D model creation, and 3D quality assessment. Use the
+  newest available model in each family.
+- For visual review, use the assigned planning/model-quality agent and retain
+  the existing Luna-specific generated-image workflow when required by the
+  asset or test instructions. Ask three times for a disputed image and report
+  every answer. Exit code 2 means Luna is unavailable: report "visual check
+  NOT done".
+- Delegate bounded tasks, parallelize independent read-heavy work, and
+  serialize shared-file edits and resource-heavy operations. A model assignment
+  does not override this repository's permissions, single-writer, determinism,
+  test, or no-deploy rules.
 
 ## Evidence standard
 
