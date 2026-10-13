@@ -3,6 +3,7 @@ import {fork} from 'node:child_process';
 import {resolve,join} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {readFileSync,writeFileSync} from 'node:fs';
+import {voyageDiagnostics} from './m5-voyage-diagnostics.mjs';
 const args=process.argv.slice(2),arg=(key,fallback)=>args.includes(key)?args[args.indexOf(key)+1]:fallback;
 const root=resolve(arg('--root','.'));
 const load=name=>import(pathToFileURL(join(root,'src',name+'.mjs')));
@@ -30,6 +31,7 @@ export function render(report){
 export async function measure(scenario,seed,{targetingPolicy,colonyPolicy,untilYear}={}){
   const {createScenario}=await load('scenario'),{summarizeRun}=await load('ensemble');
   const compilationStart=process.hrtime.bigint();
+  const compilationCpuStart=process.cpuUsage();
   const observedSafe=new Set();let observedPerils=false;
   const {world}=createScenario(scenario,seed,{...(untilYear!==undefined?{untilYear}:{}),...(targetingPolicy!==undefined?{targetingPolicy}:{}),...(colonyPolicy!==undefined?{colonyPolicy}:{})});
   if(colonyPolicy!==undefined&&world.def.colonyPolicy?.version!==colonyPolicy)throw new Error('Root does not support colony policy');
@@ -38,6 +40,8 @@ export async function measure(scenario,seed,{targetingPolicy,colonyPolicy,untilY
     observedPerils=true;for(const id of exitedArcs)observedSafe.add(tick+'|'+id);
   }});
   const compileMs=Number(process.hrtime.bigint()-compilationStart)/1e6;
+  const compilationCpu=process.cpuUsage(compilationCpuStart),compileCpuMs=(compilationCpu.user+compilationCpu.system)/1000;
+  const rssAfterCompileMiB=process.memoryUsage().rss/1048576,processPeakRssMiB=process.resourceUsage().maxRSS/1024;
   const run=summarizeRun({scenario,seed},world,result),events=result.events.filter(e=>e.resolution==='accepted');
   const horizon=Number(world.def.untilTick*10n),half=Math.floor((Number(world.def.fromTick*10n)+horizon)/2);
   const launches=events.filter(e=>e.kind==='LAUNCH'),arrivals=events.filter(e=>e.kind==='COLONY_FOUNDED');
@@ -71,8 +75,10 @@ export async function measure(scenario,seed,{targetingPolicy,colonyPolicy,untilY
   const colonyDeathAges=events.filter(e=>e.kind==='EXTINCTION'&&arcs.get(e.ownerId)?.isColony)
     .map(e=>{const birth=colonyBirths.get(e.ownerId);if(birth===undefined)throw new Error('Missing colony birth '+e.ownerId);return e.dateYear-birth;}).sort((a,b)=>a-b);
   const launchPriorFailure=targetingPolicy!==undefined?{...Object.fromEntries(['none','transit-loss','occupied','uninhabitable','colony-died'].map(k=>[k,launches.filter(e=>e.params.priorFailure===k).length])),active:launches.filter(e=>e.params.priorFailureActive==='1').length}:null;
-  return {...(launchPriorFailure?{launchPriorFailure}:{}),_compileMs:compileMs,seed,horizon,outcome:run.outcome,classes:run.classes,lineageClasses:result.outcomes.map(l=>l.outcome),startedEra:run.startedEra,
+  return {...(launchPriorFailure?{launchPriorFailure}:{}),_compileMs:compileMs,_compileCpuMs:compileCpuMs,_rssAfterCompileMiB:rssAfterCompileMiB,_processPeakRssMiB:processPeakRssMiB,
+    seed,horizon,eventCount:result.events.length,outcome:run.outcome,classes:run.classes,lineageClasses:result.outcomes.map(l=>l.outcome),startedEra:run.startedEra,
     colonyDeathAges,colonyArcs:[...arcs.values()].filter(a=>a.isColony).length,firstEras:run.firstEras,multiBody:run.flags.interplanetary,resultDigest:result.resultDigest,
+    manifestDigest:result.manifestDigest,recipeDigest:result.recipeDigest,endYear:Number(result.state.tick*10n),voyageDiagnostics:voyageDiagnostics(result),
     extinctionEvents:counts(events.filter(e=>e.kind==='LINEAGE_EXTINCTION').map(e=>e.data.outcome)),
     colonisation:{LAUNCH:launches.length,COLONY_FOUNDED:arrivals.filter(e=>e.data.outcome!=='rejected').length,
       newColonies:arrivals.filter(e=>e.data.stage==='FOUNDED').length,reinforcements:arrivals.filter(e=>e.data.stage==='REINFORCEMENT').length,

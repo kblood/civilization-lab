@@ -1,6 +1,10 @@
 # Civilization Lab
 
 **Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**Current M5 measurement harness:** [the frozen four-arm protocol](docs/m5-policy-panel-protocol.md)
+compares default, targeting, colony-2 and both on matched seeds, with original
+voyage cohort conservation and deterministic reruns. Its addition is tooling;
+the primary 360-run measurement is not yet claimed. Policies remain opt-in.
 **Doomed-star ensemble (2026-10-07, measurement only):** the 30-seed audit
 passes all eight invariants; 24/30 lineages die with their star, 5/30 die
 earlier, 1/30 survives through a tier-7 colony at `stub:s01:b0`; no evacuation
