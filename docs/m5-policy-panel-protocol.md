@@ -130,6 +130,6 @@ node tools/m5-policy-panel.mjs --run --jobs 1 --resume --out out/m5-policy-panel
 The JSON retains every per-seed measurement, observational digests, conservation
 summaries, paired contrasts and methods. The matching Markdown report is
 generated from those observations. Checkpoint, report and smoke output live
-under ignored `out/`; once independently inspected, retain the final evidence
-with a concise results note under `docs/evidence/` and link it from this
-protocol. **No primary panel result is claimed by adding this harness.**
+under ignored `out/`. The full 2026-10-13 run and its limitations are recorded
+in [the M5 results note](evidence/m5-policy-panel-2026-10-13.md). The complete
+JSON, Markdown and resumable checkpoint are retained locally in ignored `out/`.
