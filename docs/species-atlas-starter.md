@@ -127,6 +127,18 @@ annual body in Civilization observation, then independently reviews exactly the
 four annual-count files listed in `manifest.json`. Species bundle/GLB review
 remains a separate owner-specific workflow.
 
+Atlas's combined starter intake can optionally accept the complete Species Lab
+biological package alongside the six Civ originals. Species Lab downloads that
+file as `biological-species-package.zip`; Atlas also accepts its own descriptive
+alias `species-biological-package.zip`. This ZIP is not a Civ export artifact,
+is not included in Civ's manifest, and is not read or charged by Civ. Atlas
+independently checks its full artifact closure against the exact Species bundle
+digest in the freshly reviewed annual refinement before publishing the combined
+import. Omit it for the supported counts-only route. A different or newer
+Species bundle does not qualify merely because its IDs match; its original
+`bundle.json` bytes must match the refinement pin exactly. See Atlas's
+[combined import contract](../../universe-atlas/docs/annual-species-population-import.md#import-a-complete-civ-starter-in-one-selection).
+
 ## Guided v3 export from the Species composition ZIP
 
 When the original five-entry Species composition archive is available, the

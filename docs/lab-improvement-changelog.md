@@ -1,3 +1,13 @@
+## 2026-10-28 — Clarify Atlas's optional Species-owned package input
+
+Updated the Civ-owned Atlas starter guide to explain that Atlas may receive the
+Species Lab biological ZIP beside the six Civ files, while Civ neither emits,
+reads nor owns it. Documented Species Lab's actual download name, the Atlas
+alias, exact annual bundle-digest requirement and counts-only path. Documentation
+only; no tests or CLI runs. This documentation was committed and pushed after
+the user's explicit synchronization request; no Civ implementation changes were
+included.
+
 ## 2026-10-28 — Guided Species composition ZIP request v3
 
 - Added a Civ-owned bounded reader for Species' exact deterministic five-entry
