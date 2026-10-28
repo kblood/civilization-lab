@@ -1,5 +1,23 @@
 # Lab improvement handoff
 
+## Pass 314 · Guided Species-to-Atlas starter v2 · 2026-10-28
+
+Added a Civ-owned interactive v2 path that accepts the six exact original
+Species/Civ/Atlas files without requiring hand-authored starter request JSON.
+It reviews the exact observation and current decision, asks for an explicit
+choose/replace record and authored rationales, requires acknowledgement of the
+fixed annual policy, and presents the envelope-pinned adoption/refinement and
+output file pins. After exact write confirmation it reruns the same preparation
+and compares every output byte before invoking the existing exclusive writer.
+The request-based v1/v2 exporter and source ownership boundaries remain intact.
+The Species composition ZIP is not accepted as one input; the guide uses the
+untouched proposal and four source JSON members separately, while the Species
+review receipt remains distinct from Civ's adoption ledger.
+
+Evidence: source and contract inspection only. No tests, builds, deployment,
+publication, push or repository synchronization were performed. Runtime prompt
+behavior and an actual Atlas handoff remain unverified.
+
 ## Pass 313 · Civilization Lab exports multiple bodies from one compiled run · 2026-10-26
 
 Added the `civ-lab-annual-body-observation-bundle-1` format and the CLI `--bodies ID[,ID...]` selector. The domain is compiled once; provenance, interval and domain-wide events are stored once, and annual observations are separated into canonically sorted body entries. The library can project one member back into the unchanged single-body v2 format for the Atlas offline importer. The existing `--body` output path remains v2.

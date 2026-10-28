@@ -205,7 +205,7 @@ export async function writeNewDirectory(outputDirectory, artifacts) {
   for (const [name, bytes] of artifacts) {
     if (!['request.json', 'ledger.json', 'atlas-cohort-review.json', 'individual-membership-review.json', 'summary.json',
       'species-composition-ledger.json', 'composition-source.json', 'annual-body.json', 'refinement.json',
-      'species-composition-proposal.json', 'input-species-composition-ledger.json', 'species-bundle.json', 'starter-manifest.pending.json',
+      'species-composition-proposal.json', 'input-species-composition-ledger.json', 'species-bundle.json', 'atlas-envelope.json', 'starter-manifest.pending.json',
       'annual-settlement-species-review.json', 'annual-individual-membership-review.json'].includes(name)) fail('Unexpected output child name');
     const handle = await open(join(outputDirectory, name), 'wx');
     try { await handle.writeFile(bytes); await handle.sync(); }

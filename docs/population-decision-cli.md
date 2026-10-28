@@ -152,6 +152,22 @@ output. The request CLI keeps its existing arguments/original-request bytes,
 summary fields, filenames and success text. Resident/cohort/individual modes
 are unchanged. See [guided adoption and limits](species-composition-adoption.md#guided-local-adoption).
 
+### Species-to-Atlas starter v2
+
+```powershell
+node tools/guide-species-atlas-starter.mjs
+```
+
+This Civ-owned guide prompts for the exact proposal, composition observations,
+complete adoption ledger, annual source, Species bundle and pinned Atlas
+envelope. It requires an explicit choose/replace decision, authored rationale
+and acknowledgement of the fixed annual policy. It displays the envelope-bound
+adoption/refinement and output pins, then reloads and recomputes every output
+after exact `write` confirmation. It writes the same starter-v2 packet as the
+request exporter through its existing exclusive completion writer. It does not
+claim Species asset admission, Atlas acceptance or simulation effects; see the
+[full starter and handoff contract](species-atlas-starter.md).
+
 ### Residents
 
 Use `mode: "residents"`, the three source filenames from the table, and the same

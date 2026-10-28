@@ -75,6 +75,55 @@ An initial empty ledger is itself an explicitly supplied original file:
 Use it only when it really is the complete current history. The exporter cannot
 discover omitted records, lock a shared history or arbitrate concurrent writers.
 
+## Guided v2 export without hand-authoring request JSON
+
+For the envelope-preserving route, run the Civ-owned interactive guide:
+
+```powershell
+node tools/guide-species-atlas-starter.mjs
+```
+
+It prompts for the exact original proposal, composition observations, complete
+adoption ledger, annual source, Species `bundle.json`, and Atlas authoring
+envelope. The equivalent flags are `--proposal`, `--composition-source`,
+`--ledger`, `--annual-body`, `--species-bundle`, and `--atlas-envelope`; the
+new output directory can be supplied with `--output-dir`. The guide always uses
+request v2 and does not require the author to create request JSON by hand.
+The Species five-entry `species-civilization-composition-review.zip` is not a
+direct guide input. Select its untouched `composition-proposal.json`,
+`sources/species-bundle.json`, `sources/atlas-envelope.json`, and
+`sources/civilization-observations.json` entries as the four individual source
+files. The other two inputs are the complete current Civ adoption ledger and the
+annual source to refine. The Species review receipt remains an owner-specific
+receipt and does not create or substitute for Civ's adoption decision.
+
+The guide shows source paths and byte pins, the exact proposal observation and
+population partition, and any active choice for that observation. It requires
+an explicit initial `choose` or an exact current-record `replace`, plus a new
+decision ID, author, policy rationale and decision rationale. It never creates
+an empty ledger, substitutes a later proposal or supplies authored rationale.
+The fixed annual policy is separately acknowledged by typing its complete ID.
+
+Before confirmation, the guide runs the same starter review as the exporter:
+the Atlas envelope's original bytes, version and complete binding must match the
+proposal; the composition adoption rules must accept the proposed decision; and
+the annual refiner must accept the selected sources and fixed policy. It shows
+the exact decision identity and target, annual coverage and status counts,
+bounded previews of rows/gaps, output pins and the four Atlas annual-count
+inputs. The complete adopted record and annual rows are retained in the output
+ledger/refinement files. After `write`, it reloads all six originals,
+recomputes the complete prepared packet and compares every output byte before
+calling the existing exclusive writer. The temporary request is private to the
+guide and removed after completion; the exported `request.json` remains in the
+starter packet. Cancellation before confirmation creates no starter output.
+
+This guide improves authoring and transport only. The output does not establish
+Species biology or asset rights, authenticate the sources, admit the Atlas
+envelope or simulate population. Atlas still reviews the original envelope and
+annual body in Civilization observation, then independently reviews exactly the
+four annual-count files listed in `manifest.json`. Species bundle/GLB review
+remains a separate owner-specific workflow.
+
 The fixed annual policy string is required separately from the decision's
 authored policy/rationale. Its weights include explicit unassigned counts,
 largest-remainder BigInt apportionment, and only the contiguous supplied annual
@@ -92,7 +141,9 @@ node tools/export-species-atlas-starter.mjs --request starter-request.json --out
 The [synthetic one-sample demonstration](../examples/species-atlas-starter/README.md)
 includes an explicit request and one captured output packet. It documents its
 source pins and limits; its fictional Atlas binding is not an accepted Atlas
-target and the example is not an Atlas import test.
+target and the example is not an Atlas import test. The guided v2 route above is
+the normal operator path when an exact original envelope is available; the
+request-based CLI remains available for explicit v1/v2 automation.
 
 The output parent directory must already exist; the target must be new. Relative
 source paths resolve from the resolved original request file's directory.
