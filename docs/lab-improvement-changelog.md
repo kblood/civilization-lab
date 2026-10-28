@@ -34,6 +34,21 @@ consumer limits without expanding Civilization's transport authority. Only the
 two documentation files are included in this handoff; unrelated source and
 test work remains outside it. No tests or runtime checks were run.
 
+## 2026-10-28 — Multi-anchor annual species handoff
+
+Documented how to prepare several Civilization annual species refinements for
+Atlas's separate multi-anchor workspace. Each export must use byte-identical
+complete composition-ledger and annual-body sources and the same run, body, arc,
+lineage and Atlas target; composition-source originals and Species bundle pins
+may vary. The README and guide now explain why all anchors should be exported
+from one final frozen source set and link to Atlas's independent consumer
+contract, including its separately pinned Species-declaration companion. The
+planet panel's visual-inspector handoff passes the anchor digest and highlights
+only a composition packet matching an active Civ ledger record; representation
+selection remains explicit.
+This is documentation only; no Civ producer behavior changed. No tests,
+builds or CLI/runtime checks were performed.
+
 ## Guided annual settlement species editor · 2026-10-27
 
 Added a guide for eight original source files and complete parent/child histories.

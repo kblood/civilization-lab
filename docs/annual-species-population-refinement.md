@@ -220,6 +220,39 @@ A later parent replacement makes an old result stale relative to an updated
 supplied ledger; files are not monitored automatically. That consumer has static
 source review evidence, with runtime review outstanding.
 
+### Compare multiple authored anchors in Atlas
+
+Atlas also has a separate **Flere årlige species-ankre** workspace. It can
+compare up to eight independently exported refinements when every export uses
+the exact same complete composition-ledger bytes and annual-body bytes, and all
+refinements target the same run, body, arc, lineage and Atlas binding. Each
+entry still needs its own four original export files. The composition-source
+original and selected Species bundle pin may differ between entries.
+
+For a comparable collection, finish the adoption ledger and annual-body export
+first, then export each chosen positive anchor against those unchanged source
+files. Import the first refinement's four originals into Atlas, then add each
+other four-file set in that workspace. If the ledger or annual-body export
+changes between refinements, their original bytes no longer match and Atlas
+rejects the collection; export all desired anchors again from the same final
+sources. The collection reports each fixed policy separately at exact supplied
+samples. It does not select the newest policy, add counts, interpolate, or
+assert that an anchor transition is evolution, migration or demographic
+change. It does not feed settlement cohorts or membership automatically.
+For any entry, Atlas can separately review the exact Species bundle named by
+that refinement to show declared species names, intervals and lineage beside
+the counts; this does not verify biology or load a visual representation.
+For a visual illustration, the adjacent Species composition inspector can
+independently reopen the exact adopted packet and its biological ZIP and preview
+one explicitly chosen representation at that packet's own sample instant. It
+does not attach that GLB to the annual counts or claim planet occurrence. On the
+planet panel, opening the inspector from an annual series passes the anchor
+digest and highlights a packet only when its active Civ record and proposal
+match; representation selection remains explicit.
+
+See Atlas's [multi-anchor import contract](../../universe-atlas/docs/annual-species-population-import.md#compare-several-authored-annual-anchors)
+for its freshness, conflict, unknown-gap and memory limits.
+
 The separate [annual settlement species decision](annual-settlement-species-allocation.md)
 can explicitly partition one later derived row among exact resident destinations.
 It requires a new authored decision and full source reconstruction. Existing

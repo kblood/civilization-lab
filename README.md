@@ -26,6 +26,19 @@ then reloads all originals and recomputes before writing the existing six files.
 It identifies the four Atlas inputs separately from request/summary. No latest
 anchor or fallback is selected; static source inspection evidence only.
 
+Atlas can separately retain up to eight refinements for different authored
+anchors when all use the same complete composition ledger, annual-body source
+and run/body/arc/lineage/Atlas target. Export every desired anchor from those
+same unchanged source files; the [Civ export guide](docs/annual-species-population-refinement.md#compare-multiple-authored-anchors-in-atlas)
+describes the workflow and its limits. The entries remain independent fixed
+policies and do not establish demographic change or feed cohorts automatically.
+Atlas can separately inspect each entry's exact Species bundle for declared
+names, biological intervals and lineage; this does not verify those claims.
+For optional specimen previews, use the separate Species composition inspector
+with the exact adopted packet and explicitly selected representation. From the
+planet annual-series panel its button passes the exact anchor digest and only
+highlights a matching active Civ record/proposal packet.
+
 A separate [annual settlement species allocation](docs/annual-settlement-species-allocation.md)
 can join one later derived annual species row with an exact active resident
 allocation, using explicit authored destinations and separate unassigned/unlocated
