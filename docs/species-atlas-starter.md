@@ -136,6 +136,14 @@ guide can consume it directly and avoid manually extracting four JSON files:
 node tools/guide-species-atlas-starter.mjs --composition-packet path\to\species-civilization-composition-review.zip
 ```
 
+The ZIP path cannot be combined with individual proposal/source path flags. If
+the guide is started with those flags and ZIP mode is then selected at the
+interactive prompt, it rejects the conflicting inputs instead of silently
+ignoring the supplied paths. JSON members inside the ZIP preserve their exact
+bytes, including a leading UTF-8 BOM; BOM-prefixed members are rejected just as
+they are through the individual-file reader, so exported composition-source
+bytes remain acceptable to Atlas's strict annual importer.
+
 An equivalent request for the low-level exporter uses this closed v3 source
 shape; its paths resolve relative to the request file:
 

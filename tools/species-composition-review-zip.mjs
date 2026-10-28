@@ -19,7 +19,9 @@ const LIMITS = Object.freeze({
   [SPECIES_COMPOSITION_REVIEW_PATHS.speciesBundle]: 4 * 1024 * 1024,
 });
 const EXPECTED = Object.keys(LIMITS).sort();
-const decoder = new TextDecoder('utf-8', {fatal: true});
+// Preserve a leading UTF-8 BOM as U+FEFF so the strict JSON readers reject it
+// exactly as they do for the same original bytes outside the ZIP packet.
+const decoder = new TextDecoder('utf-8', {fatal: true, ignoreBOM: true});
 const fail = message => { throw new TypeError(`Species composition ZIP: ${message}`); };
 const crcTable = (() => {
   const table = new Uint32Array(256);

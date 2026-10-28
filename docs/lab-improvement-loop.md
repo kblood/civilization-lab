@@ -1,5 +1,17 @@
 # Lab improvement handoff
 
+## Pass 316 · Keep Species ZIP JSON strict at the Civ→Atlas boundary · 2026-10-28
+
+Hardened the guided starter's interactive v2/v3 mode selection: choosing a ZIP
+after supplying individual source flags now fails rather than silently ignoring
+those paths. The ZIP decoder preserves a UTF-8 BOM for the bounded JSON parser
+to reject, matching the individual-file reader and Atlas annual importer's
+original-byte contract. This prevents Civ from exporting pinned JSON that Atlas
+will reject on import.
+
+Evidence: static source and consumer-contract review only. No tests, builds,
+deployment, publication, push or repository synchronization were performed.
+
 ## Pass 315 · Direct Species composition ZIP input for guided v3 · 2026-10-28
 
 The Civ-owned guide and request exporter now accept the exact five-entry

@@ -134,6 +134,7 @@ async function main(argv) {
     const packetAnswer = args.has(PACKET_FLAG) ? args.get(PACKET_FLAG)
       : await chat.ask('Species five-entry composition ZIP path (press Enter to select its four JSON members individually)');
     const packetMode = args.has(PACKET_FLAG) || packetAnswer.trim().length > 0;
+    if (packetMode && legacyFlags.some(flag => args.has(flag))) fail('A composition ZIP cannot be combined with individual proposal/source flags');
     if (packetMode) {
       paths.compositionPacket = localPath(packetAnswer, cwd, 'compositionPacket');
       paths.speciesCompositionLedger = args.has('--ledger') ? localPath(args.get('--ledger'), cwd, 'speciesCompositionLedger')
