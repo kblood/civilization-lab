@@ -203,12 +203,18 @@ data and overlap. Its exact member paths and limits are:
 | `composition-review.json` | 32 MiB | Bounded UTF-8, unique-key JSON and exact format version; review claims are not trusted |
 | `sources/atlas-envelope.json` | 1 MiB | Strict bounded JSON; exact bytes/version/full binding correspondence checked |
 | `sources/civilization-observations.json` | 16 MiB | Strict bounded JSON; exact proposal pin and annual refinement input |
-| `sources/species-bundle.json` | 4 MiB | Species-aware bounded JSON; exact proposal pin and bundle version checked |
+| `sources/species-bundle.json` | 4 MiB | Bounded source JSON; exact pin/version checked. Species numbers are not interpreted by Civ's membership codec |
 
 The interactive guide checks the composition, bundle and envelope pins, bundle
 and envelope versions, and complete envelope binding before asking the author
 for a choose/replace decision and rationale. The request exporter repeats these
 checks after that decision and the guide reloads them again before writing.
+
+The starter only pins and checks the Species bundle version. Its source parser
+preserves any finite biological fact number, including negative zero and
+integer-valued numbers outside JavaScript's safe-integer range. It does not
+convert those values into Civ cohort or membership facts; Species and Atlas
+remain the owners of full declaration review.
 
 The proposal and three source JSON members are checked for valid UTF-8, unique
 keys and bounded structure. The receipt's review claims are not used or trusted;

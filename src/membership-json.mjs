@@ -1,12 +1,14 @@
 /** Membership-only Species number codec. Generic Civ integer canonical APIs
  * remain unchanged. Integer-only parsed values retain their exact old encoding. */
 const MAX_NODES=1000000, MAX_TEXT=32*1024*1024, MAX_TOKEN=65536, MAX_ARRAY=250000;
+const SPECIES_SOURCE={bytes:4*1024*1024,nodes:200000,array:4096};
 const fail=message=>{throw new TypeError(`Membership JSON: ${message}`);};
 const wellFormed=value=>!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value);
 export const validMembershipNumber=value=>typeof value==='number'&&Number.isFinite(value)&&!Object.is(value,-0)&&(!Number.isInteger(value)||Number.isSafeInteger(value));
 const index=value=>Number.isSafeInteger(value)&&value>=0;
 function factPath(path){return path.length===4&&path[0]==='biology'&&path[1]==='facts'&&index(path[2])&&path[3]==='value';}
 export function allowsMembershipNumber(path,mode){
+  if(mode==='species-bundle-source')mode='bundle';
   if(mode==='transport'){if(path[0]!=='ledger')return false;path=path.slice(1);mode='ledger';}
   if(mode==='ledger'){if(path[0]!=='records'||!index(path[1]))return false;path=path.slice(2);mode='record';}
   if(mode==='record'){
@@ -43,6 +45,9 @@ export const membershipCanonicalBytes=value=>new TextEncoder().encode(membership
 export function freezeMembershipJson(value){membershipCanonicalString(value);const freeze=v=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}};freeze(value);return value;}
 
 export function parseMembershipJson(text, label = 'JSON', mode = 'strict') {
+  // This source-only mode is for byte-pinned Species bundles in the Atlas
+  // starter. It is not the Civ numeric codec used for membership records.
+  const speciesBundleSource=mode==='species-bundle-source';
   if (!text.length || text.charCodeAt(0) === 0xfeff) fail(`${label}: empty JSON or BOM is not supported`);
   let at = 0, nodes = 0, units = 0;
   const invalid = message => fail(`${label}: ${message} at UTF-16 offset ${at}`);
@@ -58,7 +63,7 @@ export function parseMembershipJson(text, label = 'JSON', mode = 'strict') {
         let value;
         try { value = JSON.parse(text.slice(start, at)); } catch { invalid('invalid string'); }
         units += value.length;
-        if (!wellFormed(value) || value.length > MAX_TOKEN || units > MAX_TEXT) invalid('malformed or oversized string/key text');
+        if ((!speciesBundleSource&&!wellFormed(value)) || value.length > MAX_TOKEN || units > MAX_TEXT) invalid('malformed or oversized string/key text');
         return value;
       }
       if (char.charCodeAt(0) < 32) invalid('unescaped control character');
@@ -73,7 +78,7 @@ export function parseMembershipJson(text, label = 'JSON', mode = 'strict') {
     invalid('unterminated string');
   }
   function value(depth, path = []) {
-    if (++nodes > MAX_NODES || depth > 64) invalid('JSON exceeds node/depth budget');
+    if (++nodes > (speciesBundleSource?SPECIES_SOURCE.nodes:MAX_NODES) || depth > 64) invalid('JSON exceeds node/depth budget');
     whitespace();
     const char = text[at];
     if (char === '"') return string();
@@ -98,7 +103,7 @@ export function parseMembershipJson(text, label = 'JSON', mode = 'strict') {
       const result = [];
       if (text[at] === ']') { at++; return result; }
       for (;;) {
-        if (result.length === MAX_ARRAY) invalid('array exceeds entry bound');
+        if (result.length === (speciesBundleSource?SPECIES_SOURCE.array:MAX_ARRAY)) invalid('array exceeds entry bound');
         result.push(value(depth + 1, [...path, result.length])); whitespace();
         if (text[at] === ']') { at++; return result; }
         if (text[at++] !== ',') invalid('expected array comma');
@@ -108,14 +113,16 @@ export function parseMembershipJson(text, label = 'JSON', mode = 'strict') {
       if (text.startsWith(literal, at)) { at += literal.length; return parsed; }
     }
     const start = at;
+    const finite = allowsMembershipNumber(path, mode);
+    const tokenLimit = speciesBundleSource&&finite?SPECIES_SOURCE.bytes:finite?MAX_TOKEN:17;
     while (at < text.length && !/[\s,}\]]/.test(text[at])) {
-      if (at - start >= (allowsMembershipNumber(path, mode) ? MAX_TOKEN : 17)) invalid('oversized numeric token');
+      if (at - start >= tokenLimit) invalid('oversized numeric token');
       at++;
     }
     const token = text.slice(start, at), parsed = Number(token);
-    const finite = allowsMembershipNumber(path, mode);
     const grammar = finite ? /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$/ : /^-?(?:0|[1-9][0-9]*)$/;
-    if (!grammar.test(token) || (finite ? !validMembershipNumber(parsed) : !Number.isSafeInteger(parsed) || Object.is(parsed,-0))) invalid('invalid numeric token for this contract path');
+    const validFinite=speciesBundleSource?Number.isFinite(parsed):validMembershipNumber(parsed);
+    if (!grammar.test(token) || (finite ? !validFinite : !Number.isSafeInteger(parsed) || Object.is(parsed,-0))) invalid('invalid numeric token for this contract path');
     return parsed;
   }
   const result = value(0); whitespace();

@@ -153,7 +153,7 @@ async function main(argv) {
         paths[role] = args.has(flag) ? localPath(args.get(flag), cwd, role)
           : await answerValid(chat, `${role} original JSON path`, value => localPath(value, cwd, role));
       }
-      for (const role of ROLES) originals[role] = await read(paths[role], LIMITS[role], role, role === 'speciesBundle' ? 'bundle' : 'strict');
+      for (const role of ROLES) originals[role] = await read(paths[role], LIMITS[role], role, role === 'speciesBundle' ? 'species-bundle-source' : 'strict');
     }
     const proposal = originals.proposal.parsed;
     if (originals.compositionSource.pin.sha256 !== proposal?.civilization?.observationsSha256) fail('Composition source bytes do not match the proposal pin');

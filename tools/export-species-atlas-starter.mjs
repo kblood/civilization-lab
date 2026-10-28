@@ -79,7 +79,7 @@ export async function prepareSpeciesAtlasStarter(requestPath) {
   } else {
     for (const [role, maximum] of Object.entries(limits)) {
       const path = localPath(request.sources[role], dirname(requestInput.realPath), role);
-      inputs[role] = await read(path, maximum, role, role === 'speciesBundle' ? 'bundle' : 'strict');
+      inputs[role] = await read(path, maximum, role, role === 'speciesBundle' ? 'species-bundle-source' : 'strict');
     }
   }
   const proposal = inputs.proposal.parsed;

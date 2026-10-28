@@ -161,7 +161,7 @@ export function readSpeciesCompositionReviewZip(bytes) {
     }
     let text, parsed;
     try { text = decoder.decode(memberBytes); } catch { fail(`${path} is not valid UTF-8`); }
-    try { parsed = parseMembershipJson(text, path, role === 'speciesBundle' ? 'bundle' : 'strict'); }
+    try { parsed = parseMembershipJson(text, path, role === 'speciesBundle' ? 'species-bundle-source' : 'strict'); }
     catch (error) { fail(`${path} is not bounded unique-key JSON: ${error.message}`); }
     members[role] = {bytes: memberBytes, parsed};
   }

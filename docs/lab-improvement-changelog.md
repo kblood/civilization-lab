@@ -537,3 +537,14 @@ Next: consider a bounded `--year-range` selector for dense timeline exports, ret
 - Preserved pre-edit files in `.codex-civ-annual-endpoint-cli-before-20261025-pass309/`.
 - Validation: `node --check src/annual-body-inspection-ticks.mjs tools/export-annual-body.mjs tests/annual-body-export-cli.test.mjs` passed; `node --test tests/annual-body-export-cli.test.mjs` passed 2/2; scoped `git diff --check` passed. No broad suite, deploy or push.
 - Next: resume Biosphere Lab review in Atlas.
+
+## 2026-10-28 · Preserve Species biology numbers in Civ starter
+
+Separated the Civ starter's bounded parsing of its exact, hash-pinned Species
+bundle from the stricter membership numeric codec. Finite Species biology
+values, including negative zero and unsafe-integer-valued numbers, remain in
+the parsed source while Civ checks only the source pin and bundle version.
+Full Species declarations and artifact bytes remain owner-reviewed in Species
+and Atlas. Civ cohort/member numeric restrictions are unchanged. No tests,
+builds, simulations, deployment, publishing or repository synchronization
+were run.
