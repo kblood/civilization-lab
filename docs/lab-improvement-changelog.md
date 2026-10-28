@@ -1,3 +1,20 @@
+## 2026-10-28 — Guided Species composition ZIP request v3
+
+- Added a Civ-owned bounded reader for Species' exact deterministic five-entry
+  composition archive and a v3 starter request/manifest. The original ZIP and
+  source members are preserved and pinned; its review receipt is explicitly
+  untrusted. The annual Atlas transport remains the established four files.
+- The interactive guide accepts `--composition-packet`, requires the complete
+  Civ ledger and annual source, checks source pins and envelope correspondence
+  before requesting a decision, and compares the first review's source pins to
+  its parsed inputs before preview and again before write. V1/v2 contracts stay
+  intact. V3 output has a 192 MiB cap to retain both the input ZIP and extracted
+  source artifacts. Static code inspection only; no tests or runtime checks ran.
+- Added standalone closed JSON schemas for the v3 request and output manifest,
+  documenting the request shape, exact body/arc/lineage/binding and adopted
+  species/count anchor, fixed output artifact names, four Atlas inputs, receipt
+  trust boundary and runtime-only cross-file checks.
+
 ## 2026-10-28 — Opt-in starter v2 retains its pinned Atlas envelope
 
 - Added the separately versioned six-source v2 request and manifest. The

@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://civilization-lab.invalid/schemas/species-atlas-starter-request-v3.schema.json",
+  "title": "Civ Species-to-Atlas starter request v3",
+  "description": "Closed request shape for direct ingestion of the exact Species five-entry composition review ZIP. JSON Schema checks structure only; the Civ exporter additionally enforces safe local paths, byte limits, deterministic ZIP headers and CRCs, source pins, envelope correspondence, adoption rules, and annual refinement. The embedded Species review receipt is not trusted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "sources",
+    "decision",
+    "policy"
+  ],
+  "properties": {
+    "version": {
+      "const": "civ-species-atlas-starter-request-3"
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compositionPacket",
+        "speciesCompositionLedger",
+        "annualBody"
+      ],
+      "properties": {
+        "compositionPacket": {
+          "$ref": "#/$defs/localPath"
+        },
+        "speciesCompositionLedger": {
+          "$ref": "#/$defs/localPath"
+        },
+        "annualBody": {
+          "$ref": "#/$defs/localPath"
+        }
+      }
+    },
+    "decision": {
+      "$ref": "#/$defs/decision"
+    },
+    "policy": {
+      "const": "fixed-anchor-largest-remainder-contiguous-forward-1"
+    }
+  },
+  "$defs": {
+    "localPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "\\S"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,255}(?![\\s\\S])"
+    },
+    "authoredText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "\\S"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "rationale"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "\\S"
+        },
+        "rationale": {
+          "$ref": "#/$defs/authoredText"
+        }
+      }
+    },
+    "replacement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "recordSha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "recordSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "author",
+        "policy",
+        "rationale",
+        "choice",
+        "replaces"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S"
+        },
+        "policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "rationale": {
+          "$ref": "#/$defs/authoredText"
+        },
+        "choice": {
+          "enum": [
+            "choose",
+            "replace"
+          ]
+        },
+        "replaces": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/replacement"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "choice": {
+                "const": "choose"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "replaces": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "replaces": {
+                "$ref": "#/$defs/replacement"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

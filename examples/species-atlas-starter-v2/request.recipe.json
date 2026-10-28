@@ -1,0 +1,24 @@
+{
+  "version": "civ-species-atlas-starter-request-2",
+  "sources": {
+    "proposal": "inputs/original-species-composition-proposal.json",
+    "compositionSource": "inputs/original-composition-observations.json",
+    "speciesCompositionLedger": "inputs/complete-current-composition-ledger.json",
+    "annualBody": "inputs/original-annual-observations.json",
+    "speciesBundle": "inputs/original-species-bundle.json",
+    "atlasEnvelope": "inputs/original-atlas-envelope.json"
+  },
+  "decision": {
+    "id": "decision:REPLACE_WITH_UNIQUE_AUTHORED_DECISION",
+    "author": "REPLACE WITH THE ACTUAL SCENARIO AUTHOR",
+    "policy": {
+      "id": "policy:REPLACE_WITH_AUTHORED_POLICY",
+      "version": "1",
+      "rationale": "REPLACE WITH THE AUTHOR'S ACTUAL POLICY RATIONALE"
+    },
+    "rationale": "REPLACE WITH THE AUTHOR'S ACTUAL DECISION RATIONALE",
+    "choice": "choose",
+    "replaces": null
+  },
+  "policy": "fixed-anchor-largest-remainder-contiguous-forward-1"
+}

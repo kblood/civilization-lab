@@ -122,9 +122,11 @@ export function parseBoundedJson(text, label = 'JSON') {
  * reject nonregular files, growth, truncation and over-budget inputs. */
 export function createInputReader() {
   const cache = new Map();
+  const binaryCache = new Map();
   let totalBytes = 0;
-  return async function readInput(path, maxBytes, role, numericMode = 'strict') {
+  const readInput = async function readInput(path, maxBytes, role, numericMode = 'strict') {
     const actualPath = await realpath(path);
+    if (binaryCache.has(actualPath)) fail(`${role}: same original path is already used as a binary input`);
     if (cache.has(actualPath)) {
       const saved = cache.get(actualPath);
       if (saved.bytes.length > maxBytes) fail(`${role}: exceeds ${maxBytes} byte bound`);
@@ -160,6 +162,39 @@ export function createInputReader() {
     totalBytes += bytes.length; cache.set(actualPath, result);
     return result;
   };
+  readInput.readBinary = async function readBinary(path, maxBytes, role) {
+    const actualPath = await realpath(path);
+    if (cache.has(actualPath)) fail(`${role}: same original path is already used as a JSON input`);
+    if (binaryCache.has(actualPath)) {
+      const saved = binaryCache.get(actualPath);
+      if (saved.bytes.length > maxBytes) fail(`${role}: exceeds ${maxBytes} byte bound`);
+      totalBytes += saved.bytes.length;
+      if (totalBytes > MAX_INPUT_BYTES) fail('Request and source roles exceed 192 MiB aggregate original bytes');
+      return saved;
+    }
+    const handle = await open(actualPath, constants.O_RDONLY | (constants.O_NONBLOCK ?? 0));
+    let bytes;
+    try {
+      const before = await handle.stat({bigint: true});
+      if (!before.isFile()) fail(`${role}: a regular file is required`);
+      if (before.size < 1n || before.size > BigInt(maxBytes)) fail(`${role}: empty or oversized file (limit ${maxBytes} bytes)`);
+      if (totalBytes + Number(before.size) > MAX_INPUT_BYTES) fail('Request and source roles exceed 192 MiB aggregate original bytes');
+      const buffer = Buffer.alloc(Number(before.size) + 1);
+      let length = 0;
+      while (length < buffer.length) {
+        const next = await handle.read(buffer, length, buffer.length - length, null);
+        if (next.bytesRead === 0) break;
+        length += next.bytesRead;
+      }
+      const after = await handle.stat({bigint: true});
+      if (length !== Number(before.size) || before.size !== after.size || before.mtimeNs !== after.mtimeNs || before.ctimeNs !== after.ctimeNs) fail(`${role}: file changed during read`);
+      bytes = buffer.subarray(0, length);
+    } finally { await handle.close(); }
+    const result = {bytes, pin: originalPin(bytes), realPath: actualPath};
+    totalBytes += bytes.length; binaryCache.set(actualPath, result);
+    return result;
+  };
+  return readInput;
 }
 
 /** Bound composed artifacts before encoding, including the combined Atlas
@@ -205,7 +240,7 @@ export async function writeNewDirectory(outputDirectory, artifacts) {
   for (const [name, bytes] of artifacts) {
     if (!['request.json', 'ledger.json', 'atlas-cohort-review.json', 'individual-membership-review.json', 'summary.json',
       'species-composition-ledger.json', 'composition-source.json', 'annual-body.json', 'refinement.json',
-      'species-composition-proposal.json', 'input-species-composition-ledger.json', 'species-bundle.json', 'atlas-envelope.json', 'starter-manifest.pending.json',
+      'species-composition-proposal.json', 'input-species-composition-ledger.json', 'species-bundle.json', 'atlas-envelope.json', 'species-civilization-composition-review.zip', 'starter-manifest.pending.json',
       'annual-settlement-species-review.json', 'annual-individual-membership-review.json'].includes(name)) fail('Unexpected output child name');
     const handle = await open(join(outputDirectory, name), 'wx');
     try { await handle.writeFile(bytes); await handle.sync(); }

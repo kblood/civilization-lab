@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://civilization-lab.invalid/schemas/species-atlas-starter-manifest-v3.schema.json",
+  "title": "Civ Species-to-Atlas starter manifest v3",
+  "description": "Closed v3 local-export manifest. Pins and false review boundaries are declarations; the exporter enforces cross-file equality and completion-marker publication.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "status", "compositionRecordSha256", "compositionDecisionId", "refinementSha256", "target", "anchor", "inputOriginalBytes", "outputArtifacts", "atlasImportFiles", "atlasPrerequisites", "verification", "effects", "completion"],
+  "properties": {
+    "version": {"const": "civ-species-atlas-starter-manifest-3"},
+    "status": {"const": "complete-local-export"},
+    "compositionRecordSha256": {"$ref": "#/$defs/digest"},
+    "compositionDecisionId": {"$ref": "#/$defs/identifier"},
+    "refinementSha256": {"$ref": "#/$defs/digest"},
+    "target": {"$ref": "#/$defs/target"},
+    "anchor": {"$ref": "#/$defs/anchor"},
+    "inputOriginalBytes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request", "compositionPacket", "speciesCompositionLedger", "annualBody"],
+      "properties": {
+        "request": {"$ref": "#/$defs/pin"},
+        "compositionPacket": {"$ref": "#/$defs/pin"},
+        "speciesCompositionLedger": {"$ref": "#/$defs/pin"},
+        "annualBody": {"$ref": "#/$defs/pin"}
+      }
+    },
+    "outputArtifacts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request.json", "species-composition-proposal.json", "input-species-composition-ledger.json", "species-bundle.json", "species-composition-ledger.json", "composition-source.json", "annual-body.json", "refinement.json", "atlas-envelope.json", "species-civilization-composition-review.zip"],
+      "properties": {
+        "request.json": {"$ref": "#/$defs/requestArtifact"},
+        "species-composition-proposal.json": {"$ref": "#/$defs/proposalArtifact"},
+        "input-species-composition-ledger.json": {"$ref": "#/$defs/inputLedgerArtifact"},
+        "species-bundle.json": {"$ref": "#/$defs/speciesBundleArtifact"},
+        "species-composition-ledger.json": {"$ref": "#/$defs/ledgerArtifact"},
+        "composition-source.json": {"$ref": "#/$defs/compositionArtifact"},
+        "annual-body.json": {"$ref": "#/$defs/annualArtifact"},
+        "refinement.json": {"$ref": "#/$defs/refinementArtifact"},
+        "atlas-envelope.json": {"$ref": "#/$defs/envelopeArtifact"},
+        "species-civilization-composition-review.zip": {"$ref": "#/$defs/packetArtifact"}
+      }
+    },
+    "atlasImportFiles": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "prefixItems": [
+        {"$ref": "#/$defs/ledgerImport"},
+        {"$ref": "#/$defs/compositionImport"},
+        {"$ref": "#/$defs/annualImport"},
+        {"$ref": "#/$defs/refinementImport"}
+      ],
+      "items": false
+    },
+    "atlasPrerequisites": {
+      "type": "object", "additionalProperties": false,
+      "required": ["originalAuthoringEnvelope", "baseAnnualSource", "selectedTarget"],
+      "properties": {
+        "originalAuthoringEnvelope": {"const": "atlas-envelope.json"},
+        "baseAnnualSource": {"const": "annual-body.json"},
+        "selectedTarget": {"const": "must-match-original-envelope-and-annual-import"}
+      }
+    },
+    "verification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["originalInputPinsComputed", "originalCompositionSourcePinMatched", "originalSpeciesBundlePinMatched", "originalAtlasEnvelopePinMatched", "originalAtlasEnvelopeBindingMatched", "speciesCompositionZipStructureReviewed", "speciesCompositionReceiptTrusted", "appendedLedgerBytePinComputed", "adoptionAndAnnualDeclarationContractsApplied", "speciesBundleDeclarationsReviewed", "speciesArtifactBytesVerified", "speciesApplicabilityVerified", "atlasEnvelopeReviewed", "atlasImportReview", "sourceAuthenticityVerified", "biologicalTruthVerified"],
+      "properties": {
+        "originalInputPinsComputed": {"const": true},
+        "originalCompositionSourcePinMatched": {"const": true},
+        "originalSpeciesBundlePinMatched": {"const": true},
+        "originalAtlasEnvelopePinMatched": {"const": true},
+        "originalAtlasEnvelopeBindingMatched": {"const": true},
+        "speciesCompositionZipStructureReviewed": {"const": true},
+        "speciesCompositionReceiptTrusted": {"const": false},
+        "appendedLedgerBytePinComputed": {"const": true},
+        "adoptionAndAnnualDeclarationContractsApplied": {"const": true},
+        "speciesBundleDeclarationsReviewed": {"const": false},
+        "speciesArtifactBytesVerified": {"const": false},
+        "speciesApplicabilityVerified": {"const": false},
+        "atlasEnvelopeReviewed": {"const": false},
+        "atlasImportReview": {"const": "not-performed"},
+        "sourceAuthenticityVerified": {"const": false},
+        "biologicalTruthVerified": {"const": false}
+      }
+    },
+    "effects": {
+      "type": "object", "additionalProperties": false,
+      "required": ["simulationRun", "simulationStateChanged", "populationStateChanged", "settlementResidentsCreated", "repositoriesSynchronized"],
+      "properties": {"simulationRun": {"const": false}, "simulationStateChanged": {"const": false}, "populationStateChanged": {"const": false}, "settlementResidentsCreated": {"const": false}, "repositoriesSynchronized": {"const": false}}
+    },
+    "completion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["marker", "publication", "pendingFile"],
+      "properties": {"marker": {"const": "manifest.json"}, "publication": {"const": "exclusive-hard-link-after-all-listed-files-flushed"}, "pendingFile": {"const": "starter-manifest.pending.json"}}
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[a-f0-9]{64}(?![\\s\\S])"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,255}(?![\\s\\S])"},
+    "lineageId": {"type": "string", "pattern": "^lin:[A-Za-z0-9_./:-]{0,124}(?![\\s\\S])"},
+    "boundedId": {"type": "string", "pattern": "^[A-Za-z0-9_./:-]{1,128}(?![\\s\\S])"},
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["domainId", "seed", "modelVersion", "inputBundleDigest", "manifestDigest", "recipeDigest", "resultDigest", "eventsDigest", "validation"],
+      "properties": {
+        "domainId": {"$ref": "#/$defs/boundedId"},
+        "seed": {"type": "string", "minLength": 1, "maxLength": 1024, "pattern": "\\S"},
+        "modelVersion": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "\\S"},
+        "inputBundleDigest": {"$ref": "#/$defs/digest"},
+        "manifestDigest": {"$ref": "#/$defs/digest"},
+        "recipeDigest": {"$ref": "#/$defs/digest"},
+        "resultDigest": {"$ref": "#/$defs/digest"},
+        "eventsDigest": {"$ref": "#/$defs/digest"},
+        "validation": {"const": "source-consistency-result-roots-and-event-digest; inspection-payloads-not-replayed"}
+      }
+    },
+    "atlasBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["universeSeed", "bodyAddress", "domainId", "labBody", "originNs", "fromYear", "untilYear", "labSystem", "sourceFixture", "sourceBody"],
+      "properties": {
+        "universeSeed": {"type": "string", "minLength": 1, "maxLength": 1024, "pattern": "\\S"},
+        "bodyAddress": {"type": "string", "minLength": 1, "maxLength": 1024, "pattern": "\\S"},
+        "domainId": {"$ref": "#/$defs/boundedId"},
+        "labBody": {"$ref": "#/$defs/boundedId"},
+        "originNs": {"type": "string", "pattern": "^(0|[1-9][0-9]{0,127})(?![\\s\\S])"},
+        "fromYear": {"type": "integer", "minimum": 0, "maximum": 2000000},
+        "untilYear": {"type": "integer", "minimum": 0, "maximum": 2000000},
+        "labSystem": {"$ref": "#/$defs/boundedId"},
+        "sourceFixture": {"type": "string", "minLength": 1, "maxLength": 1024, "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_./-]*\\.json(?![\\s\\S])"},
+        "sourceBody": {"$ref": "#/$defs/boundedId"}
+      }
+    },
+    "population": {
+      "type": "object", "additionalProperties": false,
+      "required": ["budget", "budgetBasis", "assignments", "unassigned"],
+      "properties": {
+        "budget": {"$ref": "#/$defs/count"},
+        "budgetBasis": {"const": "supplied-civilization-arc-total"},
+        "assignments": {
+          "type": "array", "maxItems": 1024,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["species", "count", "rationale"],
+            "properties": {
+              "species": {
+                "type": "object", "additionalProperties": false, "required": ["id", "revision"],
+                "properties": {"id": {"$ref": "#/$defs/identifier"}, "revision": {"type": "integer", "minimum": 1, "maximum": 9007199254740991}}
+              },
+              "count": {"$ref": "#/$defs/count"},
+              "rationale": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "\\S"}
+            }
+          }
+        },
+        "unassigned": {"$ref": "#/$defs/count"}
+      }
+    },
+    "count": {"type": "string", "pattern": "^(0|[1-9][0-9]{0,4095})(?![\\s\\S])"},
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["body", "arcId", "lineageId", "atlasBinding", "provenance"],
+      "properties": {
+        "body": {"$ref": "#/$defs/boundedId"},
+        "arcId": {"$ref": "#/$defs/boundedId"},
+        "lineageId": {"$ref": "#/$defs/lineageId"},
+        "atlasBinding": {"$ref": "#/$defs/atlasBinding"},
+        "provenance": {"$ref": "#/$defs/provenance"}
+      }
+    },
+    "anchor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["year", "effectiveNs", "population"],
+      "properties": {
+        "year": {"type": "integer", "minimum": 0, "maximum": 2000000},
+        "effectiveNs": {"type": "string", "pattern": "^(0|[1-9][0-9]{0,127})(?![\\s\\S])"},
+        "population": {"$ref": "#/$defs/population"}
+      }
+    },
+    "pin": {"type": "object", "additionalProperties": false, "required": ["sha256", "byteLength"], "properties": {"sha256": {"$ref": "#/$defs/digest"}, "byteLength": {"type": "integer", "minimum": 1, "maximum": 201326592}}},
+    "artifact": {"type": "object", "additionalProperties": false, "required": ["role", "sha256", "byteLength"], "properties": {"role": {"type": "string"}, "sha256": {"$ref": "#/$defs/digest"}, "byteLength": {"type": "integer", "minimum": 1, "maximum": 201326592}}},
+    "requestArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "original-starter-request"}, "byteLength": {"maximum": 1048576}}}]},
+    "proposalArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "original-species-composition-proposal"}, "byteLength": {"maximum": 1048576}}}]},
+    "inputLedgerArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "original-complete-pre-adoption-ledger"}, "byteLength": {"maximum": 33554432}}}]},
+    "speciesBundleArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "original-exact-species-bundle-optional-atlas-biology-companion"}, "byteLength": {"maximum": 4194304}}}]},
+    "ledgerArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "speciesCompositionLedger"}, "byteLength": {"maximum": 33554432}}}]},
+    "compositionArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "compositionSource"}, "byteLength": {"maximum": 16777216}}}]},
+    "annualArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "annualBody"}, "byteLength": {"maximum": 16777216}}}]},
+    "refinementArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "refinement"}, "byteLength": {"maximum": 33554432}}}]},
+    "envelopeArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "original-pinned-atlas-authoring-envelope"}, "byteLength": {"maximum": 1048576}}}]},
+    "packetArtifact": {"allOf": [{"$ref": "#/$defs/artifact"}, {"properties": {"role": {"const": "original-species-civilization-composition-review-packet"}, "byteLength": {"maximum": 57671680}}}]},
+    "atlasImport": {"type": "object", "additionalProperties": false, "required": ["file", "role", "sha256", "byteLength"], "properties": {"file": {"type": "string"}, "role": {"type": "string"}, "sha256": {"$ref": "#/$defs/digest"}, "byteLength": {"type": "integer", "minimum": 1, "maximum": 201326592}}},
+    "ledgerImport": {"allOf": [{"$ref": "#/$defs/atlasImport"}, {"properties": {"file": {"const": "species-composition-ledger.json"}, "role": {"const": "speciesCompositionLedger"}}}]},
+    "compositionImport": {"allOf": [{"$ref": "#/$defs/atlasImport"}, {"properties": {"file": {"const": "composition-source.json"}, "role": {"const": "compositionSource"}}}]},
+    "annualImport": {"allOf": [{"$ref": "#/$defs/atlasImport"}, {"properties": {"file": {"const": "annual-body.json"}, "role": {"const": "annualBody"}}}]},
+    "refinementImport": {"allOf": [{"$ref": "#/$defs/atlasImport"}, {"properties": {"file": {"const": "refinement.json"}, "role": {"const": "refinement"}}}]}
+  }
+}

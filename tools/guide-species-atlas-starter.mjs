@@ -1,24 +1,29 @@
-/** Guided v2 Species composition adoption and Atlas annual-count starter. */
+/** Guided v2/v3 Species composition adoption and Atlas annual-count starter. */
 import {mkdtemp, open, realpath, rm} from 'node:fs/promises';
 import {createInterface} from 'node:readline/promises';
 import {stdin, stdout} from 'node:process';
 import {tmpdir} from 'node:os';
 import {basename, dirname, join, resolve} from 'node:path';
 import {ANNUAL_SPECIES_POPULATION_POLICY} from '../src/annual-species-population-refinement.mjs';
+import {canonicalString} from '../src/canonical.mjs';
 import {inspectSpeciesCompositionAdoption} from '../src/species-composition-adoption.mjs';
 import {prepareSpeciesAtlasStarter, writeSpeciesAtlasStarter} from './export-species-atlas-starter.mjs';
 import {MIB, createInputReader, encodeJson, localPath, originalPin} from './population-decision-io.mjs';
+import {readSpeciesCompositionReviewZip, SPECIES_COMPOSITION_REVIEW_ZIP_LIMIT} from './species-composition-review-zip.mjs';
 
 const VERSION = 'civ-species-atlas-starter-request-2';
+const PACKET_VERSION = 'civ-species-atlas-starter-request-3';
 const HELP = `Usage: node tools/guide-species-atlas-starter.mjs [--proposal PATH] [--composition-source PATH] [--ledger PATH]
        [--annual-body PATH] [--species-bundle PATH] [--atlas-envelope PATH] [--output-dir NEW_DIRECTORY]
+       node tools/guide-species-atlas-starter.mjs --composition-packet PATH [--ledger PATH] [--annual-body PATH] [--output-dir NEW_DIRECTORY]
        node tools/guide-species-atlas-starter.mjs --help
 
 Prompts for omitted exact original source paths and an explicit adoption decision.
-The Species composition review ZIP is not a direct input: select its untouched
-composition-proposal.json, sources/species-bundle.json,
-sources/atlas-envelope.json and sources/civilization-observations.json members.
-Reviews the v2 envelope-pinned request and fixed annual refinement before asking
+The exact five-entry Species composition review ZIP can be supplied directly;
+the complete adoption ledger and annual source remain separate originals. The
+embedded review receipt is untrusted and is not a Civ adoption decision. Without
+--composition-packet, the guide supports the v2 four-member-file path.
+It reviews the envelope-pinned request and fixed annual refinement before asking
 for exact write confirmation. It reloads and recomputes every source and output
 pin before writing to a new directory with the existing exclusive completion
 manifest. No Species biology/asset admission, Atlas envelope acceptance or
@@ -28,6 +33,7 @@ See docs/species-atlas-starter.md.
 const ROLES = ['proposal', 'compositionSource', 'speciesCompositionLedger', 'annualBody', 'speciesBundle', 'atlasEnvelope'];
 const FLAGS = Object.freeze({proposal: '--proposal', compositionSource: '--composition-source', speciesCompositionLedger: '--ledger',
   annualBody: '--annual-body', speciesBundle: '--species-bundle', atlasEnvelope: '--atlas-envelope'});
+const PACKET_FLAG = '--composition-packet';
 const LIMITS = Object.freeze({proposal: MIB, compositionSource: 16 * MIB, speciesCompositionLedger: 32 * MIB,
   annualBody: 16 * MIB, speciesBundle: 4 * MIB, atlasEnvelope: MIB});
 const say = value => stdout.write(`${value}\n`), show = value => JSON.stringify(value, null, 2);
@@ -87,6 +93,23 @@ function samePrepared(a, b) {
     if (a.files[i].name !== b.files[i].name || !a.files[i].bytes.equals(b.files[i].bytes)) fail(`Fresh output differs at ${a.files[i].name}`);
   }
 }
+function assertPreparedOriginals(prepared, originals, packetMode) {
+  const manifest = JSON.parse(prepared.manifestBytes.toString('utf8'));
+  const samePin = (actual, expected, label) => {
+    if (!actual || actual.sha256 !== expected.sha256 || actual.byteLength !== expected.byteLength) fail(`${label} changed after the author reviewed it`);
+  };
+  const artifactPins = manifest.outputArtifacts;
+  for (const [role, filename] of [['proposal', 'species-composition-proposal.json'], ['compositionSource', 'composition-source.json'],
+    ['speciesBundle', 'species-bundle.json'], ['atlasEnvelope', 'atlas-envelope.json']]) samePin(artifactPins[filename], originals[role].pin, role);
+  if (packetMode) {
+    samePin(manifest.inputOriginalBytes.compositionPacket, originals.compositionPacket.pin, 'composition ZIP');
+    samePin(manifest.inputOriginalBytes.speciesCompositionLedger, originals.speciesCompositionLedger.pin, 'complete Civ ledger');
+    samePin(manifest.inputOriginalBytes.annualBody, originals.annualBody.pin, 'annual source');
+    samePin(artifactPins['species-civilization-composition-review.zip'], originals.compositionPacket.pin, 'retained composition ZIP');
+  } else {
+    for (const role of ROLES) samePin(manifest.inputOriginalBytes[role], originals[role].pin, role);
+  }
+}
 async function removePrivateRequestDirectory(directory) {
   const expectedParent = resolve(tmpdir()), expectedPrefix = 'civ-species-atlas-starter-';
   const actual = await realpath(directory);
@@ -98,27 +121,54 @@ async function main(argv) {
   const args = new Map();
   for (let at = 0; at < argv.length; at++) {
     const flag = argv[at], value = argv[++at];
-    if (![...Object.values(FLAGS), '--output-dir'].includes(flag) || args.has(flag) || value === undefined || value.startsWith('--')) fail('Expected unique supported path flags and values');
+    if (![...Object.values(FLAGS), PACKET_FLAG, '--output-dir'].includes(flag) || args.has(flag) || value === undefined || value.startsWith('--')) fail('Expected unique supported path flags and values');
     args.set(flag, value);
   }
   const cwd = process.cwd(), chat = conversation(); let privateDirectory;
   try {
-    say('Species → Atlas starter guide (request v2). Enter :cancel at any prompt to stop.');
+    const legacyFlags = Object.values(FLAGS).filter(flag => !['--ledger', '--annual-body'].includes(flag));
+    if (args.has(PACKET_FLAG) && legacyFlags.some(flag => args.has(flag))) fail('--composition-packet cannot be combined with individual proposal/source flags');
+    say('Species → Atlas starter guide (request v2 or v3). Enter :cancel at any prompt to stop.');
     say('Supply the exact complete originals. The guide never fetches files or invents an empty history, author, rationale, replacement or target.');
-    say('The Species composition ZIP is not read directly. Select its untouched composition-proposal.json and sources/species-bundle.json, sources/atlas-envelope.json and sources/civilization-observations.json members as four separate files. The ZIP review receipt is not a Civ adoption decision.');
-    const paths = Object.create(null);
-    for (const role of ROLES) {
-      const flag = FLAGS[role];
-      paths[role] = args.has(flag) ? localPath(args.get(flag), cwd, role)
-        : await answerValid(chat, `${role} original JSON path`, value => localPath(value, cwd, role));
+    const read = createInputReader(), originals = Object.create(null), paths = Object.create(null);
+    const packetAnswer = args.has(PACKET_FLAG) ? args.get(PACKET_FLAG)
+      : await chat.ask('Species five-entry composition ZIP path (press Enter to select its four JSON members individually)');
+    const packetMode = args.has(PACKET_FLAG) || packetAnswer.trim().length > 0;
+    if (packetMode) {
+      paths.compositionPacket = localPath(packetAnswer, cwd, 'compositionPacket');
+      paths.speciesCompositionLedger = args.has('--ledger') ? localPath(args.get('--ledger'), cwd, 'speciesCompositionLedger')
+        : await answerValid(chat, 'Complete current Civ adoption ledger JSON path', value => localPath(value, cwd, 'speciesCompositionLedger'));
+      paths.annualBody = args.has('--annual-body') ? localPath(args.get('--annual-body'), cwd, 'annualBody')
+        : await answerValid(chat, 'Annual Civ source JSON path', value => localPath(value, cwd, 'annualBody'));
+      originals.compositionPacket = await read.readBinary(paths.compositionPacket, SPECIES_COMPOSITION_REVIEW_ZIP_LIMIT, 'compositionPacket');
+      const packet = readSpeciesCompositionReviewZip(originals.compositionPacket.bytes);
+      for (const [role, key] of [['proposal', 'proposal'], ['compositionSource', 'compositionSource'], ['speciesBundle', 'speciesBundle'], ['atlasEnvelope', 'atlasEnvelope']]) {
+        originals[role] = {...packet.members[key], pin: originalPin(packet.members[key].bytes), realPath: originals.compositionPacket.realPath};
+      }
+      for (const role of ['speciesCompositionLedger', 'annualBody']) originals[role] = await read(paths[role], LIMITS[role], role);
+    } else {
+      for (const role of ROLES) {
+        const flag = FLAGS[role];
+        paths[role] = args.has(flag) ? localPath(args.get(flag), cwd, role)
+          : await answerValid(chat, `${role} original JSON path`, value => localPath(value, cwd, role));
+      }
+      for (const role of ROLES) originals[role] = await read(paths[role], LIMITS[role], role, role === 'speciesBundle' ? 'bundle' : 'strict');
     }
-
-    const read = createInputReader(), originals = Object.create(null);
-    for (const role of ROLES) originals[role] = await read(paths[role], LIMITS[role], role, role === 'speciesBundle' ? 'bundle' : 'strict');
-    const inspected = inspectSpeciesCompositionAdoption({proposal: originals.proposal.parsed,
+    const proposal = originals.proposal.parsed;
+    if (originals.compositionSource.pin.sha256 !== proposal?.civilization?.observationsSha256) fail('Composition source bytes do not match the proposal pin');
+    if (originals.speciesBundle.pin.sha256 !== proposal?.speciesBundle?.sha256) fail('Species bundle bytes do not match the proposal pin');
+    if (originals.speciesBundle.parsed?.version !== 'species-authoring-bundle-1') fail('Species bundle has an unsupported version');
+    const inspected = inspectSpeciesCompositionAdoption({proposal,
       civilization: originals.compositionSource.parsed, proposalPin: originals.proposal.pin, ledger: originals.speciesCompositionLedger.parsed});
+    if (originals.atlasEnvelope.pin.sha256 !== inspected.proposal.atlas.envelopeSha256) fail('Atlas envelope bytes do not match the proposal pin');
+    if (originals.atlasEnvelope.parsed?.version !== 'atlas-civilization-authoring-envelope-1') fail('Atlas envelope has an unsupported version');
+    if (canonicalString(originals.atlasEnvelope.parsed.binding) !== canonicalString(inspected.proposal.atlas.binding)) fail('Atlas envelope binding differs from the validated proposal');
     say('Exact original file pins:');
-    for (const role of ROLES) say(`${role}: ${show({path: paths[role], realPath: originals[role].realPath, ...originals[role].pin})}`);
+    if (packetMode) {
+      say(`compositionPacket: ${show({path: paths.compositionPacket, realPath: originals.compositionPacket.realPath, ...originals.compositionPacket.pin})}`);
+      for (const role of ['proposal', 'compositionSource', 'speciesBundle', 'atlasEnvelope']) say(`packet member ${role}: ${show({path: paths.compositionPacket, member: role, ...originals[role].pin})}`);
+      for (const role of ['speciesCompositionLedger', 'annualBody']) say(`${role}: ${show({path: paths[role], realPath: originals[role].realPath, ...originals[role].pin})}`);
+    } else for (const role of ROLES) say(`${role}: ${show({path: paths[role], realPath: originals[role].realPath, ...originals[role].pin})}`);
     say('Exact proposal target and authored composition:');
     say(show({proposal: {id: inspected.proposal.id, revision: inspected.proposal.revision}, observationKey: inspected.observationKey,
       observation: inspected.observation, temporal: inspected.proposal.temporal, atlas: inspected.proposal.atlas,
@@ -151,17 +201,18 @@ async function main(argv) {
     });
     const outputDirectory = args.has('--output-dir') ? localPath(args.get('--output-dir'), cwd, '--output-dir')
       : await answerValid(chat, 'New output directory (its parent must already exist)', value => localPath(value, cwd, '--output-dir'));
-    const request = {version: VERSION, sources: paths, decision, policy: ANNUAL_SPECIES_POPULATION_POLICY};
-    const requestBytes = encodeJson(request, 'guided v2 starter request', MIB);
+    const request = {version: packetMode ? PACKET_VERSION : VERSION, sources: paths, decision, policy: ANNUAL_SPECIES_POPULATION_POLICY};
+    const requestBytes = encodeJson(request, `guided v${packetMode ? '3' : '2'} starter request`, MIB);
     privateDirectory = await mkdtemp(join(resolve(tmpdir()), 'civ-species-atlas-starter-'));
     const requestPath = join(privateDirectory, 'request.json'), handle = await open(requestPath, 'wx');
     try { await handle.writeFile(requestBytes); await handle.sync(); } finally { await handle.close(); }
 
     const prepared = await prepareSpeciesAtlasStarter(requestPath);
+    assertPreparedOriginals(prepared, originals, packetMode);
     const refinement = prepared.refinement, derivedRows = refinement.rows.filter(row => row.status === 'derived');
     const unknownRows = refinement.rows.filter(row => row.status === 'unknown');
     const manifest = JSON.parse(prepared.manifestBytes.toString('utf8'));
-    say('Exact v2 envelope correspondence, adoption and fixed-policy annual refinement:');
+    say(`Exact v${packetMode ? '3 ZIP' : '2 source'} envelope correspondence, adoption and fixed-policy annual refinement:`);
     say(show({decisionRecord: {id: prepared.adoption.record.decision.id, recordSha256: prepared.adoption.record.recordSha256,
         observationKey: prepared.adoption.record.observationKey, population: populationPreview(prepared.adoption.record.proposal.population)},
       ledger: {recordCount: prepared.adoption.ledger.records.length, activeDecisionCount: prepared.adoption.active.length},
@@ -173,10 +224,11 @@ async function main(argv) {
       atlasImportFiles: manifest.atlasImportFiles, atlasPrerequisites: manifest.atlasPrerequisites,
       outputDirectory}));
     say('Atlas still must independently review the original envelope/body, then separately review the four annual-count files. Species biology, asset bytes, provenance rights and Atlas admission remain owner-specific reviews.');
-    const confirmation = await chat.ask('Type exact write to reload all six originals, recompute this complete starter, and write');
+    const confirmation = await chat.ask(`Type exact write to reload the ${packetMode ? 'composition ZIP, ledger and annual source' : 'six original files'}, recompute this complete starter, and write`);
     if (confirmation !== 'write') throw new Cancelled('Write was not confirmed');
     chat.assertActive();
     const fresh = await prepareSpeciesAtlasStarter(requestPath);
+    assertPreparedOriginals(fresh, originals, packetMode);
     samePrepared(prepared, fresh);
     chat.assertActive();
     await writeSpeciesAtlasStarter(outputDirectory, fresh);

@@ -38,10 +38,15 @@ Atlas inputs and existing v1 request/output/demo behavior are preserved.
 The v2 addition has static source inspection evidence only.
 
 When the original Atlas envelope is available, use the Civ-owned
-[guided v2 starter](docs/species-atlas-starter.md#guided-v2-export-without-hand-authoring-request-json)
-to review the six source files and author the explicit adoption without
-hand-writing request JSON. It independently repeats source preparation before
-writing, but does not perform Atlas admission or Species biology/asset review.
+[guided v2/v3 starter](docs/species-atlas-starter.md#guided-v3-export-from-the-species-composition-zip)
+to review the source packet and author the explicit adoption without
+hand-writing request JSON. V3 consumes Species' exact five-entry composition
+ZIP directly; its receipt remains untrusted, and the guide independently
+repeats source preparation before writing. It does not perform Atlas admission
+or Species biology/asset review.
+The closed v3 [request](schemas/species-atlas-starter-request-v3.schema.json)
+and [output manifest](schemas/species-atlas-starter-manifest-v3.schema.json)
+schemas define those serialized boundaries.
 
 The [guided annual species-count export](docs/annual-species-population-refinement.md#guided-annual-count-export)
 lists active anchors and their exact partitions, marks zero budgets ineligible

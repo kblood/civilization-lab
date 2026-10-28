@@ -9,9 +9,10 @@ no new population/biology schema, simulation run, residents or physical placemen
 The v1 starter retains all five supplied source originals, the original request,
 the newly appended complete ledger, and the annual result in one new directory.
 Opt-in v2 also retains the exact original Atlas authoring envelope pinned by the
-proposal. V1 requests, output manifest and the captured fictional demonstration
-keep their existing behavior; adding an envelope to a v1 request is an error.
-Both manifests identify exactly four annual-count files for Atlas. “Source-complete” here
+proposal. V3 instead accepts the exact five-entry Species composition ZIP plus
+the complete adoption ledger and annual source, retaining the ZIP and extracted
+source artifacts. V1/v2 request and output behavior remain unchanged.
+All three manifests identify exactly four annual-count files for Atlas. “Source-complete” here
 means these listed JSON sources are retained; it does not mean Species asset
 closure, a reviewed Atlas envelope, authentic history or consumer acceptance.
 
@@ -22,7 +23,9 @@ annual document it pins, the complete current composition-adoption ledger,
 the complete annual source to refine, and the original Species `bundle.json`
 pinned by the proposal. Export/download those original bytes from their owners;
 do not replace them with reformatted JSON, a single selected bundle member,
-ZIP bytes, hashes copied from a screenshot or a receipt.
+unrelated ZIP bytes, hashes copied from a screenshot or a receipt. The v3
+archive is accepted only as the exact Species composition review ZIP described
+below.
 
 Create a v1 request with exactly these root/source fields:
 
@@ -124,6 +127,88 @@ annual body in Civilization observation, then independently reviews exactly the
 four annual-count files listed in `manifest.json`. Species bundle/GLB review
 remains a separate owner-specific workflow.
 
+## Guided v3 export from the Species composition ZIP
+
+When the original five-entry Species composition archive is available, the
+guide can consume it directly and avoid manually extracting four JSON files:
+
+```powershell
+node tools/guide-species-atlas-starter.mjs --composition-packet path\to\species-civilization-composition-review.zip
+```
+
+An equivalent request for the low-level exporter uses this closed v3 source
+shape; its paths resolve relative to the request file:
+
+See the standalone [v3 request schema](../schemas/species-atlas-starter-request-v3.schema.json)
+for the closed JSON shape. Runtime path, byte, ZIP, source-pin and domain
+validation still happens in Civ's exporter.
+
+```json
+{
+  "version": "civ-species-atlas-starter-request-3",
+  "sources": {
+    "compositionPacket": "inputs/species-civilization-composition-review.zip",
+    "speciesCompositionLedger": "inputs/complete-current-composition-ledger.json",
+    "annualBody": "inputs/original-annual-observations.json"
+  },
+  "decision": {
+    "id": "decision:my-explicit-species-choice",
+    "author": "REPLACE WITH THE ACTUAL SCENARIO AUTHOR",
+    "policy": {"id": "policy:my-authored-composition-decision", "version": "1", "rationale": "REPLACE WITH THE AUTHOR'S ACTUAL POLICY RATIONALE"},
+    "rationale": "REPLACE WITH THE AUTHOR'S ACTUAL DECISION RATIONALE",
+    "choice": "choose",
+    "replaces": null
+  },
+  "policy": "fixed-anchor-largest-remainder-contiguous-forward-1"
+}
+```
+
+Replace every decision placeholder with an actual authored value and use
+`replace` plus the exact current decision ID/digest when a choice is already
+active. The ZIP supplies the original proposal, three listed source JSONs and
+Species receipt; v3 does not read receipt claims as authority.
+
+V3 prompts separately for the complete current Civ adoption ledger and annual
+source. It accepts the exact five-entry format documented by Species Lab's
+[composition ZIP contract](../../species-lab/docs/civilization-composition.md#reopen-and-edit-guards)
+and [receipt schema](../../species-lab/schemas/species-civilization-composition-packet-review-v1.schema.json).
+The ZIP uses stored entries with matching local/central headers and CRCs; it is
+bounded to 55 MiB and rejects compression, encryption, comments, ZIP64, extra
+data and overlap. Its exact member paths and limits are:
+
+| ZIP member | Maximum | Civ handling |
+| --- | ---: | --- |
+| `composition-proposal.json` | 1 MiB | Strict bounded JSON; checked against actual source pins and the explicit adoption |
+| `composition-review.json` | 32 MiB | Bounded UTF-8, unique-key JSON and exact format version; review claims are not trusted |
+| `sources/atlas-envelope.json` | 1 MiB | Strict bounded JSON; exact bytes/version/full binding correspondence checked |
+| `sources/civilization-observations.json` | 16 MiB | Strict bounded JSON; exact proposal pin and annual refinement input |
+| `sources/species-bundle.json` | 4 MiB | Species-aware bounded JSON; exact proposal pin and bundle version checked |
+
+The interactive guide checks the composition, bundle and envelope pins, bundle
+and envelope versions, and complete envelope binding before asking the author
+for a choose/replace decision and rationale. The request exporter repeats these
+checks after that decision and the guide reloads them again before writing.
+
+The proposal and three source JSON members are checked for valid UTF-8, unique
+keys and bounded structure. The receipt's review claims are not used or trusted;
+it does not create Civ adoption. Civ independently checks the proposal's Species bundle
+and Atlas envelope pins, validates the requested
+choose/replace decision, and refines the supplied annual source under the same
+fixed policy as v2.
+
+The output keeps the exact original ZIP, exact original proposal, three source
+documents, both pre- and post-adoption ledgers, annual source, refinement and
+the pinned Atlas envelope. Manifest v3 records the ZIP input pin and explicitly
+states that the Species review receipt was not trusted. V3 output is capped at
+192 MiB to retain both the original ZIP and all existing starter artifacts;
+v1/v2 retain their existing 160 MiB output cap. Atlas's established
+four annual-count inputs and independent envelope/body review are unchanged.
+See the closed [v3 manifest schema](../schemas/species-atlas-starter-manifest-v3.schema.json);
+it captures the target body/arc/lineage, Atlas binding, Civ provenance and the
+exact adopted species/count anchor. Cross-file hash equality and
+completion-marker publication remain runtime concerns.
+V1/v2 request contracts and the guided v2 route remain available.
+
 The fixed annual policy string is required separately from the decision's
 authored policy/rationale. Its weights include explicit unassigned counts,
 largest-remainder BigInt apportionment, and only the contiguous supplied annual
@@ -141,9 +226,9 @@ node tools/export-species-atlas-starter.mjs --request starter-request.json --out
 The [synthetic one-sample demonstration](../examples/species-atlas-starter/README.md)
 includes an explicit request and one captured output packet. It documents its
 source pins and limits; its fictional Atlas binding is not an accepted Atlas
-target and the example is not an Atlas import test. The guided v2 route above is
+target and the example is not an Atlas import test. The guided v2/v3 routes above are
 the normal operator path when an exact original envelope is available; the
-request-based CLI remains available for explicit v1/v2 automation.
+request-based CLI remains available for explicit v1/v2/v3 automation.
 
 The output parent directory must already exist; the target must be new. Relative
 source paths resolve from the resolved original request file's directory.
@@ -185,7 +270,8 @@ first output-directory creation. Supplied files remain unchanged.
 | `species-composition-proposal.json` | Exact original Species composition proposal |
 | `input-species-composition-ledger.json` | Exact original complete history before this adoption |
 | `species-bundle.json` | Exact original pinned Species JSON; optional Atlas biology companion |
-| `atlas-envelope.json` | **V2 only:** exact original pinned Atlas envelope, role `original-pinned-atlas-authoring-envelope`; for the earlier Civilization observation import |
+| `atlas-envelope.json` | **V2/V3:** exact original pinned Atlas envelope, role `original-pinned-atlas-authoring-envelope`; for the earlier Civilization observation import |
+| `species-civilization-composition-review.zip` | **V3 only:** exact original five-entry Species packet, retained byte-for-byte |
 | `species-composition-ledger.json` | New canonical complete history including the explicit decision; **Atlas input** |
 | `composition-source.json` | Exact original complete source pinned by the adoption; **Atlas input** |
 | `annual-body.json` | Exact original complete annual source refined here; **Atlas input** |
@@ -194,24 +280,26 @@ first output-directory creation. Supplied files remain unchanged.
 
 First load the original Atlas authoring envelope and this
 exact `annual-body.json` in the intended planet's Civilization observation
-panel. For v1, obtain that separately retained envelope; for v2, use the exact
+panel. For v1, obtain that separately retained envelope; for v2/v3, use the exact
 `atlas-envelope.json` retained in this packet. The proposal's original
 envelope/target must match. V2 loads its bytes for correspondence only; Atlas
 must independently review the envelope and resolve the selected planet.
 
-V1 emits `civ-species-atlas-starter-manifest-1`; v2 emits
-`civ-species-atlas-starter-manifest-2`. V2 includes the envelope pin under
-`inputOriginalBytes.atlasEnvelope`, its retained artifact role/hash/length, and
+V1 emits `civ-species-atlas-starter-manifest-1`; v2/v3 emit their corresponding
+versioned manifests. V2 includes the envelope pin under
+`inputOriginalBytes.atlasEnvelope`. V3 records the input ZIP pin under
+`inputOriginalBytes.compositionPacket`; its retained envelope and ZIP each have
+an output artifact role/hash/length. Both set
 `atlasPrerequisites.originalAuthoringEnvelope: "atlas-envelope.json"`.
-Its `originalAtlasEnvelopePinMatched` and
+V2/V3 `originalAtlasEnvelopePinMatched` and
 `originalAtlasEnvelopeBindingMatched` flags are true, while
 `atlasEnvelopeReviewed` remains false and `atlasImportReview` remains
 `not-performed`. Neither pin matching nor binding equality claims Atlas acceptance.
 
 Then, in **Årlige species-counts**, select exactly the four marked Atlas inputs
 together, with their filenames unchanged. Select no request, original input
-ledger, proposal, bundle, envelope or manifest in that four-file picker. Both
-manifest versions keep `atlasImportFiles` at exactly the same four annual
+ledger, proposal, bundle, envelope, ZIP or manifest in that four-file picker.
+All three manifest versions keep `atlasImportFiles` at exactly the same four annual
 inputs. Atlas independently recomputes/reviews the import. Its existing
 retained-source and target budgets
 can still reject an export; the manifest explicitly says Atlas import review
@@ -253,11 +341,12 @@ or power failure is not established by this source-only implementation.
 | Original composition / annual source | 16 MiB each |
 | Original complete adoption ledger | 32 MiB |
 | Original Species bundle | 4 MiB |
-| Original Atlas envelope (v2 only) | 1 MiB |
-| Existing shared input reader budget | 192 MiB across all role reads; v1 caps total 70 MiB including request, v2 caps total 71 MiB including request (six source roles alone total 70 MiB) |
+| Original Atlas envelope (v2/v3) | 1 MiB |
+| Original Species composition ZIP (v3) | 55 MiB |
+| Existing shared input reader budget | 192 MiB across all role reads; v1 caps total 70 MiB including request, v2 caps total 71 MiB including request, v3 caps total 104 MiB including request |
 | New canonical ledger / refinement | 32 MiB each, plus their existing contract budgets |
 | Encoded manifest | 1 MiB |
-| Composed data files plus final manifest | 160 MiB |
+| Composed data files plus final manifest | 160 MiB for v1/v2; 192 MiB for v3 |
 
 All original paths are captured through the existing reader; no history or
 source-file lock is acquired. Later external source changes do not alter the

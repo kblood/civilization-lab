@@ -168,6 +168,21 @@ request exporter through its existing exclusive completion writer. It does not
 claim Species asset admission, Atlas acceptance or simulation effects; see the
 [full starter and handoff contract](species-atlas-starter.md).
 
+### Species-to-Atlas starter v3 from the composition ZIP
+
+```powershell
+node tools/guide-species-atlas-starter.mjs --composition-packet path\to\species-civilization-composition-review.zip
+```
+
+The v3 guide reads the exact five-entry Species ZIP directly, then prompts for
+the complete current Civ adoption ledger and annual source. The archive's
+`composition-review.json` is parsed as untrusted data and never substitutes
+for an explicit Civ choose/replace decision. The ZIP is retained byte-for-byte
+in the output alongside the extracted original sources and their pins. V3
+keeps the same independent Atlas envelope and four-file annual-count review
+boundaries; the bounded ZIP contract is documented in
+[the full starter guide](species-atlas-starter.md#guided-v3-export-from-the-species-composition-zip).
+
 ### Residents
 
 Use `mode: "residents"`, the three source filenames from the table, and the same

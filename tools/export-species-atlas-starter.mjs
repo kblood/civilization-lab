@@ -7,12 +7,16 @@ import {adoptSpeciesComposition} from '../src/species-composition-adoption.mjs';
 import {ANNUAL_SPECIES_POPULATION_POLICY, refineAnnualSpeciesPopulation} from '../src/annual-species-population-refinement.mjs';
 import {canonicalString} from '../src/canonical.mjs';
 import {MIB, createInputReader, encodeJson, localPath, originalPin, writeNewDirectory} from './population-decision-io.mjs';
+import {readSpeciesCompositionReviewZip, SPECIES_COMPOSITION_REVIEW_ZIP_LIMIT} from './species-composition-review-zip.mjs';
 
 const VERSION = 'civ-species-atlas-starter-request-1';
 const ENVELOPE_VERSION = 'civ-species-atlas-starter-request-2';
+const PACKET_VERSION = 'civ-species-atlas-starter-request-3';
 const LIMITS = Object.freeze({proposal: MIB, compositionSource: 16 * MIB, speciesCompositionLedger: 32 * MIB, annualBody: 16 * MIB, speciesBundle: 4 * MIB});
 const ENVELOPE_LIMITS = Object.freeze({...LIMITS, atlasEnvelope: MIB});
+const PACKET_LIMITS = Object.freeze({compositionPacket: SPECIES_COMPOSITION_REVIEW_ZIP_LIMIT, speciesCompositionLedger: 32 * MIB, annualBody: 16 * MIB});
 const MAX_OUTPUT_BYTES = 160 * MIB;
+const MAX_PACKET_OUTPUT_BYTES = 192 * MIB;
 const PENDING_MANIFEST = 'starter-manifest.pending.json';
 const HELP = `Usage: node tools/export-species-atlas-starter.mjs --request PATH --output-dir NEW_DIRECTORY
        node tools/export-species-atlas-starter.mjs --help
@@ -20,12 +24,15 @@ const HELP = `Usage: node tools/export-species-atlas-starter.mjs --request PATH 
 Explicitly adopt one original Species composition proposal and export its annual
 fixed-policy counts through the existing Civ contracts. Request v1 requires five
 original sources; opt-in v2 also requires the exact pinned original atlasEnvelope.
-Versions: civ-species-atlas-starter-request-1 / civ-species-atlas-starter-request-2.
+Versions: civ-species-atlas-starter-request-1 / civ-species-atlas-starter-request-2 /
+civ-species-atlas-starter-request-3. V3 accepts the exact five-entry Species composition review ZIP directly, plus
+the complete Civ adoption ledger and annual source; its receipt remains untrusted.
 The v2 envelope cap is 1 MiB; request plus source role caps total 71 MiB.
 The complete current adoption ledger, author decision and fixed policy are explicit.
 Writes the four Atlas import files, original request/proposal/input ledger/Species
 bundle, and manifest.json published last. V2 retains atlas-envelope.json for the
 earlier Civilization observation import, separately from the four annual inputs.
+V3 retains the original ZIP plus its source files and allows up to 192 MiB output.
 V2 checks envelope byte pin/version/full binding correspondence only; no Atlas
 address/envelope/import review or simulation runs. V1 output remains unchanged.
 The output parent must exist; target directory must be new. Relative source paths
@@ -49,15 +56,31 @@ function argsFor(argv) {
 export async function prepareSpeciesAtlasStarter(requestPath) {
   const read = createInputReader(), requestInput = await read(requestPath, MIB, 'starter request'), request = requestInput.parsed;
   closed(request, ['version', 'sources', 'decision', 'policy'], 'starter request');
-  if (![VERSION, ENVELOPE_VERSION].includes(request.version)) fail('Unsupported starter request version');
+  if (![VERSION, ENVELOPE_VERSION, PACKET_VERSION].includes(request.version)) fail('Unsupported starter request version');
   const withEnvelope = request.version === ENVELOPE_VERSION;
-  const limits = withEnvelope ? ENVELOPE_LIMITS : LIMITS;
+  const withPacket = request.version === PACKET_VERSION;
+  const limits = withPacket ? PACKET_LIMITS : withEnvelope ? ENVELOPE_LIMITS : LIMITS;
   if (request.policy !== ANNUAL_SPECIES_POPULATION_POLICY) fail('Supply the explicit fixed-anchor-largest-remainder-contiguous-forward-1 policy');
   closed(request.sources, Object.keys(limits), 'starter sources');
   const inputs = Object.create(null);
-  for (const [role, maximum] of Object.entries(limits)) {
-    const path = localPath(request.sources[role], dirname(requestInput.realPath), role);
-    inputs[role] = await read(path, maximum, role, role === 'speciesBundle' ? 'bundle' : 'strict');
+  if (withPacket) {
+    const packetPath = localPath(request.sources.compositionPacket, dirname(requestInput.realPath), 'compositionPacket');
+    inputs.compositionPacket = await read.readBinary(packetPath, SPECIES_COMPOSITION_REVIEW_ZIP_LIMIT, 'compositionPacket');
+    const packet = readSpeciesCompositionReviewZip(inputs.compositionPacket.bytes);
+    const member = role => ({...packet.members[role], pin: originalPin(packet.members[role].bytes), realPath: inputs.compositionPacket.realPath});
+    inputs.proposal = member('proposal');
+    inputs.compositionSource = member('compositionSource');
+    inputs.speciesBundle = member('speciesBundle');
+    inputs.atlasEnvelope = member('atlasEnvelope');
+    for (const role of ['speciesCompositionLedger', 'annualBody']) {
+      const path = localPath(request.sources[role], dirname(requestInput.realPath), role);
+      inputs[role] = await read(path, PACKET_LIMITS[role], role, 'strict');
+    }
+  } else {
+    for (const [role, maximum] of Object.entries(limits)) {
+      const path = localPath(request.sources[role], dirname(requestInput.realPath), role);
+      inputs[role] = await read(path, maximum, role, role === 'speciesBundle' ? 'bundle' : 'strict');
+    }
   }
   const proposal = inputs.proposal.parsed;
   if (inputs.compositionSource.pin.sha256 !== proposal?.civilization?.observationsSha256) fail('Original composition source bytes differ from proposal.civilization.observationsSha256');
@@ -67,7 +90,7 @@ export async function prepareSpeciesAtlasStarter(requestPath) {
   if (inputs.speciesBundle.parsed?.version !== 'species-authoring-bundle-1') fail('The exact pinned Species source must identify species-authoring-bundle-1');
   const adoption = adoptSpeciesComposition({proposal, civilization: inputs.compositionSource.parsed,
     proposalPin: inputs.proposal.pin, decision: request.decision, ledger: inputs.speciesCompositionLedger.parsed});
-  if (withEnvelope) {
+  if (withEnvelope || withPacket) {
     const envelope = inputs.atlasEnvelope;
     // Compare against the proposal only after the existing adoption contract has
     // validated its complete binding. This establishes correspondence, not an
@@ -95,24 +118,31 @@ export async function prepareSpeciesAtlasStarter(requestPath) {
     {name: 'annual-body.json', role: 'annualBody', bytes: inputs.annualBody.bytes},
     {name: 'refinement.json', role: 'refinement', bytes: refinementBytes},
   ];
-  if (withEnvelope) files.push({name: 'atlas-envelope.json', role: 'original-pinned-atlas-authoring-envelope', bytes: inputs.atlasEnvelope.bytes});
+  if (withEnvelope || withPacket) files.push({name: 'atlas-envelope.json', role: 'original-pinned-atlas-authoring-envelope', bytes: inputs.atlasEnvelope.bytes});
+  if (withPacket) files.push({name: 'species-civilization-composition-review.zip', role: 'original-species-civilization-composition-review-packet', bytes: inputs.compositionPacket.bytes});
   const outputArtifacts = Object.fromEntries(files.map(file => [file.name, {role: file.role, ...originalPin(file.bytes)}]));
-  const manifest = {version: withEnvelope ? 'civ-species-atlas-starter-manifest-2' : 'civ-species-atlas-starter-manifest-1', status: 'complete-local-export',
+  const inputOriginalBytes = withPacket
+    ? {request: requestInput.pin, compositionPacket: inputs.compositionPacket.pin,
+      speciesCompositionLedger: inputs.speciesCompositionLedger.pin, annualBody: inputs.annualBody.pin}
+    : {request: requestInput.pin, ...Object.fromEntries(Object.entries(inputs).map(([role, input]) => [role, input.pin]))};
+  const manifest = {version: withPacket ? 'civ-species-atlas-starter-manifest-3' : withEnvelope ? 'civ-species-atlas-starter-manifest-2' : 'civ-species-atlas-starter-manifest-1', status: 'complete-local-export',
     compositionRecordSha256: adoption.record.recordSha256, compositionDecisionId: adoption.record.decision.id,
     refinementSha256: refinement.refinementSha256, target: refinement.target, anchor: refinement.anchor,
-    inputOriginalBytes: {request: requestInput.pin, ...Object.fromEntries(Object.entries(inputs).map(([role, input]) => [role, input.pin]))},
+    inputOriginalBytes,
     outputArtifacts,
     atlasImportFiles: files.filter(file => ['speciesCompositionLedger', 'compositionSource', 'annualBody', 'refinement'].includes(file.role)).map(file => ({file: file.name, ...outputArtifacts[file.name]})),
-    atlasPrerequisites: {originalAuthoringEnvelope: withEnvelope ? 'atlas-envelope.json' : 'separately-required-not-supplied', baseAnnualSource: 'annual-body.json', selectedTarget: 'must-match-original-envelope-and-annual-import'},
+    atlasPrerequisites: {originalAuthoringEnvelope: withEnvelope || withPacket ? 'atlas-envelope.json' : 'separately-required-not-supplied', baseAnnualSource: 'annual-body.json', selectedTarget: 'must-match-original-envelope-and-annual-import'},
     verification: {originalInputPinsComputed: true, originalCompositionSourcePinMatched: true, originalSpeciesBundlePinMatched: true,
-      ...(withEnvelope ? {originalAtlasEnvelopePinMatched: true, originalAtlasEnvelopeBindingMatched: true} : {}),
+      ...(withEnvelope || withPacket ? {originalAtlasEnvelopePinMatched: true, originalAtlasEnvelopeBindingMatched: true} : {}),
+      ...(withPacket ? {speciesCompositionZipStructureReviewed: true, speciesCompositionReceiptTrusted: false} : {}),
       appendedLedgerBytePinComputed: true, adoptionAndAnnualDeclarationContractsApplied: true,
       speciesBundleDeclarationsReviewed: false, speciesArtifactBytesVerified: false, speciesApplicabilityVerified: false,
       atlasEnvelopeReviewed: false, atlasImportReview: 'not-performed', sourceAuthenticityVerified: false, biologicalTruthVerified: false},
     effects: {simulationRun: false, simulationStateChanged: false, populationStateChanged: false, settlementResidentsCreated: false, repositoriesSynchronized: false},
     completion: {marker: 'manifest.json', publication: 'exclusive-hard-link-after-all-listed-files-flushed', pendingFile: PENDING_MANIFEST}};
   const manifestBytes = encodeJson(manifest, 'starter manifest', MIB);
-  if (files.reduce((total, file) => total + file.bytes.length, manifestBytes.length) > MAX_OUTPUT_BYTES) fail('Composed starter output exceeds 160 MiB');
+  const outputLimit = withPacket ? MAX_PACKET_OUTPUT_BYTES : MAX_OUTPUT_BYTES;
+  if (files.reduce((total, file) => total + file.bytes.length, manifestBytes.length) > outputLimit) fail(`Composed starter output exceeds ${outputLimit / MIB} MiB`);
   return {files, manifestBytes, adoption, refinement};
 }
 

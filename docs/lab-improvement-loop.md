@@ -1,5 +1,20 @@
 # Lab improvement handoff
 
+## Pass 315 · Direct Species composition ZIP input for guided v3 · 2026-10-28
+
+The Civ-owned guide and request exporter now accept the exact five-entry
+Species composition review ZIP as one bounded source. V3 validates the ZIP's
+fixed entry set/order, stored headers, CRCs, member byte caps and unique-key
+JSON, but treats `composition-review.json` as untrusted input. The guide still
+requires the complete Civ adoption ledger, annual source and an authored
+choose/replace decision; request v1/v2 and the manual-member v2 guide remain
+available. The output retains the original ZIP and original extracted source
+bytes with pins, while Atlas still receives its four established count files.
+
+Evidence: static source/contract inspection only. No tests, builds, deployment,
+publication, push or repository synchronization were performed. Runtime ZIP
+compatibility and Atlas handoff remain unverified.
+
 ## Pass 314 · Guided Species-to-Atlas starter v2 · 2026-10-28
 
 Added a Civ-owned interactive v2 path that accepts the six exact original
