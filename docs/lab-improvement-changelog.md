@@ -6,6 +6,34 @@ repository. This is a documentation-only update; related implementation work
 remains in the working tree and is not part of this docs commit. No tests,
 builds, CLI/runtime checks, deployment or publication were run.
 
+## 2026-10-28 — Named-individual handoff boundary recorded
+
+The annual membership export remains Civilization Lab's exact, source-pinned
+roster decision. Settlement Lab's separate arrangement-2 consumes the selected
+membership transport together with its exact cohort transport and plan, then
+partitions every named reference among existing plan instances or an explicit
+unassigned list. The handoff preserves the Civ unnamed remainder, plan
+unallocated demand, per-instance unnamed-attribution remainder and all upstream
+residuals as distinct values. It does not replay Civ history or establish
+currentness, residence, actors or physical placement.
+
+Universe Atlas's separate reader requires fresh independent review and only
+shows explicitly selected named-individual illustrations. This does not change
+annual population or membership, connect a live Civ provider, or establish
+historical/physical presence. Source and simulation implementations were not
+changed by this documentation entry. Static documentation inspection only;
+no tests, builds, CLI/runtime checks, Atlas edits, commits or publishing were
+performed.
+
+## 2026-10-28 — Current named-individual documentation handoff
+
+The annual membership contract now links to the separately owned
+Settlement arrangement-2, Atlas named-individual illustration, and Species
+cross-project handoff guide. These references describe the source sequence and
+consumer limits without expanding Civilization's transport authority. Only the
+two documentation files are included in this handoff; unrelated source and
+test work remains outside it. No tests or runtime checks were run.
+
 ## Guided annual settlement species editor · 2026-10-27
 
 Added a guide for eight original source files and complete parent/child histories.

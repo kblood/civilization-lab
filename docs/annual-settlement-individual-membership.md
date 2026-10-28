@@ -227,7 +227,16 @@ All source, identity, biological, residence, history, simulation and demographic
 verification/effect flags are false. No complete census, physical residence,
 continuity, migration, evolution or population provider is established. Historical
 originals with different pins remain external; retaining their snapshots is not
-source freshness review. There is no new Atlas or downstream consumer in this slice.
+source freshness review. This transport itself is not an Atlas reader. The
+separate [Settlement Lab arrangement-2 contract](../../settlement-lab/docs/settlement-individual-arrangement-v2.md)
+joins the membership transport with an exact plan and cohort transport; the
+[Atlas named-individual preview](../../universe-atlas/docs/annual-settlement-individual-preview.md)
+then independently reviews the sidecar and can show selected existing GLBs as
+illustrations. That downstream view does not grant population or residence
+authority. The [cross-project handoff guide](../../species-lab/docs/annual-settlement-handoff.md)
+lists the full source sequence and exact artifact roles.
 
-Implementation evidence is static source/document inspection only. No tests,
-builds, schema/runtime/browser execution, network, commits or publication ran.
+Implementation evidence for the membership implementation is static
+source/document inspection only. No tests, builds, schema/runtime/browser
+execution, network or publication ran. The downstream links above document
+separately owned consumers; they do not change this transport's contract.
