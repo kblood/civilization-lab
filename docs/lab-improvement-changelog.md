@@ -1,3 +1,11 @@
+## 2026-10-28 — Document the captured Species ZIP compatibility name
+
+The Civ-owned Atlas starter guide now describes the standard
+`biological-species-package.zip` download and Atlas's legacy
+`first-species-package.zip` alias. This optional ZIP remains Species-owned and
+outside the Civ manifest. Documentation only; no tests or CLI runs were
+performed.
+
 ## 2026-10-28 — Clarify Atlas's optional Species-owned package input
 
 Updated the Civ-owned Atlas starter guide to explain that Atlas may receive the

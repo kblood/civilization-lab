@@ -130,7 +130,8 @@ remains a separate owner-specific workflow.
 Atlas's combined starter intake can optionally accept the complete Species Lab
 biological package alongside the six Civ originals. Species Lab downloads that
 file as `biological-species-package.zip`; Atlas also accepts its own descriptive
-alias `species-biological-package.zip`. This ZIP is not a Civ export artifact,
+alias `species-biological-package.zip` and the legacy first-guide filename
+`first-species-package.zip`. This ZIP is not a Civ export artifact,
 is not included in Civ's manifest, and is not read or charged by Civ. Atlas
 independently checks its full artifact closure against the exact Species bundle
 digest in the freshly reviewed annual refinement before publishing the combined
