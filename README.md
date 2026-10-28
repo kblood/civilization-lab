@@ -1,10 +1,137 @@
 # Civilization Lab
 
-**Status: theoretical lab.** Nothing here is integrated with Universe Atlas yet.
+**Status: deterministic research/simulation lab; no live Atlas provider or
+automatic sync.** Its authored annual body export can be paired with a manually
+authored Atlas binding envelope and reviewed on the bound planet and Universe
+timelines. Atlas shows only supplied annual samples and per-arc levels; it does
+not establish complete coverage or verified history. See the [annual export
+workflow](docs/annual-body-export-cli.md) and [Atlas integration
+contract](../universe-atlas/docs/civilization-integration-contract.md).
+
+An explicit [annual species population refinement](docs/annual-species-population-refinement.md)
+now partitions actual supplied annual arc totals using one active adopted
+composition's fixed weights, BigInt apportionment and an explicit unassigned
+share. Its separate export CLI retains complete original sources and exact
+parent pins. Only the contiguous supplied segment from the positive anchor is
+derived; gaps and interruptions stay unknown. Species biology/applicability,
+demography and physical Atlas rendering remain separate work. Atlas now has an
+independent [exact-sample counts consumer](../universe-atlas/docs/annual-species-population-import.md).
+This addition has source inspection evidence only.
+
+The [guided annual species-count export](docs/annual-species-population-refinement.md#guided-annual-count-export)
+lists active anchors and their exact partitions, marks zero budgets ineligible
+and requires an explicit anchor and fixed-policy acknowledgement. It shows the
+selected refinement's coverage, unknown rows/gaps and pins before exact `write`,
+then reloads all originals and recomputes before writing the existing six files.
+It identifies the four Atlas inputs separately from request/summary. No latest
+anchor or fallback is selected; static source inspection evidence only.
+
+A separate [annual settlement species allocation](docs/annual-settlement-species-allocation.md)
+can join one later derived annual species row with an exact active resident
+allocation, using explicit authored destinations and separate unassigned/unlocated
+residuals. It reruns the full refinement, rebuilds the resident parent, conserves
+every exact budget and retains distinct sample/anchor keys plus complete history.
+Its separate CLI exports lossless current originals for Atlas's independent
+[annual consumer](../universe-atlas/docs/annual-settlement-species-import.md).
+It changes no v1 cohort or individual contract and creates no physical
+residence or demographic process. Static source evidence only.
+
+The [guided annual settlement species editor](docs/annual-settlement-species-allocation.md#guided-annual-settlement-species-editor)
+loads eight original sources, shows exact active parents and requires an explicit
+later full-nanosecond sample. Sparse assignment edits show both destination and
+species budgets. Destination `speciesUnassigned` and known-species `notLocated`
+each require a separate explicit application, including zero rows; annual-policy
+and resident cell residuals retain their separate meanings. Exact choose/replace
+and `write` precede fresh source pin checks and the existing four exclusive
+outputs. It identifies the current Settlement annual editor and Atlas annual
+cohort import entry points. Static source inspection only.
+
+Species composition now has a separate [Civ-owned scenario decision
+contract](docs/species-composition-adoption.md). Its pure ledger accepts an
+explicit editor choice at one supplied annual observation/arc, requires exact
+replacement of conflicting choices, and preserves the unassigned residual.
+It changes no simulation state and leaves source-byte and biology verification
+explicitly unverified. Universe Atlas can import a complete ledger alongside
+its independently reviewed Species composition packet and display a matching
+choice as an authored, date-specific annotation. This does not feed a population
+provider, alter planet rendering, or create settlement residents. See the
+[Atlas import contract](../universe-atlas/docs/species-composition-import.md).
+
+The [guided species composition CLI](docs/species-composition-adoption.md#guided-local-adoption)
+can review the exact original proposal, Civ observation document and complete
+decision ledger, show their exact target/current choice, and collect an explicit
+author/policy decision without hand-writing request JSON or replacement digests.
+It requires exact `write`, freshly reloads/pin-checks all three sources and writes
+the existing request/ledger/summary to a new directory. Species/Atlas originals
+outside those three JSON sources remain unverified; source inspection evidence only.
+
+A separate [annual spatial export](docs/annual-spatial-export.md) now exposes
+exact arc/region/cell budgets from the annual hierarchy, pins the matching body
+export, and preserves boundary threshold episodes with explicit left censoring.
+Its site placement tokens are opaque. A separate
+[settlement resident allocation ledger](docs/settlement-resident-allocation.md)
+now partitions every exact observed cell budget among explicitly authored
+settlements and an unallocated residual. It requires complete matching spatial
+and body artifacts and an explicit editor decision. A separate
+[partial settlement species cohort contract](docs/settlement-species-allocation.md)
+joins active species and resident decisions for one exact observation, preserves
+both destination `speciesUnassigned` and known-species `notLocated` residuals,
+and marks cohorts stale when a parent is replaced. It is authored scenario data;
+simulation population integration and physical planet positions remain separate
+integration boundaries.
+
+The [guided resident editor](docs/settlement-resident-allocation.md#guided-local-resident-editor)
+lists exact observed targets and paged region/cell budgets from original spatial,
+matching single-body annual and complete resident-history files. An explicit
+all-unallocated start creates the initial partition; settlement IDs, exact counts
+and rationales are authored through add/edit/remove actions. Residuals require a
+separate explicit application after edits. The guide displays every cell/row,
+requires choose or exact current-record replacement and `write`, then reloads
+all originals and recomputes before new-directory request/ledger/summary output.
+It infers no actual inhabitants, biology, buildings or coordinates. Static source
+inspection evidence only.
+
+The [authored individual membership contract](docs/settlement-individual-membership.md)
+enumerates existing exact Species individuals within one positive settlement
+species cohort at one exact observation. It preserves an explicit unnamed
+remainder, separate upstream residuals, original source byte pins and complete
+parent histories. Stale memberships make no current claim; empty enumeration
+is zero named, while an absent attachment remains unknown. This adds no complete
+census, physical residence, biological edit or historical membership.
+
+The separate [annual individual membership contract](docs/annual-settlement-individual-membership.md)
+names exact existing Individuals within one positive later annual destination/
+species assignment. It freshly reviews the annual child, keeps composition and
+individual source bundles separately pinned, checks biology at the exact later
+instant, conserves named plus explicit unnamed remainder, and enforces identity
+uniqueness within complete monotone annual histories. Its own CLI preserves all
+original request/source bytes for an independent consumer. Legacy same-year APIs
+and hashes remain unchanged. This creates no people, residence or demographic
+process; static source evidence only.
+
+The [guided annual membership CLI](docs/annual-settlement-individual-membership.md#explicit-cli-and-transport)
+collects source paths, reviews current annual children and positive settlement/
+species targets, and lists exact eligible Individuals with exclusion reasons.
+Authors explicitly select people, unnamed remainder and a new or exact replacement
+decision. It shows counts/residuals, requires `write`, then reloads and pin-checks
+every source before writing the existing four artifacts to a new directory. It
+removes manual request/digest/reference assembly; source inspection evidence only.
+
+The opt-in [population decision authoring CLI](docs/population-decision-cli.md)
+now applies these four APIs from closed request files. It preserves
+original source bytes and ledgers, requires explicit cohort parent digests, and
+can write the existing Atlas cohort review envelope or an independent individual
+membership review transport retaining exact current source bytes. Each run writes to a new
+directory; the CLI does not simulate, choose missing allocations or write back
+to source ledgers.
+
 **Current M5 measurement harness:** [the frozen four-arm protocol](docs/m5-policy-panel-protocol.md)
 compares default, targeting, colony-2 and both on matched seeds, with original
-voyage cohort conservation and deterministic reruns. Its addition is tooling;
-the primary 360-run measurement is not yet claimed. Policies remain opt-in.
+voyage cohort conservation and deterministic reruns. Its addition is tooling.
+The historical 360-run panel completed with 38 targeting-arm errors, so it is not
+a passing policy validation; a fresh-source clean rerun remains outstanding.
+See [the historical results](docs/evidence/m5-policy-panel-2026-10-13.md).
+Policies remain opt-in.
 **Doomed-star ensemble (2026-10-07, measurement only):** the 30-seed audit
 passes all eight invariants; 24/30 lineages die with their star, 5/30 die
 earlier, 1/30 survives through a tier-7 colony at `stub:s01:b0`; no evacuation
@@ -32,8 +159,10 @@ not modelled. See [the doc](docs/neighbours-doom-2026-10-07.md).
 option `targetingPolicy: 'm5-targeting-1'`. There are four failure reasons, each
 with its own retry rule, and delivered success clears the failure memory.
 Default runs and digests are byte-identical; `npm test` passes 159/159 with
-0 skipped. The effect on launches is not yet measured with an ensemble. See
-[the M5 round 1 doc](docs/m5-round1-2026-10-07.md).
+0 skipped. The historical panel completed but its 38 targeting-arm errors mean
+no passing ensemble validates the effect on launches; a clean rerun remains
+outstanding. See [the historical results](docs/evidence/m5-policy-panel-2026-10-13.md)
+and [the M5 round 1 doc](docs/m5-round1-2026-10-07.md).
 **M4d:** delivered own-lineage STATUS reports now support tier maintenance
 across declared interplanetary routes, with light-speed delay and expiry after
 silence. The 1 kyr founding reserve remains a bridge. Lonely near-expiry colony
@@ -134,6 +263,7 @@ Requires Node 22 or newer; there are no dependencies.
 ```powershell
 npm test            # node --test "tests/**/*.test.mjs"  (fast, deterministic, no browser/GPU)
 npm run scenario    # node src/cli.mjs
+npm run scenario -- --help  # modes, options, seeds and horizon defaults
 npm run digest      # node src/cli.mjs --digest
 node src/cli.mjs --civ temperate --seed civ-m2a-1 --years 20000
 node src/cli.mjs --domain fixtures/domains/toy-12.json --seed toy-1

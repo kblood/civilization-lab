@@ -6396,8 +6396,28 @@ per-source signal records retain the greatest own-lineage success eventYear,
 even if an older or generic signal arrives later. This avoids adding an arc
 field and keeps evidence in the existing witnessed signals. Equal event years
 do not clear or suppress failures. Opt-in LAUNCH params expose `priorFailure`
-(or `none`) and `priorFailureActive` (`0`/`1`); a tier bypass can launch with
-an active remembered failure.
+and `priorFailureActive`; a tier bypass can launch with an active remembered
+failure.
+
+### M5 LAUNCH parameter contract (extension of the legacy serialization table)
+
+This annex extends the integer-only general event contract and the LAUNCH row
+under **Complete serialization examples — must-fix 4**. That earlier table is
+the frozen legacy contract/RNG namespace; it remains unchanged to preserve
+default histories and digests. The effective LAUNCH table is:
+
+| Kind/variant | Exact params keys | Values |
+| --- | --- | --- |
+| LAUNCH, legacy/default | persons,travelYears | Canonical decimal integer strings only |
+| LAUNCH, M5 targeting | persons,travelYears,priorFailure,priorFailureActive | persons/travelYears remain canonical decimal integer strings; priorFailure is exactly `none`, `transit-loss`, `occupied`, `uninhabitable` or `colony-died`; priorFailureActive is exactly string `0` or `1` |
+
+Both diagnostics must occur together, with no extra keys, on M2 LAUNCH events
+only. The same two closed shapes apply to accepted and pre-empted records.
+No other event kind permits these diagnostic keys; ordinary parameters stay
+decimal-only (`0` or `-?[1-9][0-9]*`). Event validation checks the closed shape
+and vocabulary, not an external policy option; the producer emits the extended
+shape only with targeting enabled (including targeting + colony-2). This is a
+narrow parameter-schema extension, not a change to canonical serialization.
 
 The manifest adds `scenarioPriors.targetingPolicy` with version and all four
 retry priors. `def.targetingPolicy` is that block or null, inherited by arc

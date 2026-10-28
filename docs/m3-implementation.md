@@ -284,7 +284,10 @@ are superseded below. **Seeded scenarios, model attribution, not predictions.**
   There are era/colour legends, per-arc log population, live polity steps,
   eight body lanes at most, twelve selected event labels in separate grid
   slots, and twelve voyage curves at most. Every event mark has its real ID.
-  Centuries are sampled deterministically, capped to about 700 observations;
+  Population traces and live polity steps are sampled deterministically,
+  capped to about 700 observations. The frontier era band uses every sorted
+  observation, merging adjacent equal-era intervals and leaving uninhabited
+  intervals blank;
   at most eight arcs (peak population, ID ties) are plotted, with omitted counts.
   Report bytes exclude jobs, timing and absolute output paths.
 

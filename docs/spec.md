@@ -442,7 +442,7 @@ CivEvent {
                saturated? }
   causes:    [{ eventId, edge: "TRIGGERED"|"RAISED_HAZARD"|"ENABLED"|"CHAIN"|"EXOGENOUS",
                 weightPermille }]                  // sorted
-  params:    { [k]: integer-string }               // magnitude, tier, deaths, ...
+  params:    { [k]: integer-string }               // ordinary params; M5 LAUNCH exception below
   effects:   [{ target, field, op: "add"|"set"|"scale"|"transfer", amount, to? }]
   chain:     { chainId, step, deadlineTick, status } | null
   salience:  0..1000                               // narrative filter only; not causal
@@ -450,6 +450,18 @@ CivEvent {
   modelVersion
 }
 ```
+
+Parameter records are closed by event kind/variant. Ordinary values are canonical
+decimal integer strings (`0` or `-?[1-9][0-9]*`). M2 LAUNCH accepts exactly one
+of two shapes: legacy `{persons,travelYears}`, or the opt-in M5 shape
+`{persons,travelYears,priorFailure,priorFailureActive}`. Both diagnostic keys
+are required together: `priorFailure` is exactly `none`, `transit-loss`,
+`occupied`, `uninhabitable` or `colony-died`; `priorFailureActive` is exactly the
+string `0` or `1`. Persons and travelYears remain decimal-only. No other kind,
+partial diagnostic record or extra key is permitted. This applies to accepted
+and pre-empted events alike. See the [M5 targeting annex](transition-table-v1.md#m5-round-1--failure-reason-aware-targeting-opt-in),
+which extends the frozen legacy LAUNCH parameter table without re-keying default
+histories. Canonical serialization itself is unchanged.
 
 `transfer` is **one conserving record**: what leaves one account arrives in
 the other. It is used for migration, conquest of a region's people, colonists
