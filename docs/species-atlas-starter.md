@@ -77,6 +77,11 @@ From Civilization Lab, using Node 22+:
 node tools/export-species-atlas-starter.mjs --request starter-request.json --output-dir out/new-species-atlas-starter
 ```
 
+The [synthetic one-sample demonstration](../examples/species-atlas-starter/README.md)
+includes an explicit request and one captured output packet. It documents its
+source pins and limits; its fictional Atlas binding is not an accepted Atlas
+target and the example is not an Atlas import test.
+
 The output parent directory must already exist; the target must be new. Relative
 source paths resolve from the resolved original request file's directory.
 Command paths resolve from the invocation directory. The existing local-path
@@ -176,6 +181,7 @@ downloads, defaults, migrations, automatic revisions or repository source change
 The transport's extra byte checks do not upgrade the unchanged false
 verification/effect flags in adoption/refinement records.
 
-Implementation evidence is static source/diff inspection only. No tests,
-builds, CLI/help execution, Atlas import, runtime checks, assets, commits,
-synchronization, deployment or publication were performed.
+The exporter source received static review. The documented command was also
+run once to generate the synthetic packet linked above; its files and manifest
+were inspected. No tests, builds, Atlas import, target/runtime checks, assets,
+deployment, publication or repository synchronization were performed.

@@ -11,10 +11,12 @@
   after all files are flushed/closed; incomplete writes leave no published
   completion marker. Added only fixed starter names to the shared IO allowlist.
 - Documented request, output roles, Atlas prerequisites, original-vs-new ledger
-  identity, bounds and independent Species/Atlas review limits. Static source/
-  diff inspection only; no tests, builds, CLI/runtime checks, sibling edits,
-  implementation commits, synchronization, deployment or publication were
-  performed. The Civ repository's local-only rule remains in force.
+  identity, bounds and independent Species/Atlas review limits. Added a
+  fictional one-sample example and generated its captured packet with the
+  documented CLI; the manifest and output roles were inspected. No tests,
+  builds, Atlas import/target/runtime checks, sibling edits, deployment,
+  publication or repository synchronization were performed. The Civ repository's
+  local-only rule remains in force.
 
 ## 2026-10-28 — Documentation index and handoff refreshed
 

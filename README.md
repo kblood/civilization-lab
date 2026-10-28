@@ -25,7 +25,8 @@ decision and fixed annual policy. It applies the existing adoption/refinement
 APIs, preserves every original, and exports the four Atlas inputs with a final
 role/hash manifest in a new directory. Atlas envelope/import and Species
 declaration/asset review remain separate and explicitly unperformed. This
-starter has static source inspection evidence only.
+exporter has a one-sample fictional [demonstration packet](examples/species-atlas-starter/README.md);
+it is not an Atlas-accepted target or import.
 
 The [guided annual species-count export](docs/annual-species-population-refinement.md#guided-annual-count-export)
 lists active anchors and their exact partitions, marks zero budgets ineligible
