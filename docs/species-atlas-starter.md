@@ -6,9 +6,12 @@ uses the unchanged [adoption](species-composition-adoption.md) and
 [annual refinement](annual-species-population-refinement.md) contracts. It creates
 no new population/biology schema, simulation run, residents or physical placement.
 
-The starter retains all five supplied source originals, the original request,
+The v1 starter retains all five supplied source originals, the original request,
 the newly appended complete ledger, and the annual result in one new directory.
-Its manifest identifies exactly four files for Atlas. “Source-complete” here
+Opt-in v2 also retains the exact original Atlas authoring envelope pinned by the
+proposal. V1 requests, output manifest and the captured fictional demonstration
+keep their existing behavior; adding an envelope to a v1 request is an error.
+Both manifests identify exactly four annual-count files for Atlas. “Source-complete” here
 means these listed JSON sources are retained; it does not mean Species asset
 closure, a reviewed Atlas envelope, authentic history or consumer acceptance.
 
@@ -21,7 +24,7 @@ pinned by the proposal. Export/download those original bytes from their owners;
 do not replace them with reformatted JSON, a single selected bundle member,
 ZIP bytes, hashes copied from a screenshot or a receipt.
 
-Create a request with exactly these root/source fields:
+Create a v1 request with exactly these root/source fields:
 
 ```json
 {
@@ -48,6 +51,15 @@ Create a request with exactly these root/source fields:
   "policy": "fixed-anchor-largest-remainder-contiguous-forward-1"
 }
 ```
+
+To carry the original envelope in the same local packet, explicitly use
+`"version":"civ-species-atlas-starter-request-2"` and add exactly one source
+field, `"atlasEnvelope":"inputs/original-atlas-envelope.json"`. All other root,
+source, decision and policy fields stay the same. A v2 request must supply all
+six sources; it never infers or fetches an envelope. The separately named
+[v2 request recipe](../examples/species-atlas-starter-v2/README.md) is a template
+for actual owner-exported originals, not a captured packet or accepted Atlas
+target. Do not adapt the v1 demonstration's fictional binding into a target.
 
 The decision uses the existing closed adoption shape. A first choice requires
 `choose`/`null` and no active choice at the exact target. To replace an existing
@@ -97,6 +109,13 @@ The actual composition-source hash must match the proposal's
 `civilization.observationsSha256`; the actual Species bundle hash must match
 `speciesBundle.sha256`, and that JSON must identify `species-authoring-bundle-1`.
 This is an exact-byte pin/version check, not a full Species declaration review.
+For v2, the exact original envelope SHA-256 must also equal
+`proposal.atlas.envelopeSha256`, its version must be
+`atlas-civilization-authoring-envelope-1`, and its **complete** `binding` must
+equal the validated proposal's `atlas.binding` under Civ's canonical JSON
+comparison. Extra/missing binding fields or any differing value reject the
+request. These are correspondence checks only: the exporter does not validate
+Atlas address grammar, envelope declarations, evidence or referenced fixtures.
 The existing adoption API checks the original proposal pin, complete supplied
 history, exact observed target/budget and explicit choose/replace decision.
 
@@ -115,21 +134,35 @@ first output-directory creation. Supplied files remain unchanged.
 | `species-composition-proposal.json` | Exact original Species composition proposal |
 | `input-species-composition-ledger.json` | Exact original complete history before this adoption |
 | `species-bundle.json` | Exact original pinned Species JSON; optional Atlas biology companion |
+| `atlas-envelope.json` | **V2 only:** exact original pinned Atlas envelope, role `original-pinned-atlas-authoring-envelope`; for the earlier Civilization observation import |
 | `species-composition-ledger.json` | New canonical complete history including the explicit decision; **Atlas input** |
 | `composition-source.json` | Exact original complete source pinned by the adoption; **Atlas input** |
 | `annual-body.json` | Exact original complete annual source refined here; **Atlas input** |
 | `refinement.json` | Existing canonical annual refinement, no newline; **Atlas input** |
 | `manifest.json` | Final completion manifest: source pins, output roles/hashes/lengths, decision/refinement identities and unperformed review boundaries |
 
-First load the separately retained original Atlas authoring envelope and this
+First load the original Atlas authoring envelope and this
 exact `annual-body.json` in the intended planet's Civilization observation
-panel. The proposal's original envelope/target must match; this exporter neither
-loads that envelope nor resolves an Atlas address.
+panel. For v1, obtain that separately retained envelope; for v2, use the exact
+`atlas-envelope.json` retained in this packet. The proposal's original
+envelope/target must match. V2 loads its bytes for correspondence only; Atlas
+must independently review the envelope and resolve the selected planet.
+
+V1 emits `civ-species-atlas-starter-manifest-1`; v2 emits
+`civ-species-atlas-starter-manifest-2`. V2 includes the envelope pin under
+`inputOriginalBytes.atlasEnvelope`, its retained artifact role/hash/length, and
+`atlasPrerequisites.originalAuthoringEnvelope: "atlas-envelope.json"`.
+Its `originalAtlasEnvelopePinMatched` and
+`originalAtlasEnvelopeBindingMatched` flags are true, while
+`atlasEnvelopeReviewed` remains false and `atlasImportReview` remains
+`not-performed`. Neither pin matching nor binding equality claims Atlas acceptance.
 
 Then, in **Årlige species-counts**, select exactly the four marked Atlas inputs
 together, with their filenames unchanged. Select no request, original input
-ledger, proposal, bundle or manifest in that four-file picker. Atlas independently
-recomputes/reviews the import. Its existing retained-source and target budgets
+ledger, proposal, bundle, envelope or manifest in that four-file picker. Both
+manifest versions keep `atlasImportFiles` at exactly the same four annual
+inputs. Atlas independently recomputes/reviews the import. Its existing
+retained-source and target budgets
 can still reject an export; the manifest explicitly says Atlas import review
 was **not performed**. See the [Atlas reader contract](../../universe-atlas/docs/annual-species-population-import.md).
 
@@ -169,7 +202,8 @@ or power failure is not established by this source-only implementation.
 | Original composition / annual source | 16 MiB each |
 | Original complete adoption ledger | 32 MiB |
 | Original Species bundle | 4 MiB |
-| Existing shared input reader budget | 192 MiB across all role reads (these role caps total 70 MiB including request) |
+| Original Atlas envelope (v2 only) | 1 MiB |
+| Existing shared input reader budget | 192 MiB across all role reads; v1 caps total 70 MiB including request, v2 caps total 71 MiB including request (six source roles alone total 70 MiB) |
 | New canonical ledger / refinement | 32 MiB each, plus their existing contract budgets |
 | Encoded manifest | 1 MiB |
 | Composed data files plus final manifest | 160 MiB |
@@ -181,7 +215,9 @@ downloads, defaults, migrations, automatic revisions or repository source change
 The transport's extra byte checks do not upgrade the unchanged false
 verification/effect flags in adoption/refinement records.
 
-The exporter source received static review. The documented command was also
+The v1 exporter source received static review. The v1 documented command was also
 run once to generate the synthetic packet linked above; its files and manifest
 were inspected. No tests, builds, Atlas import, target/runtime checks, assets,
 deployment, publication or repository synchronization were performed.
+The opt-in v2 addition has static source inspection evidence only; no v2 CLI
+execution, output packet, tests, builds or Atlas import/runtime review is claimed.

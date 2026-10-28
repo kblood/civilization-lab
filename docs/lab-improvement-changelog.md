@@ -1,3 +1,20 @@
+## 2026-10-28 — Opt-in starter v2 retains its pinned Atlas envelope
+
+- Added the separately versioned six-source v2 request and manifest. The
+  original Atlas envelope is capped at 1 MiB; exact bytes must match the
+  proposal's envelope SHA-256, identify the expected version, and have the
+  same full binding as the validated proposal. These are correspondence
+  checks; `atlasEnvelopeReviewed` remains false.
+- Retains `atlas-envelope.json` with the role
+  `original-pinned-atlas-authoring-envelope` for the earlier Civilization
+  observation import. The annual `atlasImportFiles` list remains exactly four
+  files. Existing v1 request/output/demo behavior is preserved. Reader/output
+  caps remain 192/160 MiB; v2 role caps including request total 71 MiB.
+- Added a separately named v2 template recipe, without generating a packet or
+  repurposing the captured fictional v1 example. Static source inspection only;
+  no tests, exporter execution, checks, builds, assets, commits, publishing or
+  repository synchronization were performed for this addition.
+
 ## 2026-10-28 — One-command original-source Species counts starter
 
 - Added `tools/export-species-atlas-starter.mjs` with a closed explicit request

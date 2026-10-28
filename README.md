@@ -28,6 +28,15 @@ declaration/asset review remain separate and explicitly unperformed. This
 exporter has a one-sample fictional [demonstration packet](examples/species-atlas-starter/README.md);
 it is not an Atlas-accepted target or import.
 
+The starter's explicit v2 request adds the exact original Atlas authoring
+envelope as a sixth source and retains `atlas-envelope.json` for the earlier
+Civilization observation import. It checks the proposal's exact envelope pin,
+version and full binding correspondence; Atlas envelope/address/import review
+remains unperformed. V2 has its own manifest version and
+[request recipe](examples/species-atlas-starter-v2/README.md); the four annual
+Atlas inputs and existing v1 request/output/demo behavior are preserved.
+The v2 addition has static source inspection evidence only.
+
 The [guided annual species-count export](docs/annual-species-population-refinement.md#guided-annual-count-export)
 lists active anchors and their exact partitions, marks zero budgets ineligible
 and requires an explicit anchor and fixed-policy acknowledgement. It shows the
