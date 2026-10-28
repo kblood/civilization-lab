@@ -1,3 +1,21 @@
+## 2026-10-28 — One-command original-source Species counts starter
+
+- Added `tools/export-species-atlas-starter.mjs` with a closed explicit request
+  for the original composition proposal, complete source/history/annual JSON,
+  exact Species bundle, authored decision and fixed annual policy. Existing
+  strict readers compute real original pins; existing adoption/refinement APIs
+  append the decision and derive conserved annual counts without simulation.
+- Retains all originals and emits the exact four Atlas import files plus a
+  bounded role/hash manifest. Every byte is composed before exclusive new-dir
+  output. The final manifest is published by an exclusive atomic hard link
+  after all files are flushed/closed; incomplete writes leave no published
+  completion marker. Added only fixed starter names to the shared IO allowlist.
+- Documented request, output roles, Atlas prerequisites, original-vs-new ledger
+  identity, bounds and independent Species/Atlas review limits. Static source/
+  diff inspection only; no tests, builds, CLI/runtime checks, sibling edits,
+  implementation commits, synchronization, deployment or publication were
+  performed. The Civ repository's local-only rule remains in force.
+
 ## 2026-10-28 — Documentation index and handoff refreshed
 
 Reconciled the Civilization README, annual settlement/species guides, and
