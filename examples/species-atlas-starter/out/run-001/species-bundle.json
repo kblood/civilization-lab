@@ -1,0 +1,102 @@
+{
+  "version": "species-authoring-bundle-1",
+  "species": [
+    {
+      "version": "species-definition-1",
+      "id": "species:sample-humanoid",
+      "revision": 1,
+      "name": "Sample humanoid species",
+      "temporal": {
+        "axis": "big-bang-nanoseconds",
+        "validFromNs": "0",
+        "validUntilNs": null
+      },
+      "lineage": {
+        "id": "lineage:sample-humanoid",
+        "parents": [],
+        "provenance": {
+          "basis": "authored",
+          "rationale": "Illustrative contract example; this is not a historical or scientific claim.",
+          "evidenceIds": []
+        }
+      },
+      "biology": {
+        "facts": [
+          {
+            "id": "fact:locomotion",
+            "vocabulary": {
+              "id": "species-lab:core-biology",
+              "version": "1"
+            },
+            "property": "primary-locomotion",
+            "value": "bipedal",
+            "unit": null,
+            "provenance": {
+              "basis": "authored",
+              "rationale": "Chosen only to demonstrate an extensible authored fact.",
+              "evidenceIds": []
+            }
+          }
+        ]
+      },
+      "evidence": []
+    },
+    {
+      "version": "species-definition-1",
+      "id": "species:sample-neighbor",
+      "revision": 1,
+      "name": "Fictional neighboring species",
+      "temporal": {
+        "axis": "big-bang-nanoseconds",
+        "validFromNs": "0",
+        "validUntilNs": null
+      },
+      "lineage": {
+        "id": "lineage:sample-neighbor",
+        "parents": [],
+        "provenance": {
+          "basis": "authored",
+          "rationale": "Illustrative contract example; this is not a historical or scientific claim.",
+          "evidenceIds": []
+        }
+      },
+      "biology": {
+        "facts": []
+      },
+      "evidence": []
+    }
+  ],
+  "individuals": [
+    {
+      "version": "individual-definition-1",
+      "id": "rep:23:species:sample-humanoid:1:type-specimen",
+      "revision": 1,
+      "name": "Type specimen",
+      "species": {
+        "id": "species:sample-humanoid",
+        "revision": 1
+      },
+      "temporal": {
+        "axis": "big-bang-nanoseconds",
+        "validFromNs": "0",
+        "validUntilNs": null
+      },
+      "identity": {
+        "kind": "representative",
+        "sampleKey": "type-specimen",
+        "derivation": {
+          "algorithm": {
+            "id": "species-lab:representative",
+            "version": "1"
+          },
+          "seed": "sample-0"
+        }
+      },
+      "biology": {
+        "facts": []
+      },
+      "evidence": []
+    }
+  ],
+  "representations": []
+}
