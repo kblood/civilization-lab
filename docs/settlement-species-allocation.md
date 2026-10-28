@@ -91,6 +91,15 @@ located count there. A zero adopted species total is permitted and still needs
 an explicit zero `notLocated` row. No individual example is counted or expanded
 into population, and no newer species revision is selected automatically.
 
+A Species lineage event or an Atlas planet illustration does not advance these
+counts. To count a later descendant, Civ must separately adopt that exact
+species ID/revision in a new composition decision; the corresponding annual
+refinement must then name that exact adopted revision, and this settlement
+cohort decision must explicitly allocate its count to resident destinations.
+No count follows a parent reference or visual mapping. See Species Lab's
+[descendant authoring workflow](../../species-lab/README.md#author-a-descendant-from-a-captured-root-package)
+and Atlas's [lineage planet illustration contract](../../universe-atlas/docs/annual-species-population-import.md#later-lineage-descendant-planet-illustration).
+
 `speciesUnassigned` is explicit at **each destination**: resident budget not
 attributed to a species by this cohort decision. `notLocated` is explicit for
 **each adopted known species**: adopted species count not attributed to any

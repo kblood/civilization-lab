@@ -1,3 +1,12 @@
+## 2026-10-28 — Clarify explicit Civ adoption after Species lineage events
+
+Documented the exact route for including a later Species descendant in
+settlement cohort counts: Civ must separately adopt the exact revision,
+produce an annual refinement naming it, and author a new destination
+allocation. A Species event or Atlas visual mapping does not move counts along
+parent references. This is a Civ-to-Species lineage boundary clarification;
+no Civ code or count policy changed. No tests or CLI checks were run.
+
 ## 2026-10-28 — Document the captured Species ZIP compatibility name
 
 The Civ-owned Atlas starter guide now describes the standard
